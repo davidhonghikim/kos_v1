@@ -1,0 +1,22 @@
+{
+    "folders": [
+        {
+            "path": "."
+        },
+        {
+            "path": "../kos"
+        },
+        {
+            "path": "../ai-Q"
+        },
+        {
+            "path": "../griot"
+        },
+        {
+            "path": "../kai-cd"
+        },
+        {
+            "path": "../chatdemon"
+        }
+    ]
+}

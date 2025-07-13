@@ -1,0 +1,33 @@
+# AI-Q Knowledge Library System - Python Dependencies
+# Latest stable versions as of 2025-07-03
+# Modular requirements structure for kos_v1
+
+# Core dependencies (essential for basic functionality)
+-r requirements/core.txt
+
+# Database and storage dependencies
+-r requirements/database.txt
+
+# AI and Machine Learning dependencies
+-r requirements/ai-ml.txt
+
+# Medical/DICOM specific dependencies
+-r requirements/medical.txt
+
+# Development and testing dependencies
+-r requirements/development.txt
+
+# Web and scraping dependencies
+-r requirements/web.txt
+
+# Optional Dependencies (commented out - uncomment as needed)
+# tensorflow==2.15.0
+# tensorflow-gpu==2.15.0
+# jax==0.4.20
+# jaxlib==0.4.20
+# ray==2.8.0
+# streamlit==1.28.2
+# gradio==4.7.1
+# dash==2.14.2
+# plotly==5.17.0
+# bokeh==3.3.2 

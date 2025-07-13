@@ -1,0 +1,5 @@
+🚨 UNDER STRICT EXECUTION PROTOCOL
+
+You are to build the complete, executable, agentic OS repo called kOS...
+
+[... trimmed in script to save space, assume included from previous cell ...]

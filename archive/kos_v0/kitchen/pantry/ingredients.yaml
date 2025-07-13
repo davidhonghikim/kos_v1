@@ -1,0 +1,4 @@
+default_ingredients:
+  - context
+  - agent_graph
+  - prompt_template

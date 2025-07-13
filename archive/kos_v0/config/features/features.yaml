@@ -1,0 +1,4 @@
+feature_flags:
+  enable_vault: true
+  enable_plugins: true
+  enable_mcp: true

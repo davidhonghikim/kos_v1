@@ -1,0 +1,7 @@
+os_name: kOS
+version: 1.0.0
+debug: true
+services:
+  - vault
+  - openpass
+  - prompt_manager

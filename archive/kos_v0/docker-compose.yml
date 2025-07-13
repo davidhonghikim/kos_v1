@@ -1,0 +1,199 @@
+version: '3.8'
+
+services:
+  # Core Services
+  klf-server:
+    build: 
+      context: ./docker/images/klf
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - KOS_ENV=${KOS_ENV:-development}
+      - KOS_CONFIG_PATH=/app/config
+    volumes:
+      - ./config:/app/config:ro
+      - ./logs:/app/logs
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - kos-network
+    restart: unless-stopped
+
+  kitchen-engine:
+    build:
+      context: ./docker/images/kitchen
+      dockerfile: Dockerfile
+    environment:
+      - KOS_ENV=${KOS_ENV:-development}
+      - KOS_CONFIG_PATH=/app/config
+    volumes:
+      - ./config:/app/config:ro
+      - ./data:/app/data
+      - ./logs:/app/logs
+    depends_on:
+      - klf-server
+      - postgres
+      - redis
+    networks:
+      - kos-network
+    restart: unless-stopped
+
+  security-service:
+    build:
+      context: ./docker/images/security
+      dockerfile: Dockerfile
+    environment:
+      - KOS_ENV=${KOS_ENV:-development}
+      - KOS_CONFIG_PATH=/app/config
+    volumes:
+      - ./config:/app/config:ro
+      - ./logs:/app/logs
+    networks:
+      - kos-network
+    restart: unless-stopped
+
+  # Applications
+  web-app:
+    build:
+      context: ./docker/images/web
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - KOS_ENV=${KOS_ENV:-development}
+      - KOS_CONFIG_PATH=/app/config
+    volumes:
+      - ./config:/app/config:ro
+      - ./logs:/app/logs
+    depends_on:
+      - klf-server
+      - kitchen-engine
+    networks:
+      - kos-network
+    restart: unless-stopped
+
+  # Services
+  llm-service:
+    build:
+      context: ./docker/images/llm
+      dockerfile: Dockerfile
+    environment:
+      - KOS_ENV=${KOS_ENV:-development}
+      - KOS_CONFIG_PATH=/app/config
+    volumes:
+      - ./config:/app/config:ro
+      - ./data/models:/app/models
+      - ./logs:/app/logs
+    depends_on:
+      - klf-server
+    networks:
+      - kos-network
+    restart: unless-stopped
+
+  data-service:
+    build:
+      context: ./docker/images/data
+      dockerfile: Dockerfile
+    environment:
+      - KOS_ENV=${KOS_ENV:-development}
+      - KOS_CONFIG_PATH=/app/config
+    volumes:
+      - ./config:/app/config:ro
+      - ./data:/app/data
+      - ./logs:/app/logs
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - kos-network
+    restart: unless-stopped
+
+  marketplace-service:
+    build:
+      context: ./docker/images/marketplace
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      - KOS_ENV=${KOS_ENV:-development}
+      - KOS_CONFIG_PATH=/app/config
+    volumes:
+      - ./config:/app/config:ro
+      - ./data/marketplace:/app/marketplace
+      - ./logs:/app/logs
+    depends_on:
+      - klf-server
+      - data-service
+    networks:
+      - kos-network
+    restart: unless-stopped
+
+  monitoring-service:
+    build:
+      context: ./docker/images/monitoring
+      dockerfile: Dockerfile
+    ports:
+      - "9090:9090"
+      - "3001:3001"
+    environment:
+      - KOS_ENV=${KOS_ENV:-development}
+      - KOS_CONFIG_PATH=/app/config
+    volumes:
+      - ./config:/app/config:ro
+      - ./logs:/app/logs
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - kos-network
+    restart: unless-stopped
+
+  # Infrastructure
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=kos_${KOS_ENV:-development}
+      - POSTGRES_USER=kos_user
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-kos_password}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/config/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      - "5432:5432"
+    networks:
+      - kos-network
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-kos_redis}
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - kos-network
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - web-app
+      - klf-server
+    networks:
+      - kos-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  kos-network:
+    driver: bridge 

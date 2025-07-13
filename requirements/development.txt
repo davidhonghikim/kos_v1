@@ -1,0 +1,37 @@
+# Testing and Quality Assurance
+pytest==7.4.3
+pytest-asyncio==0.21.1
+pytest-cov==4.1.0
+pytest-mock==3.12.0
+black==23.11.0
+flake8==6.1.0
+mypy==1.7.1
+isort==5.12.0
+
+# Development and Debugging
+ipython==8.18.1
+jupyter==1.0.0
+debugpy==1.8.0
+
+# File and System Operations
+pathlib2==2.3.7
+watchdog==3.0.0
+
+# Date and Time
+python-dateutil==2.8.2
+pytz==2023.3
+
+# Network and Communication
+asyncio-mqtt==0.16.1
+
+# Graph and Network Analysis
+networkx==3.2.1
+matplotlib==3.8.2
+seaborn==0.13.0
+
+# Utilities
+click==8.1.7
+rich==13.7.0
+tqdm==4.66.1
+colorama==0.4.6
+tabulate==0.9.0 

@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ..
+      dockerfile: docker/backend.dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - ../.env
+    volumes:
+      - ../:/app
+
+  frontend:
+    build:
+      context: ..
+      dockerfile: docker/frontend.dockerfile
+    ports:
+      - "5173:5173"
+    volumes:
+      - ../frontend:/app
+
+  vector-db:
+    build:
+      context: ..
+      dockerfile: docker/vector-db.dockerfile
+    ports:
+      - "6333:6333"
