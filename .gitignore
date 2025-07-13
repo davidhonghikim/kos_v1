@@ -499,4 +499,8 @@ docs/build/
 
 # Local development
 .local/
-local/ 
+local/
+
+# Project-specific exclusions
+nodejs-portable/
+venv/ 
