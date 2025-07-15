@@ -22,8 +22,8 @@ services:
     - CADVISOR_NETWORK=kos-network
     - CADVISOR_PROFILE=core
     - CADVISOR_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -33,8 +33,8 @@ services:
     ports:
     - 3007:3000
     environment:
-    - GRAFANA_ADMIN_PASSWORD=kos-30437
-    - GRAFANA_ADMIN_USER=kos-admin
+    - GRAFANA_ADMIN_PASSWORD=kos30437
+    - GRAFANA_ADMIN_USER=kosadmin
     - GRAFANA_CATEGORY=monitoring
     - GRAFANA_COMPOSE_GROUP=monitoring
     - GRAFANA_CONTAINER_NAME=kos-grafana
@@ -50,8 +50,8 @@ services:
     - GRAFANA_NETWORK=kos-network
     - GRAFANA_PROFILE=core
     - GRAFANA_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -77,8 +77,8 @@ services:
     - PROMETHEUS_NETWORK=kos-network
     - PROMETHEUS_PROFILE=core
     - PROMETHEUS_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped

@@ -22,8 +22,8 @@ services:
     - ADMIN_PANEL_NETWORK=kos-network
     - ADMIN_PANEL_PROFILE=admin
     - ADMIN_PANEL_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -49,8 +49,8 @@ services:
     - ARTIFACT_MANAGER_NETWORK=kos-network
     - ARTIFACT_MANAGER_PROFILE=manager
     - ARTIFACT_MANAGER_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -60,10 +60,10 @@ services:
     ports:
     - 27018:8081
     environment:
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
-    - MONGO_EXPRESS_USER=kos-admin
-    - MONGO_EXPRESS_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
+    - MONGO_EXPRESS_USER=kosadmin
+    - MONGO_EXPRESS_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -73,10 +73,10 @@ services:
     ports:
     - 5433:80
     environment:
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     - PGADMIN_DEFAULT_EMAIL=admin@kos.local
-    - PGADMIN_DEFAULT_PASSWORD=kos-30437
+    - PGADMIN_DEFAULT_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -102,8 +102,8 @@ services:
     - PROMPT_MANAGER_NETWORK=kos-network
     - PROMPT_MANAGER_PROFILE=manager
     - PROMPT_MANAGER_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -113,13 +113,13 @@ services:
     ports:
     - 6380:8081
     environment:
-    - REDIS_COMMANDER_PASSWORD=kos-30437
-    - REDIS_COMMANDER_REDIS_HOSTS=local:kos-redis:6379:0:kos-30437
-    - REDIS_COMMANDER_USER=kos-admin
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
-    - REDIS_COMMANDER_USER=kos-admin
-    - REDIS_COMMANDER_PASSWORD=kos-30437
+    - REDIS_COMMANDER_PASSWORD=kos30437
+    - REDIS_COMMANDER_REDIS_HOSTS=local:kos-redis:6379:0:kos30437
+    - REDIS_COMMANDER_USER=kosadmin
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
+    - REDIS_COMMANDER_USER=kosadmin
+    - REDIS_COMMANDER_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -129,8 +129,8 @@ services:
     ports:
     - 5000:5000
     environment:
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped

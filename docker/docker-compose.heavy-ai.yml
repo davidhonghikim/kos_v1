@@ -25,8 +25,8 @@ services:
     - HUGGINGFACE_NETWORK=kos-network
     - HUGGINGFACE_PROFILE=ai
     - HUGGINGFACE_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped

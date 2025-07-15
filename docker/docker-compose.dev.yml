@@ -6,7 +6,7 @@ services:
     ports:
     - 3004:3000
     environment:
-    - BROWSERUSE_API_KEY=kos-30437
+    - BROWSERUSE_API_KEY=kos30437
     - BROWSERUSE_CATEGORY=dev
     - BROWSERUSE_COMPOSE_GROUP=dev
     - BROWSERUSE_CONTAINER_NAME=kos-browseruse
@@ -22,8 +22,8 @@ services:
     - BROWSERUSE_NETWORK=kos-network
     - BROWSERUSE_PROFILE=dev
     - BROWSERUSE_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -33,6 +33,7 @@ services:
     ports:
     - 3006:8080
     environment:
+    - CODIUM_AUTH=password
     - CODIUM_CATEGORY=dev
     - CODIUM_COMPOSE_GROUP=dev
     - CODIUM_CONTAINER_NAME=kos-codium
@@ -46,10 +47,11 @@ services:
     - CODIUM_IMAGE=codercom/code-server:latest
     - CODIUM_INTERNAL_PORT=8080
     - CODIUM_NETWORK=kos-network
+    - CODIUM_PASSWORD=kos30437
     - CODIUM_PROFILE=dev
     - CODIUM_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -61,11 +63,11 @@ services:
     ports:
     - 3005:3000
     environment:
-    - CONTEXT7_API_KEY=kos-30437
+    - CONTEXT7_API_KEY=kos30437
     - CONTEXT7_CATEGORY=dev
     - CONTEXT7_COMPOSE_GROUP=dev
     - CONTEXT7_CONTAINER_NAME=kos-context7
-    - CONTEXT7_DATABASE_URL=postgresql://kos-admin:kos-30437@kos-postgres:5432/context7
+    - CONTEXT7_DATABASE_URL=postgresql://kosadmin:kos30437@kos-postgres:5432/context7
     - CONTEXT7_DEPENDS_ON=
     - CONTEXT7_ENABLE=true
     - CONTEXT7_EXTERNAL_PORT=3005
@@ -78,8 +80,8 @@ services:
     - CONTEXT7_NETWORK=kos-network
     - CONTEXT7_PROFILE=dev
     - CONTEXT7_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -107,8 +109,8 @@ services:
     - GITEA_RESTART_POLICY=unless-stopped
     - GITEA_SSH_EXTERNAL_PORT=22
     - GITEA_SSH_INTERNAL_PORT=2222
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -150,8 +152,8 @@ services:
     - SUPABASE_STUDIO_INTERNAL_PORT=3000
     - SUPABASE_STUDIO_NETWORK=kos-network
     - SUPABASE_STUDIO_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped

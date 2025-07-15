@@ -23,8 +23,8 @@ services:
     - AUTOMATIC1111_NETWORK=kos-network
     - AUTOMATIC1111_PROFILE=core
     - AUTOMATIC1111_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -49,8 +49,8 @@ services:
     - COMFYUI_NETWORK=kos-network
     - COMFYUI_PROFILE=core
     - COMFYUI_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -75,8 +75,8 @@ services:
     - INVOKEAI_NETWORK=kos-network
     - INVOKEAI_PROFILE=core
     - INVOKEAI_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -102,8 +102,8 @@ services:
     - OLLAMA_NETWORK=kos-network
     - OLLAMA_PROFILE=core
     - OLLAMA_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -113,8 +113,8 @@ services:
     ports:
     - 3001:8080
     environment:
-    - OPENWEBUI_ADMIN_PASSWORD=kos-30437
-    - OPENWEBUI_ADMIN_USER=kos-admin
+    - OPENWEBUI_ADMIN_PASSWORD=kos30437
+    - OPENWEBUI_ADMIN_USER=kosadmin
     - OPENWEBUI_CATEGORY=ai
     - OPENWEBUI_COMPOSE_GROUP=ai
     - OPENWEBUI_CONTAINER_NAME=kos-openwebui
@@ -128,10 +128,11 @@ services:
     - OPENWEBUI_IMAGE=ghcr.io/open-webui/open-webui:main
     - OPENWEBUI_INTERNAL_PORT=8080
     - OPENWEBUI_NETWORK=kos-network
+    - OPENWEBUI_OLLAMA_API_BASE_URL=http://kos-ollama:11434
     - OPENWEBUI_PROFILE=core
     - OPENWEBUI_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped

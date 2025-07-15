@@ -6,16 +6,16 @@ services:
     ports:
     - 5678:5678
     environment:
-    - N8N_BASIC_AUTH_PASSWORD=kos-30437
-    - N8N_BASIC_AUTH_USER=kos-admin
+    - N8N_BASIC_AUTH_PASSWORD=kos30437
+    - N8N_BASIC_AUTH_USER=kosadmin
     - N8N_CATEGORY=workflow
     - N8N_COMPOSE_GROUP=workflow
     - N8N_CONTAINER_NAME=kos-n8n
     - N8N_DB_POSTGRESDB_DATABASE=n8n
     - N8N_DB_POSTGRESDB_HOST=kos-postgres
-    - N8N_DB_POSTGRESDB_PASSWORD=kos-30437
+    - N8N_DB_POSTGRESDB_PASSWORD=kos30437
     - N8N_DB_POSTGRESDB_PORT=5432
-    - N8N_DB_POSTGRESDB_USER=kos-admin
+    - N8N_DB_POSTGRESDB_USER=kosadmin
     - N8N_DB_TYPE=postgresdb
     - N8N_DEPENDS_ON=postgres
     - N8N_ENABLE=true
@@ -30,8 +30,8 @@ services:
     - N8N_PROFILE=workflow
     - N8N_RESTART_POLICY=unless-stopped
     - N8N_WEBHOOK_URL=http://kos-n8n:5678/
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -41,14 +41,14 @@ services:
     ports:
     - 8083:80
     environment:
-    - NEXTCLOUD_ADMIN_PASSWORD=kos-30437
-    - NEXTCLOUD_ADMIN_USER=kos-admin
+    - NEXTCLOUD_ADMIN_PASSWORD=kos30437
+    - NEXTCLOUD_ADMIN_USER=kosadmin
     - NEXTCLOUD_CATEGORY=workflow
     - NEXTCLOUD_COMPOSE_GROUP=workflow
     - NEXTCLOUD_CONTAINER_NAME=kos-nextcloud
     - NEXTCLOUD_DB_HOST=kos-postgres
     - NEXTCLOUD_DB_NAME=nextcloud
-    - NEXTCLOUD_DB_PASSWORD=kos-30437
+    - NEXTCLOUD_DB_PASSWORD=kos30437
     - NEXTCLOUD_DB_PORT=5432
     - NEXTCLOUD_DB_TYPE=pgsql
     - NEXTCLOUD_DEPENDS_ON=postgres
@@ -64,8 +64,8 @@ services:
     - NEXTCLOUD_NETWORK=kos-network
     - NEXTCLOUD_PROFILE=core
     - NEXTCLOUD_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -75,12 +75,12 @@ services:
     ports:
     - 9002:9002
     environment:
-    - PENPOT_ADMIN_PASSWORD=kos-30437
-    - PENPOT_ADMIN_USER=kos-admin
+    - PENPOT_ADMIN_PASSWORD=kos30437
+    - PENPOT_ADMIN_USER=kosadmin
     - PENPOT_CATEGORY=workflow
     - PENPOT_COMPOSE_GROUP=workflow
     - PENPOT_CONTAINER_NAME=kos-penpot
-    - PENPOT_DATABASE_URI=postgresql://kos-admin:kos-30437@kos-postgres:5432/penpot
+    - PENPOT_DATABASE_URI=postgresql://kosadmin:kos30437@kos-postgres:5432/penpot
     - PENPOT_DEPENDS_ON=postgres,redis
     - PENPOT_ENABLE=true
     - PENPOT_EXTERNAL_PORT=9002
@@ -94,8 +94,8 @@ services:
     - PENPOT_PROFILE=workflow
     - PENPOT_REDIS_URI=redis://kos-redis:6379/0
     - PENPOT_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped

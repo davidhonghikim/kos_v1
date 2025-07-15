@@ -21,8 +21,8 @@ services:
     - API_NETWORK=kos-network
     - API_PROFILE=core
     - API_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -47,8 +47,8 @@ services:
     - FRONTEND_NETWORK=kos-network
     - FRONTEND_PROFILE=core
     - FRONTEND_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -77,8 +77,8 @@ services:
     - NGINX_RESTART_POLICY=unless-stopped
     - NGINX_SSL_EXTERNAL_PORT=443
     - NGINX_SSL_INTERNAL_PORT=443
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped

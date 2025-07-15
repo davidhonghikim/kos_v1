@@ -22,8 +22,8 @@ services:
     - ADMIN_PANEL_NETWORK=kos-network
     - ADMIN_PANEL_PROFILE=admin
     - ADMIN_PANEL_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -49,8 +49,8 @@ services:
     - ARTIFACT_MANAGER_NETWORK=kos-network
     - ARTIFACT_MANAGER_PROFILE=manager
     - ARTIFACT_MANAGER_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -60,10 +60,10 @@ services:
     ports:
     - 27018:8081
     environment:
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
-    - MONGO_EXPRESS_USER=kos-admin
-    - MONGO_EXPRESS_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
+    - MONGO_EXPRESS_USER=kosadmin
+    - MONGO_EXPRESS_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -75,10 +75,10 @@ services:
     ports:
     - 5433:80
     environment:
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     - PGADMIN_DEFAULT_EMAIL=admin@kos.local
-    - PGADMIN_DEFAULT_PASSWORD=kos-30437
+    - PGADMIN_DEFAULT_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -106,8 +106,8 @@ services:
     - PROMPT_MANAGER_NETWORK=kos-network
     - PROMPT_MANAGER_PROFILE=manager
     - PROMPT_MANAGER_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -117,13 +117,13 @@ services:
     ports:
     - 6380:8081
     environment:
-    - REDIS_COMMANDER_PASSWORD=kos-30437
-    - REDIS_COMMANDER_REDIS_HOSTS=local:kos-redis:6379:0:kos-30437
-    - REDIS_COMMANDER_USER=kos-admin
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
-    - REDIS_COMMANDER_USER=kos-admin
-    - REDIS_COMMANDER_PASSWORD=kos-30437
+    - REDIS_COMMANDER_PASSWORD=kos30437
+    - REDIS_COMMANDER_REDIS_HOSTS=local:kos-redis:6379:0:kos30437
+    - REDIS_COMMANDER_USER=kosadmin
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
+    - REDIS_COMMANDER_USER=kosadmin
+    - REDIS_COMMANDER_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -135,8 +135,8 @@ services:
     ports:
     - 5000:5000
     environment:
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -161,8 +161,8 @@ services:
     - API_NETWORK=kos-network
     - API_PROFILE=core
     - API_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -190,8 +190,8 @@ services:
     - FRONTEND_NETWORK=kos-network
     - FRONTEND_PROFILE=core
     - FRONTEND_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -220,8 +220,8 @@ services:
     - NGINX_RESTART_POLICY=unless-stopped
     - NGINX_SSL_EXTERNAL_PORT=443
     - NGINX_SSL_INTERNAL_PORT=443
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -251,8 +251,8 @@ services:
     - AUTOMATIC1111_NETWORK=kos-network
     - AUTOMATIC1111_PROFILE=core
     - AUTOMATIC1111_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -277,8 +277,8 @@ services:
     - COMFYUI_NETWORK=kos-network
     - COMFYUI_PROFILE=core
     - COMFYUI_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -303,8 +303,8 @@ services:
     - INVOKEAI_NETWORK=kos-network
     - INVOKEAI_PROFILE=core
     - INVOKEAI_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -330,8 +330,8 @@ services:
     - OLLAMA_NETWORK=kos-network
     - OLLAMA_PROFILE=core
     - OLLAMA_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -341,8 +341,8 @@ services:
     ports:
     - 3001:8080
     environment:
-    - OPENWEBUI_ADMIN_PASSWORD=kos-30437
-    - OPENWEBUI_ADMIN_USER=kos-admin
+    - OPENWEBUI_ADMIN_PASSWORD=kos30437
+    - OPENWEBUI_ADMIN_USER=kosadmin
     - OPENWEBUI_CATEGORY=ai
     - OPENWEBUI_COMPOSE_GROUP=ai
     - OPENWEBUI_CONTAINER_NAME=kos-openwebui
@@ -356,10 +356,11 @@ services:
     - OPENWEBUI_IMAGE=ghcr.io/open-webui/open-webui:main
     - OPENWEBUI_INTERNAL_PORT=8080
     - OPENWEBUI_NETWORK=kos-network
+    - OPENWEBUI_OLLAMA_API_BASE_URL=http://kos-ollama:11434
     - OPENWEBUI_PROFILE=core
     - OPENWEBUI_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -371,7 +372,7 @@ services:
     ports:
     - 3004:3000
     environment:
-    - BROWSERUSE_API_KEY=kos-30437
+    - BROWSERUSE_API_KEY=kos30437
     - BROWSERUSE_CATEGORY=dev
     - BROWSERUSE_COMPOSE_GROUP=dev
     - BROWSERUSE_CONTAINER_NAME=kos-browseruse
@@ -387,8 +388,8 @@ services:
     - BROWSERUSE_NETWORK=kos-network
     - BROWSERUSE_PROFILE=dev
     - BROWSERUSE_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -398,6 +399,7 @@ services:
     ports:
     - 3006:8080
     environment:
+    - CODIUM_AUTH=password
     - CODIUM_CATEGORY=dev
     - CODIUM_COMPOSE_GROUP=dev
     - CODIUM_CONTAINER_NAME=kos-codium
@@ -411,10 +413,11 @@ services:
     - CODIUM_IMAGE=codercom/code-server:latest
     - CODIUM_INTERNAL_PORT=8080
     - CODIUM_NETWORK=kos-network
+    - CODIUM_PASSWORD=kos30437
     - CODIUM_PROFILE=dev
     - CODIUM_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -426,11 +429,11 @@ services:
     ports:
     - 3005:3000
     environment:
-    - CONTEXT7_API_KEY=kos-30437
+    - CONTEXT7_API_KEY=kos30437
     - CONTEXT7_CATEGORY=dev
     - CONTEXT7_COMPOSE_GROUP=dev
     - CONTEXT7_CONTAINER_NAME=kos-context7
-    - CONTEXT7_DATABASE_URL=postgresql://kos-admin:kos-30437@kos-postgres:5432/context7
+    - CONTEXT7_DATABASE_URL=postgresql://kosadmin:kos30437@kos-postgres:5432/context7
     - CONTEXT7_DEPENDS_ON=
     - CONTEXT7_ENABLE=true
     - CONTEXT7_EXTERNAL_PORT=3005
@@ -443,8 +446,8 @@ services:
     - CONTEXT7_NETWORK=kos-network
     - CONTEXT7_PROFILE=dev
     - CONTEXT7_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -472,8 +475,8 @@ services:
     - GITEA_RESTART_POLICY=unless-stopped
     - GITEA_SSH_EXTERNAL_PORT=22
     - GITEA_SSH_INTERNAL_PORT=2222
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -517,8 +520,8 @@ services:
     - SUPABASE_STUDIO_INTERNAL_PORT=3000
     - SUPABASE_STUDIO_NETWORK=kos-network
     - SUPABASE_STUDIO_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -546,8 +549,8 @@ services:
     - CADVISOR_NETWORK=kos-network
     - CADVISOR_PROFILE=core
     - CADVISOR_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -557,8 +560,8 @@ services:
     ports:
     - 3007:3000
     environment:
-    - GRAFANA_ADMIN_PASSWORD=kos-30437
-    - GRAFANA_ADMIN_USER=kos-admin
+    - GRAFANA_ADMIN_PASSWORD=kos30437
+    - GRAFANA_ADMIN_USER=kosadmin
     - GRAFANA_CATEGORY=monitoring
     - GRAFANA_COMPOSE_GROUP=monitoring
     - GRAFANA_CONTAINER_NAME=kos-grafana
@@ -574,8 +577,8 @@ services:
     - GRAFANA_NETWORK=kos-network
     - GRAFANA_PROFILE=core
     - GRAFANA_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -603,8 +606,8 @@ services:
     - PROMETHEUS_NETWORK=kos-network
     - PROMETHEUS_PROFILE=core
     - PROMETHEUS_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -625,7 +628,7 @@ services:
     - ELASTICSEARCH_DEPENDS_ON=
     - ELASTICSEARCH_ENABLE=true
     - ELASTICSEARCH_EXTERNAL_PORT=9200
-    - ELASTICSEARCH_HEALTH_CHECK_COMMAND=curl -u kos-admin:kos-30437 -f http://kos-elasticsearch:9200/_cluster/health
+    - ELASTICSEARCH_HEALTH_CHECK_COMMAND=curl -u kosadmin:kos30437 -f http://kos-elasticsearch:9200/_cluster/health
       || exit 1
     - ELASTICSEARCH_HEALTH_CHECK_INTERVAL=30s
     - ELASTICSEARCH_HEALTH_CHECK_RETRIES=3
@@ -633,13 +636,13 @@ services:
     - ELASTICSEARCH_IMAGE=docker.elastic.co/elasticsearch/elasticsearch:8.11.0
     - ELASTICSEARCH_INTERNAL_PORT=9200
     - ELASTICSEARCH_NETWORK=kos-network
-    - ELASTICSEARCH_PASSWORD=kos-30437
+    - ELASTICSEARCH_PASSWORD=kos30437
     - ELASTICSEARCH_PROFILE=core
     - ELASTICSEARCH_RESTART_POLICY=unless-stopped
-    - ELASTICSEARCH_USERNAME=kos-admin
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
-    - ELASTICSEARCH_PASSWORD=kos-30437
+    - ELASTICSEARCH_USERNAME=kosadmin
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
+    - ELASTICSEARCH_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -669,10 +672,10 @@ services:
     - MINIO_NETWORK=kos-network
     - MINIO_PROFILE=core
     - MINIO_RESTART_POLICY=unless-stopped
-    - MINIO_ROOT_PASSWORD=kos-30437
-    - MINIO_ROOT_USER=kos-admin
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - MINIO_ROOT_PASSWORD=kos30437
+    - MINIO_ROOT_USER=kosadmin
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -683,8 +686,8 @@ services:
     ports:
     - 27017:27017
     environment:
-    - MONGO_ADMIN_PASSWORD=kos-30437
-    - MONGO_ADMIN_USER=kos-admin
+    - MONGO_ADMIN_PASSWORD=kos30437
+    - MONGO_ADMIN_USER=kosadmin
     - MONGO_CATEGORY=infra
     - MONGO_COMPOSE_GROUP=infra
     - MONGO_CONTAINER_NAME=kos-mongo
@@ -704,10 +707,10 @@ services:
     - MONGO_EXPRESS_IMAGE=mongo-express:1.0.0
     - MONGO_EXPRESS_INTERNAL_PORT=8081
     - MONGO_EXPRESS_NETWORK=kos-network
-    - MONGO_EXPRESS_PASSWORD=kos-30437
+    - MONGO_EXPRESS_PASSWORD=kos30437
     - MONGO_EXPRESS_PROFILE=admin
     - MONGO_EXPRESS_RESTART_POLICY=unless-stopped
-    - MONGO_EXPRESS_USER=kos-admin
+    - MONGO_EXPRESS_USER=kosadmin
     - MONGO_EXTERNAL_PORT=27017
     - MONGO_HEALTH_CHECK_COMMAND=mongosh --host kos-mongo --eval "db.adminCommand('ping')"
     - MONGO_HEALTH_CHECK_INTERVAL=30s
@@ -718,8 +721,8 @@ services:
     - MONGO_NETWORK=kos-network
     - MONGO_PROFILE=core
     - MONGO_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -745,14 +748,14 @@ services:
     - NEO4J_IMAGE=neo4j:5.15
     - NEO4J_INTERNAL_PORT=7687
     - NEO4J_NETWORK=kos-network
-    - NEO4J_PASSWORD=kos-30437
+    - NEO4J_PASSWORD=kos30437
     - NEO4J_PROFILE=core
     - NEO4J_RESTART_POLICY=unless-stopped
-    - NEO4J_USER=kos-admin
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
-    - NEO4J_USER=kos-admin
-    - NEO4J_PASSWORD=kos-30437
+    - NEO4J_USER=kosadmin
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
+    - NEO4J_USER=kosadmin
+    - NEO4J_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -769,21 +772,21 @@ services:
     - POSTGRES_DEPENDS_ON=
     - POSTGRES_ENABLE=true
     - POSTGRES_EXTERNAL_PORT=5432
-    - POSTGRES_HEALTH_CHECK_COMMAND=pg_isready -h kos-postgres -U kos-admin -d kos
+    - POSTGRES_HEALTH_CHECK_COMMAND=pg_isready -h kos-postgres -U kosadmin -d kos
     - POSTGRES_HEALTH_CHECK_INTERVAL=30s
     - POSTGRES_HEALTH_CHECK_RETRIES=3
     - POSTGRES_HEALTH_CHECK_TIMEOUT=10s
     - POSTGRES_IMAGE=postgres:15-alpine
     - POSTGRES_INTERNAL_PORT=5432
     - POSTGRES_NETWORK=kos-network
-    - POSTGRES_PASSWORD=kos-30437
+    - POSTGRES_PASSWORD=kos30437
     - POSTGRES_PROFILE=core
     - POSTGRES_RESTART_POLICY=unless-stopped
-    - POSTGRES_USER=kos-admin
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
-    - POSTGRES_USER=kos-admin
-    - POSTGRES_PASSWORD=kos-30437
+    - POSTGRES_USER=kosadmin
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
+    - POSTGRES_USER=kosadmin
+    - POSTGRES_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -808,29 +811,29 @@ services:
     - REDIS_COMMANDER_IMAGE=rediscommander/redis-commander:latest
     - REDIS_COMMANDER_INTERNAL_PORT=8081
     - REDIS_COMMANDER_NETWORK=kos-network
-    - REDIS_COMMANDER_PASSWORD=kos-30437
+    - REDIS_COMMANDER_PASSWORD=kos30437
     - REDIS_COMMANDER_PROFILE=admin
-    - REDIS_COMMANDER_REDIS_HOSTS=local:kos-redis:6379:0:kos-30437
+    - REDIS_COMMANDER_REDIS_HOSTS=local:kos-redis:6379:0:kos30437
     - REDIS_COMMANDER_RESTART_POLICY=unless-stopped
-    - REDIS_COMMANDER_USER=kos-admin
+    - REDIS_COMMANDER_USER=kosadmin
     - REDIS_COMPOSE_GROUP=infra
     - REDIS_CONTAINER_NAME=kos-redis
     - REDIS_DEPENDS_ON=
     - REDIS_ENABLE=true
     - REDIS_EXTERNAL_PORT=6379
-    - REDIS_HEALTH_CHECK_COMMAND=redis-cli -h kos-redis -a kos-30437 ping | grep PONG
+    - REDIS_HEALTH_CHECK_COMMAND=redis-cli -h kos-redis -a kos30437 ping | grep PONG
     - REDIS_HEALTH_CHECK_INTERVAL=30s
     - REDIS_HEALTH_CHECK_RETRIES=3
     - REDIS_HEALTH_CHECK_TIMEOUT=10s
     - REDIS_IMAGE=redis:7.2-alpine
     - REDIS_INTERNAL_PORT=6379
     - REDIS_NETWORK=kos-network
-    - REDIS_PASSWORD=kos-30437
+    - REDIS_PASSWORD=kos30437
     - REDIS_PROFILE=core
     - REDIS_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
-    - REDIS_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
+    - REDIS_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -845,7 +848,7 @@ services:
     - VAULT_CONTAINER_NAME=kos-vault
     - VAULT_DEPENDS_ON=
     - VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:8200
-    - VAULT_DEV_ROOT_TOKEN_ID=kos-30437
+    - VAULT_DEV_ROOT_TOKEN_ID=kos30437
     - VAULT_ENABLE=true
     - VAULT_EXTERNAL_PORT=8200
     - VAULT_HEALTH_CHECK_COMMAND=curl -f http://kos-vault:8200/v1/sys/health || exit
@@ -858,8 +861,8 @@ services:
     - VAULT_NETWORK=kos-network
     - VAULT_PROFILE=core
     - VAULT_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -890,8 +893,8 @@ services:
     - WEAVIATE_PROFILE=core
     - WEAVIATE_RESTART_POLICY=unless-stopped
     - WEAVIATE_TRANSFORMERS_INFERENCE_API=http://kos-huggingface:8082
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -922,8 +925,8 @@ services:
     - HUGGINGFACE_NETWORK=kos-network
     - HUGGINGFACE_PROFILE=ai
     - HUGGINGFACE_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -933,16 +936,16 @@ services:
     ports:
     - 5678:5678
     environment:
-    - N8N_BASIC_AUTH_PASSWORD=kos-30437
-    - N8N_BASIC_AUTH_USER=kos-admin
+    - N8N_BASIC_AUTH_PASSWORD=kos30437
+    - N8N_BASIC_AUTH_USER=kosadmin
     - N8N_CATEGORY=workflow
     - N8N_COMPOSE_GROUP=workflow
     - N8N_CONTAINER_NAME=kos-n8n
     - N8N_DB_POSTGRESDB_DATABASE=n8n
     - N8N_DB_POSTGRESDB_HOST=kos-postgres
-    - N8N_DB_POSTGRESDB_PASSWORD=kos-30437
+    - N8N_DB_POSTGRESDB_PASSWORD=kos30437
     - N8N_DB_POSTGRESDB_PORT=5432
-    - N8N_DB_POSTGRESDB_USER=kos-admin
+    - N8N_DB_POSTGRESDB_USER=kosadmin
     - N8N_DB_TYPE=postgresdb
     - N8N_DEPENDS_ON=postgres
     - N8N_ENABLE=true
@@ -957,8 +960,8 @@ services:
     - N8N_PROFILE=workflow
     - N8N_RESTART_POLICY=unless-stopped
     - N8N_WEBHOOK_URL=http://kos-n8n:5678/
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -970,14 +973,14 @@ services:
     ports:
     - 8083:80
     environment:
-    - NEXTCLOUD_ADMIN_PASSWORD=kos-30437
-    - NEXTCLOUD_ADMIN_USER=kos-admin
+    - NEXTCLOUD_ADMIN_PASSWORD=kos30437
+    - NEXTCLOUD_ADMIN_USER=kosadmin
     - NEXTCLOUD_CATEGORY=workflow
     - NEXTCLOUD_COMPOSE_GROUP=workflow
     - NEXTCLOUD_CONTAINER_NAME=kos-nextcloud
     - NEXTCLOUD_DB_HOST=kos-postgres
     - NEXTCLOUD_DB_NAME=nextcloud
-    - NEXTCLOUD_DB_PASSWORD=kos-30437
+    - NEXTCLOUD_DB_PASSWORD=kos30437
     - NEXTCLOUD_DB_PORT=5432
     - NEXTCLOUD_DB_TYPE=pgsql
     - NEXTCLOUD_DEPENDS_ON=postgres
@@ -993,8 +996,8 @@ services:
     - NEXTCLOUD_NETWORK=kos-network
     - NEXTCLOUD_PROFILE=core
     - NEXTCLOUD_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -1006,12 +1009,12 @@ services:
     ports:
     - 9002:9002
     environment:
-    - PENPOT_ADMIN_PASSWORD=kos-30437
-    - PENPOT_ADMIN_USER=kos-admin
+    - PENPOT_ADMIN_PASSWORD=kos30437
+    - PENPOT_ADMIN_USER=kosadmin
     - PENPOT_CATEGORY=workflow
     - PENPOT_COMPOSE_GROUP=workflow
     - PENPOT_CONTAINER_NAME=kos-penpot
-    - PENPOT_DATABASE_URI=postgresql://kos-admin:kos-30437@kos-postgres:5432/penpot
+    - PENPOT_DATABASE_URI=postgresql://kosadmin:kos30437@kos-postgres:5432/penpot
     - PENPOT_DEPENDS_ON=postgres,redis
     - PENPOT_ENABLE=true
     - PENPOT_EXTERNAL_PORT=9002
@@ -1025,8 +1028,8 @@ services:
     - PENPOT_PROFILE=workflow
     - PENPOT_REDIS_URI=redis://kos-redis:6379/0
     - PENPOT_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
@@ -1051,8 +1054,8 @@ services:
     - SUPABASE_STUDIO_INTERNAL_PORT=3000
     - SUPABASE_STUDIO_NETWORK=kos-network
     - SUPABASE_STUDIO_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kos-admin
-    - ADMIN_PASSWORD=kos-30437
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
     networks:
     - kos-network
     restart: unless-stopped
