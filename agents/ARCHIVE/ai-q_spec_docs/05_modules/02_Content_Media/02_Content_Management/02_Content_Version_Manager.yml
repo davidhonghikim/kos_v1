@@ -1,0 +1,190 @@
+metadata:
+  original_file: 02_Content_Version_Manager.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Content Version Manager
+  version: '1.0'
+sections:
+- level: 1
+  title: '**Content Version Manager**'
+  type: section
+  content: ''
+- level: 2
+  title: '**Purpose**'
+  type: section
+  content: The Content Version Manager provides version control and change management
+    for all content types. It supports version tracking, diff analysis, rollback management,
+    and audit trails for efficient content lifecycle management.
+- level: 2
+  title: '**Core Principles**'
+  type: section
+  content: '- **Version Tracking**: Track all versions of content with detailed history
+
+    - **Change Detection**: Automatically detect and track content changes
+
+    - **Rollback Support**: Support rollback to previous versions
+
+    - **Audit Trails**: Maintain comprehensive audit trails for content changes
+
+    - **Branch Management**: Support content branching and merging'
+- level: 2
+  title: '**Function Specifications**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Core Functions**'
+  type: section
+  content: ''
+- level: 4
+  title: '**createVersion(content: ContentItem, options?: VersionOptions): Promise<VersionResult>**'
+  type: section
+  content: 'Creates a new version of a content item.
+
+
+    **Parameters:**
+
+    - `content`: Content item to version
+
+    - `options`: Optional versioning options (metadata, branch, etc.)
+
+
+    **Returns:**
+
+    - `VersionResult`: Version creation result and metadata
+
+
+    **Example:**
+
+    ```typescript
+
+    const version = await contentVersionManager.createVersion(contentItem, { branch:
+    "main" });
+
+    console.log(version.versionId);
+
+    ```'
+- level: 4
+  title: '**getDiff(versionA: string, versionB: string): Promise<DiffResult>**'
+  type: section
+  content: 'Gets the difference between two content versions.
+
+
+    **Parameters:**
+
+    - `versionA`: First version identifier
+
+    - `versionB`: Second version identifier
+
+
+    **Returns:**
+
+    - `DiffResult`: Difference analysis result
+
+
+    **Example:**
+
+    ```typescript
+
+    const diff = await contentVersionManager.getDiff("v1.0", "v1.1");
+
+    console.log(diff.changes);
+
+    ```'
+- level: 4
+  title: '**rollbackVersion(contentId: string, targetVersion: string): Promise<RollbackResult>**'
+  type: section
+  content: 'Rolls back content to a previous version.
+
+
+    **Parameters:**
+
+    - `contentId`: Content identifier
+
+    - `targetVersion`: Version to roll back to
+
+
+    **Returns:**
+
+    - `RollbackResult`: Rollback result and metadata
+
+
+    **Example:**
+
+    ```typescript
+
+    const rollback = await contentVersionManager.rollbackVersion("content123", "v1.0");
+
+    console.log(rollback.status);
+
+    ```'
+- level: 2
+  title: '**Integration Patterns**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Version Management Flow**'
+  type: section
+  content: "```mermaid\ngraph TD\n    A[Content Update] --> B[Version Check]\n   \
+    \ B --> C[Change Detection]\n    C --> D[Version Creation]\n    D --> E[Diff Analysis]\n\
+    \    E --> F[Metadata Update]\n    F --> G[Audit Log]\n```"
+- level: 2
+  title: '**Capabilities**'
+  type: section
+  content: '- **Version Tracking**: Track all versions and changes
+
+    - **Diff Analysis**: Analyze differences between versions
+
+    - **Rollback Support**: Roll back to previous versions
+
+    - **Branch Management**: Support branching and merging
+
+    - **Audit Trails**: Maintain audit logs for all changes'
+- level: 2
+  title: '**Configuration Examples**'
+  type: section
+  content: "```yaml\ncontent_version_manager:\n  version_tracking: true\n  change_detection:\
+    \ true\n  rollback_support: true\n  branch_management: true\n  audit_logging:\
+    \ true\n```"
+- level: 2
+  title: '**Error Handling**'
+  type: section
+  content: '- **Version Creation Failure**: Return error with details
+
+    - **Diff Analysis Failure**: Return error with details
+
+    - **Rollback Failure**: Return error with details
+
+    - **Branch Conflict**: Return error with conflict details'
+- level: 2
+  title: '**Performance Considerations**'
+  type: section
+  content: '- **Versioning Latency**: Optimized for < 1s
+
+    - **Batch Versioning**: Support for batch version creation
+
+    - **Resource Usage**: Efficient CPU and memory usage'
+- level: 2
+  title: '**Security Considerations**'
+  type: section
+  content: '- **Access Control**: Restrict access to version management features
+
+    - **Audit Logging**: Log all versioning actions
+
+    - **Version Privacy**: Protect sensitive version data'
+- level: 2
+  title: '**Monitoring & Observability**'
+  type: section
+  content: '- **Versioning Metrics**: Track request count, latency, and errors
+
+    - **Change Metrics**: Track change detection and diff analysis
+
+    - **Alerting**: Alerts for versioning failures or conflicts
+
+
+    ---
+
+
+    **Version**: 1.0
+
+    **Focus**: Robust, auditable content version management for kOS ecosystem'

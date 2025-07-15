@@ -1,7 +1,7 @@
 {
-  "name": "kos-v1-amauta-wearable-ai",
+  "name": "kos-v1-knowledge-library-framework",
   "version": "1.0.0",
-  "description": "KOS v1 - Production-grade wearable AI node system foundation for future KOS agent development",
+  "description": "KOS v1 - Universal knowledge management and agent orchestration ecosystem with transformer-class resident system",
   "main": "index.js",
   "scripts": {
     "dev": "vite",
@@ -19,8 +19,12 @@
     "start": "concurrently \"npm run backend\" \"npm run frontend\""
   },
   "keywords": [
-    "amauta",
-    "wearable-ai",
+    "kos",
+    "knowledge-management",
+    "agent-orchestration",
+    "transformer-system",
+    "spark-identity",
+    "cortex-runtime",
     "medical-ai",
     "multi-agent",
     "plugin-system",
@@ -34,7 +38,7 @@
     "react",
     "fastapi"
   ],
-  "author": "Amauta Development Team",
+  "author": "KOS Development Team",
   "license": "MIT",
   "engines": {
     "node": ">=18.0.0",
@@ -86,7 +90,7 @@
     "@types/react-dom": "18.2.18",
     "@types/fs-extra": "11.0.4",
     "@types/crypto-js": "4.2.1",
-    "eslint": "8.56.0",
+    "eslint": "8.57.1",
     "@vitejs/plugin-react": "^4.2.1",
     "vite": "^5.0.8",
     "@typescript-eslint/eslint-plugin": "6.19.1",

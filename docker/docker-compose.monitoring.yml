@@ -1,0 +1,91 @@
+name: kos-v1
+services:
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.47.2
+    container_name: kos-cadvisor
+    ports:
+    - 8081:8081
+    environment:
+    - CADVISOR_CATEGORY=monitoring
+    - CADVISOR_COMPOSE_GROUP=monitoring
+    - CADVISOR_CONTAINER_NAME=kos-cadvisor
+    - CADVISOR_DEPENDS_ON=
+    - CADVISOR_ENABLE=true
+    - CADVISOR_EXTERNAL_PORT=8081
+    - CADVISOR_HEALTH_CHECK_COMMAND=curl -f http://kos-cadvisor:8081/healthz || exit
+      1
+    - CADVISOR_HEALTH_CHECK_INTERVAL=30s
+    - CADVISOR_HEALTH_CHECK_RETRIES=3
+    - CADVISOR_HEALTH_CHECK_TIMEOUT=10s
+    - CADVISOR_IMAGE=gcr.io/cadvisor/cadvisor:v0.47.2
+    - CADVISOR_INTERNAL_PORT=8081
+    - CADVISOR_NETWORK=kos-network
+    - CADVISOR_PROFILE=core
+    - CADVISOR_RESTART_POLICY=unless-stopped
+    - ADMIN_USER=kos-admin
+    - ADMIN_PASSWORD=kos-30437
+    networks:
+    - kos-network
+    restart: unless-stopped
+  grafana:
+    image: grafana/grafana:10.2.0
+    container_name: kos-grafana
+    ports:
+    - 3007:3000
+    environment:
+    - GRAFANA_ADMIN_PASSWORD=kos-30437
+    - GRAFANA_ADMIN_USER=kos-admin
+    - GRAFANA_CATEGORY=monitoring
+    - GRAFANA_COMPOSE_GROUP=monitoring
+    - GRAFANA_CONTAINER_NAME=kos-grafana
+    - GRAFANA_DEPENDS_ON=elasticsearch
+    - GRAFANA_ENABLE=true
+    - GRAFANA_EXTERNAL_PORT=3007
+    - GRAFANA_HEALTH_CHECK_COMMAND=curl -f http://kos-grafana:3000/api/health || exit
+      1
+    - GRAFANA_HEALTH_CHECK_RETRIES=3
+    - GRAFANA_HEALTH_CHECK_TIMEOUT=10s
+    - GRAFANA_IMAGE=grafana/grafana:10.2.0
+    - GRAFANA_INTERNAL_PORT=3000
+    - GRAFANA_NETWORK=kos-network
+    - GRAFANA_PROFILE=core
+    - GRAFANA_RESTART_POLICY=unless-stopped
+    - ADMIN_USER=kos-admin
+    - ADMIN_PASSWORD=kos-30437
+    networks:
+    - kos-network
+    restart: unless-stopped
+  prometheus:
+    image: prom/prometheus:v2.48.0
+    container_name: kos-prometheus
+    ports:
+    - 9090:9090
+    environment:
+    - PROMETHEUS_CATEGORY=monitoring
+    - PROMETHEUS_COMPOSE_GROUP=monitoring
+    - PROMETHEUS_CONTAINER_NAME=kos-prometheus
+    - PROMETHEUS_DEPENDS_ON=elasticsearch
+    - PROMETHEUS_ENABLE=true
+    - PROMETHEUS_EXTERNAL_PORT=9090
+    - PROMETHEUS_HEALTH_CHECK_COMMAND=curl -f http://kos-prometheus:9090/-/healthy
+      || exit 1
+    - PROMETHEUS_HEALTH_CHECK_INTERVAL=30s
+    - PROMETHEUS_HEALTH_CHECK_RETRIES=3
+    - PROMETHEUS_HEALTH_CHECK_TIMEOUT=10s
+    - PROMETHEUS_IMAGE=prom/prometheus:v2.48.0
+    - PROMETHEUS_INTERNAL_PORT=9090
+    - PROMETHEUS_NETWORK=kos-network
+    - PROMETHEUS_PROFILE=core
+    - PROMETHEUS_RESTART_POLICY=unless-stopped
+    - ADMIN_USER=kos-admin
+    - ADMIN_PASSWORD=kos-30437
+    networks:
+    - kos-network
+    restart: unless-stopped
+networks:
+  kos-network:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 172.20.0.0/16
+volumes: {}

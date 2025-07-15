@@ -1,0 +1,232 @@
+frontmatter:
+  title: bolt.new AI Frontend Integration Guide
+  description: Complete guide for AI frontend builders to create kOS applications
+  version: 1.0.0
+  target: ai_frontend_builders
+
+sections:
+- title: "🚀 bolt.new Integration Guide"
+  content: |
+    MISSION: Build a modern React frontend that connects to kOS via KLF protocol
+    
+    BACKEND: http://localhost:30436 (PersonaRAG Bridge Server)
+    
+    GITHUB REPO: https://github.com/[your-org]/griot-node
+    
+    KEY FILES TO REFERENCE:
+    - apps/persona-rag-bridge/src/modules/klf/types.ts
+    - ai-q/02_protocols/01_Kind_Link_Framework.yml
+    - ai-q/04_architecture/frontend_specs/
+
+- title: "📦 Complete KLF Client (COPY THIS)"
+  content: |
+    ```typescript
+    // lib/klf-client.ts
+    export interface KLFMessage {
+      klf: { version: string; timestamp: string };
+      sender: { did: string };
+      recipient: { did: string };
+      payload: { type: string; service?: string; body: any };
+    }
+    
+    export class KLFClient {
+      constructor(private baseUrl = 'http://localhost:30436') {}
+      
+      async ping() {
+        const response = await fetch(`${this.baseUrl}/klf/v1/health`);
+        if (!response.ok) throw new Error('KLF backend not available');
+        return response.json();
+      }
+      
+      async discoverServices() {
+        const response = await fetch(`${this.baseUrl}/klf/v1/capabilities`);
+        const data = await response.json();
+        return data.services || [];
+      }
+      
+      async request(service: string, params: any) {
+        const message: KLFMessage = {
+          klf: { version: '1.0.0', timestamp: new Date().toISOString() },
+          sender: { did: 'did:kos:client:frontend' },
+          recipient: { did: 'did:kos:backend:main' },
+          payload: { type: 'service_request', service, body: params }
+        };
+        
+        const response = await fetch(`${this.baseUrl}/klf/v1/request`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(message)
+        });
+        
+        if (!response.ok) throw new Error(`Request failed: ${response.statusText}`);
+        const result = await response.json();
+        if (result.payload?.type === 'error') {
+          throw new Error(result.payload.body.message);
+        }
+        return result.payload?.body || result;
+      }
+    }
+    ```
+
+- title: "🎨 Required Components"
+  content: |
+    CREATE THESE COMPONENTS:
+    
+    1. ServiceDashboard - Shows available services
+    2. DocumentUploader - Upload files for RAG  
+    3. PersonaChat - Chat interface
+    4. SearchResults - Display query results
+    5. StatusIndicator - Connection status
+    
+    EXAMPLE DocumentUploader:
+    ```typescript
+    export function DocumentUploader({ klfClient }: { klfClient: KLFClient }) {
+      const [uploading, setUploading] = useState(false);
+      
+      const handleUpload = async (file: File) => {
+        setUploading(true);
+        try {
+          const fileData = await fileToBase64(file);
+          const result = await klfClient.request('document.upload', {
+            file: fileData,
+            filename: file.name,
+            contentType: file.type
+          });
+          alert('Upload successful!');
+        } catch (error) {
+          alert('Upload failed: ' + error.message);
+        }
+        setUploading(false);
+      };
+      
+      return (
+        <input 
+          type="file" 
+          onChange={(e) => e.target.files?.[0] && handleUpload(e.target.files[0])}
+          disabled={uploading}
+        />
+      );
+    }
+    ```
+
+- title: "🔧 Available Services"
+  content: |
+    CALL THESE SERVICES VIA klf.request():
+    
+    // Document operations
+    await klf.request('document.upload', { file: base64Data, filename: 'doc.pdf' })
+    await klf.request('document.query', { query: 'AI ethics', maxResults: 10 })
+    
+    // Persona chat
+    await klf.request('persona.chat', { 
+      personaId: 'ai-researcher', 
+      message: 'Hello',
+      context: 'previous messages...'
+    })
+    
+    // Vector search
+    await klf.request('vector.search', { 
+      embedding: [0.1, 0.2, ...], 
+      k: 5 
+    })
+    
+    // Auth & vault
+    await klf.request('auth.login', { username: 'user', password: 'pass' })
+    await klf.request('vault.store', { key: 'api_key', value: 'secret' })
+    await klf.request('vault.retrieve', { key: 'api_key' })
+    
+    // System status
+    await klf.request('system.status', {})
+
+- title: "⚡ Quick Start Template"
+  content: |
+    ```typescript
+    // App.tsx
+    import React, { useState, useEffect } from 'react';
+    import { KLFClient } from './lib/klf-client';
+    
+    function App() {
+      const [klf] = useState(() => new KLFClient());
+      const [connected, setConnected] = useState(false);
+      const [services, setServices] = useState([]);
+      
+      useEffect(() => {
+        const init = async () => {
+          try {
+            await klf.ping();
+            const discoveredServices = await klf.discoverServices();
+            setServices(discoveredServices);
+            setConnected(true);
+          } catch (error) {
+            console.error('Failed to connect to KLF:', error);
+          }
+        };
+        init();
+      }, [klf]);
+      
+      if (!connected) {
+        return <div>Connecting to kOS...</div>;
+      }
+      
+      return (
+        <div className="min-h-screen bg-gray-50">
+          <header className="bg-white shadow p-4">
+            <h1 className="text-xl font-bold">kOS Frontend</h1>
+            <span className="text-green-600">✓ Connected</span>
+          </header>
+          
+          <main className="container mx-auto p-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <ServiceDashboard services={services} />
+              <DocumentUploader klfClient={klf} />
+              <PersonaChat klfClient={klf} />
+              <SearchInterface klfClient={klf} />
+            </div>
+          </main>
+        </div>
+      );
+    }
+    ```
+
+- title: "🎯 Success Criteria"
+  content: |
+    YOUR FRONTEND IS READY WHEN:
+    
+    ✅ Connects to http://localhost:30436
+    ✅ Shows "Connected" status in UI
+    ✅ Displays available services from discovery
+    ✅ Can upload documents (converts to base64)
+    ✅ Can search documents via RAG
+    ✅ Can chat with AI personas
+    ✅ Handles errors gracefully
+    ✅ Uses Tailwind CSS for styling
+    ✅ Responsive design (mobile-friendly)
+    ✅ Loading states for async operations
+
+- title: "🚨 IMPORTANT NOTES"
+  content: |
+    BACKEND SETUP:
+    1. Make sure persona-rag-bridge server is running
+    2. Test with: curl http://localhost:30436/klf/v1/health
+    3. If connection fails, check backend logs
+    
+    DEPENDENCIES:
+    - React 18+, TypeScript, Tailwind CSS
+    - No special KLF packages needed - just use the client above
+    
+    TESTING:
+    - Test KLF connection first
+    - Use browser dev tools to inspect network requests
+    - Check console for KLF client errors
+
+- title: "�� Help & Support"
+  content: |
+    DEBUGGING:
+    - Backend health: GET http://localhost:30436/klf/v1/health
+    - Service discovery: GET http://localhost:30436/klf/v1/capabilities
+    - Example request: POST http://localhost:30436/klf/v1/request
+    
+    REPOSITORY:
+    - Full code examples in: apps/persona-rag-bridge/src/
+    - KLF types: apps/persona-rag-bridge/src/modules/klf/types.ts
+    - Architecture docs: ai-q/04_architecture/frontend_specs/

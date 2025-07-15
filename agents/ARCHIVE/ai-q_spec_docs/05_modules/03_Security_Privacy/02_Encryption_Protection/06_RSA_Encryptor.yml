@@ -1,0 +1,579 @@
+metadata:
+  original_file: 06_RSA_Encryptor.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: RSA Encryptor
+  version: '1.0'
+  category: Security
+  subcategory: Encryption & Protection
+  dependencies:
+  - Base Encryptor
+  - Base Hash Generator
+  tags:
+  - rsa
+  - encryption
+  - security
+  - cryptography
+  - asymmetric
+  priority: high
+sections:
+- level: 1
+  title: RSA Encryptor
+  type: section
+  content: ''
+- level: 2
+  title: Purpose
+  type: section
+  content: Provides RSA (Rivest-Shamir-Adleman) encryption implementation for the
+    kOS ecosystem. This module extends the Base Encryptor to provide specific RSA
+    encryption capabilities including RSA-2048, RSA-3072, and RSA-4096 with various
+    padding schemes (OAEP, PKCS1v1.5). The RSA Encryptor ensures secure asymmetric
+    encryption for key exchange, digital signatures, and hybrid encryption systems
+    across all kOS components.
+- level: 2
+  title: Capabilities
+  type: section
+  content: '- **RSA Algorithm Support**: Full support for RSA-2048, RSA-3072, and
+    RSA-4096 encryption
+
+    - **Multiple Padding Schemes**: Support for OAEP, PKCS1v1.5, and other padding
+    schemes
+
+    - **Key Pair Management**: Secure RSA key pair generation, storage, and lifecycle
+    management
+
+    - **Hybrid Encryption**: Support for hybrid encryption with symmetric algorithms
+
+    - **Digital Signatures**: RSA signature generation and verification capabilities
+
+    - **Performance Optimization**: Configurable performance settings and optimizations
+
+    - **Security Validation**: Comprehensive security validation and compliance checking
+
+    - **Hardware Acceleration**: Support for hardware acceleration when available'
+- level: 2
+  title: Integration Points
+  type: section
+  content: '- **Input**: Plain text data, RSA parameters, and encryption configuration
+
+    - **Output**: RSA-encrypted data, signature data, and encryption metadata
+
+    - **Dependencies**: Base Encryptor for interface compliance, Base Hash Generator
+    for OAEP padding'
+- level: 2
+  title: Configuration
+  type: section
+  content: "```yaml\nrsa_encryptor:\n  default_key_size: 2048  # bits\n  default_padding:\
+    \ \"OAEP\"\n  key_management:\n    key_pair_generation:\n      algorithm: \"RSA\"\
+    \n      key_size: 2048\n      secure_random: true\n      public_exponent: 65537\n\
+    \    key_storage:\n      encrypted: true\n      storage_backend: \"secure_key_store\"\
+    \n      key_format: \"PEM\"\n    key_rotation:\n      enabled: true\n      interval:\
+    \ \"365d\"\n      overlap_period: \"30d\"\n  padding_schemes:\n    oaep:\n   \
+    \   enabled: true\n      hash_algorithm: \"SHA-256\"\n      mgf1_hash: \"SHA-256\"\
+    \n      label: \"\"\n    pkcs1v1_5:\n      enabled: true\n      secure_usage_only:\
+    \ true\n  hybrid_encryption:\n    enabled: true\n    symmetric_algorithm: \"AES-256-GCM\"\
+    \n    key_wrapping: true\n  performance:\n    hardware_acceleration: true\n  \
+    \  parallel_processing: true\n    max_concurrent_operations: 10\n    chunk_size:\
+    \ 245  # Max for RSA-2048 with OAEP\n  security:\n    minimum_key_size: 2048\n\
+    \    require_secure_random: true\n    validate_parameters: true\n    fips_compliance:\
+    \ true\n  audit:\n    log_all_operations: true\n    include_metadata: true\n \
+    \   retention_period: \"7y\"\n```"
+- level: 2
+  title: Example Workflow
+  type: section
+  content: "```mermaid\ngraph TD\n  A[Plain Text Input] --> B[Key Size Selection]\n\
+    \  B --> C[RSA Key Pair Generation]\n  C --> D[Padding Scheme Selection]\n  D\
+    \ --> E[Data Preparation]\n  E --> F[RSA Encryption]\n  F --> G[Output Assembly]\n\
+    \  G --> H[Audit Logging]\n  H --> I[Encrypted Output]\n  \n  B --> J{Key Size\
+    \ Valid?}\n  J -->|No| K[Error Handling]\n  J -->|Yes| C\n  \n  F --> L{Encryption\
+    \ Success?}\n  L -->|No| M[Error Recovery]\n  L -->|Yes| G\n```"
+- level: 2
+  title: Core Capabilities
+  type: section
+  content: ''
+- level: 3
+  title: '**1. RSA Algorithm Implementation**'
+  type: section
+  content: '- **Description**: Full implementation of RSA encryption algorithm
+
+    - **Input**: Plain text data and RSA parameters
+
+    - **Output**: RSA-encrypted data and encryption metadata
+
+    - **Dependencies**: RSA cryptographic library'
+- level: 3
+  title: '**2. Key Pair Management**'
+  type: section
+  content: '- **Description**: Secure RSA key pair generation, storage, and lifecycle
+    management
+
+    - **Input**: Key size requirements and security parameters
+
+    - **Output**: Generated key pairs and key metadata
+
+    - **Dependencies**: Secure random generator and key storage'
+- level: 3
+  title: '**3. Padding Scheme Support**'
+  type: section
+  content: '- **Description**: Support for various RSA padding schemes
+
+    - **Input**: Padding scheme specification and parameters
+
+    - **Output**: Padding-appropriate encrypted data
+
+    - **Dependencies**: Hash functions for OAEP padding'
+- level: 3
+  title: '**4. Hybrid Encryption**'
+  type: section
+  content: '- **Description**: Support for hybrid encryption with symmetric algorithms
+
+    - **Input**: Large data and hybrid encryption parameters
+
+    - **Output**: Hybrid encrypted data with wrapped keys
+
+    - **Dependencies**: Symmetric encryption algorithms'
+- level: 2
+  title: Module Interface
+  type: section
+  content: ''
+- level: 3
+  title: '**Input Interface**'
+  type: section
+  content: "```typescript\ninterface RSAEncryptorInput extends BaseEncryptorInput\
+    \ {\n  keySize?: 2048 | 3072 | 4096;\n  padding?: 'OAEP' | 'PKCS1v1.5';\n  hashAlgorithm?:\
+    \ 'SHA-256' | 'SHA-384' | 'SHA-512';\n  mgf1Hash?: 'SHA-256' | 'SHA-384' | 'SHA-512';\n\
+    \  label?: string;\n  publicKey?: string | Buffer;\n  hybridEncryption?: boolean;\n\
+    }\n\ninterface RSAEncryptionParameters {\n  keySize: 2048 | 3072 | 4096;\n  padding:\
+    \ string;\n  hashAlgorithm?: string;\n  mgf1Hash?: string;\n  label?: string;\n\
+    \  hybridEncryption?: boolean;\n}\n```"
+- level: 3
+  title: '**Output Interface**'
+  type: section
+  content: "```typescript\ninterface RSAEncryptorOutput extends BaseEncryptorOutput\
+    \ {\n  keySize: 2048 | 3072 | 4096;\n  padding: string;\n  publicKey?: string;\n\
+    \  signature?: Buffer;\n  hybridData?: HybridEncryptionData;\n  metadata: RSAEncryptionMetadata;\n\
+    }\n\ninterface HybridEncryptionData {\n  encryptedKey: Buffer;\n  encryptedData:\
+    \ Buffer;\n  symmetricAlgorithm: string;\n  iv: Buffer;\n  tag?: Buffer;\n}\n\n\
+    interface RSAEncryptionMetadata extends EncryptionMetadata {\n  keySize: number;\n\
+    \  padding: string;\n  hashAlgorithm?: string;\n  hybridEncryption: boolean;\n\
+    \  performanceMetrics: RSAPerformanceMetrics;\n}\n\ninterface RSAPerformanceMetrics\
+    \ extends PerformanceMetrics {\n  encryptionSpeed: number; // operations/second\n\
+    \  keyGenerationTime: number; // milliseconds\n  hybridEncryption: boolean;\n\
+    }\n```"
+- level: 3
+  title: '**Configuration Interface**'
+  type: section
+  content: "```typescript\ninterface RSAEncryptorConfig extends BaseEncryptorConfig\
+    \ {\n  defaultKeySize: 2048 | 3072 | 4096;\n  defaultPadding: string;\n  keyManagement:\
+    \ RSAKeyManagementConfig;\n  paddingSchemes: RSAPaddingSchemesConfig;\n  hybridEncryption:\
+    \ HybridEncryptionConfig;\n  performance: RSAPerformanceConfig;\n  security: RSASecurityConfig;\n\
+    }\n\ninterface RSAKeyManagementConfig {\n  keyPairGeneration: RSAKeyPairGenerationConfig;\n\
+    \  keyStorage: RSAKeyStorageConfig;\n  keyRotation: RSAKeyRotationConfig;\n}\n\
+    \ninterface RSAKeyPairGenerationConfig {\n  algorithm: string;\n  keySize: number;\n\
+    \  secureRandom: boolean;\n  publicExponent: number;\n}\n\ninterface RSAKeyStorageConfig\
+    \ {\n  encrypted: boolean;\n  storageBackend: string;\n  keyFormat: string;\n\
+    }\n\ninterface RSAKeyRotationConfig {\n  enabled: boolean;\n  interval: string;\n\
+    \  overlapPeriod: string;\n}\n\ninterface RSAPaddingSchemesConfig {\n  oaep: OAEPConfig;\n\
+    \  pkcs1v1_5: PKCS1v1_5Config;\n}\n\ninterface OAEPConfig {\n  enabled: boolean;\n\
+    \  hashAlgorithm: string;\n  mgf1Hash: string;\n  label: string;\n}\n\ninterface\
+    \ PKCS1v1_5Config {\n  enabled: boolean;\n  secureUsageOnly: boolean;\n}\n\ninterface\
+    \ HybridEncryptionConfig {\n  enabled: boolean;\n  symmetricAlgorithm: string;\n\
+    \  keyWrapping: boolean;\n}\n\ninterface RSAPerformanceConfig extends PerformanceConfig\
+    \ {\n  hardwareAcceleration: boolean;\n  parallelProcessing: boolean;\n  maxConcurrentOperations:\
+    \ number;\n  chunkSize: number;\n}\n\ninterface RSASecurityConfig extends SecurityConfig\
+    \ {\n  minimumKeySize: number;\n  requireSecureRandom: boolean;\n  validateParameters:\
+    \ boolean;\n  fipsCompliance: boolean;\n}\n```"
+- level: 2
+  title: Module Dependencies
+  type: section
+  content: ''
+- level: 3
+  title: '**Required Dependencies**'
+  type: section
+  content: '- **Base Encryptor**: For interface compliance and common functionality
+
+    - **Base Hash Generator**: For OAEP padding and key derivation
+
+    - **RSA Cryptographic Library**: For RSA algorithm implementation
+
+    - **Symmetric Encryptor**: For hybrid encryption (AES, etc.)'
+- level: 3
+  title: '**Optional Dependencies**'
+  type: section
+  content: '- **Hardware Security Module (HSM)**: For enhanced key security when available
+
+    - **Performance Monitor**: For detailed performance monitoring when available
+
+    - **FIPS Validation**: For FIPS compliance validation when required'
+- level: 2
+  title: Module Implementation
+  type: section
+  content: ''
+- level: 3
+  title: '**Core Components**'
+  type: section
+  content: ''
+- level: 4
+  title: '**1. RSA Encryption Engine**'
+  type: section
+  content: "```typescript\nclass RSAEncryptionEngine extends BaseEncryptionEngine\
+    \ {\n  private config: RSAEncryptorConfig;\n  private keyPairManager: RSAKeyPairManager;\n\
+    \  private paddingRegistry: RSAPaddingRegistry;\n  private hybridEncryptor: HybridEncryptor;\n\
+    \  \n  constructor(config: RSAEncryptorConfig) {\n    super(config);\n    this.config\
+    \ = config;\n    this.keyPairManager = new RSAKeyPairManager(config.keyManagement);\n\
+    \    this.paddingRegistry = new RSAPaddingRegistry(config.paddingSchemes);\n \
+    \   this.hybridEncryptor = new HybridEncryptor(config.hybridEncryption);\n  }\n\
+    \  \n  async encrypt(input: RSAEncryptorInput): Promise<RSAEncryptorOutput> {\n\
+    \    // Validate RSA-specific parameters\n    this.validateRSAInput(input);\n\
+    \    \n    // Check if hybrid encryption is needed\n    if (this.shouldUseHybridEncryption(input))\
+    \ {\n      return await this.performHybridEncryption(input);\n    }\n    \n  \
+    \  // Generate or retrieve RSA key pair\n    const keyPair = await this.getOrGenerateKeyPair(input.keySize);\n\
+    \    \n    // Select padding scheme\n    const padding = this.selectPaddingScheme(input.padding);\n\
+    \    \n    // Perform RSA encryption\n    const result = await this.performRSAEncryption(input.plainText,\
+    \ keyPair.publicKey, padding, input);\n    \n    // Log operation for audit\n\
+    \    await this.logRSAOperation(input, result);\n    \n    return result;\n  }\n\
+    \  \n  private validateRSAInput(input: RSAEncryptorInput): void {\n    if (input.keySize\
+    \ && ![2048, 3072, 4096].includes(input.keySize)) {\n      throw new RSAEncryptionError('Invalid\
+    \ RSA key size. Must be 2048, 3072, or 4096 bits.');\n    }\n    \n    if (input.padding\
+    \ && !this.paddingRegistry.isSupported(input.padding)) {\n      throw new RSAEncryptionError(`Unsupported\
+    \ RSA padding scheme: ${input.padding}`);\n    }\n    \n    // Check data size\
+    \ limits\n    const maxDataSize = this.getMaxDataSize(input.keySize || this.config.defaultKeySize,\
+    \ input.padding || this.config.defaultPadding);\n    const dataSize = Buffer.isBuffer(input.plainText)\
+    \ ? input.plainText.length : Buffer.from(input.plainText).length;\n    \n    if\
+    \ (dataSize > maxDataSize) {\n      throw new RSAEncryptionError(`Data size ${dataSize}\
+    \ exceeds maximum size ${maxDataSize} for RSA-${input.keySize} with ${input.padding}\
+    \ padding. Consider using hybrid encryption.`);\n    }\n  }\n  \n  private shouldUseHybridEncryption(input:\
+    \ RSAEncryptorInput): boolean {\n    if (input.hybridEncryption) return true;\n\
+    \    \n    const dataSize = Buffer.isBuffer(input.plainText) ? input.plainText.length\
+    \ : Buffer.from(input.plainText).length;\n    const maxDataSize = this.getMaxDataSize(input.keySize\
+    \ || this.config.defaultKeySize, input.padding || this.config.defaultPadding);\n\
+    \    \n    return dataSize > maxDataSize;\n  }\n  \n  private async performRSAEncryption(\n\
+    \    plainText: string | Buffer,\n    publicKey: Buffer,\n    padding: RSAPaddingScheme,\n\
+    \    input: RSAEncryptorInput\n  ): Promise<RSAEncryptorOutput> {\n    const startTime\
+    \ = Date.now();\n    const data = Buffer.isBuffer(plainText) ? plainText : Buffer.from(plainText);\n\
+    \    \n    try {\n      const encryptedData = await padding.encrypt(data, publicKey,\
+    \ {\n        hashAlgorithm: input.hashAlgorithm,\n        mgf1Hash: input.mgf1Hash,\n\
+    \        label: input.label\n      });\n      \n      const performanceMetrics\
+    \ = this.capturePerformanceMetrics(startTime);\n      \n      return {\n     \
+    \   encryptedData,\n        algorithm: 'RSA',\n        keyId: this.generateKeyId(publicKey),\n\
+    \        keySize: (input.keySize || this.config.defaultKeySize),\n        padding:\
+    \ padding.name,\n        publicKey: publicKey.toString('base64'),\n        metadata:\
+    \ {\n          timestamp: new Date(),\n          operationId: this.generateOperationId(),\n\
+    \          performanceMetrics,\n          securityLevel: 'high',\n          keySize:\
+    \ (input.keySize || this.config.defaultKeySize),\n          padding: padding.name,\n\
+    \          hashAlgorithm: input.hashAlgorithm,\n          hybridEncryption: false\n\
+    \        },\n        status: { success: true }\n      };\n    } catch (error)\
+    \ {\n      throw new RSAEncryptionError(`RSA encryption failed: ${error.message}`,\
+    \ error);\n    }\n  }\n  \n  private async performHybridEncryption(input: RSAEncryptorInput):\
+    \ Promise<RSAEncryptorOutput> {\n    const keyPair = await this.getOrGenerateKeyPair(input.keySize);\n\
+    \    const symmetricKey = await this.generateSymmetricKey();\n    \n    // Encrypt\
+    \ the symmetric key with RSA\n    const encryptedKey = await this.performRSAEncryption(symmetricKey,\
+    \ keyPair.publicKey, this.selectPaddingScheme(input.padding), input);\n    \n\
+    \    // Encrypt the data with the symmetric key\n    const symmetricResult = await\
+    \ this.hybridEncryptor.encryptData(input.plainText, symmetricKey);\n    \n   \
+    \ return {\n      encryptedData: encryptedKey.encryptedData,\n      algorithm:\
+    \ 'RSA-Hybrid',\n      keyId: this.generateKeyId(keyPair.publicKey),\n      keySize:\
+    \ (input.keySize || this.config.defaultKeySize),\n      padding: input.padding\
+    \ || this.config.defaultPadding,\n      publicKey: keyPair.publicKey.toString('base64'),\n\
+    \      hybridData: {\n        encryptedKey: encryptedKey.encryptedData,\n    \
+    \    encryptedData: symmetricResult.encryptedData,\n        symmetricAlgorithm:\
+    \ this.config.hybridEncryption.symmetricAlgorithm,\n        iv: symmetricResult.iv,\n\
+    \        tag: symmetricResult.tag\n      },\n      metadata: {\n        timestamp:\
+    \ new Date(),\n        operationId: this.generateOperationId(),\n        performanceMetrics:\
+    \ this.capturePerformanceMetrics(Date.now()),\n        securityLevel: 'high',\n\
+    \        keySize: (input.keySize || this.config.defaultKeySize),\n        padding:\
+    \ input.padding || this.config.defaultPadding,\n        hybridEncryption: true\n\
+    \      },\n      status: { success: true }\n    };\n  }\n}\n```"
+- level: 4
+  title: '**2. RSA Key Pair Manager**'
+  type: section
+  content: "```typescript\nclass RSAKeyPairManager {\n  private config: RSAKeyManagementConfig;\n\
+    \  private keyStore: RSAKeyStore;\n  \n  constructor(config: RSAKeyManagementConfig)\
+    \ {\n    this.config = config;\n    this.keyStore = new RSAKeyStore(config.keyStorage);\n\
+    \  }\n  \n  async generateKeyPair(keySize: number = this.config.keyPairGeneration.keySize):\
+    \ Promise<RSAKeyPair> {\n    const startTime = Date.now();\n    \n    try {\n\
+    \      const keyPair = await this.generateRSAKeyPair(keySize);\n      \n     \
+    \ // Store the key pair\n      await this.keyStore.storeKeyPair(keyPair);\n  \
+    \    \n      const generationTime = Date.now() - startTime;\n      \n      return\
+    \ {\n        ...keyPair,\n        metadata: {\n          generationTime,\n   \
+    \       keySize,\n          algorithm: 'RSA'\n        }\n      };\n    } catch\
+    \ (error) {\n      throw new RSAEncryptionError(`RSA key pair generation failed:\
+    \ ${error.message}`, error);\n    }\n  }\n  \n  async getOrGenerateKeyPair(keySize:\
+    \ number): Promise<RSAKeyPair> {\n    // Try to retrieve existing key pair\n \
+    \   const existingKeyPair = await this.keyStore.getKeyPair(keySize);\n    if (existingKeyPair)\
+    \ {\n      return existingKeyPair;\n    }\n    \n    // Generate new key pair\
+    \ if none exists\n    return await this.generateKeyPair(keySize);\n  }\n  \n \
+    \ private async generateRSAKeyPair(keySize: number): Promise<RSAKeyPair> {\n \
+    \   // Implementation would use a cryptographic library like Node.js crypto\n\
+    \    // This is a simplified example\n    const { publicKey, privateKey } = await\
+    \ this.crypto.generateKeyPair('rsa', {\n      modulusLength: keySize,\n      publicExponent:\
+    \ this.config.keyPairGeneration.publicExponent,\n      publicKeyEncoding: {\n\
+    \        type: 'spki',\n        format: 'pem'\n      },\n      privateKeyEncoding:\
+    \ {\n        type: 'pkcs8',\n        format: 'pem'\n      }\n    });\n    \n \
+    \   return {\n      publicKey: Buffer.from(publicKey, 'utf8'),\n      privateKey:\
+    \ Buffer.from(privateKey, 'utf8'),\n      keySize,\n      algorithm: 'RSA'\n \
+    \   };\n  }\n}\n```"
+- level: 4
+  title: '**3. RSA Padding Registry**'
+  type: section
+  content: "```typescript\nclass RSAPaddingRegistry {\n  private paddingSchemes: Map<string,\
+    \ RSAPaddingScheme>;\n  private config: RSAPaddingSchemesConfig;\n  \n  constructor(config:\
+    \ RSAPaddingSchemesConfig) {\n    this.config = config;\n    this.paddingSchemes\
+    \ = new Map();\n    this.registerPaddingSchemes();\n  }\n  \n  private registerPaddingSchemes():\
+    \ void {\n    if (this.config.oaep.enabled) {\n      this.paddingSchemes.set('OAEP',\
+    \ new OAEPPaddingScheme(this.config.oaep));\n    }\n    \n    if (this.config.pkcs1v1_5.enabled)\
+    \ {\n      this.paddingSchemes.set('PKCS1v1.5', new PKCS1v1_5PaddingScheme(this.config.pkcs1v1_5));\n\
+    \    }\n  }\n  \n  getPaddingScheme(name: string): RSAPaddingScheme {\n    const\
+    \ paddingScheme = this.paddingSchemes.get(name);\n    if (!paddingScheme) {\n\
+    \      throw new RSAEncryptionError(`Unsupported RSA padding scheme: ${name}`);\n\
+    \    }\n    return paddingScheme;\n  }\n  \n  isSupported(name: string): boolean\
+    \ {\n    return this.paddingSchemes.has(name);\n  }\n}\n```"
+- level: 3
+  title: '**Integration Points**'
+  type: section
+  content: ''
+- level: 4
+  title: '**1. Key Pair Management Integration**'
+  type: section
+  content: '- **Description**: Manages RSA key pair generation, storage, and lifecycle
+
+    - **Protocol**: Secure key generation and storage protocols
+
+    - **Authentication**: Key access control and authorization
+
+    - **Rate Limiting**: Key generation rate limiting for performance'
+- level: 4
+  title: '**2. Hybrid Encryption Integration**'
+  type: section
+  content: '- **Description**: Integrates with symmetric encryption for hybrid encryption
+
+    - **Protocol**: Hybrid encryption protocols with key wrapping
+
+    - **Authentication**: Symmetric key generation and management
+
+    - **Rate Limiting**: Hybrid encryption performance constraints'
+- level: 2
+  title: Performance Characteristics
+  type: section
+  content: ''
+- level: 3
+  title: '**Throughput**'
+  type: section
+  content: '- **RSA-2048-OAEP**: 1000 operations/second
+
+    - **RSA-3072-OAEP**: 400 operations/second
+
+    - **RSA-4096-OAEP**: 200 operations/second
+
+    - **Key Generation**: 1 key pair/minute for RSA-2048'
+- level: 3
+  title: '**Reliability**'
+  type: section
+  content: '- **Error Rate**: < 0.0001% RSA encryption failures
+
+    - **Recovery Time**: < 100ms for recoverable errors
+
+    - **Availability**: 99.99% uptime for RSA encryption services
+
+    - **Data Integrity**: 100% data integrity with proper padding'
+- level: 3
+  title: '**Scalability**'
+  type: section
+  content: '- **Horizontal Scaling**: Support for distributed RSA encryption across
+    multiple nodes
+
+    - **Vertical Scaling**: Linear performance improvement with additional CPU cores
+
+    - **Key Management**: Efficient key pair management and rotation
+
+    - **Memory Usage**: < 100MB memory footprint for standard operations'
+- level: 2
+  title: Security Considerations
+  type: section
+  content: ''
+- level: 3
+  title: '**Cryptographic Security**'
+  type: section
+  content: '- **Algorithm Strength**: RSA is a well-established cryptographic standard
+
+    - **Key Security**: Keys are protected using industry-standard security measures
+
+    - **Padding Security**: Only secure padding schemes (OAEP) are recommended
+
+    - **Parameter Validation**: All RSA parameters are validated for security'
+- level: 3
+  title: '**Access Control**'
+  type: section
+  content: '- **Key Access**: Strict access control for RSA private keys
+
+    - **Operation Authorization**: Authorization required for RSA encryption operations
+
+    - **Audit Trail**: Complete audit trail for all RSA encryption operations
+
+    - **Compliance**: Support for various security compliance requirements'
+- level: 3
+  title: '**Data Protection**'
+  type: section
+  content: '- **Data in Transit**: All data is encrypted during transmission
+
+    - **Data at Rest**: Encrypted data is stored securely
+
+    - **Key Rotation**: Automatic key rotation for enhanced security
+
+    - **Secure Deletion**: Secure deletion of temporary encryption data'
+- level: 2
+  title: Error Handling
+  type: section
+  content: ''
+- level: 3
+  title: '**Error Types**'
+  type: section
+  content: '- **Invalid Key Size**: Unsupported RSA key sizes
+
+    - **Padding Errors**: Unsupported or invalid padding schemes
+
+    - **Data Size Errors**: Data too large for RSA encryption
+
+    - **Key Errors**: Key generation, retrieval, or validation failures
+
+    - **Performance Errors**: Timeout or resource exhaustion errors
+
+    - **Security Errors**: Security validation or compliance failures'
+- level: 3
+  title: '**Error Recovery**'
+  type: section
+  content: '- **Automatic Retry**: Automatic retry for transient errors
+
+    - **Hybrid Fallback**: Automatic fallback to hybrid encryption for large data
+
+    - **Padding Fallback**: Fallback to alternative padding schemes on failure
+
+    - **Graceful Degradation**: Graceful degradation for performance issues'
+- level: 2
+  title: Testing Strategy
+  type: section
+  content: ''
+- level: 3
+  title: '**Unit Testing**'
+  type: section
+  content: '- **Input Validation**: Test all input validation scenarios
+
+    - **Key Generation**: Test RSA key pair generation and validation
+
+    - **Padding Testing**: Test all supported padding schemes
+
+    - **Error Handling**: Test all error conditions and recovery'
+- level: 3
+  title: '**Integration Testing**'
+  type: section
+  content: '- **End-to-End Encryption**: Test complete RSA encryption workflows
+
+    - **Hybrid Encryption**: Test hybrid encryption integration
+
+    - **Performance Testing**: Test performance under various load conditions
+
+    - **Security Testing**: Test security measures and compliance'
+- level: 3
+  title: '**Load Testing**'
+  type: section
+  content: '- **Concurrent Operations**: Test multiple concurrent RSA operations
+
+    - **Large Data Sets**: Test RSA encryption with data size limits
+
+    - **Key Management**: Test key pair management under load
+
+    - **Performance Degradation**: Test performance under resource constraints'
+- level: 2
+  title: Deployment Considerations
+  type: section
+  content: ''
+- level: 3
+  title: '**Resource Requirements**'
+  type: section
+  content: '- **CPU**: Minimum 2 cores, recommended 4+ cores for high-performance
+    operations
+
+    - **Memory**: Minimum 512MB, recommended 2GB+ for large operations
+
+    - **Storage**: Minimum 1GB for key storage and audit logs
+
+    - **Network**: High-speed network for distributed operations'
+- level: 3
+  title: '**Configuration**'
+  type: section
+  content: '- **Environment Variables**: Configuration through environment variables
+
+    - **Configuration Files**: Support for configuration file-based setup
+
+    - **Runtime Configuration**: Dynamic configuration updates
+
+    - **Validation**: Configuration validation on startup'
+- level: 3
+  title: '**Monitoring**'
+  type: section
+  content: '- **Performance Metrics**: Monitor RSA encryption performance and throughput
+
+    - **Key Management**: Monitor key pair generation and rotation
+
+    - **Error Rates**: Monitor RSA encryption error rates and types
+
+    - **Security Events**: Monitor security-related events and alerts'
+- level: 2
+  title: Usage Examples
+  type: section
+  content: ''
+- level: 3
+  title: '**Basic Usage**'
+  type: section
+  content: "```typescript\nimport { RSAEncryptor } from './RSAEncryptor';\n\nconst\
+    \ rsaEncryptor = new RSAEncryptor(config);\n\nconst input: RSAEncryptorInput =\
+    \ {\n  plainText: 'Sensitive data to encrypt',\n  keySize: 2048,\n  padding: 'OAEP',\n\
+    \  hashAlgorithm: 'SHA-256'\n};\n\nconst result = await rsaEncryptor.encrypt(input);\n\
+    console.log('RSA encrypted data:', result.encryptedData.toString('base64'));\n\
+    console.log('Public key:', result.publicKey);\n```"
+- level: 3
+  title: '**Advanced Usage with Custom Parameters**'
+  type: section
+  content: "```typescript\nimport { RSAEncryptor } from './RSAEncryptor';\n\nconst\
+    \ rsaEncryptor = new RSAEncryptor(config);\n\nconst input: RSAEncryptorInput =\
+    \ {\n  plainText: Buffer.from('Large sensitive data'),\n  keySize: 4096,\n  padding:\
+    \ 'OAEP',\n  hashAlgorithm: 'SHA-512',\n  mgf1Hash: 'SHA-512',\n  label: 'custom-label',\n\
+    \  hybridEncryption: true,\n  metadata: {\n    userId: 'user123',\n    dataType:\
+    \ 'personal',\n    compliance: 'FIPS'\n  }\n};\n\nconst result = await rsaEncryptor.encrypt(input);\n\
+    console.log('RSA encryption successful:', result.status.success);\nconsole.log('Hybrid\
+    \ encryption used:', result.metadata.hybridEncryption);\nconsole.log('Encryption\
+    \ speed:', result.metadata.performanceMetrics.encryptionSpeed, 'ops/s');\n```"
+- level: 3
+  title: '**Hybrid Encryption Usage**'
+  type: section
+  content: "```typescript\nimport { RSAEncryptor } from './RSAEncryptor';\n\nconst\
+    \ rsaEncryptor = new RSAEncryptor(config);\n\nconst input: RSAEncryptorInput =\
+    \ {\n  plainText: Buffer.from('Very large data that exceeds RSA limits'),\n  keySize:\
+    \ 2048,\n  padding: 'OAEP',\n  hybridEncryption: true\n};\n\nconst result = await\
+    \ rsaEncryptor.encrypt(input);\nconsole.log('Hybrid encryption used:', result.metadata.hybridEncryption);\n\
+    console.log('Symmetric algorithm:', result.hybridData?.symmetricAlgorithm);\n\
+    console.log('Encrypted key:', result.hybridData?.encryptedKey.toString('base64'));\n\
+    ```"
+- level: 2
+  title: Future Enhancements
+  type: section
+  content: ''
+- level: 3
+  title: '**Planned Features**'
+  type: section
+  content: '- **Post-Quantum RSA**: Support for post-quantum cryptography extensions
+
+    - **Advanced Key Management**: Enhanced key management with key escrow
+
+    - **Performance Optimization**: Further optimization for specific use cases
+
+    - **Compliance Automation**: Automated compliance checking and reporting'
+- level: 3
+  title: '**Performance Improvements**'
+  type: section
+  content: "- **Hardware Acceleration**: Enhanced hardware acceleration support\n\
+    - **Advanced Caching**: Intelligent caching for frequently used keys\n- **Batch\
+    \ Processing**: Optimized batch RSA operations\n- **Streaming Support**: Streaming\
+    \ RSA encryption for large data sets\n\n---\n\n**Version**: 1.0  \n**Focus**:\
+    \ RSA encryption implementation with hybrid encryption and multiple padding schemes"

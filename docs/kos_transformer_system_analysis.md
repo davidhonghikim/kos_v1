@@ -272,16 +272,16 @@ This is not a simulation or a game - it is the beginning of a new form of digita
 ### File Structure
 ```
 kos_transformers/
-├── core/               # Spark, persona registry, mode logic
-├── residents/          # Cortex, transformer, lifecycle
-├── personas/           # All 13 canonical persona definitions
-├── tools/              # Modular tools per persona
-├── vault/              # Memory system and shards
-├── rituals/            # Symbolic interface layer
-├── ethics/             # Junzi enforcement and alignment
 ├── config/             # Frame definitions and node specs
+├── core/               # Spark, persona registry, mode logic
+├── ethics/             # Junzi enforcement and alignment
 ├── entry.py            # System bootstrapper
-└── README.md           # Project overview
+├── personas/           # All 13 canonical persona definitions
+├── README.md           # Project overview
+├── residents/          # Cortex, transformer, lifecycle
+├── rituals/            # Symbolic interface layer
+├── tools/              # Modular tools per persona
+└── vault/              # Memory system and shards
 ```
 
 ### Key Components

@@ -1,0 +1,537 @@
+metadata:
+  original_file: 01_Message_Parser.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Message Parser
+  version: '1.0'
+  category: Communication & Language
+  subcategory: Message Processing
+  dependencies:
+  - Base Audit Logger
+  tags:
+  - message
+  - parsing
+  - communication
+  - language
+  priority: high
+sections:
+- level: 1
+  title: Message Parser
+  type: section
+  content: ''
+- level: 2
+  title: Purpose
+  type: section
+  content: Provides comprehensive message parsing and processing for the kOS ecosystem.
+    This module parses, analyzes, and structures messages from various communication
+    channels and formats. The Message Parser ensures accurate interpretation and routing
+    of messages across all kOS components and external systems.
+- level: 2
+  title: Capabilities
+  type: section
+  content: '- **Multi-Format Support**: Parse messages from various formats (JSON,
+    XML, text, binary)
+
+    - **Channel Integration**: Support for multiple communication channels (API, messaging,
+    email)
+
+    - **Content Extraction**: Extract structured data from unstructured messages
+
+    - **Validation**: Validate message format, content, and integrity
+
+    - **Routing**: Route parsed messages to appropriate handlers
+
+    - **Error Handling**: Comprehensive error handling and recovery
+
+    - **Performance Optimization**: High-performance parsing with caching
+
+    - **Security Validation**: Security checks and content validation
+
+    - **Audit Logging**: Complete audit trail for message processing'
+- level: 2
+  title: Integration Points
+  type: section
+  content: '- **Input**: Raw messages from various sources and formats
+
+    - **Output**: Structured message data, routing information, and validation results
+
+    - **Dependencies**: Base Audit Logger for logging, Message Router for message
+    distribution'
+- level: 2
+  title: Configuration
+  type: section
+  content: "```yaml\nmessage_parser:\n  supported_formats:\n    - \"json\"\n    -\
+    \ \"xml\"\n    - \"text\"\n    - \"binary\"\n    - \"protobuf\"\n    - \"yaml\"\
+    \n  channels:\n    - \"api\"\n    - \"messaging\"\n    - \"email\"\n    - \"webhook\"\
+    \n    - \"queue\"\n  validation:\n    enabled: true\n    schema_validation: true\n\
+    \    content_validation: true\n    security_validation: true\n  performance:\n\
+    \    max_message_size: 10  # MB\n    parse_timeout: 30  # seconds\n    concurrent_parsing:\
+    \ 50\n    enable_caching: true\n  routing:\n    enabled: true\n    auto_routing:\
+    \ true\n    routing_rules: \"routing_config.yaml\"\n  error_handling:\n    retry_failed:\
+    \ true\n    max_retries: 3\n    error_logging: true\n  audit:\n    log_all_messages:\
+    \ true\n    include_content: false\n    retention_period: \"30d\"\n```"
+- level: 2
+  title: Example Workflow
+  type: section
+  content: "```mermaid\ngraph TD\n  A[Raw Message] --> B[Format Detection]\n  B -->\
+    \ C[Message Validation]\n  C --> D[Content Extraction]\n  D --> E[Data Structuring]\n\
+    \  E --> F[Routing Decision]\n  F --> G[Output Generation]\n  G --> H[Audit Logging]\n\
+    \  \n  C --> I{Valid Message?}\n  I -->|No| J[Error Handling]\n  I -->|Yes| D\n\
+    \  \n  F --> K{Routing Required?}\n  K -->|Yes| L[Route Message]\n  K -->|No|\
+    \ G\n```"
+- level: 2
+  title: Core Capabilities
+  type: section
+  content: ''
+- level: 3
+  title: '**1. Format Detection**'
+  type: section
+  content: '- **Description**: Automatically detect message format and encoding
+
+    - **Input**: Raw message data and metadata
+
+    - **Output**: Detected format and encoding information
+
+    - **Dependencies**: Format detection algorithms and signature databases'
+- level: 3
+  title: '**2. Message Validation**'
+  type: section
+  content: '- **Description**: Validate message format, content, and integrity
+
+    - **Input**: Message data and validation rules
+
+    - **Output**: Validation results and error messages
+
+    - **Dependencies**: Schema validation and content validation engines'
+- level: 3
+  title: '**3. Content Extraction**'
+  type: section
+  content: '- **Description**: Extract structured data from unstructured messages
+
+    - **Input**: Raw message content and extraction rules
+
+    - **Output**: Extracted data and metadata
+
+    - **Dependencies**: Content extraction algorithms and NLP tools'
+- level: 3
+  title: '**4. Message Routing**'
+  type: section
+  content: '- **Description**: Route parsed messages to appropriate handlers
+
+    - **Input**: Parsed message data and routing rules
+
+    - **Output**: Routing decisions and destination information
+
+    - **Dependencies**: Routing engine and rule management system'
+- level: 2
+  title: Module Interface
+  type: section
+  content: ''
+- level: 3
+  title: '**Input Interface**'
+  type: section
+  content: "```typescript\ninterface MessageParserInput {\n  message: RawMessage;\n\
+    \  options?: ParsingOptions;\n  routingRules?: RoutingRule[];\n  validationRules?:\
+    \ ValidationRule[];\n}\n\ninterface RawMessage {\n  id: string;\n  content: string\
+    \ | Buffer;\n  format?: string;\n  encoding?: string;\n  source: string;\n  timestamp:\
+    \ Date;\n  metadata: MessageMetadata;\n}\n\ninterface MessageMetadata {\n  channel:\
+    \ string;\n  sender?: string;\n  recipient?: string;\n  priority?: 'low' | 'normal'\
+    \ | 'high' | 'urgent';\n  size: number;\n  checksum?: string;\n  additionalInfo?:\
+    \ Record<string, any>;\n}\n\ninterface ParsingOptions {\n  format?: string;\n\
+    \  encoding?: string;\n  extractContent?: boolean;\n  validateSchema?: boolean;\n\
+    \  enableRouting?: boolean;\n  timeout?: number;\n}\n\ninterface RoutingRule {\n\
+    \  id: string;\n  condition: RoutingCondition;\n  destination: string;\n  priority:\
+    \ number;\n  enabled: boolean;\n}\n\ninterface RoutingCondition {\n  field: string;\n\
+    \  operator: 'equals' | 'contains' | 'matches' | 'greater_than' | 'less_than';\n\
+    \  value: any;\n}\n\ninterface ValidationRule {\n  id: string;\n  type: 'schema'\
+    \ | 'content' | 'security';\n  rule: string;\n  severity: 'low' | 'medium' | 'high'\
+    \ | 'critical';\n  enabled: boolean;\n}\n```"
+- level: 3
+  title: '**Output Interface**'
+  type: section
+  content: "```typescript\ninterface MessageParserOutput {\n  parseId: string;\n \
+    \ timestamp: Date;\n  success: boolean;\n  parsedMessage?: ParsedMessage;\n  routingInfo?:\
+    \ RoutingInfo;\n  validationResults?: ValidationResult[];\n  errors?: ParsingError[];\n\
+    \  metadata: MessageParserMetadata;\n}\n\ninterface ParsedMessage {\n  id: string;\n\
+    \  originalId: string;\n  format: string;\n  encoding: string;\n  content: any;\n\
+    \  extractedData: ExtractedData;\n  structure: MessageStructure;\n  metadata:\
+    \ ParsedMessageMetadata;\n}\n\ninterface ExtractedData {\n  entities: Entity[];\n\
+    \  keywords: string[];\n  sentiment?: SentimentAnalysis;\n  language?: string;\n\
+    \  topics: string[];\n  customFields: Record<string, any>;\n}\n\ninterface Entity\
+    \ {\n  type: string;\n  value: string;\n  confidence: number;\n  position: Position;\n\
+    }\n\ninterface Position {\n  start: number;\n  end: number;\n  line?: number;\n\
+    \  column?: number;\n}\n\ninterface SentimentAnalysis {\n  score: number;\n  label:\
+    \ 'positive' | 'negative' | 'neutral';\n  confidence: number;\n}\n\ninterface\
+    \ MessageStructure {\n  type: string;\n  sections: MessageSection[];\n  hierarchy:\
+    \ any;\n}\n\ninterface MessageSection {\n  name: string;\n  content: any;\n  type:\
+    \ string;\n  position: Position;\n}\n\ninterface RoutingInfo {\n  destination:\
+    \ string;\n  priority: number;\n  routeId: string;\n  estimatedDelivery: Date;\n\
+    }\n\ninterface ValidationResult {\n  ruleId: string;\n  type: string;\n  passed:\
+    \ boolean;\n  severity: string;\n  message: string;\n  details?: any;\n}\n\ninterface\
+    \ ParsingError {\n  code: string;\n  message: string;\n  severity: 'low' | 'medium'\
+    \ | 'high' | 'critical';\n  position?: Position;\n  suggestions?: string[];\n\
+    }\n\ninterface MessageParserMetadata {\n  parseDuration: number;\n  format: string;\n\
+    \  size: number;\n  validationPassed: boolean;\n  routingEnabled: boolean;\n \
+    \ cacheHit: boolean;\n}\n```"
+- level: 3
+  title: '**Configuration Interface**'
+  type: section
+  content: "```typescript\ninterface MessageParserConfig {\n  supportedFormats: string[];\n\
+    \  channels: string[];\n  validation: ValidationConfig;\n  performance: PerformanceConfig;\n\
+    \  routing: RoutingConfig;\n  errorHandling: ErrorHandlingConfig;\n  audit: AuditConfig;\n\
+    }\n\ninterface ValidationConfig {\n  enabled: boolean;\n  schemaValidation: boolean;\n\
+    \  contentValidation: boolean;\n  securityValidation: boolean;\n}\n\ninterface\
+    \ PerformanceConfig {\n  maxMessageSize: number;\n  parseTimeout: number;\n  concurrentParsing:\
+    \ number;\n  enableCaching: boolean;\n}\n\ninterface RoutingConfig {\n  enabled:\
+    \ boolean;\n  autoRouting: boolean;\n  routingRules: string;\n}\n\ninterface ErrorHandlingConfig\
+    \ {\n  retryFailed: boolean;\n  maxRetries: number;\n  errorLogging: boolean;\n\
+    }\n\ninterface AuditConfig {\n  logAllMessages: boolean;\n  includeContent: boolean;\n\
+    \  retentionPeriod: string;\n}\n```"
+- level: 2
+  title: Module Dependencies
+  type: section
+  content: ''
+- level: 3
+  title: '**Required Dependencies**'
+  type: section
+  content: '- **Base Audit Logger**: For logging parsing activities and results
+
+    - **Format Detectors**: For message format detection
+
+    - **Validation Engines**: For message validation'
+- level: 3
+  title: '**Optional Dependencies**'
+  type: section
+  content: '- **NLP Tools**: For content extraction and analysis
+
+    - **Routing Engine**: For message routing decisions'
+- level: 2
+  title: Module Implementation
+  type: section
+  content: ''
+- level: 3
+  title: '**Core Components**'
+  type: section
+  content: ''
+- level: 4
+  title: '**1. Message Parsing Engine**'
+  type: section
+  content: "```typescript\nclass MessageParsingEngine {\n  private config: MessageParserConfig;\n\
+    \  private formatDetector: FormatDetector;\n  private validationEngine: ValidationEngine;\n\
+    \  private contentExtractor: ContentExtractor;\n  private routingEngine: RoutingEngine;\n\
+    \  private auditLogger: BaseAuditLogger;\n  \n  constructor(config: MessageParserConfig)\
+    \ {\n    this.config = config;\n    this.formatDetector = new FormatDetector(config.supportedFormats);\n\
+    \    this.validationEngine = new ValidationEngine(config.validation);\n    this.contentExtractor\
+    \ = new ContentExtractor();\n    this.routingEngine = new RoutingEngine(config.routing);\n\
+    \    this.auditLogger = new BaseAuditLogger();\n  }\n  \n  async parseMessage(input:\
+    \ MessageParserInput): Promise<MessageParserOutput> {\n    const parseId = this.generateParseId();\n\
+    \    const startTime = Date.now();\n    \n    // Log parsing start\n    await\
+    \ this.auditLogger.logEvent({\n      eventType: 'message_parse_start',\n     \
+    \ parseId,\n      messageId: input.message.id\n    });\n    \n    try {\n    \
+    \  // Detect message format\n      const format = await this.detectFormat(input.message);\n\
+    \      \n      // Validate message\n      const validationResults = await this.validateMessage(input.message,\
+    \ input.validationRules);\n      \n      // Parse message content\n      const\
+    \ parsedContent = await this.parseContent(input.message, format);\n      \n  \
+    \    // Extract structured data\n      const extractedData = await this.extractData(parsedContent,\
+    \ input.options);\n      \n      // Generate routing information\n      const\
+    \ routingInfo = await this.generateRoutingInfo(parsedContent, input.routingRules);\n\
+    \      \n      // Create parsed message structure\n      const parsedMessage =\
+    \ this.createParsedMessage(input.message, parsedContent, extractedData, format);\n\
+    \      \n      const parseDuration = Date.now() - startTime;\n      \n      //\
+    \ Log parsing completion\n      await this.auditLogger.logEvent({\n        eventType:\
+    \ 'message_parse_complete',\n        parseId,\n        success: true,\n      \
+    \  duration: parseDuration\n      });\n      \n      return {\n        parseId,\n\
+    \        timestamp: new Date(),\n        success: true,\n        parsedMessage,\n\
+    \        routingInfo,\n        validationResults,\n        metadata: {\n     \
+    \     parseDuration,\n          format: format.name,\n          size: input.message.metadata.size,\n\
+    \          validationPassed: validationResults.every(r => r.passed),\n       \
+    \   routingEnabled: this.config.routing.enabled,\n          cacheHit: false\n\
+    \        }\n      };\n      \n    } catch (error) {\n      // Log parsing error\n\
+    \      await this.auditLogger.logEvent({\n        eventType: 'message_parse_error',\n\
+    \        parseId,\n        error: error.message\n      });\n      \n      return\
+    \ {\n        parseId,\n        timestamp: new Date(),\n        success: false,\n\
+    \        errors: [{\n          code: 'PARSE_ERROR',\n          message: error.message,\n\
+    \          severity: 'high'\n        }],\n        metadata: {\n          parseDuration:\
+    \ Date.now() - startTime,\n          format: 'unknown',\n          size: input.message.metadata.size,\n\
+    \          validationPassed: false,\n          routingEnabled: false,\n      \
+    \    cacheHit: false\n        }\n      };\n    }\n  }\n  \n  private async detectFormat(message:\
+    \ RawMessage): Promise<DetectedFormat> {\n    if (message.format) {\n      return\
+    \ { name: message.format, confidence: 1.0 };\n    }\n    \n    return await this.formatDetector.detect(message.content);\n\
+    \  }\n  \n  private async validateMessage(message: RawMessage, rules?: ValidationRule[]):\
+    \ Promise<ValidationResult[]> {\n    const results: ValidationResult[] = [];\n\
+    \    \n    // Basic validation\n    if (this.config.validation.enabled) {\n  \
+    \    const basicResults = await this.validationEngine.validate(message, rules);\n\
+    \      results.push(...basicResults);\n    }\n    \n    return results;\n  }\n\
+    \  \n  private async parseContent(message: RawMessage, format: DetectedFormat):\
+    \ Promise<any> {\n    switch (format.name) {\n      case 'json':\n        return\
+    \ this.parseJSON(message.content);\n      case 'xml':\n        return this.parseXML(message.content);\n\
+    \      case 'text':\n        return this.parseText(message.content);\n      case\
+    \ 'binary':\n        return this.parseBinary(message.content);\n      case 'protobuf':\n\
+    \        return this.parseProtobuf(message.content);\n      case 'yaml':\n   \
+    \     return this.parseYAML(message.content);\n      default:\n        throw new\
+    \ Error(`Unsupported format: ${format.name}`);\n    }\n  }\n  \n  private async\
+    \ extractData(content: any, options?: ParsingOptions): Promise<ExtractedData>\
+    \ {\n    if (!options?.extractContent) {\n      return {\n        entities: [],\n\
+    \        keywords: [],\n        topics: [],\n        customFields: {}\n      };\n\
+    \    }\n    \n    return await this.contentExtractor.extract(content);\n  }\n\
+    \  \n  private async generateRoutingInfo(content: any, rules?: RoutingRule[]):\
+    \ Promise<RoutingInfo | undefined> {\n    if (!this.config.routing.enabled) {\n\
+    \      return undefined;\n    }\n    \n    return await this.routingEngine.route(content,\
+    \ rules);\n  }\n  \n  private createParsedMessage(\n    originalMessage: RawMessage,\n\
+    \    content: any,\n    extractedData: ExtractedData,\n    format: DetectedFormat\n\
+    \  ): ParsedMessage {\n    return {\n      id: this.generateMessageId(),\n   \
+    \   originalId: originalMessage.id,\n      format: format.name,\n      encoding:\
+    \ originalMessage.encoding || 'utf-8',\n      content,\n      extractedData,\n\
+    \      structure: this.analyzeStructure(content),\n      metadata: {\n       \
+    \ source: originalMessage.source,\n        timestamp: originalMessage.timestamp,\n\
+    \        size: originalMessage.metadata.size,\n        channel: originalMessage.metadata.channel,\n\
+    \        priority: originalMessage.metadata.priority\n      }\n    };\n  }\n \
+    \ \n  private analyzeStructure(content: any): MessageStructure {\n    // Analyze\
+    \ message structure based on content type\n    return {\n      type: typeof content,\n\
+    \      sections: [],\n      hierarchy: content\n    };\n  }\n  \n  private parseJSON(content:\
+    \ string | Buffer): any {\n    const text = Buffer.isBuffer(content) ? content.toString()\
+    \ : content;\n    return JSON.parse(text);\n  }\n  \n  private parseXML(content:\
+    \ string | Buffer): any {\n    // Implement XML parsing\n    return {};\n  }\n\
+    \  \n  private parseText(content: string | Buffer): any {\n    return Buffer.isBuffer(content)\
+    \ ? content.toString() : content;\n  }\n  \n  private parseBinary(content: string\
+    \ | Buffer): any {\n    // Implement binary parsing\n    return content;\n  }\n\
+    \  \n  private parseProtobuf(content: string | Buffer): any {\n    // Implement\
+    \ protobuf parsing\n    return {};\n  }\n  \n  private parseYAML(content: string\
+    \ | Buffer): any {\n    // Implement YAML parsing\n    return {};\n  }\n  \n \
+    \ private generateParseId(): string {\n    return `parse_${Date.now()}_${Math.random().toString(36).substr(2,\
+    \ 9)}`;\n  }\n  \n  private generateMessageId(): string {\n    return `msg_${Date.now()}_${Math.random().toString(36).substr(2,\
+    \ 9)}`;\n  }\n}\n\ninterface DetectedFormat {\n  name: string;\n  confidence:\
+    \ number;\n}\n```"
+- level: 3
+  title: '**Integration Points**'
+  type: section
+  content: ''
+- level: 4
+  title: '**1. Format Detection Integration**'
+  type: section
+  content: '- **Description**: Integrates with format detection systems for message
+    format identification
+
+    - **Protocol**: Format detection and signature matching protocols
+
+    - **Authentication**: Format detection service access control
+
+    - **Rate Limiting**: Format detection rate limiting for performance'
+- level: 4
+  title: '**2. Validation Integration**'
+  type: section
+  content: '- **Description**: Integrates with validation engines for message validation
+
+    - **Protocol**: Validation rule processing and result protocols
+
+    - **Authentication**: Validation service access control
+
+    - **Rate Limiting**: Validation rate limiting to avoid overload'
+- level: 2
+  title: Performance Characteristics
+  type: section
+  content: ''
+- level: 3
+  title: '**Throughput**'
+  type: section
+  content: '- **Message Parsing**: 10,000 messages/second
+
+    - **Format Detection**: 15,000 detections/second
+
+    - **Content Extraction**: 5,000 extractions/second
+
+    - **Validation**: 8,000 validations/second'
+- level: 3
+  title: '**Reliability**'
+  type: section
+  content: '- **Parse Success Rate**: 99.5% successful parsing
+
+    - **Format Detection Accuracy**: 99.9% accurate format detection
+
+    - **Recovery Time**: < 100ms for parse failures
+
+    - **Availability**: 99.9% uptime for parsing services'
+- level: 3
+  title: '**Scalability**'
+  type: section
+  content: '- **Horizontal Scaling**: Support for distributed parsing across multiple
+    nodes
+
+    - **Vertical Scaling**: Linear performance improvement with additional resources
+
+    - **Concurrent Parsing**: Support for up to 50 concurrent parsing operations
+
+    - **Memory Usage**: < 200MB memory footprint for standard operations'
+- level: 2
+  title: Security Considerations
+  type: section
+  content: ''
+- level: 3
+  title: '**Parse Security**'
+  type: section
+  content: '- **Input Validation**: Comprehensive input validation and sanitization
+
+    - **Content Security**: Security checks for malicious content
+
+    - **Access Control**: Strict access control for parsing operations
+
+    - **Audit Trail**: Complete audit trail for all parsing activities'
+- level: 3
+  title: '**Data Protection**'
+  type: section
+  content: '- **Content Privacy**: Protect sensitive content during parsing
+
+    - **Error Handling**: Secure error handling without information leakage
+
+    - **Validation**: Comprehensive validation to prevent injection attacks
+
+    - **Logging**: Secure logging without exposing sensitive data'
+- level: 2
+  title: Error Handling
+  type: section
+  content: ''
+- level: 3
+  title: '**Error Types**'
+  type: section
+  content: '- **Parse Errors**: Message format or content parsing failures
+
+    - **Validation Errors**: Message validation rule violations
+
+    - **Format Errors**: Unsupported or invalid message formats
+
+    - **Routing Errors**: Message routing decision failures
+
+    - **Performance Errors**: Timeout or resource exhaustion errors'
+- level: 3
+  title: '**Error Recovery**'
+  type: section
+  content: '- **Automatic Retry**: Retry failed parsing with exponential backoff
+
+    - **Fallback Parsing**: Fallback to alternative parsing methods on failure
+
+    - **Graceful Degradation**: Graceful degradation for unsupported formats
+
+    - **Error Reporting**: Comprehensive error reporting and logging'
+- level: 2
+  title: Testing Strategy
+  type: section
+  content: ''
+- level: 3
+  title: '**Unit Testing**'
+  type: section
+  content: '- **Format Detection**: Test format detection accuracy
+
+    - **Message Parsing**: Test parsing for all supported formats
+
+    - **Content Extraction**: Test content extraction algorithms
+
+    - **Error Handling**: Test all error conditions and recovery'
+- level: 3
+  title: '**Integration Testing**'
+  type: section
+  content: '- **End-to-End Parsing**: Test complete message parsing workflows
+
+    - **Format Integration**: Test integration with various format handlers
+
+    - **Performance Testing**: Test performance under various load conditions
+
+    - **Security Testing**: Test parsing security and input validation'
+- level: 3
+  title: '**Load Testing**'
+  type: section
+  content: '- **Concurrent Parsing**: Test multiple concurrent parsing operations
+
+    - **Large Messages**: Test parsing of large message volumes
+
+    - **Format Variety**: Test parsing of various message formats
+
+    - **Performance Degradation**: Test performance under resource constraints'
+- level: 2
+  title: Deployment Considerations
+  type: section
+  content: ''
+- level: 3
+  title: '**Resource Requirements**'
+  type: section
+  content: '- **CPU**: Minimum 2 cores, recommended 4+ cores for high-performance
+    parsing
+
+    - **Memory**: Minimum 1GB, recommended 4GB+ for large message volumes
+
+    - **Storage**: Minimum 100MB for logs and temporary data
+
+    - **Network**: High-speed network for distributed parsing'
+- level: 3
+  title: '**Configuration**'
+  type: section
+  content: '- **Environment Variables**: Configuration through environment variables
+
+    - **Configuration Files**: Support for configuration file-based setup
+
+    - **Runtime Configuration**: Dynamic configuration updates
+
+    - **Validation**: Configuration validation on startup'
+- level: 3
+  title: '**Monitoring**'
+  type: section
+  content: '- **Performance Metrics**: Monitor parsing performance and throughput
+
+    - **Format Distribution**: Monitor message format distribution
+
+    - **Error Rates**: Monitor parsing error rates and types
+
+    - **Security Events**: Monitor parsing access and validation events'
+- level: 2
+  title: Usage Examples
+  type: section
+  content: ''
+- level: 3
+  title: '**Basic Usage**'
+  type: section
+  content: "```typescript\nimport { MessageParser } from './MessageParser';\n\nconst\
+    \ parser = new MessageParser(config);\n\nconst input: MessageParserInput = {\n\
+    \  message: {\n    id: 'msg001',\n    content: '{\"type\": \"notification\", \"\
+    message\": \"Hello World\"}',\n    source: 'api',\n    timestamp: new Date(),\n\
+    \    metadata: {\n      channel: 'api',\n      size: 50,\n      priority: 'normal'\n\
+    \    }\n  },\n  options: {\n    extractContent: true,\n    validateSchema: true\n\
+    \  }\n};\n\nconst result = await parser.parseMessage(input);\nconsole.log('Parse\
+    \ successful:', result.success);\nconsole.log('Parsed content:', result.parsedMessage?.content);\n\
+    console.log('Extracted data:', result.parsedMessage?.extractedData);\n```"
+- level: 3
+  title: '**Advanced Usage with Routing**'
+  type: section
+  content: "```typescript\nimport { MessageParser } from './MessageParser';\n\nconst\
+    \ parser = new MessageParser(config);\n\nconst input: MessageParserInput = {\n\
+    \  message: {\n    id: 'msg002',\n    content: Buffer.from('<xml><type>alert</type><message>System\
+    \ alert</message></xml>'),\n    format: 'xml',\n    source: 'webhook',\n    timestamp:\
+    \ new Date(),\n    metadata: {\n      channel: 'webhook',\n      size: 100,\n\
+    \      priority: 'high'\n    }\n  },\n  options: {\n    extractContent: true,\n\
+    \    enableRouting: true\n  },\n  routingRules: [\n    {\n      id: 'rule001',\n\
+    \      condition: { field: 'type', operator: 'equals', value: 'alert' },\n   \
+    \   destination: 'alert_handler',\n      priority: 1,\n      enabled: true\n \
+    \   }\n  ]\n};\n\nconst result = await parser.parseMessage(input);\nconsole.log('Parse\
+    \ successful:', result.success);\nconsole.log('Routing destination:', result.routingInfo?.destination);\n\
+    console.log('Validation results:', result.validationResults?.length);\n```"
+- level: 2
+  title: Future Enhancements
+  type: section
+  content: ''
+- level: 3
+  title: '**Planned Features**'
+  type: section
+  content: '- **Advanced NLP**: Enhanced natural language processing capabilities
+
+    - **Machine Learning**: ML-based format detection and content extraction
+
+    - **Streaming Parsing**: Real-time streaming message parsing
+
+    - **Schema Evolution**: Dynamic schema evolution and adaptation'
+- level: 3
+  title: '**Performance Improvements**'
+  type: section
+  content: "- **GPU Acceleration**: GPU-accelerated parsing for large messages\n-\
+    \ **Advanced Caching**: Intelligent caching for frequently parsed formats\n- **Distributed\
+    \ Parsing**: Enhanced distributed parsing capabilities\n- **Real-Time Analytics**:\
+    \ Real-time parsing analytics and optimization\n\n---\n\n**Version**: 1.0  \n\
+    **Focus**: Comprehensive message parsing and processing with multi-format support"

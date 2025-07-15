@@ -1,0 +1,165 @@
+title: K Os Hybrid Recipe Ai Framework Spec
+description: ''
+type: documentation
+status: current
+priority: medium
+version: '1.0'
+last_updated: '2025-06-28'
+organization_date: '2025-06-28T19:48:20.328688'
+authors: []
+tags: []
+content_type: documentation
+technical_level: advanced
+word_count: 741
+has_code_blocks: false
+has_api_specs: true
+has_architecture: true
+has_deployment: true
+has_testing: true
+has_security: true
+has_rag: true
+has_ethics: false
+original_filename: k_os_hybrid_recipe_ai_framework_spec.yml
+original_path: /Users/danger/CascadeProjects/griot-node/agents/reference/kos_chatgpt/k_os_hybrid_recipe_ai_framework_spec.yml
+category: rag_system
+
+---
+
+title: K Os Hybrid Recipe Ai Framework Spec
+description: ''
+type: documentation
+status: current
+priority: medium
+last_updated: '2025-06-28'
+conversion_date: '2025-06-28T19:30:47.429017'
+original_format: markdown
+content_type: api_specification
+word_count: 712
+line_count: 122
+
+---
+
+# kOS Hybrid Recipe AI Framework Specification
+
+## Overview
+
+The kOS (Knowledge Operating System) Hybrid Recipe AI Framework is designed to enable rapid deployment, orchestration, and evolution of AI capabilities by composing external services, self-hosted tools, and custom in-house models into a single intelligent, conversational system. The system starts as a hybrid (commercial API + open source + local tools) and gradually evolves into a fully self-hosted, decentralized, and privacy-respecting AI infrastructure.
+
+---
+
+## Core Philosophy
+
+| Principle | Description |
+|---|---|
+| Leverage External Services First | Integrate commercial APIs (OpenAI, Anthropic, Google AI, Hugging Face) and open-source tools (LangChain, Ollama, LlamaIndex, etc.) for immediate capabilities. |
+| Orchestrate via Recipes | Define all AI workflows using structured, modular, human-readable "recipes" in YAML/JSON/NLP style. |
+| Adapters Layer | Develop pluggable adapters that connect kOS to each external service, tool, or model. |
+| Skill Registry | Maintain a central registry of skills, tools, and available recipes. |
+| AI Service Optimization | Let kOS dynamically choose the best-performing service or tool per task, based on latency, cost, and performance history. |
+| Gradual Internalization | Over time, replace external services with in-house tools and models for cost, control, and privacy. |
+| Natural Language UI | Maintain conversational, plain-language user interfaces throughout. |
+
+---
+
+## System Layers
+
+| Layer | Function |
+|---|---|
+| External Services | Commercial AI APIs, cloud tools, SaaS endpoints. |
+| Self-Hosted Tools | Local LLMs (Ollama, LocalAI), RAG stacks (LlamaIndex), vector databases (ChromaDB). |
+| Adapter Layer | Translation modules to unify external API calls into internal kOS functions. |
+| Skill Layer | Individual task-specific functions (summarization, translation, parsing, etc). |
+| Recipe Layer | Declarative, human-readable instructions for chaining skills, tools, and models. |
+| Orchestration Engine | The kOS logic that parses user input, selects recipes, executes steps, and manages tool calling. |
+| Meta-Learning Layer | Tracks user preferences, workflow history, and performance data for self-optimization. |
+| Natural Language Interface | Front-end where users talk to kOS like an assistant. |
+
+---
+
+## Phased Build Roadmap
+
+| Phase | Focus |
+|---|---|
+| Phase 1 | External Service Orchestration |
+| Phase 2 | Adapter and Recipe Layer Maturity |
+| Phase 3 | Hybrid Model Execution |
+| Phase 4 | Privacy & Data Control Layer |
+| Phase 5 | Full kOS Internal Replacement |
+| Phase 6 | Federated & Distributed Execution |
+
+---
+
+## Technical Stack Per Layer
+
+| Layer | Tools |
+|---|---|
+| External APIs | OpenAI, Anthropic, Hugging Face, Google Cloud, AWS AI |
+| Self-hosted LLMs | Ollama, LM Studio, LocalAI, Llama.cpp |
+| Vector DB | ChromaDB, Weaviate, Milvus |
+| Orchestration | LangChain Agents, CrewAI, custom Python scripts |
+| UI | Open WebUI, Chatbot-UI, AnythingLLM, custom FastAPI frontends |
+| Data Vault | SQLite, DuckDB, local encrypted stores |
+| Monitoring | Prometheus, Grafana, lightweight dashboards |
+
+---
+
+## Example Recipe (Human-Readable)
+
+**Task:** Summarize a PDF and send result via Slack
+
+**Steps:**
+1. Receive PDF from user.
+2. Use PDF Text Extractor Adapter.
+3. Summarize text via LLM (OpenAI or Local).
+4. Format summary.
+5. Call Slack API Adapter with formatted text.
+6. Confirm delivery to user.
+
+---
+
+## Adapter Layer Design
+
+- Each external service gets a dedicated adapter module.
+- Adapters handle:
+  - API keys and auth
+  - Input/output formatting
+  - Error handling and retries
+  - Standardized interfaces to the orchestration layer
+
+Example adapters:
+- OpenAIAdapter
+- HuggingFaceAdapter
+- OllamaAdapter
+- SlackAdapter
+- PDFAdapter
+
+---
+
+## Benefits of This Approach
+
+| Benefit | Impact |
+|---|---|
+| Rapid Deployment | Start building AI capabilities immediately |
+| Scalable | Add new services and tools easily |
+| Future-Proof | Replace dependencies over time |
+| Conversational UX | Users interact naturally |
+| Privacy Control | Shift to self-hosted tools as needed |
+| Knowledge Growth | AI learns best tool choices over time |
+
+---
+
+## Next Actions for Agent Teams
+
+- Build Recipe Registry Schema
+- Implement Adapter Interface Templates
+- Draft Initial Recipe Library
+- Set up External API keys and test connectivity
+- Deploy local LLM runtime (Ollama/LocalAI)
+- Establish logging and performance tracking for service selection optimization
+
+---
+
+**End of Spec**
+
+
+

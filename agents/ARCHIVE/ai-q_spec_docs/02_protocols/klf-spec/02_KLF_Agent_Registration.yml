@@ -1,0 +1,203 @@
+frontmatter:
+  title: KLF Agent Registration
+  description: How any agent joins the kOS network
+  version: 3.0.0
+  
+sections:
+- title: "Agent Registration Process"
+  content: |
+    # Joining the KLF Network
+    
+    Any agent (AI, human interface, service, device) can join the kOS network
+    by registering with KLF and declaring their capabilities.
+    
+    ## Registration Endpoint
+    ```http
+    POST /klf/v1/agents/register
+    Content-Type: application/json
+    ```
+    
+    ## Registration Payload
+    ```json
+    {
+      "agent": {
+        "did": "did:kos:agent:your-unique-id",
+        "type": "ai|human|service|device|frontend|backend",
+        "name": "Human-readable name",
+        "description": "Optional description of what this agent does",
+        "capabilities": ["service1", "service2", "service3"],
+        "requires": ["dependency1", "dependency2"],
+        "transport": ["http", "websocket", "grpc"],
+        "metadata": {
+          "version": "1.0.0",
+          "tags": ["tag1", "tag2"],
+          "endpoint": "optional-custom-endpoint"
+        }
+      }
+    }
+    ```
+    
+    ## Response
+    ```json
+    {
+      "success": true,
+      "assigned_did": "did:kos:agent:your-unique-id",
+      "network_id": "kos-main-network",
+      "registration_time": "2025-06-30T00:00:00Z",
+      "available_transports": ["http", "websocket"],
+      "next_steps": [
+        "Call GET /klf/v1/capabilities to discover services",
+        "Subscribe to WebSocket events at ws://localhost:30436/klf/v1/events"
+      ]
+    }
+    ```
+    
+    ## Agent Types
+    
+    ### AI Agents
+    ```json
+    {
+      "agent": {
+        "did": "did:kos:agent:my-ai-assistant",
+        "type": "ai",
+        "name": "AI Research Assistant",
+        "capabilities": ["text.generate", "document.analyze", "research.summarize"],
+        "requires": ["document.search", "vector.store"]
+      }
+    }
+    ```
+    
+    ### Human Interface Agents
+    ```json
+    {
+      "agent": {
+        "did": "did:kos:agent:human-interface",
+        "type": "human",
+        "name": "Human User Interface",
+        "capabilities": ["user.input", "user.approval", "decision.make"],
+        "requires": ["system.status", "task.display"]
+      }
+    }
+    ```
+    
+    ### Service Agents
+    ```json
+    {
+      "agent": {
+        "did": "did:kos:agent:weather-service",
+        "type": "service",
+        "name": "Weather Data Service",
+        "capabilities": ["weather.current", "weather.forecast", "weather.alerts"],
+        "requires": ["location.resolve"]
+      }
+    }
+    ```
+    
+    ### Device Agents
+    ```json
+    {
+      "agent": {
+        "did": "did:kos:device:smart-sensor-01",
+        "type": "device",
+        "name": "IoT Temperature Sensor",
+        "capabilities": ["sensor.temperature", "sensor.humidity"],
+        "requires": ["data.upload"],
+        "metadata": {
+          "location": "office-room-1",
+          "model": "TempSense Pro"
+        }
+      }
+    }
+    ```
+    
+    ### Frontend Applications
+    ```json
+    {
+      "agent": {
+        "did": "did:kos:frontend:griot-kitchen",
+        "type": "frontend",
+        "name": "Griot Kitchen Web App",
+        "capabilities": ["ui.display", "user.interaction"],
+        "requires": ["document.query", "persona.chat", "workflow.orchestrate"]
+      }
+    }
+    ```
+    
+    ### Backend Services
+    ```json
+    {
+      "agent": {
+        "did": "did:kos:backend:persona-rag",
+        "type": "backend",
+        "name": "PersonaRAG Bridge",
+        "capabilities": [
+          "document.upload", "document.query", "document.analyze",
+          "persona.chat", "vector.search", "vault.store", "vault.retrieve"
+        ],
+        "requires": []
+      }
+    }
+    ```
+    
+    ## Capability Naming Convention
+    
+    Use dot-notation to namespace capabilities:
+    - `category.action` (e.g., `document.search`)
+    - `service.method` (e.g., `weather.current`)
+    - `domain.operation` (e.g., `crypto.hash`)
+    
+    ## Common Capabilities
+    
+    ### Document Services
+    - `document.upload` - Accept file uploads
+    - `document.query` - Search through documents
+    - `document.analyze` - Extract insights
+    - `document.summarize` - Create summaries
+    
+    ### AI Services
+    - `text.generate` - Generate text content
+    - `text.analyze` - Analyze text sentiment/content
+    - `image.generate` - Create images
+    - `image.analyze` - Analyze image content
+    - `chat.conversation` - Maintain chat conversations
+    
+    ### Data Services
+    - `vector.search` - Semantic similarity search
+    - `data.transform` - Transform data formats
+    - `data.validate` - Validate data integrity
+    - `data.export` - Export data in various formats
+    
+    ### System Services
+    - `auth.login` - Handle authentication
+    - `auth.authorize` - Check permissions
+    - `vault.store` - Store encrypted data
+    - `vault.retrieve` - Retrieve encrypted data
+    - `system.status` - Report system health
+    - `system.metrics` - Provide performance metrics
+    
+    ### Communication Services
+    - `notify.email` - Send email notifications
+    - `notify.push` - Send push notifications
+    - `api.proxy` - Proxy external API calls
+    - `webhook.handle` - Handle webhook events
+    
+    ## Error Responses
+    
+    ### DID Already Exists
+    ```json
+    {
+      "success": false,
+      "error": "DID_EXISTS",
+      "message": "Agent with DID 'did:kos:agent:my-ai' already registered",
+      "suggested_did": "did:kos:agent:my-ai-2"
+    }
+    ```
+    
+    ### Invalid Agent Type
+    ```json
+    {
+      "success": false,
+      "error": "INVALID_TYPE",
+      "message": "Agent type must be one of: ai, human, service, device, frontend, backend"
+    }
+    ``` 

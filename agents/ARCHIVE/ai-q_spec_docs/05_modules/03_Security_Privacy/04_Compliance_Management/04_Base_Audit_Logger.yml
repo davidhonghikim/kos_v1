@@ -1,0 +1,458 @@
+metadata:
+  original_file: 04_Base_Audit_Logger.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Base Audit Logger
+  version: '1.0'
+  category: Security
+  subcategory: Audit Logging
+  dependencies: []
+  tags:
+  - audit
+  - logging
+  - security
+  - base-class
+  priority: high
+sections:
+- level: 1
+  title: Base Audit Logger
+  type: section
+  content: ''
+- level: 2
+  title: Purpose
+  type: section
+  content: Provides the core audit logging interface and common functionality for
+    all audit logging operations in the kOS ecosystem. This base class defines the
+    standard interface that all specific audit logger implementations must follow,
+    ensuring consistent behavior, security, compliance, and performance optimization
+    across all audit logging modules. The Base Audit Logger supports secure, tamper-evident,
+    and compliant logging of all security-relevant events.
+- level: 2
+  title: Capabilities
+  type: section
+  content: '- **Standardized Audit Logging Interface**: Consistent interface for all
+    audit logging operations
+
+    - **Event Classification**: Supports classification and categorization of audit
+    events
+
+    - **Structured Logging**: Structured, machine-readable log formats (JSON, etc.)
+
+    - **Tamper-Evident Logging**: Supports tamper-evident and immutable log storage
+
+    - **Compliance Logging**: Meets regulatory and compliance requirements (GDPR,
+    SOX, HIPAA, PCI DSS)
+
+    - **Performance Optimization**: Optimized logging performance with configurable
+    settings
+
+    - **Security Validation**: Validates log integrity and access controls
+
+    - **Audit Trail Management**: Manages retention, archival, and retrieval of audit
+    logs
+
+    - **Alert Integration**: Integrates with alerting and monitoring systems'
+- level: 2
+  title: Integration Points
+  type: section
+  content: '- **Input**: Security events, access events, system changes, and log metadata
+
+    - **Output**: Structured audit log entries, log storage status, and operation
+    metadata
+
+    - **Dependencies**: Secure storage backend, time synchronization service'
+- level: 2
+  title: Configuration
+  type: section
+  content: "```yaml\nbase_audit_logger:\n  log_format: \"json\"\n  storage_backend:\
+    \ \"secure_database\"\n  retention_policy:\n    enabled: true\n    retention_period:\
+    \ \"7y\"\n    archive_on_expiry: true\n    archive_location: \"/secure/audit/archive\"\
+    \n  tamper_evident:\n    enabled: true\n    hash_algorithm: \"SHA-256\"\n    chain_logs:\
+    \ true\n  compliance:\n    gdpr: true\n    sox: true\n    hipaa: true\n    pci_dss:\
+    \ true\n  performance:\n    async_logging: true\n    batch_size: 100\n    flush_interval:\
+    \ 5000  # ms\n  security:\n    access_control:\n      enabled: true\n      roles:\
+    \ [\"admin\", \"auditor\"]\n    encryption:\n      enabled: true\n      algorithm:\
+    \ \"AES-256-GCM\"\n    integrity_check:\n      enabled: true\n      frequency:\
+    \ \"daily\"\n  alerting:\n    enabled: true\n    alert_on_high_risk: true\n  \
+    \  alert_channels: [\"email\", \"slack\"]\n```"
+- level: 2
+  title: Example Workflow
+  type: section
+  content: "```mermaid\ngraph TD\n  A[Security Event] --> B[Event Classification]\n\
+    \  B --> C[Log Formatting]\n  C --> D[Tamper-Evident Hashing]\n  D --> E[Log Storage]\n\
+    \  E --> F[Retention Policy Check]\n  F --> G[Compliance Validation]\n  G -->\
+    \ H[Alert Integration]\n  H --> I[Audit Log Output]\n  \n  D --> J{Hashing Failed?}\n\
+    \  J -->|Yes| K[Error Handling]\n  J -->|No| E\n  \n  E --> L{Storage Failed?}\n\
+    \  L -->|Yes| M[Error Recovery]\n  L -->|No| F\n```"
+- level: 2
+  title: Core Capabilities
+  type: section
+  content: ''
+- level: 3
+  title: '**1. Standardized Audit Logging Interface**'
+  type: section
+  content: '- **Description**: Provides a consistent interface for all audit logging
+    operations
+
+    - **Input**: Security events, access events, and metadata
+
+    - **Output**: Structured log entries and operation status
+
+    - **Dependencies**: None (base interface)'
+- level: 3
+  title: '**2. Tamper-Evident Logging**'
+  type: section
+  content: '- **Description**: Ensures logs are tamper-evident and immutable
+
+    - **Input**: Log entries and hash chain
+
+    - **Output**: Tamper-evident log storage and verification
+
+    - **Dependencies**: Hash generator and secure storage'
+- level: 3
+  title: '**3. Compliance Logging**'
+  type: section
+  content: '- **Description**: Meets regulatory and compliance requirements
+
+    - **Input**: Compliance configuration and log entries
+
+    - **Output**: Compliance-validated logs and reports
+
+    - **Dependencies**: Compliance rules engine'
+- level: 3
+  title: '**4. Alert Integration**'
+  type: section
+  content: '- **Description**: Integrates with alerting and monitoring systems
+
+    - **Input**: High-risk events and alert configuration
+
+    - **Output**: Alerts and notifications
+
+    - **Dependencies**: Alerting system'
+- level: 2
+  title: Module Interface
+  type: section
+  content: ''
+- level: 3
+  title: '**Input Interface**'
+  type: section
+  content: "```typescript\ninterface BaseAuditLoggerInput {\n  eventType: string;\n\
+    \  eventData: Record<string, any>;\n  userId?: string;\n  timestamp?: Date;\n\
+    \  riskLevel?: string;\n  metadata?: Record<string, any>;\n}\n```"
+- level: 3
+  title: '**Output Interface**'
+  type: section
+  content: "```typescript\ninterface BaseAuditLoggerOutput {\n  logEntryId: string;\n\
+    \  status: AuditLogStatus;\n  storageLocation: string;\n  timestamp: Date;\n \
+    \ compliance: ComplianceStatus;\n  integrity: IntegrityStatus;\n}\n\ninterface\
+    \ AuditLogStatus {\n  success: boolean;\n  error?: string;\n  warnings?: string[];\n\
+    }\n\ninterface ComplianceStatus {\n  gdpr: boolean;\n  sox: boolean;\n  hipaa:\
+    \ boolean;\n  pci_dss: boolean;\n  details?: string;\n}\n\ninterface IntegrityStatus\
+    \ {\n  tamperEvident: boolean;\n  hash?: string;\n  chainValid: boolean;\n  lastChecked:\
+    \ Date;\n}\n```"
+- level: 3
+  title: '**Configuration Interface**'
+  type: section
+  content: "```typescript\ninterface BaseAuditLoggerConfig {\n  logFormat: string;\n\
+    \  storageBackend: string;\n  retentionPolicy: RetentionPolicyConfig;\n  tamperEvident:\
+    \ TamperEvidentConfig;\n  compliance: ComplianceConfig;\n  performance: PerformanceConfig;\n\
+    \  security: SecurityConfig;\n  alerting: AlertingConfig;\n}\n\ninterface RetentionPolicyConfig\
+    \ {\n  enabled: boolean;\n  retentionPeriod: string;\n  archiveOnExpiry: boolean;\n\
+    \  archiveLocation: string;\n}\n\ninterface TamperEvidentConfig {\n  enabled:\
+    \ boolean;\n  hashAlgorithm: string;\n  chainLogs: boolean;\n}\n\ninterface ComplianceConfig\
+    \ {\n  gdpr: boolean;\n  sox: boolean;\n  hipaa: boolean;\n  pci_dss: boolean;\n\
+    }\n\ninterface PerformanceConfig {\n  asyncLogging: boolean;\n  batchSize: number;\n\
+    \  flushInterval: number;\n}\n\ninterface SecurityConfig {\n  accessControl: AccessControlConfig;\n\
+    \  encryption: EncryptionConfig;\n  integrityCheck: IntegrityCheckConfig;\n}\n\
+    \ninterface AccessControlConfig {\n  enabled: boolean;\n  roles: string[];\n}\n\
+    \ninterface EncryptionConfig {\n  enabled: boolean;\n  algorithm: string;\n}\n\
+    \ninterface IntegrityCheckConfig {\n  enabled: boolean;\n  frequency: string;\n\
+    }\n\ninterface AlertingConfig {\n  enabled: boolean;\n  alertOnHighRisk: boolean;\n\
+    \  alertChannels: string[];\n}\n```"
+- level: 2
+  title: Module Dependencies
+  type: section
+  content: ''
+- level: 3
+  title: '**Required Dependencies**'
+  type: section
+  content: '- **Secure Storage Backend**: For tamper-evident and compliant log storage
+
+    - **Hash Generator**: For tamper-evident log chaining
+
+    - **Time Synchronization Service**: For accurate event timestamps
+
+    - **Compliance Rules Engine**: For compliance validation'
+- level: 3
+  title: '**Optional Dependencies**'
+  type: section
+  content: '- **Alerting System**: For high-risk event notifications
+
+    - **Archival Service**: For long-term log retention
+
+    - **Monitoring System**: For log monitoring and analytics'
+- level: 2
+  title: Module Implementation
+  type: section
+  content: ''
+- level: 3
+  title: '**Core Components**'
+  type: section
+  content: ''
+- level: 4
+  title: '**1. Audit Log Engine**'
+  type: section
+  content: "```typescript\nclass AuditLogEngine {\n  private config: BaseAuditLoggerConfig;\n\
+    \  private storage: SecureStorageBackend;\n  private hashGenerator: HashGenerator;\n\
+    \  private complianceEngine: ComplianceRulesEngine;\n  private alertingSystem:\
+    \ AlertingSystem;\n  \n  constructor(config: BaseAuditLoggerConfig) {\n    this.config\
+    \ = config;\n    this.storage = new SecureStorageBackend(config.storageBackend);\n\
+    \    this.hashGenerator = new HashGenerator(config.tamperEvident.hashAlgorithm);\n\
+    \    this.complianceEngine = new ComplianceRulesEngine(config.compliance);\n \
+    \   this.alertingSystem = new AlertingSystem(config.alerting);\n  }\n  \n  async\
+    \ logEvent(input: BaseAuditLoggerInput): Promise<BaseAuditLoggerOutput> {\n  \
+    \  // Classify and format event\n    const formattedEvent = this.formatEvent(input);\n\
+    \    \n    // Generate tamper-evident hash\n    const hash = this.hashGenerator.generateHash(formattedEvent);\n\
+    \    \n    // Store log entry\n    const logEntryId = await this.storage.storeLog(formattedEvent,\
+    \ hash);\n    \n    // Validate compliance\n    const compliance = this.complianceEngine.validate(formattedEvent);\n\
+    \    \n    // Alert on high-risk events\n    if (input.riskLevel === 'high' &&\
+    \ this.config.alerting.enabled) {\n      await this.alertingSystem.sendAlert(formattedEvent);\n\
+    \    }\n    \n    return {\n      logEntryId,\n      status: { success: true },\n\
+    \      storageLocation: this.storage.getLocation(),\n      timestamp: new Date(),\n\
+    \      compliance,\n      integrity: {\n        tamperEvident: true,\n       \
+    \ hash,\n        chainValid: true,\n        lastChecked: new Date()\n      }\n\
+    \    };\n  }\n}\n```"
+- level: 4
+  title: '**2. Retention Policy Manager**'
+  type: section
+  content: "```typescript\nclass RetentionPolicyManager {\n  private config: RetentionPolicyConfig;\n\
+    \  private storage: SecureStorageBackend;\n  \n  constructor(config: RetentionPolicyConfig,\
+    \ storage: SecureStorageBackend) {\n    this.config = config;\n    this.storage\
+    \ = storage;\n  }\n  \n  async enforcePolicy(): Promise<void> {\n    // Archive\
+    \ or delete logs based on retention policy\n    if (this.config.enabled) {\n \
+    \     await this.storage.archiveExpiredLogs(this.config.retentionPeriod, this.config.archiveLocation);\n\
+    \    }\n  }\n}\n```"
+- level: 3
+  title: '**Integration Points**'
+  type: section
+  content: ''
+- level: 4
+  title: '**1. Secure Storage Integration**'
+  type: section
+  content: '- **Description**: Provides secure, tamper-evident, and compliant log
+    storage
+
+    - **Protocol**: Secure storage protocols with encryption and access control
+
+    - **Authentication**: Role-based access control for log retrieval
+
+    - **Rate Limiting**: Storage operation rate limiting for performance'
+- level: 4
+  title: '**2. Alerting Integration**'
+  type: section
+  content: '- **Description**: Sends alerts for high-risk events
+
+    - **Protocol**: Integration with email, Slack, and other alert channels
+
+    - **Authentication**: Alert channel authentication and authorization
+
+    - **Rate Limiting**: Alert rate limiting to prevent alert fatigue'
+- level: 2
+  title: Performance Characteristics
+  type: section
+  content: ''
+- level: 3
+  title: '**Throughput**'
+  type: section
+  content: '- **Log Write Speed**: 10,000 entries/second (async, batched)
+
+    - **Batch Processing**: Up to 100 entries per batch
+
+    - **Flush Interval**: 5 seconds (configurable)'
+- level: 3
+  title: '**Reliability**'
+  type: section
+  content: '- **Error Rate**: < 0.001% log write failures
+
+    - **Recovery Time**: < 100ms for recoverable errors
+
+    - **Availability**: 99.99% uptime for audit logging services
+
+    - **Data Integrity**: 100% log integrity with tamper-evident storage'
+- level: 3
+  title: '**Scalability**'
+  type: section
+  content: '- **Horizontal Scaling**: Support for distributed audit logging across
+    multiple nodes
+
+    - **Vertical Scaling**: Linear performance improvement with additional CPU cores
+
+    - **Batch Processing**: Efficient batch log processing for high-volume environments'
+- level: 2
+  title: Security Considerations
+  type: section
+  content: ''
+- level: 3
+  title: '**Log Integrity & Tamper Evidence**'
+  type: section
+  content: '- **Hash Chaining**: All logs are chained with cryptographic hashes
+
+    - **Immutable Storage**: Logs are stored in immutable, append-only storage
+
+    - **Integrity Checks**: Regular integrity checks and validation'
+- level: 3
+  title: '**Access Control**'
+  type: section
+  content: '- **Role-Based Access**: Only authorized roles can access or retrieve
+    logs
+
+    - **Audit Trail**: All log access is itself logged for traceability
+
+    - **Encryption**: All logs are encrypted at rest and in transit'
+- level: 3
+  title: '**Compliance**'
+  type: section
+  content: '- **Retention Policies**: Enforced retention and archival for compliance
+
+    - **Regulatory Support**: Meets requirements for GDPR, SOX, HIPAA, PCI DSS
+
+    - **Forensic Readiness**: Logs are suitable for forensic analysis'
+- level: 2
+  title: Error Handling
+  type: section
+  content: ''
+- level: 3
+  title: '**Error Types**'
+  type: section
+  content: '- **Storage Errors**: Log storage or retrieval failures
+
+    - **Hashing Errors**: Tamper-evident hash generation or validation failures
+
+    - **Compliance Errors**: Compliance validation or reporting failures
+
+    - **Performance Errors**: Timeout or resource exhaustion errors
+
+    - **Security Errors**: Unauthorized access or integrity check failures'
+- level: 3
+  title: '**Error Recovery**'
+  type: section
+  content: '- **Automatic Retry**: Automatic retry for transient errors
+
+    - **Fallback Storage**: Fallback to alternative storage on failure
+
+    - **Alert on Failure**: Alerting for critical log failures
+
+    - **Graceful Degradation**: Graceful degradation for performance issues'
+- level: 2
+  title: Testing Strategy
+  type: section
+  content: ''
+- level: 3
+  title: '**Unit Testing**'
+  type: section
+  content: '- **Input Validation**: Test all input validation scenarios
+
+    - **Log Formatting**: Test log formatting and structure
+
+    - **Hashing**: Test tamper-evident hash generation and chaining
+
+    - **Error Handling**: Test all error conditions and recovery'
+- level: 3
+  title: '**Integration Testing**'
+  type: section
+  content: '- **End-to-End Logging**: Test complete audit logging workflows
+
+    - **Storage Integration**: Test integration with secure storage backends
+
+    - **Alerting Integration**: Test alerting on high-risk events
+
+    - **Compliance Testing**: Test compliance validation and reporting'
+- level: 3
+  title: '**Load Testing**'
+  type: section
+  content: '- **Concurrent Operations**: Test multiple concurrent log operations
+
+    - **High Volume**: Test logging under high event volume
+
+    - **Batch Processing**: Test batch log processing and performance'
+- level: 2
+  title: Deployment Considerations
+  type: section
+  content: ''
+- level: 3
+  title: '**Resource Requirements**'
+  type: section
+  content: '- **CPU**: Minimum 2 cores, recommended 4+ cores for high-performance
+    operations
+
+    - **Memory**: Minimum 512MB, recommended 2GB+ for large log volumes
+
+    - **Storage**: Minimum 10GB for audit logs and archives
+
+    - **Network**: High-speed network for distributed logging and alerting'
+- level: 3
+  title: '**Configuration**'
+  type: section
+  content: '- **Environment Variables**: Configuration through environment variables
+
+    - **Configuration Files**: Support for configuration file-based setup
+
+    - **Runtime Configuration**: Dynamic configuration updates
+
+    - **Validation**: Configuration validation on startup'
+- level: 3
+  title: '**Monitoring**'
+  type: section
+  content: '- **Performance Metrics**: Monitor log write speed and throughput
+
+    - **Error Rates**: Monitor log error rates and types
+
+    - **Security Events**: Monitor unauthorized access and integrity failures
+
+    - **Resource Usage**: Monitor CPU, memory, and storage usage'
+- level: 2
+  title: Usage Examples
+  type: section
+  content: ''
+- level: 3
+  title: '**Basic Usage**'
+  type: section
+  content: "```typescript\nimport { BaseAuditLogger } from './BaseAuditLogger';\n\n\
+    const auditLogger = new BaseAuditLogger(config);\n\nconst input: BaseAuditLoggerInput\
+    \ = {\n  eventType: 'security_event',\n  eventData: { action: 'login', user: 'alice'\
+    \ },\n  userId: 'alice',\n  riskLevel: 'medium'\n};\n\nconst result = await auditLogger.logEvent(input);\n\
+    console.log('Audit log entry ID:', result.logEntryId);\n```"
+- level: 3
+  title: '**High-Risk Event Logging**'
+  type: section
+  content: "```typescript\nimport { BaseAuditLogger } from './BaseAuditLogger';\n\n\
+    const auditLogger = new BaseAuditLogger(config);\n\nconst input: BaseAuditLoggerInput\
+    \ = {\n  eventType: 'access_violation',\n  eventData: { resource: 'admin_panel',\
+    \ user: 'bob' },\n  userId: 'bob',\n  riskLevel: 'high'\n};\n\nconst result =\
+    \ await auditLogger.logEvent(input);\nconsole.log('Audit log entry ID:', result.logEntryId);\n\
+    console.log('Alert sent:', result.status.success);\n```"
+- level: 2
+  title: Future Enhancements
+  type: section
+  content: ''
+- level: 3
+  title: '**Planned Features**'
+  type: section
+  content: '- **Blockchain-Based Logging**: Support for blockchain-backed immutable
+    audit logs
+
+    - **Advanced Analytics**: Integration with analytics platforms for log analysis
+
+    - **Automated Compliance Reporting**: Automated generation of compliance reports
+
+    - **Real-Time Forensics**: Real-time forensic analysis and anomaly detection'
+- level: 3
+  title: '**Performance Improvements**'
+  type: section
+  content: "- **Distributed Logging**: Enhanced distributed logging for large-scale\
+    \ systems\n- **Adaptive Batching**: Intelligent batching based on event volume\n\
+    - **Compression**: Log compression for storage efficiency\n- **Streaming Export**:\
+    \ Real-time streaming export to SIEM platforms\n\n---\n\n**Version**: 1.0  \n\
+    **Focus**: Core audit logging interface and common functionality for all audit\
+    \ logging operations"

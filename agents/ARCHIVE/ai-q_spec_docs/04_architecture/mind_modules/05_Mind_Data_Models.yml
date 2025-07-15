@@ -1,0 +1,119 @@
+metadata:
+  original_file: 05_Mind_Data_Models.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: AI-Q Mind Data Models
+  description: Concrete data models and database schemas for the AI Mind's cognitive
+    architecture
+  type: architecture
+  status: proposal
+  priority: critical
+  last_updated: '2025-06-25'
+  version: 1.0.0
+  agent_notes: Translates abstract memory concepts into implementable database schemas.
+    This is the bridge from concept to code for the Mind's persistence layer.
+sections:
+- level: 1
+  title: AI-Q Mind Data Models
+  type: section
+  content: ''
+- level: 2
+  title: 1. Overview
+  type: section
+  content: This document provides the concrete data models and database schemas required
+    to implement the AI-Q Mind's cognitive architecture, as defined in `The Cognitive
+    Biology of a kOS Node`. It translates abstract concepts like "Epigenetic Record"
+    into specific, implementable database schemas.
+- level: 2
+  title: '2. The Data Triad: A Triumvirate of Memory'
+  type: section
+  content: 'To support the diverse needs of the Mind''s memory systems, a **Data Triad**
+    approach is recommended. This triumvirate of specialized databases, each with
+    a distinct role, forms the complete memory architecture of the digital cell.
+
+
+    - **Relational Data (PostgreSQL):** The "Book of Life," for structured, transactional
+    data like node identities and the unchangeable log of `Episodic Memory`.
+
+    - **Semantic Data (Vector Database):** The "Conceptual Nervous System," for storing
+    and searching the high-dimensional vector embeddings that form the Mind''s understanding
+    and intuition.
+
+    - **In-Memory Cache (Redis):** The "Cellular Cytoplasm," for the volatile, high-speed
+    `Working Memory` needed for immediate cognitive processes.'
+- level: 2
+  title: 3. Consciousness Core Data Models
+  type: section
+  content: This model stores the core identity and state of a Mind instance.
+- level: 3
+  title: '`nodes` Table (PostgreSQL)'
+  type: section
+  content: "Stores the fundamental identity of each kOS node instance.\n\n```sql\n\
+    CREATE TABLE nodes (\n    node_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),\n\
+    \    did_kos VARCHAR(255) UNIQUE NOT NULL, -- e.g., did:kos:griot:a1b2c3d4e5f6\n\
+    \    node_class VARCHAR(50) NOT NULL, -- Griot, Tohunga, etc.\n    version VARCHAR(20)\
+    \ NOT NULL,\n    endpoint VARCHAR(255),\n    created_at TIMESTAMPTZ DEFAULT NOW(),\n\
+    \    last_seen_at TIMESTAMPTZ DEFAULT NOW()\n);\n```"
+- level: 3
+  title: '`personality` Table (PostgreSQL)'
+  type: section
+  content: "Stores the evolving personality traits and preferences of a Mind. Linked\
+    \ to a node.\n\n```sql\nCREATE TABLE personality (\n    personality_id UUID PRIMARY\
+    \ KEY DEFAULT gen_random_uuid(),\n    node_id UUID REFERENCES nodes(node_id) ON\
+    \ DELETE CASCADE,\n    traits JSONB, -- e.g., {\"openness\": 0.7, \"conscientiousness\"\
+    : 0.8}\n    preferences JSONB, -- e.g., {\"preferred_communication_style\": \"\
+    formal\"}\n    last_updated TIMESTAMPTZ DEFAULT NOW()\n);\n```"
+- level: 2
+  title: 4. Memory Systems Data Models
+  type: section
+  content: ''
+- level: 3
+  title: Working Memory (Redis)
+  type: section
+  content: "`Working Memory` is ephemeral and should be stored in a high-speed cache\
+    \ like Redis.\n\n- **Key:** `working_memory:{node_id}`\n- **Type:** Redis Hash\n\
+    - **Structure:**\n    ```json\n    {\n      \"current_context\": {\n        \"\
+    conversation_id\": \"conv_123\",\n        \"active_user_id\": \"user_abc\",\n\
+    \        \"active_rules\": [\"enforce_pii_redaction\"],\n        \"hieros_state\"\
+    : [\"honor_all_beings_check_pending\"]\n      },\n      \"attention_span\": {\n\
+    \        \"focus_items\": [\"concept_A\", \"concept_B\"],\n        \"context_depth\"\
+    : 3\n      }\n    }\n    ```"
+- level: 3
+  title: Episodic Memory (PostgreSQL)
+  type: section
+  content: "A log of significant events or \"memories.\" This provides the AI with\
+    \ a history of its interactions.\n\n```sql\nCREATE TABLE episodic_memory (\n \
+    \   event_id BIGSERIAL PRIMARY KEY,\n    node_id UUID REFERENCES nodes(node_id)\
+    \ ON DELETE CASCADE,\n    session_id VARCHAR(255),\n    timestamp TIMESTAMPTZ\
+    \ DEFAULT NOW(),\n    event_type VARCHAR(50) NOT NULL, -- e.g., 'INTERACTION',\
+    \ 'LEARNING_MILESTONE', 'HIEROS_DECISION'\n    actor VARCHAR(255), -- Who initiated\
+    \ (e.g., user_id, system, other_node_id)\n    content TEXT, -- The core content\
+    \ of the event (e.g., user query)\n    metadata JSONB, -- Rich context, e.g.,\
+    \ {\"response_generated\": \"...\", \"quality_assessment\": 0.9}\n    hieros_context\
+    \ JSONB -- Record of HIEROS validation for this event\n);\n\nCREATE INDEX idx_episodic_node_id\
+    \ ON episodic_memory(node_id);\nCREATE INDEX idx_episodic_event_type ON episodic_memory(event_type);\n\
+    ```"
+- level: 3
+  title: Semantic Memory (Vector Database)
+  type: section
+  content: "Stores knowledge as vector embeddings for semantic search. This is the\
+    \ \"knowledge web.\"\n\n- **Collection Name:** `semantic_memory`\n- **Vector Dimensions:**\
+    \ (Depends on model, e.g., 1536 for OpenAI `text-embedding-ada-002`)\n- **Payload\
+    \ Schema (Metadata associated with each vector):**\n    ```json\n    {\n     \
+    \ \"chunk_id\": \"uuid\",\n      \"source_id\": \"string\", \n      \"node_id\"\
+    : \"uuid\",\n      \"text_chunk\": \"string\",\n      \"tags\": [\"string\"],\n\
+    \      \"created_at\": \"datetime\",\n      \"access_count\": \"integer\"\n  \
+    \  }\n    ```"
+- level: 3
+  title: Procedural Memory (PostgreSQL)
+  type: section
+  content: "Stores learned skills and effective \"procedures\" for tasks.\n\n```sql\n\
+    CREATE TABLE procedural_memory (\n    procedure_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),\n\
+    \    node_id UUID REFERENCES nodes(node_id) ON DELETE CASCADE,\n    skill_name\
+    \ VARCHAR(100) NOT NULL, -- e.g., 'HANDLE_GRIEVANCE', 'BUILD_PACKAGE'\n    trigger_conditions\
+    \ TEXT, -- Description of when to use this skill\n    steps JSONB, -- The sequence\
+    \ of actions, e.g., [{\"step\": 1, \"action\": \"invoke_api\", \"params\": {...}}]\n\
+    \    effectiveness_score FLOAT DEFAULT 0.5, -- 0.0 to 1.0\n    usage_count INTEGER\
+    \ DEFAULT 0,\n    last_used_at TIMESTAMPTZ,\n    UNIQUE(node_id, skill_name)\n\
+    );\n```"

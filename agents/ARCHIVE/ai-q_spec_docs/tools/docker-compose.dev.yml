@@ -1,0 +1,162 @@
+version: '3.8'
+
+services:
+  # Neo4j Graph Database
+  neo4j:
+    image: neo4j:5.15-community
+    container_name: aiq-neo4j
+    ports:
+      - "7474:7474"  # HTTP
+      - "7687:7687"  # Bolt
+    environment:
+      NEO4J_AUTH: neo4j/aiq-password
+      NEO4J_PLUGINS: '["apoc", "graph-data-science"]'
+      NEO4J_dbms_security_procedures_unrestricted: apoc.*,gds.*
+      NEO4J_dbms_memory_heap_initial__size: 512m
+      NEO4J_dbms_memory_heap_max__size: 1G
+      NEO4J_dbms_memory_pagecache_size: 512m
+    volumes:
+      - neo4j-data:/data
+      - neo4j-logs:/logs
+      - neo4j-import:/var/lib/neo4j/import
+      - neo4j-plugins:/plugins
+    networks:
+      - aiq-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:7474"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Elasticsearch for Semantic Search
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    container_name: aiq-elasticsearch
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: false
+      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+      cluster.name: aiq-cluster
+      node.name: aiq-node
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    networks:
+      - aiq-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Redis for Caching and Message Queue
+  redis:
+    image: redis:7.2-alpine
+    container_name: aiq-redis
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis-data:/data
+    networks:
+      - aiq-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # AI-Q API Server
+  aiq-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: aiq-api
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      NEO4J_URI: bolt://neo4j:7687
+      NEO4J_USER: neo4j
+      NEO4J_PASSWORD: aiq-password
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+      REDIS_URL: redis://redis:6379
+      PORT: 3000
+    volumes:
+      - ./src:/app/src
+      - ./data:/app/data
+    depends_on:
+      neo4j:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - aiq-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # AI-Q Dashboard (Frontend)
+  aiq-dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.dashboard
+    container_name: aiq-dashboard
+    ports:
+      - "8080:80"
+    environment:
+      REACT_APP_API_URL: http://localhost:3000
+      REACT_APP_NEO4J_URL: http://localhost:7474
+    depends_on:
+      - aiq-api
+    networks:
+      - aiq-network
+
+  # Migration Tool
+  aiq-migration:
+    build:
+      context: .
+      dockerfile: Dockerfile.migration
+    container_name: aiq-migration
+    environment:
+      NEO4J_URI: bolt://neo4j:7687
+      NEO4J_USER: neo4j
+      NEO4J_PASSWORD: aiq-password
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+      REDIS_URL: redis://redis:6379
+    volumes:
+      - ../ai-q:/app/source
+      - ./migration:/app/migration
+    depends_on:
+      neo4j:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+    networks:
+      - aiq-network
+    profiles:
+      - migration
+
+volumes:
+  neo4j-data:
+    driver: local
+  neo4j-logs:
+    driver: local
+  neo4j-import:
+    driver: local
+  neo4j-plugins:
+    driver: local
+  elasticsearch-data:
+    driver: local
+  redis-data:
+    driver: local
+
+networks:
+  aiq-network:
+    driver: bridge 

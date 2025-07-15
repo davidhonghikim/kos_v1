@@ -1,0 +1,154 @@
+title: K Os Node Discovery And Topology Mapping Engine
+description: ''
+type: documentation
+status: current
+priority: medium
+version: '1.0'
+last_updated: '2025-06-28'
+organization_date: '2025-06-28T19:48:20.188059'
+authors: []
+tags: []
+content_type: documentation
+technical_level: advanced
+word_count: 570
+has_code_blocks: false
+has_api_specs: true
+has_architecture: true
+has_deployment: true
+has_testing: false
+has_security: true
+has_rag: true
+has_ethics: false
+original_filename: k_os_node_discovery_and_topology_mapping_engine.yml
+original_path: /Users/danger/CascadeProjects/griot-node/agents/reference/kos_chatgpt/k_os_node_discovery_and_topology_mapping_engine.yml
+category: rag_system
+
+---
+
+title: K Os Node Discovery And Topology Mapping Engine
+description: ''
+type: documentation
+status: current
+priority: medium
+last_updated: '2025-06-28'
+conversion_date: '2025-06-28T19:30:47.159573'
+original_format: markdown
+content_type: api_specification
+word_count: 540
+line_count: 111
+
+---
+
+# kOS Node Discovery and Topology Mapping Engine
+
+## Overview
+The **kOS Node Discovery and Topology Mapping Engine (NDTME)** is responsible for real-time detection, classification, and mapping of all active nodes within the kOS ecosystem. It creates a live, continuously updated spatial and logical map of the network, showing node relationships, geographic distribution, role assignments, and communication pathways.
+
+NDTME enables the kOS ecosystem to maintain situational awareness, optimize task routing, enhance resilience, and dynamically adjust to network topology changes.
+
+---
+
+## 1. Functional Layers
+
+### 1.1 Node Discovery Module
+- **Passive Listening:** Detects incoming node broadcasts.
+- **Active Probing:** Sends discovery pings within predefined network ranges.
+- **Cross-Network Bridging:** Supports multi-subnet and VPN-based discovery.
+- **Federated Node Registration:** Allows remote node joining via secure API calls.
+
+### 1.2 Topology Mapping Module
+- **Graph Database Backend:** Maintains a real-time network graph of node-to-node relationships.
+- **Geospatial Tagging:** Nodes can optionally report GPS or location data.
+- **Role Mapping:** Displays Node Class and active agent population per node.
+- **Latency and Bandwidth Metrics:** Continuously measures and updates communication performance between nodes.
+
+### 1.3 Health and Status Monitor
+- Live heartbeat tracking for each node.
+- Fault detection and isolation triggers.
+- Real-time status updates (Online, Offline, Degraded, Maintenance).
+
+---
+
+## 2. Node Onboarding Workflow
+
+1. **Node Boot Sequence:** New node starts with minimal configuration.
+2. **Discovery Request Broadcast:** Node announces presence over discovery channels.
+3. **Authentication and GEIG Check:** Node undergoes security and ethical compliance checks.
+4. **Topology Graph Update:** NDTME logs node details and connection paths.
+5. **Role Assignment Notification:** Node receives acknowledgment and assigned role information.
+
+---
+
+## 3. Communication Protocols Supported
+
+- UDP Broadcast (for local subnet discovery)
+- mDNS / SSDP (optional)
+- WebSocket Mesh Overlay
+- RESTful Node Registration APIs
+- Optional LoRa, Bluetooth, or RF interfaces for off-grid node clusters
+
+---
+
+## 4. Topology Visualization Features
+
+- Real-time interactive network map (kOS Dashboard integration)
+- Node filters by class, health status, geographic region, or load level
+- Dynamic zoom for micro and macro-level network views
+- Historical topology playback for outage analysis
+
+---
+
+## 5. Fault Detection and Recovery
+
+- Heartbeat failure triggers isolation flags
+- Automated rerouting of critical workloads away from unstable nodes
+- Cluster-wide alerting for node failures
+- Optional autonomous repair scripting
+
+---
+
+## 6. API Endpoints
+
+- `/ndtme/nodes/active`
+- `/ndtme/nodes/topology`
+- `/ndtme/node/register`
+- `/ndtme/node/status/{node_id}`
+- `/ndtme/node/heartbeat`
+- `/ndtme/topology/graph`
+
+---
+
+## 7. Scalability Features
+
+- Supports thousands of nodes per cluster
+- Load-balanced topology graph storage
+- Federated data rollups for cross-cluster environments
+- Edge-node lightweight discovery modes for resource-constrained devices
+
+---
+
+## 8. Security Considerations
+
+- All discovery broadcasts require cryptographic signing
+- Node authentication via GEIG-tokenized handshake
+- Replay attack protection
+- Optional IP/Geo-fencing for critical infrastructure nodes
+
+---
+
+## 9. Optional Advanced Features
+
+- AI-powered anomaly detection on network changes
+- Latency-aware routing suggestions for task placement
+- Federated cross-cloud topology management
+- Integration with external network monitoring tools (Prometheus, Grafana, etc.)
+
+---
+
+## Conclusion
+The **kOS Node Discovery and Topology Mapping Engine (NDTME)** provides live network intelligence and situational awareness, forming the operational backbone for scalable, resilient, and secure multi-node deployments across the entire kOS ecosystem.
+
+Next Step: Proceeding to the **kOS Data Fabric and Persistence Layer** document.
+
+
+

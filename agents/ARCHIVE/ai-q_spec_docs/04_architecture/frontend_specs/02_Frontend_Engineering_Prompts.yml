@@ -1,0 +1,578 @@
+frontmatter:
+  title: Frontend Engineering Prompt Suite
+  description: Complete prompt guide for building KLF-compliant kOS frontends
+  type: engineering_guide
+  status: canonical
+  priority: critical
+  last_updated: '2025-06-30T05:30:00Z'
+  version: 1.0.0
+  agent_notes: Comprehensive prompts for independent frontend development using KLF protocols
+
+sections:
+- level: 1
+  title: Frontend Engineering Prompt Suite
+  type: section
+  content: '**Complete Prompt Guide for Building KLF-Compliant kOS Frontends**'
+
+- level: 2
+  title: 🎯 Mission Statement
+  type: section
+  content: |
+    This document provides **everything a Frontend Engineer or Agentic WebApp needs** to build kOS frontends independently. By following these prompts and using the KLF protocol as the "telephone operator," you can build any kOS frontend without worrying about backend implementation details.
+    
+    **Core Philosophy**: KLF is your universal adapter. As long as your frontend speaks KLF, it will connect and work with any kOS backend service.
+
+- level: 2
+  title: 📋 Master Prompt Template
+  type: section
+  content: |
+    Copy and customize this master prompt for any kOS frontend project:
+    
+    ```
+    # kOS Frontend Development Prompt
+    
+    ## Your Mission
+    Build a [APP_NAME] frontend that communicates via KLF (Kind Link Framework) protocols.
+    
+    ## What You're Building
+    [INSERT_APP_DESCRIPTION_FROM_SPECS]
+    
+    ## KLF Protocol Contract
+    - **Communication Layer**: All backend communication goes through KLF endpoints
+    - **Message Format**: Use KLF MessageType system (Request/Response/Event/Error)
+    - **Service Discovery**: Query `/klf/services` to discover available backend services
+    - **Real-time**: WebSocket connections via KLF WebSocket adapter
+    - **Authentication**: KLF handles auth tokens and session management
+    
+    ## Technical Stack
+    [INSERT_TECH_REQUIREMENTS]
+    
+    ## Available Services & APIs
+    [INSERT_SERVICE_LIST]
+    
+    ## UI/UX Requirements
+    [INSERT_DESIGN_REQUIREMENTS]
+    
+    ## Success Criteria
+    [INSERT_ACCEPTANCE_CRITERIA]
+    ```
+
+- level: 2
+  title: 🔌 KLF Protocol Integration Guide
+  type: section
+  content: |
+    **Essential KLF Integration Patterns:**
+    
+    ### 1. Service Discovery Pattern
+    ```typescript
+    // Always start by discovering available services
+    const services = await klf.discoverServices();
+    console.log('Available services:', services);
+    ```
+    
+    ### 2. Request/Response Pattern
+    ```typescript
+    const response = await klf.sendRequest({
+      messageType: 'Request',
+      serviceId: 'griot-node',
+      action: 'processDocument',
+      payload: { document: userInput }
+    });
+    ```
+    
+    ### 3. Real-time Event Pattern
+    ```typescript
+    klf.onEvent('documentProcessed', (event) => {
+      updateUI(event.payload);
+    });
+    ```
+    
+    ### 4. Error Handling Pattern
+    ```typescript
+    klf.onError((error) => {
+      showUserFriendlyError(error.message);
+    });
+    ```
+
+- level: 2
+  title: 🏗️ App-Specific Prompts
+  type: section
+  content: |
+    Choose the appropriate prompt based on what you're building:
+
+- level: 3
+  title: PersonaRAG Bridge Frontend
+  type: subsection
+  content: |
+    ```
+    # PersonaRAG Bridge Frontend Prompt
+    
+    ## Mission
+    Build a Chrome extension frontend for PersonaRAG Bridge that enables users to interact with AI personas and manage document RAG operations.
+    
+    ## Core Features
+    - **Persona Chat Interface**: Real-time chat with AI personas
+    - **Document Upload/Management**: Drag-and-drop document ingestion
+    - **RAG Query Interface**: Search and retrieve relevant document chunks
+    - **Extension Integration**: Seamless Chrome extension experience
+    - **Real-time Updates**: Live status updates via WebSocket
+    
+    ## KLF Services You'll Use
+    - `persona-rag-service`: Main RAG operations
+    - `document-processor`: Document ingestion and chunking
+    - `vector-store`: Similarity search and retrieval
+    - `persona-manager`: AI persona management
+    
+    ## Technical Requirements
+    - React/TypeScript
+    - Chrome Extension Manifest V3
+    - WebSocket client for real-time updates
+    - File upload with progress tracking
+    - Responsive design for extension popup/sidepanel
+    
+    ## UI Components Needed
+    - ChatInterface component
+    - DocumentUploader component
+    - PersonaSelector component
+    - SearchResults component
+    - StatusIndicator component
+    ```
+
+- level: 3
+  title: Griot Kitchen Frontend
+  type: subsection
+  content: |
+    ```
+    # Griot Kitchen Frontend Prompt
+    
+    ## Mission
+    Build a workflow orchestration interface for Griot Kitchen that allows users to create, manage, and monitor AI-driven workflows.
+    
+    ## Core Features
+    - **Workflow Builder**: Visual workflow creation interface
+    - **Recipe Management**: Create and edit AI workflow recipes
+    - **Execution Monitor**: Real-time workflow execution tracking
+    - **Resource Manager**: Manage AI models, data sources, and outputs
+    - **Dashboard**: Overview of all active workflows and system status
+    
+    ## KLF Services You'll Use
+    - `griot-orchestrator`: Workflow execution engine
+    - `recipe-manager`: Recipe storage and management
+    - `resource-manager`: AI model and data management
+    - `execution-monitor`: Real-time workflow tracking
+    
+    ## Technical Requirements
+    - React/TypeScript with state management (Zustand/Redux)
+    - Drag-and-drop workflow builder
+    - Real-time dashboard with WebSocket updates
+    - Data visualization for workflow metrics
+    - Responsive design for desktop/tablet use
+    
+    ## UI Components Needed
+    - WorkflowBuilder component (drag-and-drop)
+    - RecipeEditor component
+    - ExecutionDashboard component
+    - ResourceManager component
+    - MetricsVisualization component
+    ```
+
+- level: 3
+  title: Universal Web App Frontend
+  type: subsection
+  content: |
+    ```
+    # Universal kOS Web App Frontend Prompt
+    
+    ## Mission
+    Build a comprehensive web application that serves as the primary interface for all kOS services and capabilities.
+    
+    ## Core Features
+    - **Service Hub**: Central access point for all kOS services
+    - **Multi-App Interface**: Embedded interfaces for PersonaRAG, Griot Kitchen, etc.
+    - **User Management**: Authentication, profiles, and preferences
+    - **Data Visualization**: System-wide analytics and insights
+    - **Settings & Configuration**: Global kOS system configuration
+    
+    ## KLF Services You'll Use
+    - All available kOS services (discovered dynamically)
+    - `auth-service`: User authentication and session management
+    - `config-service`: System configuration management
+    - `analytics-service`: System-wide metrics and insights
+    
+    ## Technical Requirements
+    - React/TypeScript with micro-frontend architecture
+    - Dynamic service discovery and integration
+    - Real-time system monitoring
+    - Responsive design for all device types
+    - Progressive Web App (PWA) capabilities
+    
+    ## UI Components Needed
+    - ServiceHub component
+    - EmbeddedApp component (for sub-applications)
+    - SystemDashboard component
+    - UserProfile component
+    - ConfigurationPanel component
+    ```
+
+- level: 2
+  title: 📚 Required Resources & Libraries
+  type: section
+  content: |
+    **Essential Libraries for kOS Frontend Development:**
+    
+    ### Core Framework
+    - **React 18+**: Primary UI framework
+    - **TypeScript**: Type safety and better DX
+    - **Vite**: Build tool and dev server
+    
+    ### KLF Integration
+    - **@kos/klf-client**: Official KLF client library
+    - **ws**: WebSocket client for real-time communication
+    - **axios**: HTTP client for REST API calls
+    
+    ### State Management
+    - **Zustand**: Lightweight state management
+    - **React Query/TanStack Query**: Server state management
+    - **Jotai**: Atomic state management (alternative)
+    
+    ### UI Components
+    - **Tailwind CSS**: Utility-first CSS framework
+    - **Headless UI**: Unstyled, accessible UI components
+    - **Lucide React**: Icon library
+    - **React Hook Form**: Form handling
+    - **Zod**: Schema validation
+    
+    ### Specialized Libraries
+    - **React Flow**: For workflow/diagram builders
+    - **React Dropzone**: File upload handling
+    - **React Markdown**: Markdown rendering
+    - **Date-fns**: Date manipulation
+    - **Recharts**: Data visualization
+    
+    ### Development Tools
+    - **ESLint**: Code linting
+    - **Prettier**: Code formatting
+    - **Vitest**: Testing framework
+    - **Storybook**: Component development
+
+- level: 2
+  title: 🌐 Available kOS Services
+  type: section
+  content: |
+    **Services you can connect to via KLF:**
+    
+    ### Core Services
+    - **griot-node**: Main orchestration and AI processing
+    - **persona-rag-service**: Document RAG and AI persona management
+    - **vector-store**: Document similarity search and retrieval
+    - **document-processor**: File ingestion and chunking
+    
+    ### Utility Services
+    - **auth-service**: User authentication and session management
+    - **config-service**: System configuration management
+    - **analytics-service**: System metrics and insights
+    - **notification-service**: Real-time notifications
+    
+    ### Integration Services
+    - **openwebui-bridge**: Integration with Open WebUI
+    - **api-gateway**: External API management
+    - **webhook-service**: External webhook handling
+    
+    ### Discovery Endpoint
+    ```
+    GET /klf/services
+    Response: {
+      services: [
+        {
+          id: "griot-node",
+          name: "Griot Node",
+          version: "1.0.0",
+          endpoints: [...],
+          capabilities: [...],
+          status: "active"
+        },
+        ...
+      ]
+    }
+    ```
+
+- level: 2
+  title: 🎨 Design System & UI Guidelines
+  type: section
+  content: |
+    **kOS Design Principles:**
+    
+    ### Visual Identity
+    - **Color Palette**: Earth tones with tech accents (defined in Tailwind config)
+    - **Typography**: Clean, readable fonts with good hierarchy
+    - **Spacing**: Consistent 8px grid system
+    - **Iconography**: Lucide icons with consistent sizing
+    
+    ### Component Patterns
+    - **Cards**: For grouped content and services
+    - **Modals**: For focused interactions and confirmations
+    - **Sidebars**: For navigation and secondary content
+    - **Status Indicators**: For real-time system status
+    - **Progress Bars**: For long-running operations
+    
+    ### Accessibility Requirements
+    - WCAG 2.1 AA compliance
+    - Keyboard navigation support
+    - Screen reader compatibility
+    - High contrast mode support
+    - Reduced motion preferences
+    
+    ### Responsive Breakpoints
+    ```css
+    sm: '640px',   // Mobile landscape
+    md: '768px',   // Tablet
+    lg: '1024px',  // Desktop
+    xl: '1280px',  // Large desktop
+    2xl: '1536px'  // Extra large
+    ```
+
+- level: 2
+  title: 🔧 Development Workflow
+  type: section
+  content: |
+    **Step-by-step development process:**
+    
+    ### 1. Setup Phase
+    ```bash
+    # Clone and setup
+    git clone [repository]
+    cd [project-directory]
+    npm install
+    
+    # Start development
+    npm run dev
+    ```
+    
+    ### 2. KLF Integration Phase
+    ```typescript
+    // Initialize KLF client
+    import { KLFClient } from '@kos/klf-client';
+    
+    const klf = new KLFClient({
+      baseUrl: process.env.VITE_KLF_BASE_URL,
+      websocketUrl: process.env.VITE_KLF_WS_URL
+    });
+    
+    // Discover services
+    const services = await klf.discoverServices();
+    ```
+    
+    ### 3. Component Development Phase
+    - Build components using design system
+    - Implement KLF communication patterns
+    - Add error handling and loading states
+    - Test with mock data first, then real services
+    
+    ### 4. Integration Testing Phase
+    - Test with real KLF backend services
+    - Verify real-time communication works
+    - Test error scenarios and edge cases
+    - Validate accessibility requirements
+    
+    ### 5. Deployment Phase
+    - Build production bundle
+    - Configure environment variables
+    - Deploy to appropriate platform
+    - Monitor and iterate
+
+- level: 2
+  title: ✅ Success Criteria Checklist
+  type: section
+  content: |
+    **Your frontend is complete when:**
+    
+    ### KLF Integration
+    - [ ] Successfully discovers and connects to KLF services
+    - [ ] Implements proper request/response patterns
+    - [ ] Handles real-time events via WebSocket
+    - [ ] Gracefully handles service errors and downtime
+    - [ ] Includes proper authentication flow
+    
+    ### User Experience
+    - [ ] Responsive design works on all target devices
+    - [ ] Loading states provide clear feedback
+    - [ ] Error messages are user-friendly and actionable
+    - [ ] Navigation is intuitive and accessible
+    - [ ] Performance is smooth (< 3s initial load)
+    
+    ### Code Quality
+    - [ ] TypeScript types are properly defined
+    - [ ] Components are reusable and well-documented
+    - [ ] State management is clean and predictable
+    - [ ] Code follows project style guidelines
+    - [ ] Tests cover critical functionality
+    
+    ### Deployment
+    - [ ] Builds without errors or warnings
+    - [ ] Environment configuration is properly set
+    - [ ] Works with production KLF services
+    - [ ] Monitoring and logging are in place
+
+- level: 2
+  title: 🚀 Quick Start Examples
+  type: section
+  content: |
+    **Copy-paste examples to get started fast:**
+    
+    ### Basic KLF Client Setup
+    ```typescript
+    // src/lib/klf-client.ts
+    import { KLFClient } from '@kos/klf-client';
+    
+    export const klf = new KLFClient({
+      baseUrl: import.meta.env.VITE_KLF_BASE_URL || 'http://localhost:3000',
+      websocketUrl: import.meta.env.VITE_KLF_WS_URL || 'ws://localhost:3000'
+    });
+    
+    // Initialize and discover services
+    export const initializeKLF = async () => {
+      try {
+        await klf.connect();
+        const services = await klf.discoverServices();
+        console.log('Available services:', services);
+        return services;
+      } catch (error) {
+        console.error('Failed to initialize KLF:', error);
+        throw error;
+      }
+    };
+    ```
+    
+    ### React Hook for KLF Communication
+    ```typescript
+    // src/hooks/useKLF.ts
+    import { useState, useEffect } from 'react';
+    import { klf } from '../lib/klf-client';
+    
+    export const useKLFRequest = (serviceId: string, action: string) => {
+      const [loading, setLoading] = useState(false);
+      const [error, setError] = useState<string | null>(null);
+      
+      const sendRequest = async (payload: any) => {
+        setLoading(true);
+        setError(null);
+        
+        try {
+          const response = await klf.sendRequest({
+            messageType: 'Request',
+            serviceId,
+            action,
+            payload
+          });
+          return response;
+        } catch (err) {
+          setError(err instanceof Error ? err.message : 'Unknown error');
+          throw err;
+        } finally {
+          setLoading(false);
+        }
+      };
+      
+      return { sendRequest, loading, error };
+    };
+    ```
+    
+    ### Basic App Component Structure
+    ```typescript
+    // src/App.tsx
+    import React, { useEffect, useState } from 'react';
+    import { initializeKLF } from './lib/klf-client';
+    import { ServiceHub } from './components/ServiceHub';
+    import { LoadingSpinner } from './components/LoadingSpinner';
+    import { ErrorBoundary } from './components/ErrorBoundary';
+    
+    function App() {
+      const [services, setServices] = useState([]);
+      const [loading, setLoading] = useState(true);
+      const [error, setError] = useState<string | null>(null);
+      
+      useEffect(() => {
+        initializeKLF()
+          .then(setServices)
+          .catch((err) => setError(err.message))
+          .finally(() => setLoading(false));
+      }, []);
+      
+      if (loading) return <LoadingSpinner />;
+      if (error) return <ErrorMessage error={error} />;
+      
+      return (
+        <ErrorBoundary>
+          <div className="min-h-screen bg-gray-50">
+            <ServiceHub services={services} />
+          </div>
+        </ErrorBoundary>
+      );
+    }
+    
+    export default App;
+    ```
+
+- level: 2
+  title: 🔍 Troubleshooting Guide
+  type: section
+  content: |
+    **Common issues and solutions:**
+    
+    ### KLF Connection Issues
+    **Problem**: Cannot connect to KLF services
+    **Solutions**:
+    - Check environment variables are set correctly
+    - Verify KLF backend services are running
+    - Check network connectivity and CORS settings
+    - Review browser console for detailed error messages
+    
+    ### WebSocket Connection Failures
+    **Problem**: Real-time updates not working
+    **Solutions**:
+    - Verify WebSocket URL is correct
+    - Check for proxy/firewall blocking WebSocket connections
+    - Implement reconnection logic for dropped connections
+    - Test with WebSocket debugging tools
+    
+    ### Service Discovery Issues
+    **Problem**: Services not appearing in discovery
+    **Solutions**:
+    - Verify services are registered with KLF registry
+    - Check service health endpoints
+    - Review KLF service discovery configuration
+    - Test discovery endpoint directly with curl/Postman
+    
+    ### Authentication Problems
+    **Problem**: Authentication tokens not working
+    **Solutions**:
+    - Check token format and expiration
+    - Verify token is included in request headers
+    - Test authentication flow manually
+    - Review auth service logs for detailed errors
+
+- level: 2
+  title: 📞 Support & Resources
+  type: section
+  content: |
+    **Where to get help:**
+    
+    ### Documentation
+    - KLF Protocol Specification: `ai-q/02_protocols/`
+    - Frontend Architecture Guide: `ai-q/04_architecture/frontend_specs/`
+    - Service Documentation: `ai-q/03_node_specifications/`
+    
+    ### Code Examples
+    - Reference Implementation: `apps/persona-rag-bridge/`
+    - Component Library: `packages/ui/` (when available)
+    - Integration Examples: `examples/` directory
+    
+    ### Development Tools
+    - KLF Service Explorer: `http://localhost:3000/klf/explorer`
+    - API Documentation: `http://localhost:3000/docs`
+    - Health Check: `http://localhost:3000/health`
+    
+    ### Community
+    - GitHub Issues: For bug reports and feature requests
+    - Development Chat: For real-time development discussions
+    - Documentation Wiki: For shared knowledge and best practices 

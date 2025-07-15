@@ -1,0 +1,128 @@
+title: K Os Initial Developer Onboarding Automation Plan
+description: ''
+type: documentation
+status: current
+priority: medium
+version: '1.0'
+last_updated: '2025-06-28'
+organization_date: '2025-06-28T19:48:20.070724'
+authors: []
+tags: []
+content_type: documentation
+technical_level: intermediate
+word_count: 453
+has_code_blocks: false
+has_api_specs: true
+has_architecture: true
+has_deployment: true
+has_testing: true
+has_security: false
+has_rag: false
+has_ethics: false
+original_filename: k_os_initial_developer_onboarding_automation_plan.yml
+original_path: /Users/danger/CascadeProjects/griot-node/agents/reference/kos_chatgpt/k_os_initial_developer_onboarding_automation_plan.yml
+category: apis
+
+---
+
+title: K Os Initial Developer Onboarding Automation Plan
+description: ''
+type: documentation
+status: current
+priority: medium
+last_updated: '2025-06-28'
+conversion_date: '2025-06-28T19:30:47.348463'
+original_format: markdown
+content_type: api_specification
+word_count: 424
+line_count: 85
+
+---
+
+# kOS Initial Developer Onboarding Automation Plan
+
+## Overview
+The **kOS Initial Developer Onboarding Automation Plan** defines the automation scripts, setup tools, and recommended developer experience workflows needed to streamline the onboarding of new contributors into the kOS source code development environment.
+
+This ensures every developer starts with a consistent, working, and ethically compliant local development setup.
+
+---
+
+## 1. Automated Environment Setup Scripts
+
+### 1.1 Setup Script Types
+
+| Script | Purpose |
+|---|---|
+| `setup_dev_env.sh` | Bash script for Unix/macOS |
+| `setup_dev_env.ps1` | PowerShell script for Windows |
+| `requirements.txt` | Python dependency manifest |
+| `dev.env.sample` | Environment variable template |
+
+### 1.2 Setup Tasks Handled
+- Python virtual environment creation
+- Dependency installation (from `requirements.txt`)
+- Lint and test tool installation
+- Directory structure validation
+- Docker installation check (if applicable)
+
+---
+
+## 2. First-Time Developer Runbook
+
+1. Clone the repository
+2. Run `setup_dev_env.sh` (or `.ps1` for Windows users)
+3. Review `/docs/Contributor_Onboarding.md`
+4. Run `pytest ./tests` to validate the environment
+5. Run `./scripts/run_tose.sh` to launch first TOSE module instance
+6. Confirm local GEIG check by running `/ci/run_geig_check.py`
+
+---
+
+## 3. Ethical Compliance Onboarding
+
+- Developers must read and digitally acknowledge the **HIEROS Ethical Code**
+- GEIG risk self-assessment required before first feature branch creation
+- Optional: Run GEIG sandbox tool to simulate ethical decision validation locally
+
+---
+
+## 4. Developer Tooling Recommendations
+
+| Tool | Purpose |
+|---|---|
+| VS Code / PyCharm | IDE support |
+| Docker Desktop | Local container testing |
+| Postman / cURL | API testing |
+| Pytest | Unit testing |
+| Flake8 / Black | Code linting and formatting |
+| Git CLI / GUI | Version control |
+
+---
+
+## 5. Contributor Onboarding Automation Goals
+
+- Reduce environment setup time below 15 minutes
+- Ensure CI/CD success on first local commit
+- Prevent common Python environment and dependency errors
+- Enforce ethical compliance checks early in the developer workflow
+
+---
+
+## 6. Optional: Onboarding Status Dashboard (Future Phase)
+
+| Status | Description |
+|---|---|
+| ✅ Setup Complete | All tools installed, CI pre-checks passed |
+| ⚠️ Incomplete Setup | Missing dependencies, failed tests |
+| ❌ Ethical Check Block | GEIG risk flag blocking merge |
+
+---
+
+## Conclusion
+The **kOS Initial Developer Onboarding Automation Plan** ensures all incoming contributors can set up their local environment quickly, safely, and ethically—accelerating development velocity while protecting system integrity.
+
+✅ Next: Ready to help **generate actual setup scripts**, **write onboarding README.md**, or **build the first GEIG developer risk self-check tool**.
+
+
+

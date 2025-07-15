@@ -1,0 +1,172 @@
+metadata:
+  original_file: 02_Image_Generator.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Image Generator
+  version: '1.0'
+sections:
+- level: 1
+  title: '**Image Generator**'
+  type: section
+  content: ''
+- level: 2
+  title: '**Purpose**'
+  type: section
+  content: The Image Generator provides high-quality image generation and manipulation
+    capabilities using advanced AI models. It supports photorealistic generation,
+    style transfer, resolution optimization, and multi-format output for a wide range
+    of applications.
+- level: 2
+  title: '**Core Principles**'
+  type: section
+  content: '- **Photorealistic Output**: Generate realistic and high-quality images
+
+    - **Style Adaptation**: Support for style transfer and artistic effects
+
+    - **Resolution Optimization**: Generate images at various resolutions up to 4K
+
+    - **Multi-Format Support**: Output in multiple image formats
+
+    - **User-Centric Design**: Focus on user requirements and creative intent'
+- level: 2
+  title: '**Function Specifications**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Core Functions**'
+  type: section
+  content: ''
+- level: 4
+  title: '**generateImage(prompt: string, options?: ImageGenOptions): Promise<ImageGenResult>**'
+  type: section
+  content: "Generates an image based on a prompt and optional parameters.\n\n**Parameters:**\n\
+    - `prompt`: Input prompt or description\n- `options`: Optional generation options\
+    \ (style, resolution, format, etc.)\n\n**Returns:**\n- `ImageGenResult`: Generated\
+    \ image and metadata\n\n**Example:**\n```typescript\nconst result = await imageGenerator.generateImage(\n\
+    \  \"A futuristic cityscape at sunset\",\n  { style: \"photorealistic\", resolution:\
+    \ \"4K\", format: \"png\" }\n);\nconsole.log(result.imageUrl);\n```"
+- level: 4
+  title: '**applyStyle(image: Buffer, style: string): Promise<ImageGenResult>**'
+  type: section
+  content: 'Applies a style transfer or artistic effect to an image.
+
+
+    **Parameters:**
+
+    - `image`: Input image buffer
+
+    - `style`: Style or effect to apply
+
+
+    **Returns:**
+
+    - `ImageGenResult`: Styled image and metadata
+
+
+    **Example:**
+
+    ```typescript
+
+    const styled = await imageGenerator.applyStyle(imageBuffer, "van-gogh");
+
+    console.log(styled.imageUrl);
+
+    ```'
+- level: 4
+  title: '**optimizeResolution(image: Buffer, targetResolution: string): Promise<ImageGenResult>**'
+  type: section
+  content: 'Optimizes the resolution of an image.
+
+
+    **Parameters:**
+
+    - `image`: Input image buffer
+
+    - `targetResolution`: Target resolution (e.g., "1080p", "4K")
+
+
+    **Returns:**
+
+    - `ImageGenResult`: Optimized image and metadata
+
+
+    **Example:**
+
+    ```typescript
+
+    const optimized = await imageGenerator.optimizeResolution(imageBuffer, "4K");
+
+    console.log(optimized.imageUrl);
+
+    ```'
+- level: 2
+  title: '**Integration Patterns**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Image Generation Flow**'
+  type: section
+  content: "```mermaid\ngraph TD\n    A[Prompt Input] --> B[Model Selection]\n   \
+    \ B --> C[Image Generation]\n    C --> D[Style Application]\n    D --> E[Resolution\
+    \ Optimization]\n    E --> F[Output Delivery]\n```"
+- level: 2
+  title: '**Capabilities**'
+  type: section
+  content: '- **Photorealistic Generation**: Realistic image output
+
+    - **Style Transfer**: Artistic and creative effects
+
+    - **Resolution Optimization**: Up to 4K output
+
+    - **Multi-Format Output**: PNG, JPG, GIF, WebP, etc.
+
+    - **Batch Generation**: Generate multiple images in parallel'
+- level: 2
+  title: '**Configuration Examples**'
+  type: section
+  content: "```yaml\nimage_generator:\n  default_style: \"photorealistic\"\n  max_resolution:\
+    \ \"4K\"\n  format_support: [\"png\", \"jpg\", \"gif\", \"webp\"]\n  batch_generation:\
+    \ true\n```"
+- level: 2
+  title: '**Error Handling**'
+  type: section
+  content: '- **Model Failure**: Retry with fallback model
+
+    - **Unsupported Format**: Return error with supported formats
+
+    - **Resolution Too High**: Return error with max resolution info
+
+    - **Style Not Found**: Return error with available styles'
+- level: 2
+  title: '**Performance Considerations**'
+  type: section
+  content: '- **Generation Latency**: Optimized for < 2s
+
+    - **Batch Generation**: Support for batch image generation
+
+    - **Resource Usage**: Efficient GPU and memory usage'
+- level: 2
+  title: '**Security Considerations**'
+  type: section
+  content: '- **Content Filtering**: Filter unsafe or inappropriate images
+
+    - **Access Control**: Restrict access to sensitive generation features
+
+    - **Audit Logging**: Log all generation requests'
+- level: 2
+  title: '**Monitoring & Observability**'
+  type: section
+  content: '- **Generation Metrics**: Track request count, latency, and errors
+
+    - **Quality Metrics**: Track quality scores and feedback
+
+    - **Alerting**: Alerts for model failures or quality issues
+
+
+    ---
+
+
+    **Version**: 1.0
+
+    **Focus**: High-quality, creative image generation for kOS ecosystem'

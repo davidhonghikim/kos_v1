@@ -1,0 +1,494 @@
+metadata:
+  original_file: 06_Workflow_Management.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Workflow Management Architecture
+  description: Complete workflow system from current task coordination to future multi-agent
+    orchestration
+  category: architecture
+  subcategory: workflow
+  context: current_implementation
+  implementation_status: partial
+  decision_scope: high
+  complexity: very_high
+  last_updated: '2025-01-20'
+  code_references:
+  - src/components/capabilities/
+  - src/store/serviceStore.ts
+  - src/utils/apiClient.ts
+  related_documents:
+  - ./05_agent-orchestration.md
+  - ../services/02_orchestration-architecture.md
+  - ../../future/agents/01_agent-hierarchy.md
+  - ../../bridge/03_decision-framework.md
+  dependencies:
+  - YAML
+  - TypeScript
+  - Agent Framework
+  - KLP Protocol
+  breaking_changes: false
+  agent_notes: Workflow management system - foundation for complex multi-agent task
+    coordination
+sections:
+- level: 1
+  title: Workflow Management Architecture
+  type: section
+  content: ''
+- level: 2
+  title: Agent Context
+  type: section
+  content: '**For AI Agents**: Complete workflow management system architecture covering
+    evolution from current task coordination to sophisticated multi-agent orchestration.
+    Use this when implementing workflow systems, planning complex task coordination,
+    or understanding workflow execution patterns. Critical document for task automation
+    and orchestration work.
+
+
+    **Implementation Notes**: Contains current basic task coordination patterns and
+    future comprehensive workflow engine with YAML workflow definitions, parallel
+    execution, and error handling. Includes functional TypeScript interfaces and examples.
+
+    **Quality Requirements**: Keep workflow patterns and execution examples synchronized
+    with actual implementation. Maintain accuracy of multi-agent coordination concepts.
+
+    **Integration Points**: Foundation for task coordination, links to agent orchestration,
+    service architecture, and future multi-agent systems.
+
+
+    ---'
+- level: 2
+  title: Quick Summary
+  type: section
+  content: Complete workflow management system covering evolution from current simple
+    task coordination to sophisticated multi-agent workflow orchestration with task
+    decomposition, execution patterns, and coordination mechanisms.
+- level: 2
+  title: Overview
+  type: section
+  content: The Workflow Management Architecture provides the foundation for coordinating
+    complex tasks across multiple services and agents. It defines how tasks are decomposed,
+    scheduled, executed, and monitored throughout the system evolution from Kai-CD
+    to kOS.
+- level: 2
+  title: 'Current Implementation: Task Coordination'
+  type: section
+  content: ''
+- level: 3
+  title: Simple Task Execution
+  type: section
+  content: "The current system provides basic task coordination through capability-based\
+    \ service calls:\n\n```typescript\n// Current task execution pattern\ninterface\
+    \ TaskExecution {\n  serviceId: string;\n  capability: string;\n  parameters:\
+    \ Record<string, any>;\n  context?: string;\n}\n\n// Service call coordination\n\
+    async function executeTask(task: TaskExecution): Promise<TaskResult> {\n  const\
+    \ service = serviceStore.getService(task.serviceId);\n  const endpoint = service.getEndpoint(task.capability);\n\
+    \  \n  return await apiClient.makeRequest(service, endpoint, task.parameters);\n\
+    }\n```"
+- level: 3
+  title: Current Coordination Patterns
+  type: section
+  content: '1. **Sequential Execution**: Tasks executed one after another
+
+    2. **Capability Matching**: Route tasks to services with required capabilities
+
+    3. **Error Handling**: Basic retry and fallback mechanisms
+
+    4. **Context Passing**: Simple parameter passing between tasks
+
+    5. **User Interaction**: Manual task initiation and monitoring'
+- level: 2
+  title: 'Future Vision: Multi-Agent Workflows'
+  type: section
+  content: ''
+- level: 3
+  title: Workflow Definition Language
+  type: section
+  content: 'The future system implements a comprehensive workflow definition language:
+
+
+    ```yaml'
+- level: 1
+  title: Complex workflow example
+  type: section
+  content: "workflow:\n  id: research-and-summarize\n  version: 1.0\n  description:\
+    \ \"Research topic and create comprehensive summary\"\n  \n  inputs:\n    - name:\
+    \ topic\n      type: string\n      required: true\n    - name: depth\n      type:\
+    \ enum\n      values: [shallow, moderate, deep]\n      default: moderate\n  \n\
+    \  outputs:\n    - name: summary\n      type: document\n    - name: sources\n\
+    \      type: array\n  \n  steps:\n    - id: planning\n      agent: kPlanner\n\
+    \      action: decompose_research_goal\n      inputs:\n        topic: $inputs.topic\n\
+    \        depth: $inputs.depth\n      outputs:\n        research_plan: plan\n \
+    \   \n    - id: information_gathering\n      agent: kExecutor\n      action: execute_research_plan\n\
+    \      inputs:\n        plan: $steps.planning.research_plan\n      parallel: true\n\
+    \      outputs:\n        raw_data: data\n        sources: sources\n    \n    -\
+    \ id: synthesis\n      agent: kReviewer\n      action: synthesize_findings\n \
+    \     inputs:\n        data: $steps.information_gathering.raw_data\n        sources:\
+    \ $steps.information_gathering.sources\n      outputs:\n        summary: summary\n\
+    \    \n    - id: quality_check\n      agent: kReviewer\n      action: validate_summary\n\
+    \      inputs:\n        summary: $steps.synthesis.summary\n        original_topic:\
+    \ $inputs.topic\n      outputs:\n        validated_summary: summary\n        quality_score:\
+    \ score\n  \n  error_handling:\n    - step: information_gathering\n      on_failure:\
+    \ retry\n      max_retries: 3\n      fallback: manual_research\n    \n    - step:\
+    \ synthesis\n      on_failure: escalate\n      escalation_agent: kCoordinator\n\
+    \  \n  monitoring:\n    progress_tracking: true\n    performance_metrics: true\n\
+    \    audit_trail: true\n```"
+- level: 3
+  title: Workflow Execution Engine
+  type: section
+  content: "```typescript\ninterface WorkflowEngine {\n  // Workflow lifecycle\n \
+    \ createWorkflow(definition: WorkflowDefinition): Promise<WorkflowInstance>;\n\
+    \  executeWorkflow(instanceId: string): Promise<WorkflowResult>;\n  pauseWorkflow(instanceId:\
+    \ string): Promise<void>;\n  resumeWorkflow(instanceId: string): Promise<void>;\n\
+    \  cancelWorkflow(instanceId: string, reason: string): Promise<void>;\n  \n  //\
+    \ Step execution\n  executeStep(stepId: string, inputs: StepInputs): Promise<StepResult>;\n\
+    \  retryStep(stepId: string, retryCount: number): Promise<StepResult>;\n  \n \
+    \ // Monitoring and control\n  getWorkflowStatus(instanceId: string): Promise<WorkflowStatus>;\n\
+    \  getExecutionHistory(instanceId: string): Promise<ExecutionHistory>;\n  \n \
+    \ // Dynamic workflow modification\n  addStep(instanceId: string, step: StepDefinition):\
+    \ Promise<void>;\n  removeStep(instanceId: string, stepId: string): Promise<void>;\n\
+    \  modifyStep(instanceId: string, stepId: string, changes: StepChanges): Promise<void>;\n\
+    }\n```"
+- level: 2
+  title: Workflow Patterns
+  type: section
+  content: ''
+- level: 3
+  title: Sequential Workflows
+  type: section
+  content: "Linear execution where each step depends on the previous step's output:\n\
+    \n```typescript\ninterface SequentialWorkflow {\n  steps: WorkflowStep[];\n  execution_order:\
+    \ 'sequential';\n  \n  // Each step waits for previous completion\n  dependencies:\
+    \ {\n    [stepId: string]: string[]; // prerequisite steps\n  };\n}\n```"
+- level: 3
+  title: Parallel Workflows
+  type: section
+  content: "Concurrent execution of independent tasks:\n\n```typescript\ninterface\
+    \ ParallelWorkflow {\n  parallel_groups: ParallelGroup[];\n  execution_order:\
+    \ 'parallel';\n  \n  // Steps within groups execute concurrently\n  synchronization_points:\
+    \ SyncPoint[];\n}\n\ninterface ParallelGroup {\n  id: string;\n  steps: WorkflowStep[];\n\
+    \  max_concurrency: number;\n  resource_requirements: ResourceRequirements;\n\
+    }\n```"
+- level: 3
+  title: Conditional Workflows
+  type: section
+  content: "Dynamic execution based on runtime conditions:\n\n```typescript\ninterface\
+    \ ConditionalWorkflow {\n  decision_points: DecisionPoint[];\n  execution_order:\
+    \ 'conditional';\n  \n  // Runtime decision making\n  conditions: {\n    [stepId:\
+    \ string]: ConditionExpression;\n  };\n}\n\ninterface DecisionPoint {\n  id: string;\n\
+    \  condition: string; // Expression to evaluate\n  true_path: string[]; // Steps\
+    \ to execute if true\n  false_path: string[]; // Steps to execute if false\n \
+    \ default_path?: string[]; // Fallback steps\n}\n```"
+- level: 3
+  title: Loop Workflows
+  type: section
+  content: "Iterative execution with termination conditions:\n\n```typescript\ninterface\
+    \ LoopWorkflow {\n  loop_body: WorkflowStep[];\n  execution_order: 'loop';\n \
+    \ \n  // Loop control\n  loop_condition: ConditionExpression;\n  max_iterations:\
+    \ number;\n  break_conditions: BreakCondition[];\n}\n```"
+- level: 2
+  title: Task Decomposition
+  type: section
+  content: ''
+- level: 3
+  title: Goal Decomposition Engine
+  type: section
+  content: "```typescript\ninterface GoalDecomposer {\n  // Break down complex goals\
+    \ into manageable tasks\n  decomposeGoal(goal: GoalDefinition): Promise<TaskGraph>;\n\
+    \  \n  // Analyze task dependencies\n  analyzeDependencies(tasks: Task[]): Promise<DependencyGraph>;\n\
+    \  \n  // Optimize execution order\n  optimizeExecutionPlan(taskGraph: TaskGraph):\
+    \ Promise<ExecutionPlan>;\n  \n  // Resource allocation\n  allocateResources(executionPlan:\
+    \ ExecutionPlan): Promise<ResourceAllocation>;\n}\n\ninterface TaskGraph {\n \
+    \ nodes: TaskNode[];\n  edges: TaskEdge[];\n  \n  // Graph analysis\n  getCriticalPath():\
+    \ TaskPath;\n  getParallelizable(): TaskNode[][];\n  estimateExecutionTime():\
+    \ Duration;\n}\n```"
+- level: 3
+  title: Task Scheduling
+  type: section
+  content: "```typescript\ninterface TaskScheduler {\n  // Schedule task execution\n\
+    \  scheduleTask(task: Task, constraints: SchedulingConstraints): Promise<ScheduledTask>;\n\
+    \  \n  // Resource-aware scheduling\n  scheduleWithResources(tasks: Task[], resources:\
+    \ AvailableResources): Promise<Schedule>;\n  \n  // Priority-based scheduling\n\
+    \  schedulePriority(tasks: PrioritizedTask[]): Promise<Schedule>;\n  \n  // Dynamic\
+    \ rescheduling\n  reschedule(scheduleId: string, changes: ScheduleChanges): Promise<Schedule>;\n\
+    }\n```"
+- level: 2
+  title: Agent Coordination
+  type: section
+  content: ''
+- level: 3
+  title: Multi-Agent Coordination Patterns
+  type: section
+  content: ''
+- level: 4
+  title: Master-Slave Pattern
+  type: section
+  content: "One coordinator agent manages multiple worker agents:\n\n```typescript\n\
+    interface MasterSlaveCoordination {\n  master: AgentReference;\n  slaves: AgentReference[];\n\
+    \  \n  // Task distribution\n  distributeTask(task: Task): Promise<TaskDistribution>;\n\
+    \  \n  // Result aggregation\n  aggregateResults(results: TaskResult[]): Promise<AggregatedResult>;\n\
+    \  \n  // Failure handling\n  handleSlaveFailure(slaveId: string, error: Error):\
+    \ Promise<RecoveryAction>;\n}\n```"
+- level: 4
+  title: Peer-to-Peer Pattern
+  type: section
+  content: "Agents coordinate directly without central authority:\n\n```typescript\n\
+    interface PeerToPeerCoordination {\n  peers: AgentReference[];\n  \n  // Consensus\
+    \ mechanisms\n  reachConsensus(proposal: Proposal): Promise<ConsensusResult>;\n\
+    \  \n  // Load balancing\n  balanceLoad(tasks: Task[]): Promise<LoadDistribution>;\n\
+    \  \n  // Conflict resolution\n  resolveConflict(conflict: Conflict): Promise<Resolution>;\n\
+    }\n```"
+- level: 4
+  title: Hierarchical Pattern
+  type: section
+  content: "Multi-level coordination with delegation:\n\n```typescript\ninterface\
+    \ HierarchicalCoordination {\n  hierarchy: AgentHierarchy;\n  \n  // Delegation\
+    \ chains\n  delegateUp(task: Task, level: number): Promise<DelegationResult>;\n\
+    \  delegateDown(task: Task, level: number): Promise<DelegationResult>;\n  \n \
+    \ // Authority management\n  checkAuthority(agentId: string, action: Action):\
+    \ Promise<boolean>;\n  escalateAuthority(request: AuthorityRequest): Promise<AuthorityGrant>;\n\
+    }\n```"
+- level: 2
+  title: Workflow State Management
+  type: section
+  content: ''
+- level: 3
+  title: State Persistence
+  type: section
+  content: "```typescript\ninterface WorkflowState {\n  // Workflow metadata\n  id:\
+    \ string;\n  definition: WorkflowDefinition;\n  status: WorkflowStatus;\n  created_at:\
+    \ Date;\n  updated_at: Date;\n  \n  // Execution state\n  current_step: string;\n\
+    \  completed_steps: string[];\n  failed_steps: string[];\n  step_results: Map<string,\
+    \ StepResult>;\n  \n  // Runtime context\n  variables: Map<string, any>;\n  inputs:\
+    \ WorkflowInputs;\n  outputs: WorkflowOutputs;\n  \n  // Error information\n \
+    \ errors: WorkflowError[];\n  retry_counts: Map<string, number>;\n}\n\ninterface\
+    \ WorkflowStateManager {\n  // State persistence\n  saveState(state: WorkflowState):\
+    \ Promise<void>;\n  loadState(workflowId: string): Promise<WorkflowState>;\n \
+    \ \n  // State queries\n  getWorkflowsByStatus(status: WorkflowStatus): Promise<WorkflowState[]>;\n\
+    \  getActiveWorkflows(): Promise<WorkflowState[]>;\n  \n  // State cleanup\n \
+    \ archiveCompletedWorkflows(olderThan: Date): Promise<number>;\n  purgeFailedWorkflows(olderThan:\
+    \ Date): Promise<number>;\n}\n```"
+- level: 3
+  title: Checkpoint and Recovery
+  type: section
+  content: "```typescript\ninterface CheckpointManager {\n  // Create checkpoints\n\
+    \  createCheckpoint(workflowId: string, stepId: string): Promise<Checkpoint>;\n\
+    \  \n  // Recovery operations\n  restoreFromCheckpoint(checkpointId: string):\
+    \ Promise<WorkflowState>;\n  \n  // Checkpoint management\n  listCheckpoints(workflowId:\
+    \ string): Promise<Checkpoint[]>;\n  deleteCheckpoint(checkpointId: string): Promise<void>;\n\
+    \  \n  // Automatic checkpointing\n  enableAutoCheckpoint(workflowId: string,\
+    \ interval: Duration): Promise<void>;\n  disableAutoCheckpoint(workflowId: string):\
+    \ Promise<void>;\n}\n```"
+- level: 2
+  title: Error Handling and Recovery
+  type: section
+  content: ''
+- level: 3
+  title: Error Classification
+  type: section
+  content: "```typescript\nenum ErrorType {\n  TRANSIENT = 'transient',      // Temporary\
+    \ failures, retry possible\n  PERMANENT = 'permanent',      // Permanent failures,\
+    \ no retry\n  RESOURCE = 'resource',        // Resource constraints\n  DEPENDENCY\
+    \ = 'dependency',    // Dependency failures\n  TIMEOUT = 'timeout',          //\
+    \ Execution timeouts\n  VALIDATION = 'validation',    // Input/output validation\n\
+    \  SECURITY = 'security',        // Security violations\n  UNKNOWN = 'unknown'\
+    \           // Unknown errors\n}\n\ninterface WorkflowError {\n  type: ErrorType;\n\
+    \  step_id: string;\n  message: string;\n  details: any;\n  timestamp: Date;\n\
+    \  recoverable: boolean;\n  suggested_action: RecoveryAction;\n}\n```"
+- level: 3
+  title: Recovery Strategies
+  type: section
+  content: "```typescript\ninterface RecoveryStrategy {\n  // Retry mechanisms\n \
+    \ retryWithBackoff(step: WorkflowStep, error: WorkflowError): Promise<StepResult>;\n\
+    \  retryWithDifferentAgent(step: WorkflowStep, error: WorkflowError): Promise<StepResult>;\n\
+    \  \n  // Fallback strategies\n  executeFallback(step: WorkflowStep, fallback:\
+    \ FallbackDefinition): Promise<StepResult>;\n  \n  // Compensation actions\n \
+    \ compensate(completedSteps: WorkflowStep[]): Promise<CompensationResult>;\n \
+    \ \n  // Manual intervention\n  requestManualIntervention(error: WorkflowError):\
+    \ Promise<InterventionResult>;\n}\n```"
+- level: 2
+  title: Monitoring and Observability
+  type: section
+  content: ''
+- level: 3
+  title: Workflow Metrics
+  type: section
+  content: "```typescript\ninterface WorkflowMetrics {\n  // Execution metrics\n \
+    \ total_executions: number;\n  successful_executions: number;\n  failed_executions:\
+    \ number;\n  average_execution_time: Duration;\n  \n  // Step metrics\n  step_success_rates:\
+    \ Map<string, number>;\n  step_execution_times: Map<string, Duration>;\n  \n \
+    \ // Resource metrics\n  resource_utilization: ResourceUtilization;\n  cost_per_execution:\
+    \ number;\n  \n  // Performance metrics\n  throughput: number; // workflows per\
+    \ hour\n  latency_percentiles: LatencyPercentiles;\n}\n\ninterface WorkflowMonitor\
+    \ {\n  // Real-time monitoring\n  monitorExecution(workflowId: string): Promise<ExecutionStream>;\n\
+    \  \n  // Metrics collection\n  collectMetrics(timeRange: TimeRange): Promise<WorkflowMetrics>;\n\
+    \  \n  // Alerting\n  configureAlerts(rules: AlertRule[]): Promise<void>;\n  \n\
+    \  // Performance analysis\n  analyzePerformance(workflowId: string): Promise<PerformanceReport>;\n\
+    }\n```"
+- level: 3
+  title: Audit Trail
+  type: section
+  content: "```typescript\ninterface AuditTrail {\n  // Event logging\n  logWorkflowEvent(event:\
+    \ WorkflowEvent): Promise<void>;\n  logStepEvent(event: StepEvent): Promise<void>;\n\
+    \  logAgentEvent(event: AgentEvent): Promise<void>;\n  \n  // Audit queries\n\
+    \  getWorkflowAudit(workflowId: string): Promise<AuditRecord[]>;\n  searchAuditLogs(criteria:\
+    \ AuditCriteria): Promise<AuditRecord[]>;\n  \n  // Compliance reporting\n  generateComplianceReport(timeRange:\
+    \ TimeRange): Promise<ComplianceReport>;\n}\n```"
+- level: 2
+  title: Evolution Strategy
+  type: section
+  content: ''
+- level: 3
+  title: 'Phase 1: Enhanced Task Coordination (Current)'
+  type: section
+  content: '- Improve sequential task execution with better error handling
+
+    - Add basic task dependency management
+
+    - Implement simple workflow templates for common patterns
+
+    - Create workflow execution history and basic monitoring'
+- level: 3
+  title: 'Phase 2: Multi-Step Workflows (Near Future)'
+  type: section
+  content: '- Introduce workflow definition language
+
+    - Implement parallel task execution capabilities
+
+    - Add conditional workflow logic
+
+    - Create workflow state persistence and recovery'
+- level: 3
+  title: 'Phase 3: Agent-Aware Workflows (Future)'
+  type: section
+  content: '- Integrate with agent orchestration system
+
+    - Implement multi-agent coordination patterns
+
+    - Add dynamic workflow modification capabilities
+
+    - Create sophisticated error handling and recovery'
+- level: 3
+  title: 'Phase 4: Autonomous Workflows (Advanced kOS)'
+  type: section
+  content: '- Self-optimizing workflow execution
+
+    - Predictive workflow planning
+
+    - Adaptive resource allocation
+
+    - Machine learning-driven workflow optimization'
+- level: 2
+  title: Configuration Management
+  type: section
+  content: ''
+- level: 3
+  title: Workflow Configuration
+  type: section
+  content: '```yaml'
+- level: 1
+  title: workflow-engine.yaml
+  type: section
+  content: "engine:\n  max_concurrent_workflows: 100\n  max_workflow_duration: 24h\n\
+    \  checkpoint_interval: 5m\n  \n  execution:\n    timeout_default: 30m\n    retry_default:\
+    \ 3\n    backoff_strategy: exponential\n    \n  monitoring:\n    metrics_collection:\
+    \ true\n    audit_logging: true\n    performance_tracking: true\n    \n  storage:\n\
+    \    state_backend: postgresql\n    checkpoint_backend: s3\n    audit_backend:\
+    \ elasticsearch\n```"
+- level: 3
+  title: Workflow Templates
+  type: section
+  content: '```yaml'
+- level: 1
+  title: Common workflow templates
+  type: section
+  content: "templates:\n  simple_llm_chain:\n    description: \"Simple LLM processing\
+    \ chain\"\n    steps:\n      - id: process\n        agent: llm_service\n     \
+    \   action: generate_text\n      - id: review\n        agent: review_service\n\
+    \        action: validate_output\n  \n  research_workflow:\n    description: \"\
+    Multi-step research workflow\"\n    steps:\n      - id: plan\n        agent: planner\n\
+    \        action: create_research_plan\n      - id: gather\n        agent: executor\n\
+    \        action: execute_research\n        parallel: true\n      - id: synthesize\n\
+    \        agent: reviewer\n        action: create_summary\n```"
+- level: 2
+  title: Implementation Roadmap
+  type: section
+  content: ''
+- level: 3
+  title: Current Capabilities
+  type: section
+  content: '- ✅ Basic service-to-service task execution
+
+    - ✅ Simple capability-based routing
+
+    - ✅ Error handling with retry logic
+
+    - ✅ Context passing between service calls
+
+    - ✅ Manual task initiation and monitoring'
+- level: 3
+  title: Near-Term Enhancements
+  type: section
+  content: '- 🔄 Multi-step workflow execution engine
+
+    - 🔄 Workflow definition language
+
+    - 🔄 State persistence and recovery
+
+    - 🔄 Enhanced monitoring and metrics'
+- level: 3
+  title: Future Development
+  type: section
+  content: '- ⬜ Multi-agent workflow coordination
+
+    - ⬜ Dynamic workflow modification
+
+    - ⬜ Advanced error handling and recovery
+
+    - ⬜ Autonomous workflow optimization
+
+    - ⬜ Machine learning-driven improvements'
+- level: 2
+  title: Best Practices
+  type: section
+  content: ''
+- level: 3
+  title: Workflow Design Principles
+  type: section
+  content: '1. **Modularity**: Design workflows as composable units
+
+    2. **Idempotency**: Ensure steps can be safely retried
+
+    3. **Fault Tolerance**: Plan for failures at every step
+
+    4. **Observability**: Include comprehensive monitoring
+
+    5. **Scalability**: Design for horizontal scaling'
+- level: 3
+  title: Error Handling Guidelines
+  type: section
+  content: '1. **Fail Fast**: Detect and report errors quickly
+
+    2. **Graceful Degradation**: Provide fallback options
+
+    3. **Compensation**: Include rollback mechanisms
+
+    4. **Escalation**: Define clear escalation paths
+
+    5. **Learning**: Capture error patterns for improvement'
+- level: 3
+  title: Performance Optimization
+  type: section
+  content: '1. **Parallel Execution**: Identify parallelizable tasks
+
+    2. **Resource Optimization**: Minimize resource usage
+
+    3. **Caching**: Cache intermediate results
+
+    4. **Batching**: Group similar operations
+
+    5. **Lazy Loading**: Load resources on demand'
+- level: 2
+  title: Conclusion
+  type: section
+  content: ''

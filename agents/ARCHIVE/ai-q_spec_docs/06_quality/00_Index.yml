@@ -1,0 +1,27 @@
+title: 06_quality Index
+version: '1.0'
+category: 06_quality
+description: Index of all documentation in 06_quality
+files:
+- name: 00_Quality_Standards
+  path: 00_Quality_Standards.yml
+  type: documentation
+- name: 05_Refactoring_Plan
+  path: kai-cd_02_analysis/05_Refactoring_Plan.yml
+  type: documentation
+- name: 04_Architecture_Analysis
+  path: kai-cd_02_analysis/04_Architecture_Analysis.yml
+  type: documentation
+- name: 01_Authentication_Analysis
+  path: kai-cd_02_analysis/01_Authentication_Analysis.yml
+  type: documentation
+- name: 06_Refactoring_Summary
+  path: kai-cd_02_analysis/06_Refactoring_Summary.yml
+  type: documentation
+- name: 03_Comprehensive_Code_Analysis
+  path: kai-cd_02_analysis/03_Comprehensive_Code_Analysis.yml
+  type: documentation
+- name: 02_Frontend_Issues_Analysis
+  path: kai-cd_02_analysis/02_Frontend_Issues_Analysis.yml
+  type: documentation
+last_updated: '2025-06-30T03:49:23.100429'

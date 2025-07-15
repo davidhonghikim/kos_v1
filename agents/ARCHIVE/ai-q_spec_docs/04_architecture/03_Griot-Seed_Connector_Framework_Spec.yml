@@ -1,0 +1,140 @@
+metadata:
+  original_file: 03_Griot-Seed_Connector_Framework_Spec.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: 03_Griot-Seed_Connector_Framework_Spec
+  version: 1.0
+sections:
+- level: 1
+  title: '**Griot-Seed: Service Connector Framework Specification**'
+  type: section
+  content: '**Version**: 1.0
+
+    **Status**: DRAFT'
+- level: 2
+  title: 1. Overview & Philosophy
+  type: section
+  content: 'This document specifies the architecture for the Griot-Seed Service Connector
+    Framework. The framework is designed as a **universal adapter**, enabling the
+    `griot-node` ecosystem to interact with any external or internal service through
+    a standardized, self-describing interface.
+
+
+    The core philosophy is **abstraction and interoperability**. The framework decouples
+    the core orchestration logic (`griot-kitchen`) from the specific implementation
+    details of the services it consumes. An AI agent or a user should be able to interact
+    with a powerful, graph-based image generator like ComfyUI using the same high-level
+    constructs as a simple REST API for a language model.
+
+
+    This is achieved by creating a "connector definition" for each service. This definition
+    acts as a translation layer, mapping a standardized set of capabilities and parameters
+    to the unique API and data model of the target service.'
+- level: 2
+  title: 2. Core Architectural Components
+  type: section
+  content: The framework is composed of several key TypeScript types and structures.
+- level: 3
+  title: 2.1. `ServiceDefinition`
+  type: section
+  content: "This is the root object for any connector. It contains all the metadata\
+    \ required for the system to understand, display, and connect to a service.\n\n\
+    ```typescript\nexport interface ServiceDefinition {\n  type: string; // Unique\
+    \ identifier, e.g., 'comfyui', 'openai'\n  name: string; // Human-readable name,\
+    \ e.g., 'ComfyUI'\n  category: ServiceCategory; // e.g., 'IMAGE_GENERATION', 'LLM',\
+    \ 'STORAGE'\n  \n  defaultPort?: number;\n  hasExternalUi?: boolean;\n  \n  docs?:\
+    \ {\n    api?: string;\n    website?: string;\n  };\n\n  authentication: AuthenticationDefinition;\n\
+    \  capabilities: Capability[];\n  \n  configuration?: {\n    arguments?: { [key:\
+    \ string]: string };\n    help?: {\n      instructions: string;\n    };\n  };\n\
+    }\n```"
+- level: 3
+  title: 2.2. `Capability`
+  type: section
+  content: "This is the most critical abstraction. Instead of defining a static client\
+    \ for a service's entire API, a service exposes one or more generic `capabilities`.\
+    \ This allows the orchestrator to query for services that can perform a certain\
+    \ *type* of task.\n\n**Example Capabilities:**\n-   `llm_chat`\n-   `image_generation`\n\
+    -   `graph_execution`\n-   `model_management`\n-   `vector_storage`\n-   `health`\n\
+    -   `vector_database`\n-   `document_storage`\n\nEach capability defines the API\
+    \ endpoints and the parameters it supports.\n\n```typescript\n// Base Capability\n\
+    export interface Capability {\n  capability: string; // e.g., 'llm_chat'\n  endpoints:\
+    \ { [name: string]: EndpointDefinition };\n}\n\n// Example: LLM Chat Capability\n\
+    export interface LlmChatCapability extends Capability {\n  capability: 'llm_chat';\n\
+    \  parameters: {\n    chat: ParameterDefinition[];\n  };\n}\n```"
+- level: 3
+  title: 2.3. `ParameterDefinition` & `ParameterMapping`
+  type: section
+  content: "This is the heart of the \"universal adapter\" pattern.\n\n-   **`ParameterDefinition`**:\
+    \ A generic description of a single input parameter, including its type (`string`,\
+    \ `number`, `select`), default value, range, and UI-facing labels.\n-   **`ParameterMapping`**:\
+    \ For complex services (like ComfyUI), this object maps the simple, user-facing\
+    \ `ParameterDefinition` to the specific, often nested, location within the service's\
+    \ API request body.\n\n```typescript\n// Describes a simple, user-facing parameter\n\
+    export interface ParameterDefinition {\n  key: string;\n  label: string;\n  type:\
+    \ 'string' | 'number' | 'boolean' | 'select';\n  defaultValue?: any;\n  description?:\
+    \ string;\n  options?: any[];\n  optionsEndpoint?: string; // API endpoint to\
+    \ fetch dynamic options\n}\n\n// Maps the simple parameter to a complex API\n\
+    export interface ParameterMapping {\n  [userFacingKey: string]: {\n    nodeId:\
+    \ string;      // The ID of the target node in a graph\n    inputKey: string;\
+    \    // The key of the input on that node\n    parameterDefinition: ParameterDefinition;\n\
+    \  }\n}\n```\nThis allows the UI and orchestrator to work with a simple key-value\
+    \ map (e.g., `{ \"prompt\": \"a cat\", \"seed\": 123 }`), while the connector\
+    \ handles the complex task of injecting those values into the correct place in\
+    \ the API call (e.g., the `text` input of the `CLIPTextEncode` node in a ComfyUI\
+    \ graph)."
+- level: 3
+  title: 2.4. Directory & Aggregation Structure
+  type: section
+  content: 'Inspired by the `kai-cd` project, the connector definitions will be organized
+    as follows:
+
+
+    -   **`packages/service-connectors/src/definitions/`**: This directory will contain
+    one file for each service connector (e.g., `openai.ts`, `comfyui.ts`).
+
+    -   **`packages/service-connectors/src/definitions/index.ts`**: A barrel file
+    that exports all individual service definitions.
+
+    -   **`packages/service-connectors/src/definitions/all.ts`**: A file that imports
+    all definitions and aggregates them into a single `allServiceDefinitions` array,
+    providing a central registry for the entire system.'
+- level: 2
+  title: 3. Next Steps & Implementation Plan
+  type: section
+  content: 'With this specification defined, the implementation will proceed as follows:
+
+
+    1.  **Decommission `rag-engine`**: The broken `packages/rag-engine` directory
+    will be deleted.
+
+    2.  **Scaffold `service-connectors`**: A new package will be created at `packages/service-connectors`.
+
+    3.  **Implement Core Types**: The core TypeScript interfaces (`ServiceDefinition`,
+    `Capability`, etc.) will be created in a `types.ts` file within the new package.
+
+    4.  **Implement Connectors**: Implement a comprehensive set of initial connectors,
+    including `http`, `openai`, `comfyui`, `ollama`, `chroma`, and `mongodb` to validate
+    the framework against a variety of service types.
+
+    5.  **Update Orchestrator**: The `griot-kitchen` will be updated to consume the
+    `allServiceDefinitions` registry and dynamically use the new connectors.'
+- level: 2
+  title: 4. Implemented Connectors
+  type: section
+  content: 'The following connectors have been implemented as part of the initial
+    framework scaffolding:
+
+
+    - **http**: A generic connector for basic HTTP requests.
+
+    - **openai**: For interacting with OpenAI''s API.
+
+    - **comfyui**: A complex connector for the graph-based ComfyUI image generation
+    service.
+
+    - **ollama**: For interacting with local LLMs via the Ollama server.
+
+    - **chroma**: For vector storage and querying with Chroma DB.
+
+    - **mongodb**: A non-HTTP connector for the project''s primary document store.'

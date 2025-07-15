@@ -1,0 +1,316 @@
+metadata:
+  original_file: 03_Content_Extractor.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Content Extractor
+  version: '1.0'
+  module: Content Extractor
+  subcategory: Message Processing
+  category: Communication & Language
+  description: Content extraction and structure analysis for intelligent message processing
+sections:
+- level: 1
+  title: '**Content Extractor**'
+  type: section
+  content: ''
+- level: 2
+  title: '**Overview**'
+  type: section
+  content: The Content Extractor module provides advanced content extraction and structure
+    analysis capabilities for the kOS ecosystem. This module intelligently extracts
+    specific content types, patterns, and structured data from messages with high
+    accuracy and performance optimization.
+- level: 2
+  title: '**Core Principles**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Intelligent Extraction**'
+  type: section
+  content: '- **Pattern Recognition**: Advanced pattern recognition for content extraction
+
+    - **Type Detection**: Automatic content type detection and classification
+
+    - **Context Awareness**: Context-aware extraction with semantic understanding
+
+    - **Learning Capability**: Machine learning for improved extraction accuracy'
+- level: 3
+  title: '**High Accuracy**'
+  type: section
+  content: '- **Precision Extraction**: High-precision extraction with minimal false
+    positives
+
+    - **Quality Validation**: Quality validation and verification of extracted content
+
+    - **Error Recovery**: Robust error recovery and partial extraction support
+
+    - **Optimization**: Continuous optimization for extraction accuracy and performance'
+- level: 3
+  title: '**Performance & Scalability**'
+  type: section
+  content: '- **High Performance**: High-performance extraction with minimal latency
+
+    - **Scalability**: Horizontal and vertical scaling for high-volume extraction
+
+    - **Resource Efficiency**: Efficient resource usage for large content processing
+
+    - **Caching**: Intelligent caching for repeated extraction patterns'
+- level: 2
+  title: '**Function Specifications**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Core Functions**'
+  type: section
+  content: ''
+- level: 4
+  title: '**01. Content Extraction**'
+  type: section
+  content: "```typescript\ninterface ContentExtractionConfig {\n  extractFields: string[];\n\
+    \  extractPatterns: RegExp[];\n  extractTypes: ContentType[];\n  validation: boolean;\n\
+    \  qualityThreshold: number;\n}\n\ninterface ContentExtractionResult {\n  extractedContent:\
+    \ ExtractedContent;\n  fields: ExtractedField[];\n  patterns: PatternMatch[];\n\
+    \  quality: ExtractionQuality;\n  metadata: ExtractionMetadata;\n}\n\ninterface\
+    \ ExtractedContent {\n  text: string[];\n  numbers: number[];\n  dates: Date[];\n\
+    \  urls: string[];\n  emails: string[];\n  phoneNumbers: string[];\n  addresses:\
+    \ string[];\n  custom: Record<string, any>;\n}\n\nfunction extractContent(parsedMessage:\
+    \ ParsedMessage, config: ContentExtractionConfig): Promise<ContentExtractionResult>\n\
+    ```\n\n**Purpose**: Extract specific content types and patterns from parsed messages.\n\
+    \n**Parameters**:\n- `parsedMessage`: Parsed message to extract from\n- `config`:\
+    \ Extraction configuration and target content types\n\n**Returns**: Extracted\
+    \ content with quality metrics and metadata\n\n**Error Handling**:\n- Extraction\
+    \ pattern failures\n- Content validation errors\n- Memory allocation errors\n\
+    - Quality threshold violations"
+- level: 4
+  title: '**02. Pattern Matching**'
+  type: section
+  content: "```typescript\ninterface PatternMatchingConfig {\n  patterns: RegExp[];\n\
+    \  caseSensitive: boolean;\n  multiline: boolean;\n  global: boolean;\n  validation:\
+    \ boolean;\n}\n\ninterface PatternMatchingResult {\n  matches: PatternMatch[];\n\
+    \  confidence: number;\n  quality: PatternQuality;\n  metadata: PatternMetadata;\n\
+    }\n\ninterface PatternMatch {\n  pattern: RegExp;\n  matches: string[];\n  positions:\
+    \ Position[];\n  confidence: number;\n  context: string;\n}\n\nfunction matchPatterns(content:\
+    \ string, config: PatternMatchingConfig): Promise<PatternMatchingResult>\n```\n\
+    \n**Purpose**: Match specific patterns in content with confidence scoring.\n\n\
+    **Parameters**:\n- `content`: Content to search for patterns\n- `config`: Pattern\
+    \ matching configuration and settings\n\n**Returns**: Pattern matches with confidence\
+    \ and quality metrics\n\n**Error Handling**:\n- Invalid pattern errors\n- Memory\
+    \ allocation errors\n- Timeout errors for complex patterns\n- Validation failures"
+- level: 4
+  title: '**03. Type Detection**'
+  type: section
+  content: "```typescript\ninterface TypeDetectionConfig {\n  detectTypes: ContentType[];\n\
+    \  confidenceThreshold: number;\n  validation: boolean;\n  learning: boolean;\n\
+    }\n\ninterface TypeDetectionResult {\n  detectedTypes: DetectedType[];\n  confidence:\
+    \ number;\n  quality: TypeQuality;\n  metadata: TypeMetadata;\n}\n\ninterface\
+    \ DetectedType {\n  type: ContentType;\n  confidence: number;\n  evidence: string[];\n\
+    \  context: string;\n}\n\nfunction detectTypes(content: string, config: TypeDetectionConfig):\
+    \ Promise<TypeDetectionResult>\n```\n\n**Purpose**: Detect content types with\
+    \ confidence scoring and validation.\n\n**Parameters**:\n- `content`: Content\
+    \ to analyze for type detection\n- `config`: Type detection configuration and\
+    \ settings\n\n**Returns**: Detected types with confidence and quality metrics\n\
+    \n**Error Handling**:\n- Type detection failures\n- Low confidence warnings\n\
+    - Validation errors\n- Learning algorithm failures"
+- level: 4
+  title: '**04. Structure Analysis**'
+  type: section
+  content: "```typescript\ninterface StructureAnalysisConfig {\n  analyzeHierarchy:\
+    \ boolean;\n  analyzeRelationships: boolean;\n  analyzeComplexity: boolean;\n\
+    \  validation: boolean;\n}\n\ninterface StructureAnalysisResult {\n  structure:\
+    \ ContentStructure;\n  relationships: RelationshipMap;\n  complexity: ComplexityMetrics;\n\
+    \  insights: StructureInsight[];\n  metadata: StructureMetadata;\n}\n\ninterface\
+    \ ContentStructure {\n  hierarchy: HierarchyLevel[];\n  elements: StructureElement[];\n\
+    \  patterns: StructurePattern[];\n  metadata: StructureMetadata;\n}\n\nfunction\
+    \ analyzeStructure(extractedContent: ExtractedContent, config: StructureAnalysisConfig):\
+    \ Promise<StructureAnalysisResult>\n```\n\n**Purpose**: Analyze content structure\
+    \ for understanding and optimization.\n\n**Parameters**:\n- `extractedContent`:\
+    \ Previously extracted content\n- `config`: Structure analysis configuration and\
+    \ settings\n\n**Returns**: Detailed structure analysis with relationships and\
+    \ insights\n\n**Error Handling**:\n- Structure analysis failures\n- Memory allocation\
+    \ errors\n- Timeout errors for complex structures\n- Validation failures"
+- level: 2
+  title: '**Integration Patterns**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Content Extraction Flow**'
+  type: section
+  content: "```mermaid\ngraph TD\n    A[Parsed Message] --> B[Content Analysis]\n\
+    \    B --> C[Type Detection]\n    C --> D[Pattern Matching]\n    D --> E[Content\
+    \ Extraction]\n    E --> F[Quality Validation]\n    F --> G[Structure Analysis]\n\
+    \    G --> H[Extraction Result]\n    \n    F --> I{Quality > Threshold?}\n   \
+    \ I -->|Yes| G\n    I -->|No| J[Error Recovery]\n    J --> K[Partial Extraction]\n\
+    \    K --> L[Quality Reassessment]\n    L --> G\n```"
+- level: 3
+  title: '**Pattern Matching Flow**'
+  type: section
+  content: "```mermaid\ngraph TD\n    A[Content] --> B[Pattern Compilation]\n    B\
+    \ --> C[Pattern Matching]\n    C --> D[Match Validation]\n    D --> E[Confidence\
+    \ Scoring]\n    E --> F[Quality Assessment]\n    F --> G{Quality > Threshold?}\n\
+    \    G -->|Yes| H[Valid Matches]\n    G -->|No| I[Match Filtering]\n    I -->\
+    \ J[Alternative Patterns]\n    J --> K[Revalidation]\n    K --> H\n```"
+- level: 2
+  title: '**Capabilities**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Content Types**'
+  type: section
+  content: '- **Text**: Text content extraction with semantic analysis
+
+    - **Numbers**: Numeric content extraction with validation
+
+    - **Dates**: Date and time extraction with format detection
+
+    - **URLs**: URL extraction with validation and categorization
+
+    - **Emails**: Email address extraction with validation
+
+    - **Phone Numbers**: Phone number extraction with format detection
+
+    - **Addresses**: Address extraction with geocoding support
+
+    - **Custom Types**: Extensible content type support'
+- level: 3
+  title: '**Extraction Features**'
+  type: section
+  content: '- **High Accuracy**: 99%+ accuracy for common content types
+
+    - **Fast Extraction**: < 10ms extraction time for most content
+
+    - **Quality Validation**: Comprehensive quality validation and verification
+
+    - **Learning Capability**: Continuous learning for improved accuracy
+
+    - **Error Recovery**: Robust error recovery and partial extraction'
+- level: 3
+  title: '**Quality Features**'
+  type: section
+  content: '- **Validation**: Comprehensive content validation and integrity checking
+
+    - **Optimization**: Continuous optimization for extraction performance
+
+    - **Monitoring**: Real-time monitoring and performance tracking
+
+    - **Learning**: Machine learning for extraction improvement'
+- level: 2
+  title: '**Configuration Examples**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Basic Content Extraction**'
+  type: section
+  content: "```yaml\ncontent_extractor:\n  extraction:\n    extract_fields: [\"text\"\
+    , \"numbers\", \"dates\", \"urls\"]\n    extract_patterns: [\"email\", \"phone\"\
+    , \"address\"]\n    extract_types: [\"text\", \"numeric\", \"temporal\", \"url\"\
+    ]\n  validation:\n    enabled: true\n    quality_threshold: 0.8\n  performance:\n\
+    \    timeout: \"5s\"\n    caching: true\n    parallel_processing: true\n  quality:\n\
+    \    error_recovery: true\n    partial_extraction: true\n    quality_metrics:\
+    \ true\n```"
+- level: 3
+  title: '**Advanced Content Extraction**'
+  type: section
+  content: "```yaml\ncontent_extractor:\n  extraction:\n    extract_fields: [\"text\"\
+    , \"numbers\", \"dates\", \"urls\", \"emails\", \"phones\", \"addresses\"]\n \
+    \   extract_patterns: [\"email\", \"phone\", \"address\", \"credit_card\", \"\
+    ssn\"]\n    extract_types: [\"text\", \"numeric\", \"temporal\", \"url\", \"contact\"\
+    , \"location\"]\n  validation:\n    enabled: true\n    quality_threshold: 0.9\n\
+    \    strict_validation: true\n  pattern_matching:\n    case_sensitive: false\n\
+    \    multiline: true\n    global: true\n    validation: true\n  type_detection:\n\
+    \    confidence_threshold: 0.8\n    validation: true\n    learning: true\n  performance:\n\
+    \    timeout: \"10s\"\n    caching: true\n    parallel_processing: true\n    optimization:\
+    \ true\n  quality:\n    error_recovery: true\n    partial_extraction: true\n \
+    \   quality_metrics: true\n    learning: true\n```"
+- level: 2
+  title: '**Performance Considerations**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Extraction Speed**'
+  type: section
+  content: '- **Optimized Algorithms**: Use optimized extraction algorithms for speed
+
+    - **Caching**: Cache extraction results for repeated patterns
+
+    - **Parallel Processing**: Use parallel processing for multiple extractions
+
+    - **Early Termination**: Early termination for obvious content types'
+- level: 3
+  title: '**Accuracy Optimization**'
+  type: section
+  content: '- **Pattern Recognition**: Advanced pattern recognition for accuracy
+
+    - **Type Detection**: Accurate type detection for better extraction
+
+    - **Learning**: Continuous learning for improved accuracy
+
+    - **Validation**: Comprehensive validation for accuracy verification'
+- level: 3
+  title: '**Resource Management**'
+  type: section
+  content: '- **Memory Efficiency**: Optimize memory usage for large content
+
+    - **CPU Optimization**: Optimize CPU usage for extraction algorithms
+
+    - **Network Efficiency**: Minimize network overhead for remote extraction
+
+    - **Storage Optimization**: Optimize storage for extraction models'
+- level: 2
+  title: '**Security Considerations**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Input Validation**'
+  type: section
+  content: '- **Content Validation**: Validate input content before extraction
+
+    - **Size Limits**: Set size limits to prevent memory attacks
+
+    - **Content Filtering**: Filter malicious content during extraction
+
+    - **Pattern Validation**: Validate extraction patterns for security'
+- level: 3
+  title: '**Extraction Security**'
+  type: section
+  content: '- **Quality Thresholds**: Set appropriate quality thresholds
+
+    - **Error Handling**: Secure error handling without exposing sensitive data
+
+    - **Learning Security**: Secure learning without exposing sensitive content
+
+    - **Validation Security**: Secure validation of extracted content'
+- level: 2
+  title: '**Monitoring & Observability**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Extraction Metrics**'
+  type: section
+  content: '- **Extraction Accuracy**: Track content extraction accuracy rates
+
+    - **Extraction Speed**: Monitor extraction time and performance
+
+    - **Quality Distribution**: Monitor quality score distribution
+
+    - **Type Distribution**: Track content type distribution and trends'
+- level: 3
+  title: '**Performance Metrics**'
+  type: section
+  content: '- **Throughput**: Track content extraction throughput
+
+    - **Latency**: Monitor extraction latency and response times
+
+    - **Error Rates**: Track extraction error rates and types
+
+    - **Resource Usage**: Monitor CPU, memory, and network usage'
+- level: 3
+  title: '**Quality Metrics**'
+  type: section
+  content: "- **Validation Success**: Track content validation success rates\n- **Learning\
+    \ Performance**: Monitor learning algorithm performance\n- **Pattern Accuracy**:\
+    \ Track pattern matching accuracy\n- **Type Detection**: Monitor type detection\
+    \ accuracy\n\n---\n\n**Version**: 1.0  \n**Module**: Content Extractor  \n**Status**:\
+    \ ✅ **COMPLETE** - Comprehensive module specification ready for implementation\
+    \  \n**Focus**: Content extraction and structure analysis for intelligent message\
+    \ processing"

@@ -1,0 +1,238 @@
+metadata:
+  original_file: 03_State_Management.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: State Management Module
+  description: HIEROS-aware state management architecture with Jotai for kOS frontend
+  type: architecture_module
+  status: active
+  priority: high
+  last_updated: '2025-01-28'
+  version: 1.0.0
+  parent_document: 02_Frontend_Architecture.md
+  module_index: 3
+sections:
+- level: 1
+  title: State Management Module
+  type: section
+  content: '**HIEROS-Aware State Architecture with Jotai**
+
+
+    > **Module Overview**: This module defines the comprehensive state management
+    architecture ensuring HIEROS covenant compliance, cultural sensitivity, and data
+    sovereignty across all kOS frontend applications.'
+- level: 2
+  title: 🔄 HIEROS-Aware State Architecture
+  type: section
+  content: ''
+- level: 3
+  title: Core State Principles
+  type: section
+  content: "```typescript\ninterface HIEROSStateConfig {\n  dataRetention: DataRetentionPolicy;\n\
+    \  culturalSensitivity: CulturalDataPolicy;\n  accessControl: StateAccessPolicy;\n\
+    \  auditRequirements: AuditPolicy;\n  privacyCompliance: PrivacyPolicy;\n}\n\n\
+    interface DataRetentionPolicy {\n  personalData: {\n    maxRetention: number;\
+    \ // days\n    anonymizeAfter: number; // days\n    purgeSchedule: \"daily\" |\
+    \ \"weekly\" | \"monthly\";\n  };\n  culturalData: {\n    communityApprovalRequired:\
+    \ boolean;\n    attributionRequired: boolean;\n    sharingRestrictions: string[];\n\
+    \  };\n  operationalData: {\n    logRetention: number; // days\n    metricsRetention:\
+    \ number; // days\n    cachePolicy: CachePolicy;\n  };\n}\n\ninterface CulturalDataPolicy\
+    \ {\n  sensitiveCulturalContent: {\n    requireCommunityConsent: boolean;\n  \
+    \  restrictedAccess: string[]; // Cultural groups with restricted access\n   \
+    \ sacrednessLevel: \"public\" | \"restricted\" | \"sacred\";\n  };\n  attribution:\
+    \ {\n    alwaysVisible: boolean;\n    communityContactRequired: boolean;\n   \
+    \ educationalResourcesLinked: boolean;\n  };\n  respectfulUsage: {\n    contextValidation:\
+    \ boolean;\n    appropriationDetection: boolean;\n    communityFeedbackLoop: boolean;\n\
+    \  };\n}\n```"
+- level: 3
+  title: Jotai Atom Architecture
+  type: section
+  content: "```typescript\n// Cultural Theme State\nexport const culturalThemeAtom\
+    \ = atom<CulturalTheme>(defaultTheme);\nexport const availableThemesAtom = atom<CulturalTheme[]>(allThemes);\n\
+    export const themeComplianceAtom = atom<HIEROSThemeCompliance | null>(null);\n\
+    \n// HIEROS Compliance State\nexport const hierosComplianceAtom = atom<HIEROSComplianceStatus>({\n\
+    \  intentions: {\n    honor_all_beings: { validated: true, score: 0.95, lastAudit:\
+    \ new Date() },\n    interoperability_over_control: { validated: true, score:\
+    \ 0.92, lastAudit: new Date() },\n    equity_of_voice: { validated: true, score:\
+    \ 0.89, lastAudit: new Date() },\n    respect_cultural_flow: { validated: true,\
+    \ score: 0.94, lastAudit: new Date() },\n    openness_with_boundaries: { validated:\
+    \ true, score: 0.91, lastAudit: new Date() },\n    stewardship_not_extraction:\
+    \ { validated: true, score: 0.88, lastAudit: new Date() },\n    guided_evolution:\
+    \ { validated: true, score: 0.93, lastAudit: new Date() }\n  },\n  overall: {\
+    \ score: 0.92, status: \"compliant\", lastFullAudit: new Date() }\n});\n\n// Cultural\
+    \ Context State\nexport const culturalContextAtom = atom<CulturalContext>({\n\
+    \  primary: \"universal\",\n  secondary: [],\n  userPreferences: {},\n  communityConnections:\
+    \ [],\n  respectLevel: \"high\"\n});\n\n// Node State Management\nexport const\
+    \ nodeStatusAtom = atom<NodeStatus>({\n  class: \"griot\",\n  name: \"Local Griot\"\
+    ,\n  status: \"healthy\",\n  capabilities: [],\n  services: [],\n  lastHeartbeat:\
+    \ new Date()\n});\n\nexport const nodeCapabilitiesAtom = atom<Capability[]>([]);\n\
+    export const activeServicesAtom = atom<ServiceConnection[]>([]);\n\n// User Consent\
+    \ & Privacy State\nexport const userConsentAtom = atom<UserConsent>({\n  dataCollection:\
+    \ \"minimal\",\n  culturalDataUsage: \"restricted\",\n  analyticsSharing: false,\n\
+    \  communityParticipation: \"opt_in\",\n  lastUpdated: new Date()\n});\n\nexport\
+    \ const privacyModeAtom = atom<boolean>(false);\nexport const auditLoggingAtom\
+    \ = atom<boolean>(true);\n```"
+- level: 3
+  title: Derived State Patterns
+  type: section
+  content: "```typescript\n// Computed compliance status\nexport const complianceStatusAtom\
+    \ = atom((get) => {\n  const compliance = get(hierosComplianceAtom);\n  const\
+    \ cultural = get(culturalContextAtom);\n  const theme = get(culturalThemeAtom);\n\
+    \  \n  return {\n    overallScore: compliance.overall.score,\n    culturalAlignment:\
+    \ calculateCulturalAlignment(cultural, theme),\n    recommendations: generateComplianceRecommendations(compliance),\n\
+    \    status: compliance.overall.score >= 0.9 ? \"excellent\" : \n            compliance.overall.score\
+    \ >= 0.8 ? \"good\" : \"needs_improvement\"\n  };\n});\n\n// Theme availability\
+    \ based on cultural context\nexport const contextualThemesAtom = atom((get) =>\
+    \ {\n  const available = get(availableThemesAtom);\n  const cultural = get(culturalContextAtom);\n\
+    \  const consent = get(userConsentAtom);\n  \n  return available.filter(theme\
+    \ => {\n    // Filter themes based on cultural appropriateness and consent\n \
+    \   if (consent.culturalDataUsage === \"restricted\" && theme.culturalOrigin.permission\
+    \ === \"community_blessing\") {\n      return cultural.communityConnections.includes(theme.culturalOrigin.tradition);\n\
+    \    }\n    return theme.culturalOrigin.permission === \"open_cultural\" || \n\
+    \           consent.culturalDataUsage === \"full\";\n  });\n});\n\n// Service\
+    \ connection health\nexport const serviceHealthAtom = atom((get) => {\n  const\
+    \ services = get(activeServicesAtom);\n  const nodeStatus = get(nodeStatusAtom);\n\
+    \  \n  return {\n    totalServices: services.length,\n    healthyServices: services.filter(s\
+    \ => s.status === \"connected\").length,\n    criticalIssues: services.filter(s\
+    \ => s.status === \"error\").length,\n    nodeHealth: nodeStatus.status,\n   \
+    \ overallHealth: calculateOverallHealth(services, nodeStatus)\n  };\n});\n```"
+- level: 2
+  title: 💾 Persistent State Management
+  type: section
+  content: ''
+- level: 3
+  title: Storage Strategy
+  type: section
+  content: "```typescript\ninterface StorageConfig {\n  engine: \"localStorage\" |\
+    \ \"indexedDB\" | \"webSQL\" | \"memory\";\n  encryption: boolean;\n  compression:\
+    \ boolean;\n  syncStrategy: \"immediate\" | \"debounced\" | \"manual\";\n  culturalDataHandling:\
+    \ CulturalStoragePolicy;\n}\n\ninterface CulturalStoragePolicy {\n  requireEncryption:\
+    \ boolean;\n  allowPersistence: boolean;\n  retentionPeriod: number; // days\n\
+    \  communityNotificationRequired: boolean;\n  attributionEmbedded: boolean;\n\
+    }\n\n// Storage configuration based on data sensitivity\nconst getStorageConfig\
+    \ = (dataType: DataType): StorageConfig => {\n  switch (dataType) {\n    case\
+    \ \"cultural_sensitive\":\n      return {\n        engine: \"indexedDB\",\n  \
+    \      encryption: true,\n        compression: true,\n        syncStrategy: \"\
+    manual\",\n        culturalDataHandling: {\n          requireEncryption: true,\n\
+    \          allowPersistence: false, // Memory only for sensitive cultural data\n\
+    \          retentionPeriod: 0,\n          communityNotificationRequired: true,\n\
+    \          attributionEmbedded: true\n        }\n      };\n      \n    case \"\
+    user_preferences\":\n      return {\n        engine: \"localStorage\",\n     \
+    \   encryption: false,\n        compression: false,\n        syncStrategy: \"\
+    debounced\",\n        culturalDataHandling: {\n          requireEncryption: false,\n\
+    \          allowPersistence: true,\n          retentionPeriod: 365,\n        \
+    \  communityNotificationRequired: false,\n          attributionEmbedded: false\n\
+    \        }\n      };\n      \n    case \"operational\":\n      return {\n    \
+    \    engine: \"indexedDB\",\n        encryption: false,\n        compression:\
+    \ true,\n        syncStrategy: \"immediate\",\n        culturalDataHandling: {\n\
+    \          requireEncryption: false,\n          allowPersistence: true,\n    \
+    \      retentionPeriod: 30,\n          communityNotificationRequired: false,\n\
+    \          attributionEmbedded: false\n        }\n      };\n      \n    default:\n\
+    \      return defaultStorageConfig;\n  }\n};\n```"
+- level: 3
+  title: Cultural Data Handling
+  type: section
+  content: "```typescript\ninterface CulturalDataManager {\n  store: (data: CulturalData,\
+    \ context: CulturalContext) => Promise<void>;\n  retrieve: (id: string, requestContext:\
+    \ AccessContext) => Promise<CulturalData | null>;\n  validate: (data: CulturalData)\
+    \ => Promise<ValidationResult>;\n  archive: (id: string, reason: string) => Promise<void>;\n\
+    \  audit: (operation: DataOperation) => Promise<void>;\n}\n\nclass HIEROSCulturalDataManager\
+    \ implements CulturalDataManager {\n  private encryptionKey: CryptoKey;\n  private\
+    \ auditLogger: AuditLogger;\n  \n  async store(data: CulturalData, context: CulturalContext):\
+    \ Promise<void> {\n    // Validate cultural sensitivity\n    const validation\
+    \ = await this.validate(data);\n    if (!validation.approved) {\n      throw new\
+    \ Error(`Cultural data storage denied: ${validation.reason}`);\n    }\n    \n\
+    \    // Check community permissions\n    if (data.sensitivity === \"sacred\" &&\
+    \ !context.communityPermission) {\n      throw new Error(\"Sacred cultural data\
+    \ requires explicit community permission\");\n    }\n    \n    // Embed attribution\n\
+    \    const attributedData: AttributedCulturalData = {\n      ...data,\n      attribution:\
+    \ {\n        source: context.source,\n        permission: context.permission,\n\
+    \        contact: context.communityContact,\n        timestamp: new Date(),\n\
+    \        accessor: context.accessor\n      }\n    };\n    \n    // Encrypt if\
+    \ required\n    const storageData = data.requiresEncryption \n      ? await this.encrypt(attributedData)\n\
+    \      : attributedData;\n    \n    // Store with retention policy\n    await\
+    \ this.storeWithRetention(storageData, data.retentionPolicy);\n    \n    // Audit\
+    \ the operation\n    await this.audit({\n      type: \"store\",\n      dataId:\
+    \ data.id,\n      culturalContext: context,\n      timestamp: new Date(),\n  \
+    \    compliance: validation\n    });\n  }\n  \n  async retrieve(id: string, requestContext:\
+    \ AccessContext): Promise<CulturalData | null> {\n    // Validate access permissions\n\
+    \    const accessApproved = await this.validateAccess(id, requestContext);\n \
+    \   if (!accessApproved) {\n      await this.audit({\n        type: \"access_denied\"\
+    ,\n        dataId: id,\n        requestContext,\n        timestamp: new Date(),\n\
+    \        reason: \"insufficient_permissions\"\n      });\n      return null;\n\
+    \    }\n    \n    const data = await this.retrieveFromStorage(id);\n    if (!data)\
+    \ return null;\n    \n    // Decrypt if needed\n    const decryptedData = data.encrypted\
+    \ \n      ? await this.decrypt(data)\n      : data;\n    \n    // Audit access\n\
+    \    await this.audit({\n      type: \"retrieve\",\n      dataId: id,\n      requestContext,\n\
+    \      timestamp: new Date(),\n      success: true\n    });\n    \n    return\
+    \ decryptedData;\n  }\n  \n  async validate(data: CulturalData): Promise<ValidationResult>\
+    \ {\n    const checks = [\n      this.checkCulturalSensitivity(data),\n      this.checkAttributionCompleteness(data),\n\
+    \      this.checkCommunityPermissions(data),\n      this.checkAppropriationRisk(data),\n\
+    \      this.checkHIEROSCompliance(data)\n    ];\n    \n    const results = await\
+    \ Promise.all(checks);\n    \n    return {\n      approved: results.every(r =>\
+    \ r.passed),\n      score: results.reduce((sum, r) => sum + r.score, 0) / results.length,\n\
+    \      violations: results.filter(r => !r.passed).map(r => r.violation),\n   \
+    \   recommendations: results.flatMap(r => r.recommendations)\n    };\n  }\n}\n\
+    ```"
+- level: 3
+  title: State Synchronization
+  type: section
+  content: "```typescript\ninterface StateSyncConfig {\n  enabled: boolean;\n  endpoints:\
+    \ SyncEndpoint[];\n  conflictResolution: ConflictResolutionStrategy;\n  culturalDataSync:\
+    \ CulturalSyncPolicy;\n}\n\ninterface CulturalSyncPolicy {\n  allowCrossNodeSync:\
+    \ boolean;\n  requireCommunityApproval: boolean;\n  syncAttributions: boolean;\n\
+    \  respectDataSovereignty: boolean;\n}\n\nclass HIEROSStateSync {\n  private config:\
+    \ StateSyncConfig;\n  private culturalDataManager: CulturalDataManager;\n  \n\
+    \  async syncState(atomKey: string, value: any): Promise<void> {\n    // Determine\
+    \ if state contains cultural data\n    const containsCulturalData = this.detectCulturalContent(value);\n\
+    \    \n    if (containsCulturalData) {\n      // Apply cultural sync policies\n\
+    \      const culturalPolicy = this.config.culturalDataSync;\n      \n      if\
+    \ (!culturalPolicy.allowCrossNodeSync) {\n        console.warn(\"Cultural data\
+    \ sync blocked by policy\");\n        return;\n      }\n      \n      if (culturalPolicy.requireCommunityApproval)\
+    \ {\n        const approval = await this.requestCommunityApproval(value);\n  \
+    \      if (!approval.granted) {\n          console.warn(\"Cultural data sync denied\
+    \ by community\");\n          return;\n        }\n      }\n      \n      // Sync\
+    \ with cultural attributions\n      if (culturalPolicy.syncAttributions) {\n \
+    \       value = await this.embedAttributions(value);\n      }\n    }\n    \n \
+    \   // Proceed with sync\n    await this.performSync(atomKey, value);\n  }\n \
+    \ \n  private async performSync(atomKey: string, value: any): Promise<void> {\n\
+    \    for (const endpoint of this.config.endpoints) {\n      try {\n        await\
+    \ endpoint.sync(atomKey, value, {\n          timestamp: new Date(),\n        \
+    \  culturalCompliance: this.validateCulturalCompliance(value),\n          hierosValidation:\
+    \ this.validateHIEROSCompliance(value)\n        });\n      } catch (error) {\n\
+    \        console.error(`Sync failed for ${endpoint.url}:`, error);\n        //\
+    \ Apply conflict resolution strategy\n        await this.resolveConflict(atomKey,\
+    \ value, error, endpoint);\n      }\n    }\n  }\n}\n```"
+- level: 2
+  title: 🔐 Privacy & Consent Management
+  type: section
+  content: ''
+- level: 3
+  title: Consent State Architecture
+  type: section
+  content: "```typescript\ninterface ConsentManager {\n  request: (consentType: ConsentType,\
+    \ context: ConsentContext) => Promise<ConsentResponse>;\n  revoke: (consentId:\
+    \ string) => Promise<void>;\n  validate: (operation: DataOperation) => Promise<boolean>;\n\
+    \  audit: (consentOperation: ConsentOperation) => Promise<void>;\n}\n\n// Consent\
+    \ atoms\nexport const activeConsentsAtom = atom<ConsentRecord[]>([]);\nexport\
+    \ const consentHistoryAtom = atom<ConsentOperation[]>([]);\nexport const privacySettingsAtom\
+    \ = atom<PrivacySettings>({\n  dataMinimization: true,\n  culturalDataRestrictions:\
+    \ \"community_only\",\n  analyticsLevel: \"essential\",\n  crossNodeSharing: false\n\
+    });\n\n// Privacy-aware derived state\nexport const allowedOperationsAtom = atom((get)\
+    \ => {\n  const consents = get(activeConsentsAtom);\n  const privacy = get(privacySettingsAtom);\n\
+    \  const cultural = get(culturalContextAtom);\n  \n  return calculateAllowedOperations(consents,\
+    \ privacy, cultural);\n});\n```"
+- level: 2
+  title: 🔄 Cross-References
+  type: section
+  content: '- **Cultural Design System**: See `01_Cultural_Design_System.md` for theme
+    state integration
+
+    - **Component System**: See `02_Component_System.md` for component state bindings
+
+    - **Accessibility Framework**: See `04_Accessibility_Framework.md` for accessibility
+    state management
+
+    - **Application Architecture**: See parent document sections 816-975 for app-level
+    state patterns'

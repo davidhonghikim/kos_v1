@@ -23,15 +23,15 @@ security = HTTPBearer()
 async def lifespan(app: FastAPI):
     """Application lifespan events"""
     # Startup
-    logger.info("Starting Amauta Wearable AI Node...")
+    logger.info("Starting KOS v1 Knowledge Library Framework...")
     yield
     # Shutdown
-    logger.info("Shutting down Amauta Wearable AI Node...")
+    logger.info("Shutting down KOS v1 Knowledge Library Framework...")
 
 
 app = FastAPI(
-    title="Amauta Wearable AI Node",
-    description="Production-grade wearable AI node with multi-agent support and complete 13-class node system",
+    title="KOS v1 Knowledge Library Framework",
+    description="Universal knowledge management and agent orchestration ecosystem with transformer-class resident system",
     version="1.0.0",
     lifespan=lifespan,
 )
@@ -64,7 +64,7 @@ app.include_router(nodes.router, prefix="/nodes", tags=["Nodes"])
 async def root():
     """Root endpoint"""
     return {
-        "message": "Amauta Wearable AI Node",
+        "message": "KOS v1 Knowledge Library Framework",
         "version": "1.0.0",
         "status": "operational",
         "features": [
@@ -74,6 +74,9 @@ async def root():
             "Plugin architecture",
             "Encrypted vault system",
             "Real-time health monitoring",
+            "Transformer-class resident system",
+            "Spark identity management",
+            "Cortex runtime engine",
         ],
     }
 
@@ -81,14 +84,14 @@ async def root():
 @app.get("/health")
 async def health_check():
     """Health check endpoint"""
-    return {"status": "healthy", "service": "Amauta Wearable AI Node", "version": "1.0.0", "node_classes": 13}
+    return {"status": "healthy", "service": "KOS v1 Knowledge Library Framework", "version": "1.0.0", "node_classes": 13}
 
 
 @app.get("/api/status")
 async def api_status():
     """API status endpoint"""
     return {
-        "api": "Amauta Wearable AI Node API",
+        "api": "KOS v1 Knowledge Library Framework API",
         "version": "1.0.0",
         "endpoints": ["/auth", "/agents", "/plugins", "/vault", "/health", "/dicom", "/media", "/rag", "/nodes"],
         "node_system": {
@@ -99,12 +102,18 @@ async def api_status():
             "elder_nodes": ["Archon", "Amauta", "Mzee"],
             "core_nodes": ["Griot", "Ronin", "Tohunga"],
         },
+        "transformer_system": {
+            "spark_enabled": True,
+            "cortex_mode": "full",
+            "vault_shards": True,
+            "lego_integration": True,
+        },
     }
 
 
 if __name__ == "__main__":
-    host = os.getenv("AMAUTA_HOST", "0.0.0.0")
-    port = int(os.getenv("AMAUTA_PORT", "8000"))
+    host = os.getenv("KOS_HOST", "0.0.0.0")
+    port = int(os.getenv("KOS_PORT", "8000"))
 
-    logger.info(f"Starting Amauta Wearable AI Node on {host}:{port}")
+    logger.info(f"Starting KOS v1 Knowledge Library Framework on {host}:{port}")
     uvicorn.run(app, host=host, port=port)

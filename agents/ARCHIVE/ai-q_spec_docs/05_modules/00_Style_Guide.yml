@@ -1,0 +1,712 @@
+metadata:
+  original_file: 00_Style_Guide.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Module Documentation Style Guide
+  version: 1.0
+sections:
+- level: 1
+  title: '**Module Documentation Style Guide**'
+  type: section
+  content: ''
+- level: 2
+  title: '**Purpose**'
+  type: section
+  content: This document establishes the definitive style and format standards for
+    all module documentation in the kOS ecosystem. All agents must follow these standards
+    precisely to ensure consistency, quality, and maintainability.
+- level: 2
+  title: '**Core Principles**'
+  type: section
+  content: ''
+- level: 3
+  title: '**1. Scenario-Driven Design**'
+  type: section
+  content: '- **No Rigid Limits**: Categories and subcategories are created based
+    on actual needs, not arbitrary numbers
+
+    - **Flexible Granularity**: Modules are as granular as needed for specific scenarios
+
+    - **Real-World Focus**: Every module addresses a concrete, implementable capability
+
+    - **Future-Proof**: Design for extensibility and evolution'
+- level: 3
+  title: '**2. Single Source of Truth**'
+  type: section
+  content: '- **Comprehensive Coverage**: Every possible scenario and capability must
+    be documented
+
+    - **Agent-Ready**: Documentation must be sufficient for any agent to implement
+
+    - **No Assumptions**: Every detail must be explicitly stated
+
+    - **Complete Context**: Include all necessary information for implementation'
+- level: 2
+  title: '**File Structure Standards**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Directory Naming Convention**'
+  type: section
+  content: "```\n[##]_Category_Name/\n├── 00_Category_Name_Index.md\n├── [##]_Subcategory_Name/\n\
+    │   ├── 00_Subcategory_Name_Index.md\n│   ├── [##]_Module_Name.md\n│   ├── [##]_Module_Name.md\n\
+    │   └── [##]_Module_Name.md\n└── [##]_Subcategory_Name/\n    ├── 00_Subcategory_Name_Index.md\n\
+    \    └── [##]_Module_Name.md\n```"
+- level: 3
+  title: '**File Naming Convention**'
+  type: section
+  content: '- **Category Index**: `00_Category_Name_Index.md`
+
+    - **Subcategory Index**: `00_Subcategory_Name_Index.md`
+
+    - **Module Specification**: `[##]_Module_Name.md`'
+- level: 3
+  title: '**Numbering Convention**'
+  type: section
+  content: '- **Categories**: `01_`, `02_`, `03_`, etc.
+
+    - **Subcategories**: `01_`, `02_`, `03_`, etc. (within each category)
+
+    - **Modules**: `01_`, `02_`, `03_`, etc. (within each subcategory)'
+- level: 2
+  title: '**YAML Frontmatter Requirements**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Required Fields**'
+  type: section
+  content: '```yaml
+
+    ---
+
+    title: "Exact File Name Without Extension"
+
+    version: "1.0"
+
+    ---
+
+    ```'
+- level: 3
+  title: '**Optional Fields**'
+  type: section
+  content: '```yaml
+
+    ---
+
+    title: "Module Name"
+
+    version: "1.0"
+
+    category: "Category Name"
+
+    subcategory: "Subcategory Name"
+
+    dependencies: ["Module1", "Module2"]
+
+    tags: ["tag1", "tag2"]
+
+    priority: "high|medium|low"
+
+    ---
+
+    ```'
+- level: 2
+  title: '**Documentation Structure Standards**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Category Index Structure**'
+  type: section
+  content: '```markdown
+
+    ---
+
+    title: "Category Name Index"
+
+    version: "1.0"
+
+    ---'
+- level: 1
+  title: Category Name
+  type: section
+  content: ''
+- level: 2
+  title: Overview
+  type: section
+  content: Brief description of the category's purpose and scope.
+- level: 2
+  title: Subcategories
+  type: section
+  content: ''
+- level: 3
+  title: 1. [Subcategory Name](01_Subcategory_Name/00_Subcategory_Name_Index.md)
+  type: section
+  content: '**Purpose**: Specific purpose of this subcategory.
+
+
+    **Modules**:
+
+    1. [Module Name](01_Subcategory_Name/01_Module_Name.md)
+
+    2. [Module Name](01_Subcategory_Name/02_Module_Name.md)
+
+    ...'
+- level: 3
+  title: 2. [Subcategory Name](02_Subcategory_Name/00_Subcategory_Name_Index.md)
+  type: section
+  content: '...'
+- level: 2
+  title: 'Total Modules: [Number]'
+  type: section
+  content: ''
+- level: 2
+  title: Core Capabilities
+  type: section
+  content: '- **Capability 1**: Description
+
+    - **Capability 2**: Description
+
+    ...'
+- level: 2
+  title: Integration Points
+  type: section
+  content: '- **Related Category**: Description of integration
+
+    ...'
+- level: 2
+  title: Configuration
+  type: section
+  content: '- **Setting 1**: Description
+
+    - **Setting 2**: Description
+
+    ...'
+- level: 2
+  title: Dependencies
+  type: section
+  content: '- **External Dependency**: Description
+
+    - **Internal Dependency**: Description
+
+    ...'
+- level: 2
+  title: Performance Requirements
+  type: section
+  content: '- **Metric 1**: Target value
+
+    - **Metric 2**: Target value
+
+    ...'
+- level: 2
+  title: Security Considerations
+  type: section
+  content: '- **Security Aspect 1**: Description
+
+    - **Security Aspect 2**: Description
+
+    ...'
+- level: 2
+  title: Error Handling
+  type: section
+  content: '- **Error Type 1**: Handling approach
+
+    - **Error Type 2**: Handling approach
+
+    ...'
+- level: 2
+  title: Testing Strategy
+  type: section
+  content: '- **Test Type 1**: Description
+
+    - **Test Type 2**: Description
+
+    ...'
+- level: 2
+  title: Deployment
+  type: section
+  content: '- **Deployment Aspect 1**: Description
+
+    - **Deployment Aspect 2**: Description
+
+    ...'
+- level: 2
+  title: Usage Examples
+  type: section
+  content: '- **Example 1**: Description
+
+    - **Example 2**: Description
+
+    ...'
+- level: 2
+  title: Future Enhancements
+  type: section
+  content: '- **Enhancement 1**: Description
+
+    - **Enhancement 2**: Description
+
+    ...
+
+    ```'
+- level: 3
+  title: '**Subcategory Index Structure**'
+  type: section
+  content: '```markdown
+
+    ---
+
+    title: "Subcategory Name Index"
+
+    version: "1.0"
+
+    ---'
+- level: 1
+  title: Subcategory Name
+  type: section
+  content: ''
+- level: 2
+  title: Overview
+  type: section
+  content: Brief description of the subcategory's purpose and scope.
+- level: 2
+  title: Modules
+  type: section
+  content: ''
+- level: 3
+  title: 1. [Module Name](01_Module_Name.md)
+  type: section
+  content: '**Purpose**: Specific purpose of this module.
+
+    **Capabilities**: Key capabilities provided.
+
+    **Dependencies**: Required dependencies.'
+- level: 3
+  title: 2. [Module Name](02_Module_Name.md)
+  type: section
+  content: '...'
+- level: 2
+  title: 'Total Modules: [Number]'
+  type: section
+  content: ''
+- level: 2
+  title: Core Capabilities
+  type: section
+  content: '- **Capability 1**: Description
+
+    - **Capability 2**: Description
+
+    ...'
+- level: 2
+  title: Integration Points
+  type: section
+  content: '- **Related Subcategory**: Description of integration
+
+    ...'
+- level: 2
+  title: Configuration
+  type: section
+  content: '- **Setting 1**: Description
+
+    - **Setting 2**: Description
+
+    ...'
+- level: 2
+  title: Dependencies
+  type: section
+  content: '- **External Dependency**: Description
+
+    - **Internal Dependency**: Description
+
+    ...'
+- level: 2
+  title: Performance Requirements
+  type: section
+  content: '- **Metric 1**: Target value
+
+    - **Metric 2**: Target value
+
+    ...'
+- level: 2
+  title: Security Considerations
+  type: section
+  content: '- **Security Aspect 1**: Description
+
+    - **Security Aspect 2**: Description
+
+    ...'
+- level: 2
+  title: Error Handling
+  type: section
+  content: '- **Error Type 1**: Handling approach
+
+    - **Error Type 2**: Handling approach
+
+    ...'
+- level: 2
+  title: Testing Strategy
+  type: section
+  content: '- **Test Type 1**: Description
+
+    - **Test Type 2**: Description
+
+    ...'
+- level: 2
+  title: Deployment
+  type: section
+  content: '- **Deployment Aspect 1**: Description
+
+    - **Deployment Aspect 2**: Description
+
+    ...'
+- level: 2
+  title: Usage Examples
+  type: section
+  content: '- **Example 1**: Description
+
+    - **Example 2**: Description
+
+    ...'
+- level: 2
+  title: Future Enhancements
+  type: section
+  content: '- **Enhancement 1**: Description
+
+    - **Enhancement 2**: Description
+
+    ...
+
+    ```'
+- level: 3
+  title: '**Module Specification Structure**'
+  type: section
+  content: '```markdown
+
+    ---
+
+    title: "Module Name"
+
+    version: "1.0"
+
+    ---'
+- level: 1
+  title: Module Name
+  type: section
+  content: ''
+- level: 2
+  title: Purpose
+  type: section
+  content: Clear, concise description of what this module does and why it exists.
+- level: 2
+  title: Capabilities
+  type: section
+  content: Detailed list of specific capabilities provided by this module.
+- level: 2
+  title: Integration Points
+  type: section
+  content: '- **Input**: What this module receives
+
+    - **Output**: What this module produces
+
+    - **Dependencies**: What this module requires'
+- level: 2
+  title: Configuration
+  type: section
+  content: "```yaml\nmodule_name:\n  setting1: value1\n  setting2: value2\n```"
+- level: 2
+  title: Example Workflow
+  type: section
+  content: "```mermaid\ngraph TD\n  A[Input] --> B[Processing]\n  B --> C[Output]\n\
+    ```"
+- level: 2
+  title: Core Capabilities
+  type: section
+  content: ''
+- level: 3
+  title: '**1. Capability Name**'
+  type: section
+  content: '- **Description**: What this capability does
+
+    - **Input**: What it requires
+
+    - **Output**: What it produces
+
+    - **Dependencies**: What it needs'
+- level: 3
+  title: '**2. Capability Name**'
+  type: section
+  content: '...'
+- level: 2
+  title: Module Interface
+  type: section
+  content: ''
+- level: 3
+  title: '**Input Interface**'
+  type: section
+  content: "```typescript\ninterface ModuleInput {\n  // TypeScript interface definition\n\
+    }\n```"
+- level: 3
+  title: '**Output Interface**'
+  type: section
+  content: "```typescript\ninterface ModuleOutput {\n  // TypeScript interface definition\n\
+    }\n```"
+- level: 3
+  title: '**Configuration Interface**'
+  type: section
+  content: "```typescript\ninterface ModuleConfig {\n  // TypeScript interface definition\n\
+    }\n```"
+- level: 2
+  title: Module Dependencies
+  type: section
+  content: ''
+- level: 3
+  title: '**Required Dependencies**'
+  type: section
+  content: '- **Dependency Name**: Description and version requirements'
+- level: 3
+  title: '**Optional Dependencies**'
+  type: section
+  content: '- **Dependency Name**: Description and when it''s used'
+- level: 2
+  title: Module Implementation
+  type: section
+  content: ''
+- level: 3
+  title: '**Core Components**'
+  type: section
+  content: ''
+- level: 4
+  title: '**1. Component Name**'
+  type: section
+  content: "```typescript\nclass ComponentName {\n  // Implementation details\n}\n\
+    ```"
+- level: 4
+  title: '**2. Component Name**'
+  type: section
+  content: '...'
+- level: 3
+  title: '**Integration Points**'
+  type: section
+  content: ''
+- level: 4
+  title: '**1. Integration Point Name**'
+  type: section
+  content: '- **Description**: What this integration provides
+
+    - **Protocol**: How integration works
+
+    - **Authentication**: Security requirements
+
+    - **Rate Limiting**: Performance considerations'
+- level: 4
+  title: '**2. Integration Point Name**'
+  type: section
+  content: '...'
+- level: 2
+  title: Performance Characteristics
+  type: section
+  content: ''
+- level: 3
+  title: '**Throughput**'
+  type: section
+  content: '- **Metric Name**: Target value and measurement method'
+- level: 3
+  title: '**Reliability**'
+  type: section
+  content: '- **Metric Name**: Target value and measurement method'
+- level: 3
+  title: '**Scalability**'
+  type: section
+  content: '- **Metric Name**: Target value and measurement method'
+- level: 2
+  title: Security Considerations
+  type: section
+  content: ''
+- level: 3
+  title: '**Security Aspect Name**'
+  type: section
+  content: '- **Description**: What this security measure provides
+
+    - **Implementation**: How it''s implemented
+
+    - **Configuration**: Required settings'
+- level: 3
+  title: '**Security Aspect Name**'
+  type: section
+  content: '...'
+- level: 2
+  title: Error Handling
+  type: section
+  content: ''
+- level: 3
+  title: '**Error Types**'
+  type: section
+  content: '- **Error Type Name**: Description and causes'
+- level: 3
+  title: '**Error Recovery**'
+  type: section
+  content: '- **Recovery Method Name**: Description and implementation'
+- level: 2
+  title: Testing Strategy
+  type: section
+  content: ''
+- level: 3
+  title: '**Unit Testing**'
+  type: section
+  content: '- **Test Type Name**: Description and approach'
+- level: 3
+  title: '**Integration Testing**'
+  type: section
+  content: '- **Test Type Name**: Description and approach'
+- level: 3
+  title: '**Load Testing**'
+  type: section
+  content: '- **Test Type Name**: Description and approach'
+- level: 2
+  title: Deployment Considerations
+  type: section
+  content: ''
+- level: 3
+  title: '**Resource Requirements**'
+  type: section
+  content: '- **Resource Type**: Minimum and recommended specifications'
+- level: 3
+  title: '**Configuration**'
+  type: section
+  content: '- **Configuration Aspect**: Description and requirements'
+- level: 3
+  title: '**Monitoring**'
+  type: section
+  content: '- **Monitoring Aspect**: Description and implementation'
+- level: 2
+  title: Usage Examples
+  type: section
+  content: ''
+- level: 3
+  title: '**Basic Usage**'
+  type: section
+  content: '```typescript
+
+    // Code example showing basic usage
+
+    ```'
+- level: 3
+  title: '**Advanced Usage**'
+  type: section
+  content: '```typescript
+
+    // Code example showing advanced usage
+
+    ```'
+- level: 2
+  title: Future Enhancements
+  type: section
+  content: ''
+- level: 3
+  title: '**Planned Features**'
+  type: section
+  content: '- **Feature Name**: Description and timeline'
+- level: 3
+  title: '**Performance Improvements**'
+  type: section
+  content: "- **Improvement Name**: Description and expected impact\n\n---\n\n**Version**:\
+    \ 1.0  \n**Focus**: [Brief description of module focus]\n```"
+- level: 2
+  title: '**Content Standards**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Writing Style**'
+  type: section
+  content: '- **Professional Tone**: Clear, concise, technical documentation
+
+    - **Active Voice**: Use active voice when possible
+
+    - **Present Tense**: Use present tense for current capabilities
+
+    - **Future Tense**: Use future tense for planned features
+
+    - **Consistent Terminology**: Use established terms consistently'
+- level: 3
+  title: '**Technical Detail**'
+  type: section
+  content: '- **Complete Specifications**: Include all necessary technical details
+
+    - **Implementation Ready**: Documentation must be sufficient for implementation
+
+    - **No Ambiguity**: Every detail must be clear and unambiguous
+
+    - **Comprehensive Coverage**: Cover all aspects of the module'
+- level: 3
+  title: '**Code Examples**'
+  type: section
+  content: '- **TypeScript Preferred**: Use TypeScript for all code examples
+
+    - **Complete Examples**: Provide complete, runnable examples
+
+    - **Best Practices**: Follow established coding standards
+
+    - **Error Handling**: Include error handling in examples'
+- level: 3
+  title: '**Diagrams and Visuals**'
+  type: section
+  content: '- **Mermaid Diagrams**: Use Mermaid for workflow diagrams
+
+    - **Clear Labels**: All diagrams must have clear, descriptive labels
+
+    - **Consistent Style**: Use consistent visual style across all diagrams
+
+    - **Purpose-Driven**: Every diagram must serve a clear purpose'
+- level: 2
+  title: '**Quality Assurance**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Review Checklist**'
+  type: section
+  content: '- [ ] YAML frontmatter is complete and correct
+
+    - [ ] All required sections are present
+
+    - [ ] Content is comprehensive and accurate
+
+    - [ ] Code examples are complete and correct
+
+    - [ ] Diagrams are clear and accurate
+
+    - [ ] Links are valid and working
+
+    - [ ] Formatting is consistent
+
+    - [ ] No typos or grammatical errors'
+- level: 3
+  title: '**Validation Requirements**'
+  type: section
+  content: '- **Technical Accuracy**: All technical details must be correct
+
+    - **Completeness**: All required information must be present
+
+    - **Consistency**: Format and style must be consistent
+
+    - **Usability**: Documentation must be useful for implementation'
+- level: 2
+  title: '**Maintenance Standards**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Version Control**'
+  type: section
+  content: '- **Semantic Versioning**: Use semantic versioning for all changes
+
+    - **Change Documentation**: Document all changes in version history
+
+    - **Backward Compatibility**: Maintain backward compatibility when possible
+
+    - **Migration Guides**: Provide migration guides for breaking changes'
+- level: 3
+  title: '**Update Process**'
+  type: section
+  content: "- **Regular Reviews**: Review documentation regularly for accuracy\n-\
+    \ **User Feedback**: Incorporate user feedback and suggestions\n- **Technology\
+    \ Updates**: Update documentation when technology changes\n- **Continuous Improvement**:\
+    \ Continuously improve documentation quality\n\n---\n\n**Version**: 1.0  \n**Focus**:\
+    \ Definitive style guide for all module documentation"

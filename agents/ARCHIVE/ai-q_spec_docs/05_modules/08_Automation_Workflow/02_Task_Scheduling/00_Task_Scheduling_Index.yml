@@ -1,0 +1,110 @@
+metadata:
+  original_file: 00_Task_Scheduling_Index.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Task Scheduling Subcategory Index
+  version: '1.0'
+sections:
+- level: 1
+  title: Task Scheduling
+  type: section
+  content: ''
+- level: 2
+  title: Overview
+  type: section
+  content: Task Scheduling modules manage the prioritization, timing, and resource
+    allocation for tasks within workflows. They ensure that all tasks are executed
+    efficiently, on time, and according to system policies and constraints.
+- level: 2
+  title: Core Principles
+  type: section
+  content: '- **Efficiency**: Maximize throughput and minimize idle time
+
+    - **Fairness**: Ensure equitable resource allocation
+
+    - **Scalability**: Handle large numbers of tasks and schedules
+
+    - **Adaptability**: Adjust to changing workloads and priorities
+
+    - **Reliability**: Guarantee task execution even under failure conditions'
+- level: 2
+  title: Function Specifications
+  type: section
+  content: ''
+- level: 3
+  title: Base Functions
+  type: section
+  content: '1. **Task Queue Management** – Manage queues of pending and active tasks
+
+    2. **Priority Scheduling** – Assign and enforce task priorities
+
+    3. **Deadline Enforcement** – Ensure tasks meet required deadlines
+
+    4. **Resource Allocation** – Allocate CPU, memory, and other resources
+
+    5. **Task Dependencies** – Manage dependencies between tasks
+
+    6. **Retry & Backoff** – Handle failed tasks with retry and backoff strategies
+
+    7. **Scheduling Policies** – Support multiple scheduling algorithms (FIFO, LIFO,
+    priority, etc.)
+
+    8. **Task Cancellation** – Allow tasks to be cancelled or preempted'
+- level: 2
+  title: Integration Patterns
+  type: section
+  content: ''
+- level: 3
+  title: Task Scheduling Flow
+  type: section
+  content: "```mermaid\ngraph TD\n    A[Task Definition] --> B[Schedule Creation]\n\
+    \    B --> C[Priority Assignment]\n    C --> D[Resource Allocation]\n    D -->\
+    \ E[Queue Management]\n    E --> F[Execution Trigger]\n    F --> G[Task Execution]\n\
+    \    G --> H{Task Complete?}\n    H -->|Yes| I[Result Processing]\n    H -->|No|\
+    \ J[Retry & Backoff]\n    I --> K[Next Task]\n    J --> F\n```"
+- level: 2
+  title: Capabilities
+  type: section
+  content: '- **Time-based Scheduling**: Cron, interval, and event-based triggers
+
+    - **Priority & Deadline Management**: Enforce priorities and deadlines
+
+    - **Resource-aware Scheduling**: Allocate resources based on availability
+
+    - **Dependency Resolution**: Ensure tasks run in correct order
+
+    - **Failure Recovery**: Retry and reschedule failed tasks'
+- level: 2
+  title: Configuration Example
+  type: section
+  content: "```yaml\ntask_scheduler:\n  type: \"priority\"\n  max_concurrent_tasks:\
+    \ 100\n  default_priority: 5\n  deadline_enforcement: true\n  retry:\n    attempts:\
+    \ 2\n    backoff: \"linear\"\n  resource_limits:\n    cpu: \"2\"\n    memory:\
+    \ \"4Gi\"\n  policies:\n    - name: \"fifo\"\n      enabled: true\n    - name:\
+    \ \"priority\"\n      enabled: true\n```"
+- level: 2
+  title: Error Handling
+  type: section
+  content: '- **Queue Overflows**: Drop or delay tasks, alert operators
+
+    - **Missed Deadlines**: Escalate or reschedule tasks
+
+    - **Resource Exhaustion**: Throttle or reject new tasks
+
+    - **Dependency Failures**: Block dependent tasks and log errors
+
+    - **Policy Violations**: Log and revert to default scheduling policy'
+- level: 2
+  title: Usage Scenarios
+  type: section
+  content: '- Scheduling jobs in distributed systems
+
+    - Managing task dependencies and priorities
+
+    - Enforcing SLAs and deadlines'
+- level: 2
+  title: Future Expansion
+  type: section
+  content: Support for advanced scheduling algorithms, predictive scheduling, and
+    integration with external schedulers will be added as needed.

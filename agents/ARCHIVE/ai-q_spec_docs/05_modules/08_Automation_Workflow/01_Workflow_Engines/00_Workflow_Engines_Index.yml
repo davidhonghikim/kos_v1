@@ -1,0 +1,111 @@
+metadata:
+  original_file: 00_Workflow_Engines_Index.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Workflow Engines Subcategory Index
+  version: '1.0'
+sections:
+- level: 1
+  title: Workflow Engines
+  type: section
+  content: ''
+- level: 2
+  title: Overview
+  type: section
+  content: Workflow Engines are responsible for the orchestration, scheduling, and
+    execution of complex, multi-step processes within the kOS modular architecture.
+    They provide the backbone for reliable, scalable, and flexible workflow execution
+    across distributed systems.
+- level: 2
+  title: Core Principles
+  type: section
+  content: '- **Reliability**: Ensure workflows execute to completion and recover
+    from failures
+
+    - **Extensibility**: Support plug-in modules and custom workflow logic
+
+    - **Performance**: Optimize for high-throughput and low-latency execution
+
+    - **Observability**: Provide detailed monitoring and logging of workflow execution
+
+    - **Configurability**: Allow dynamic workflow definitions and runtime adjustments'
+- level: 2
+  title: Function Specifications
+  type: section
+  content: ''
+- level: 3
+  title: Base Functions
+  type: section
+  content: '1. **Engine Initialization** – Initialize workflow engine state and resources
+
+    2. **Workflow Parsing** – Parse workflow definitions and validate structure
+
+    3. **State Management** – Track workflow and task state throughout execution
+
+    4. **Task Dispatching** – Assign and trigger tasks within the workflow
+
+    5. **Error Handling** – Detect, log, and recover from workflow errors
+
+    6. **Workflow Persistence** – Persist workflow state for recovery and auditing
+
+    7. **Engine Monitoring** – Monitor engine health, performance, and events
+
+    8. **Extensibility Hooks** – Support for custom modules and extensions'
+- level: 2
+  title: Integration Patterns
+  type: section
+  content: ''
+- level: 3
+  title: Workflow Engine Execution Flow
+  type: section
+  content: "```mermaid\ngraph TD\n    A[Engine Initialization] --> B[Workflow Parsing]\n\
+    \    B --> C[State Management]\n    C --> D[Task Dispatching]\n    D --> E[Task\
+    \ Execution]\n    E --> F{Task Success?}\n    F -->|Yes| G[Next Task]\n    F -->|No|\
+    \ H[Error Handling]\n    G --> I{Workflow Complete?}\n    I -->|Yes| J[Workflow\
+    \ Persistence]\n    I -->|No| D\n    H --> C\n```"
+- level: 2
+  title: Capabilities
+  type: section
+  content: '- **Dynamic Workflow Loading**: Load and execute workflows at runtime
+
+    - **Parallel & Sequential Execution**: Support both execution patterns
+
+    - **Stateful Recovery**: Resume workflows after failure or restart
+
+    - **Custom Logic Integration**: Plug in custom modules for specialized tasks
+
+    - **Comprehensive Monitoring**: Expose metrics and logs for all workflow events'
+- level: 2
+  title: Configuration Example
+  type: section
+  content: "```yaml\nworkflow_engine:\n  type: \"sequential\"\n  max_concurrent_workflows:\
+    \ 20\n  state_persistence: true\n  error_handling:\n    retry_attempts: 3\n  \
+    \  backoff_strategy: \"exponential\"\n  monitoring:\n    enabled: true\n    metrics:\
+    \ [\"latency\", \"throughput\", \"failures\"]\n  extensions:\n    - name: \"custom_logger\"\
+    \n      enabled: true\n```"
+- level: 2
+  title: Error Handling
+  type: section
+  content: '- **Initialization Failures**: Log and abort engine startup
+
+    - **Parsing Errors**: Reject invalid workflow definitions with detailed errors
+
+    - **Task Dispatch Failures**: Retry or escalate based on policy
+
+    - **Persistence Errors**: Fallback to in-memory state and alert operators
+
+    - **Monitoring Gaps**: Self-diagnose and attempt to restart monitoring modules'
+- level: 2
+  title: Usage Scenarios
+  type: section
+  content: '- Orchestrating multi-step business processes
+
+    - Integrating with external workflow systems
+
+    - Dynamic workflow composition and execution'
+- level: 2
+  title: Future Expansion
+  type: section
+  content: Additional modules and advanced features (e.g., adaptive workflow engines,
+    AI-driven orchestration) will be added as requirements evolve.

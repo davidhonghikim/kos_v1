@@ -1,0 +1,12 @@
+---
+title: "Backend Admin App Bootstrap"
+version: "0.1.0"
+bootstrap:
+  - step: "On load, query RAG for README, bootstrap, and codebase context."
+  - step: "Initialize ServiceDiscovery to detect all running services."
+  - step: "Load session and chat history from IndexedDB and MongoDB."
+  - step: "Initialize ChatEngine and ChatOrchestrator with available backends."
+  - step: "Load prompt and token manager modules."
+  - step: "Render UI with sidebar, top bar, and main chat window."
+  - step: "Provide import/export and advanced settings."
+--- 

@@ -1,0 +1,641 @@
+metadata:
+  original_file: 08_Node_Classes_Dependencies_Plan.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Node Classes Dependencies Plan
+  version: '1.0'
+  status: Planning
+  created: '2025-06-28'
+sections:
+- level: 1
+  title: Node Classes Dependencies Plan for kOS
+  type: section
+  content: ''
+- level: 2
+  title: Overview
+  type: section
+  content: This document outlines all node classes, their required skills, recipes,
+    and dependencies needed for the near future implementation. This ensures we have
+    all assets ready in advance for seamless development and deployment.
+- level: 2
+  title: Node Classes Analysis
+  type: section
+  content: ''
+- level: 3
+  title: 1. **Griot** (Core Engineer)
+  type: section
+  content: '**Status**: ✅ Complete
+
+    **Base**: `griot-core-dangermouse-b82c4707-8c7d-4bb3-9608-7c33a924806f.yml`
+
+
+    **Required Skills**:
+
+    - ✅ `skills/core-engineering-v1/` (exists)
+
+    - ✅ `skills/ai/token_calculator_rag.yaml` (exists)
+
+    - ✅ `skills/ai/budget_manager.yaml` (exists)
+
+
+    **Required Recipes**:
+
+    - ✅ `recipes/ai/budget_aware_chat.yaml` (exists)
+
+
+    **Required Scripts**:
+
+    - ✅ `scripts/setup_pricing_rag.py` (exists)
+
+
+    **Dependencies**: All complete'
+- level: 3
+  title: 2. **Amauta** (Cultural Teacher)
+  type: section
+  content: '**Status**: 🔄 In Progress
+
+    **Base**: `amauta-core-dangermouse-235f30d2-5413-4f77-8f2f-b59d0a8b0366.yml`
+
+
+    **Required Skills**:
+
+    - ✅ `skills/teaching/mentor.yaml` (created)
+
+    - ✅ `skills/teaching/cultural_educator.yaml` (created)
+
+    - ❌ `skills/teaching/knowledge_transmission.yaml` (needed)
+
+    - ❌ `skills/teaching/learning_assessment.yaml` (needed)
+
+
+    **Required Recipes**:
+
+    - ✅ `recipes/teaching/mentorship_workflow.yaml` (created)
+
+    - ❌ `recipes/teaching/cultural_education_workflow.yaml` (needed)
+
+    - ❌ `recipes/teaching/learning_path_development.yaml` (needed)
+
+
+    **Required Scripts**:
+
+    - ❌ `scripts/teaching_processor.py` (needed)
+
+
+    **Dependencies**: 60% complete'
+- level: 3
+  title: 3. **Tohunga** (Data Validator)
+  type: section
+  content: '**Status**: ❌ Missing Dependencies
+
+    **Base**: `tohunga-core-dangermouse-e2f7cf48-b3f5-4241-aec8-e181c6ad31f1.yml`
+
+
+    **Required Skills**:
+
+    - ❌ `skills/data/validation.yaml` (needed)
+
+    - ❌ `skills/data/cleaning.yaml` (needed)
+
+    - ❌ `skills/data/structuring.yaml` (needed)
+
+    - ❌ `skills/data/quality_assurance.yaml` (needed)
+
+
+    **Required Recipes**:
+
+    - ❌ `recipes/data/validation_workflow.yaml` (needed)
+
+    - ❌ `recipes/data/cleaning_pipeline.yaml` (needed)
+
+    - ❌ `recipes/data/quality_assurance_workflow.yaml` (needed)
+
+
+    **Required Scripts**:
+
+    - ❌ `scripts/data_processor.py` (needed)
+
+
+    **Dependencies**: 0% complete'
+- level: 3
+  title: 4. **Musa** (Security Specialist)
+  type: section
+  content: '**Status**: ❌ Missing Dependencies
+
+    **Base**: `musa-core-dangermouse-254afe56-b94c-4f2d-855d-c564d898b5af.yml`
+
+
+    **Required Skills**:
+
+    - ❌ `skills/security/threat_detection.yaml` (needed)
+
+    - ❌ `skills/security/compliance_validation.yaml` (needed)
+
+    - ❌ `skills/security/code_security_analysis.yaml` (needed)
+
+    - ❌ `skills/security/authentication.yaml` (needed)
+
+    - ❌ `skills/security/authorization.yaml` (needed)
+
+
+    **Required Recipes**:
+
+    - ❌ `recipes/security/security_audit_workflow.yaml` (needed)
+
+    - ❌ `recipes/security/compliance_check_workflow.yaml` (needed)
+
+    - ❌ `recipes/security/code_review_workflow.yaml` (needed)
+
+
+    **Required Scripts**:
+
+    - ❌ `scripts/security_analyzer.py` (needed)
+
+
+    **Dependencies**: 0% complete'
+- level: 3
+  title: 5. **Ronin** (Autonomous Agent)
+  type: section
+  content: '**Status**: ❌ Missing Dependencies
+
+    **Base**: `ronin-core-dangermouse-056601a1-a8d1-4228-8e3c-bafab38e2f2e.yml`
+
+
+    **Required Skills**:
+
+    - ❌ `skills/autonomy/decision_making.yaml` (needed)
+
+    - ❌ `skills/autonomy/independent_execution.yaml` (needed)
+
+    - ❌ `skills/autonomy/strategic_planning.yaml` (needed)
+
+    - ❌ `skills/autonomy/self_directed_workflows.yaml` (needed)
+
+
+    **Required Recipes**:
+
+    - ❌ `recipes/autonomy/autonomous_workflow.yaml` (needed)
+
+    - ❌ `recipes/autonomy/decision_workflow.yaml` (needed)
+
+    - ❌ `recipes/autonomy/strategic_execution_workflow.yaml` (needed)
+
+
+    **Required Scripts**:
+
+    - ❌ `scripts/autonomy_manager.py` (needed)
+
+
+    **Dependencies**: 0% complete'
+- level: 3
+  title: 6. **Yachay** (Learning Specialist)
+  type: section
+  content: '**Status**: ❌ Missing Dependencies
+
+    **Base**: `yachay-core-dangermouse-943d7a9d-a7c5-43f7-aaae-c92aca9881d4.yml`
+
+
+    **Required Skills**:
+
+    - ❌ `skills/learning/knowledge_transmission.yaml` (needed)
+
+    - ❌ `skills/learning/educational_methodologies.yaml` (needed)
+
+    - ❌ `skills/learning/cultural_learning.yaml` (needed)
+
+    - ❌ `skills/learning/adaptive_learning.yaml` (needed)
+
+
+    **Required Recipes**:
+
+    - ❌ `recipes/learning/learning_workflow.yaml` (needed)
+
+    - ❌ `recipes/learning/adaptive_education_workflow.yaml` (needed)
+
+    - ❌ `recipes/learning/cultural_learning_workflow.yaml` (needed)
+
+
+    **Required Scripts**:
+
+    - ❌ `scripts/learning_processor.py` (needed)
+
+
+    **Dependencies**: 0% complete'
+- level: 3
+  title: 7. **Skald** (Storyteller)
+  type: section
+  content: '**Status**: ❌ Missing Dependencies
+
+    **Base**: `skald-core-dangermouse-aaad47a8-a11a-4e2f-a9cd-14b6e7d08221.yml`
+
+
+    **Required Skills**:
+
+    - ❌ `skills/communication/storytelling.yaml` (needed)
+
+    - ❌ `skills/communication/narrative_generation.yaml` (needed)
+
+    - ❌ `skills/communication/cultural_storytelling.yaml` (needed)
+
+    - ❌ `skills/communication/effective_communication.yaml` (needed)
+
+
+    **Required Recipes**:
+
+    - ❌ `recipes/communication/storytelling_workflow.yaml` (needed)
+
+    - ❌ `recipes/communication/narrative_workflow.yaml` (needed)
+
+    - ❌ `recipes/communication/communication_workflow.yaml` (needed)
+
+
+    **Required Scripts**:
+
+    - ❌ `scripts/story_processor.py` (needed)
+
+
+    **Dependencies**: 0% complete'
+- level: 3
+  title: 8. **Hakim** (Wisdom Manager)
+  type: section
+  content: '**Status**: ❌ Missing Dependencies
+
+    **Base**: `hakim-core-dangermouse-f2b095a9-14ca-4188-a14a-43fa70b525c5.yml`
+
+
+    **Required Skills**:
+
+    - ❌ `skills/wisdom/cultural_intelligence.yaml` (needed)
+
+    - ❌ `skills/wisdom/knowledge_curation.yaml` (needed)
+
+    - ❌ `skills/wisdom/wisdom_based_decisions.yaml` (needed)
+
+    - ❌ `skills/wisdom/knowledge_management.yaml` (needed)
+
+
+    **Required Recipes**:
+
+    - ❌ `recipes/wisdom/wisdom_workflow.yaml` (needed)
+
+    - ❌ `recipes/wisdom/knowledge_curation_workflow.yaml` (needed)
+
+    - ❌ `recipes/wisdom/decision_support_workflow.yaml` (needed)
+
+
+    **Required Scripts**:
+
+    - ❌ `scripts/wisdom_processor.py` (needed)
+
+
+    **Dependencies**: 0% complete'
+- level: 3
+  title: 9. **Junzi** (Ethical Leader)
+  type: section
+  content: '**Status**: ❌ Missing Dependencies
+
+    **Base**: `junzi-core-dangermouse-1caf614d-f987-42ce-84ab-25fe9dff79f3.yml`
+
+
+    **Required Skills**:
+
+    - ❌ `skills/ethics/virtuous_behavior.yaml` (needed)
+
+    - ❌ `skills/ethics/ethical_decision_making.yaml` (needed)
+
+    - ❌ `skills/ethics/moral_guidance.yaml` (needed)
+
+    - ❌ `skills/ethics/cultural_sensitivity.yaml` (needed)
+
+
+    **Required Recipes**:
+
+    - ❌ `recipes/ethics/ethical_workflow.yaml` (needed)
+
+    - ❌ `recipes/ethics/decision_ethics_workflow.yaml` (needed)
+
+    - ❌ `recipes/ethics/moral_guidance_workflow.yaml` (needed)
+
+
+    **Required Scripts**:
+
+    - ❌ `scripts/ethics_processor.py` (needed)
+
+
+    **Dependencies**: 0% complete'
+- level: 3
+  title: 10. **Sachem** (Governance Leader)
+  type: section
+  content: '**Status**: ❌ Missing Dependencies
+
+    **Base**: `sachem-core-dangermouse-166dd687-f0e6-406a-84a2-8494286e2249.yml`
+
+
+    **Required Skills**:
+
+    - ❌ `skills/governance/community_decision_making.yaml` (needed)
+
+    - ❌ `skills/governance/governance_systems.yaml` (needed)
+
+    - ❌ `skills/governance/cultural_leadership.yaml` (needed)
+
+    - ❌ `skills/governance/community_management.yaml` (needed)
+
+
+    **Required Recipes**:
+
+    - ❌ `recipes/governance/governance_workflow.yaml` (needed)
+
+    - ❌ `recipes/governance/community_workflow.yaml` (needed)
+
+    - ❌ `recipes/governance/leadership_workflow.yaml` (needed)
+
+
+    **Required Scripts**:
+
+    - ❌ `scripts/governance_processor.py` (needed)
+
+
+    **Dependencies**: 0% complete'
+- level: 3
+  title: 11. **Oracle** (Predictor)
+  type: section
+  content: '**Status**: ❌ Missing Dependencies
+
+    **Base**: `oracle-core-dangermouse-ca32832a-deb8-494d-8a6a-38c9cc3e87e9.yml`
+
+
+    **Required Skills**:
+
+    - ❌ `skills/prediction/future_analysis.yaml` (needed)
+
+    - ❌ `skills/prediction/trend_prediction.yaml` (needed)
+
+    - ❌ `skills/prediction/scenario_planning.yaml` (needed)
+
+    - ❌ `skills/prediction/forecasting.yaml` (needed)
+
+
+    **Required Recipes**:
+
+    - ❌ `recipes/prediction/prediction_workflow.yaml` (needed)
+
+    - ❌ `recipes/prediction/scenario_workflow.yaml` (needed)
+
+    - ❌ `recipes/prediction/forecasting_workflow.yaml` (needed)
+
+
+    **Required Scripts**:
+
+    - ❌ `scripts/prediction_processor.py` (needed)
+
+
+    **Dependencies**: 0% complete'
+- level: 3
+  title: 12. **Archon** (Authority)
+  type: section
+  content: '**Status**: ❌ Missing Dependencies
+
+    **Base**: `archon-core-dangermouse-6aac4a2a-384e-4896-a281-9f5cd505c6d7.yml`
+
+
+    **Required Skills**:
+
+    - ❌ `skills/authority/system_governance.yaml` (needed)
+
+    - ❌ `skills/authority/rule_enforcement.yaml` (needed)
+
+    - ❌ `skills/authority/authoritative_decisions.yaml` (needed)
+
+    - ❌ `skills/authority/cultural_sensitivity.yaml` (needed)
+
+
+    **Required Recipes**:
+
+    - ❌ `recipes/authority/governance_workflow.yaml` (needed)
+
+    - ❌ `recipes/authority/enforcement_workflow.yaml` (needed)
+
+    - ❌ `recipes/authority/authority_workflow.yaml` (needed)
+
+
+    **Required Scripts**:
+
+    - ❌ `scripts/authority_processor.py` (needed)
+
+
+    **Dependencies**: 0% complete'
+- level: 3
+  title: 13. **Mzee** (Elder)
+  type: section
+  content: '**Status**: ❌ Missing Dependencies
+
+    **Base**: `mzee-core-dangermouse-d4c381c7-d50e-4a9e-98c9-d1c085291b4f.yml`
+
+
+    **Required Skills**:
+
+    - ❌ `skills/elder/accumulated_knowledge.yaml` (needed)
+
+    - ❌ `skills/elder/life_experience.yaml` (needed)
+
+    - ❌ `skills/elder/elder_guidance.yaml` (needed)
+
+    - ❌ `skills/elder/cultural_traditions.yaml` (needed)
+
+
+    **Required Recipes**:
+
+    - ❌ `recipes/elder/elder_workflow.yaml` (needed)
+
+    - ❌ `recipes/elder/guidance_workflow.yaml` (needed)
+
+    - ❌ `recipes/elder/tradition_workflow.yaml` (needed)
+
+
+    **Required Scripts**:
+
+    - ❌ `scripts/elder_processor.py` (needed)
+
+
+    **Dependencies**: 0% complete'
+- level: 2
+  title: Implementation Priority
+  type: section
+  content: ''
+- level: 3
+  title: 'Phase 1: Critical Dependencies (Next 1-2 Sessions)'
+  type: section
+  content: "1. **Complete Amauta** (60% done)\n   - Create missing teaching skills\n\
+    \   - Create missing teaching recipes\n   - Create teaching processor script\n\
+    \n2. **Start Tohunga** (Data validation is critical for RAG)\n   - Create data\
+    \ validation skills\n   - Create data processing recipes\n   - Create data processor\
+    \ script"
+- level: 3
+  title: 'Phase 2: Security and Autonomy (Next 2-3 Sessions)'
+  type: section
+  content: '3. **Musa** (Security is critical for production)
+
+    4. **Ronin** (Autonomy needed for advanced workflows)'
+- level: 3
+  title: 'Phase 3: Learning and Communication (Next 3-4 Sessions)'
+  type: section
+  content: '5. **Yachay** (Learning specialist)
+
+    6. **Skald** (Communication specialist)'
+- level: 3
+  title: 'Phase 4: Wisdom and Ethics (Next 4-5 Sessions)'
+  type: section
+  content: '7. **Hakim** (Wisdom management)
+
+    8. **Junzi** (Ethical leadership)'
+- level: 3
+  title: 'Phase 5: Governance and Prediction (Next 5-6 Sessions)'
+  type: section
+  content: '9. **Sachem** (Community governance)
+
+    10. **Oracle** (Prediction and forecasting)'
+- level: 3
+  title: 'Phase 6: Authority and Elder (Next 6-7 Sessions)'
+  type: section
+  content: '11. **Archon** (System authority)
+
+    12. **Mzee** (Elder wisdom)'
+- level: 2
+  title: File Structure Requirements
+  type: section
+  content: ''
+- level: 3
+  title: Skills Directory Structure
+  type: section
+  content: "```\npackages/data/skills/\n├── teaching/\n│   ├── mentor.yaml ✅\n│  \
+    \ ├── cultural_educator.yaml ✅\n│   ├── knowledge_transmission.yaml ❌\n│   └──\
+    \ learning_assessment.yaml ❌\n├── data/\n│   ├── validation.yaml ❌\n│   ├── cleaning.yaml\
+    \ ❌\n│   ├── structuring.yaml ❌\n│   └── quality_assurance.yaml ❌\n├── security/\n\
+    │   ├── threat_detection.yaml ❌\n│   ├── compliance_validation.yaml ❌\n│   ├──\
+    \ code_security_analysis.yaml ❌\n│   ├── authentication.yaml ❌\n│   └── authorization.yaml\
+    \ ❌\n├── autonomy/\n│   ├── decision_making.yaml ❌\n│   ├── independent_execution.yaml\
+    \ ❌\n│   ├── strategic_planning.yaml ❌\n│   └── self_directed_workflows.yaml ❌\n\
+    ├── learning/\n│   ├── knowledge_transmission.yaml ❌\n│   ├── educational_methodologies.yaml\
+    \ ❌\n│   ├── cultural_learning.yaml ❌\n│   └── adaptive_learning.yaml ❌\n├── communication/\n\
+    │   ├── storytelling.yaml ❌\n│   ├── narrative_generation.yaml ❌\n│   ├── cultural_storytelling.yaml\
+    \ ❌\n│   └── effective_communication.yaml ❌\n├── wisdom/\n│   ├── cultural_intelligence.yaml\
+    \ ❌\n│   ├── knowledge_curation.yaml ❌\n│   ├── wisdom_based_decisions.yaml ❌\n\
+    │   └── knowledge_management.yaml ❌\n├── ethics/\n│   ├── virtuous_behavior.yaml\
+    \ ❌\n│   ├── ethical_decision_making.yaml ❌\n│   ├── moral_guidance.yaml ❌\n│\
+    \   └── cultural_sensitivity.yaml ❌\n├── governance/\n│   ├── community_decision_making.yaml\
+    \ ❌\n│   ├── governance_systems.yaml ❌\n│   ├── cultural_leadership.yaml ❌\n│\
+    \   └── community_management.yaml ❌\n├── prediction/\n│   ├── future_analysis.yaml\
+    \ ❌\n│   ├── trend_prediction.yaml ❌\n│   ├── scenario_planning.yaml ❌\n│   └──\
+    \ forecasting.yaml ❌\n├── authority/\n│   ├── system_governance.yaml ❌\n│   ├──\
+    \ rule_enforcement.yaml ❌\n│   ├── authoritative_decisions.yaml ❌\n│   └── cultural_sensitivity.yaml\
+    \ ❌\n└── elder/\n    ├── accumulated_knowledge.yaml ❌\n    ├── life_experience.yaml\
+    \ ❌\n    ├── elder_guidance.yaml ❌\n    └── cultural_traditions.yaml ❌\n```"
+- level: 3
+  title: Recipes Directory Structure
+  type: section
+  content: "```\npackages/data/recipes/\n├── teaching/\n│   ├── mentorship_workflow.yaml\
+    \ ✅\n│   ├── cultural_education_workflow.yaml ❌\n│   └── learning_path_development.yaml\
+    \ ❌\n├── data/\n│   ├── validation_workflow.yaml ❌\n│   ├── cleaning_pipeline.yaml\
+    \ ❌\n│   └── quality_assurance_workflow.yaml ❌\n├── security/\n│   ├── security_audit_workflow.yaml\
+    \ ❌\n│   ├── compliance_check_workflow.yaml ❌\n│   └── code_review_workflow.yaml\
+    \ ❌\n├── autonomy/\n│   ├── autonomous_workflow.yaml ❌\n│   ├── decision_workflow.yaml\
+    \ ❌\n│   └── strategic_execution_workflow.yaml ❌\n├── learning/\n│   ├── learning_workflow.yaml\
+    \ ❌\n│   ├── adaptive_education_workflow.yaml ❌\n│   └── cultural_learning_workflow.yaml\
+    \ ❌\n├── communication/\n│   ├── storytelling_workflow.yaml ❌\n│   ├── narrative_workflow.yaml\
+    \ ❌\n│   └── communication_workflow.yaml ❌\n├── wisdom/\n│   ├── wisdom_workflow.yaml\
+    \ ❌\n│   ├── knowledge_curation_workflow.yaml ❌\n│   └── decision_support_workflow.yaml\
+    \ ❌\n├── ethics/\n│   ├── ethical_workflow.yaml ❌\n│   ├── decision_ethics_workflow.yaml\
+    \ ❌\n│   └── moral_guidance_workflow.yaml ❌\n├── governance/\n│   ├── governance_workflow.yaml\
+    \ ❌\n│   ├── community_workflow.yaml ❌\n│   └── leadership_workflow.yaml ❌\n├──\
+    \ prediction/\n│   ├── prediction_workflow.yaml ❌\n│   ├── scenario_workflow.yaml\
+    \ ❌\n│   └── forecasting_workflow.yaml ❌\n├── authority/\n│   ├── governance_workflow.yaml\
+    \ ❌\n│   ├── enforcement_workflow.yaml ❌\n│   └── authority_workflow.yaml ❌\n\
+    └── elder/\n    ├── elder_workflow.yaml ❌\n    ├── guidance_workflow.yaml ❌\n\
+    \    └── tradition_workflow.yaml ❌\n```"
+- level: 3
+  title: Scripts Directory Structure
+  type: section
+  content: '```
+
+    packages/data/scripts/
+
+    ├── teaching_processor.py ❌
+
+    ├── data_processor.py ❌
+
+    ├── security_analyzer.py ❌
+
+    ├── autonomy_manager.py ❌
+
+    ├── learning_processor.py ❌
+
+    ├── story_processor.py ❌
+
+    ├── wisdom_processor.py ❌
+
+    ├── ethics_processor.py ❌
+
+    ├── governance_processor.py ❌
+
+    ├── prediction_processor.py ❌
+
+    ├── authority_processor.py ❌
+
+    └── elder_processor.py ❌
+
+    ```'
+- level: 2
+  title: Success Metrics
+  type: section
+  content: ''
+- level: 3
+  title: Completion Targets
+  type: section
+  content: '- **Phase 1**: 100% of Amauta and Tohunga dependencies
+
+    - **Phase 2**: 100% of Musa and Ronin dependencies
+
+    - **Phase 3**: 100% of Yachay and Skald dependencies
+
+    - **Phase 4**: 100% of Hakim and Junzi dependencies
+
+    - **Phase 5**: 100% of Sachem and Oracle dependencies
+
+    - **Phase 6**: 100% of Archon and Mzee dependencies'
+- level: 3
+  title: Quality Targets
+  type: section
+  content: '- All skills follow established patterns and file size limits
+
+    - All recipes include proper workflow logic and error handling
+
+    - All scripts include proper error handling and logging
+
+    - All assets are properly indexed and discoverable'
+- level: 3
+  title: Integration Targets
+  type: section
+  content: '- All personas can load their required assets
+
+    - All dependencies are properly resolved
+
+    - All assets work with the existing asset loading system
+
+    - All assets are compatible with the RAG and storage systems'
+- level: 2
+  title: Next Steps
+  type: section
+  content: '1. **Immediate**: Complete Amauta dependencies (2 missing skills, 2 missing
+    recipes, 1 missing script)
+
+    2. **Short-term**: Create Tohunga dependencies (4 skills, 3 recipes, 1 script)
+
+    3. **Medium-term**: Create Musa and Ronin dependencies
+
+    4. **Long-term**: Complete all remaining node class dependencies
+
+
+    This plan ensures we have all assets ready in advance for seamless development
+    and deployment of the kOS persona system.'

@@ -1,0 +1,431 @@
+metadata:
+  original_file: 03_State_Management.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: State Management Architecture
+  description: Zustand stores with Chrome storage persistence and rehydration patterns
+  category: architecture
+  subcategory: state
+  context: current_implementation
+  implementation_status: complete
+  decision_scope: high
+  complexity: medium
+  last_updated: '2025-01-20'
+  code_references:
+  - src/store/
+  - src/store/chromeStorage.ts
+  - src/store/serviceStore.ts
+  - src/store/viewStateStore.ts
+  related_documents:
+  - ./01_system-architecture.md
+  - ../services/01_service-architecture.md
+  - ../../future/architecture/02_core-architecture.md
+  - ../../bridge/06_state-migration.md
+  agent_notes: Essential state management patterns - use these stores for all persistent
+    data and follow the rehydration pattern
+sections:
+- level: 1
+  title: State Management Architecture
+  type: section
+  content: ''
+- level: 2
+  title: Agent Context
+  type: section
+  content: '**For AI Agents**: Complete state management architecture using Zustand
+    stores with Chrome storage persistence. Use this when working with application
+    state, implementing data persistence, or handling store rehydration. Critical
+    foundation document for all state-related development.
+
+
+    **Implementation Notes**: Contains functional patterns for 5 core stores (serviceStore,
+    viewStateStore, settingsStore, vaultStore, logStore) with async rehydration, migration
+    support, and error handling.
+
+    **Quality Requirements**: Keep store interfaces and patterns synchronized with
+    actual implementation. Maintain accuracy of rehydration patterns and Chrome storage
+    adapter.
+
+    **Integration Points**: Foundation for all persistent data, links to service architecture,
+    security, and UI components that consume state.
+
+
+    ---'
+- level: 2
+  title: Quick Summary
+  type: section
+  content: Kai-CD uses Zustand for state management with a custom Chrome storage adapter
+    for persistence. All stores follow a consistent pattern with async rehydration,
+    error handling, and migration support. The system ensures data persistence across
+    browser sessions while maintaining performance.
+- level: 2
+  title: Implementation Status
+  type: section
+  content: '- ✅ **Complete**: Zustand store architecture with 5 core stores
+
+    - ✅ **Complete**: Chrome storage persistence adapter
+
+    - ✅ **Complete**: Async rehydration pattern with `_hasHydrated` flag
+
+    - ✅ **Complete**: Migration system for schema evolution
+
+    - ✅ **Complete**: Error handling and recovery mechanisms
+
+    - 🔄 **In Progress**: Performance optimizations for large datasets
+
+    - 📋 **Planned**: Distributed state for kOS compatibility'
+- level: 2
+  title: Store Architecture Overview
+  type: section
+  content: ''
+- level: 3
+  title: Core Store Structure
+  type: section
+  content: "```mermaid\ngraph TB\n    subgraph \"Application State\"\n        A[serviceStore]\
+    \ --> B[Service Management]\n        C[viewStateStore] --> D[UI State]\n     \
+    \   E[settingsStore] --> F[User Preferences]\n        G[vaultStore] --> H[Secure\
+    \ Credentials]\n        I[logStore] --> J[Application Logs]\n    end\n    \n \
+    \   subgraph \"Persistence Layer\"\n        B --> K[Chrome Storage]\n        D\
+    \ --> K\n        F --> K\n        H --> K\n        J --> L[Local Storage]\n  \
+    \  end\n    \n    subgraph \"Rehydration\"\n        K --> M[chromeStorageAdapter]\n\
+    \        M --> N[Store Rehydration]\n        N --> O[_hasHydrated Flag]\n    end\n\
+    ```"
+- level: 2
+  title: Core Stores
+  type: section
+  content: ''
+- level: 3
+  title: 1. **serviceStore** - Service Management
+  type: section
+  content: "**Purpose**: Manages all external service integrations, configurations,\
+    \ and status\n\n```typescript\ninterface ServiceState {\n  services: Record<string,\
+    \ ServiceInstance>;\n  activeService: string | null;\n  isLoading: boolean;\n\
+    \  errors: Record<string, string>;\n  _hasHydrated: boolean;\n}\n\ninterface ServiceInstance\
+    \ {\n  definition: ServiceDefinition;\n  config: ServiceConfig;\n  status: 'healthy'\
+    \ | 'unhealthy' | 'unknown';\n  lastCheck: Date;\n  capabilities: Capability[];\n\
+    \  credentials?: Record<string, string>;\n}\n```\n\n**Key Actions**:\n- `addService(definition,\
+    \ config)` - Register new service\n- `removeService(serviceId)` - Remove service\
+    \ integration\n- `updateServiceConfig(serviceId, config)` - Update service settings\n\
+    - `setActiveService(serviceId)` - Switch active service\n- `updateServiceStatus(serviceId,\
+    \ status)` - Update health status\n\n**Location**: `src/store/serviceStore.ts`"
+- level: 3
+  title: 2. **viewStateStore** - UI State Management
+  type: section
+  content: "**Purpose**: Manages UI state, navigation, and view preferences\n\n```typescript\n\
+    interface ViewState {\n  activeView: 'chat' | 'image' | 'settings' | 'security';\n\
+    \  sidebarOpen: boolean;\n  theme: string;\n  panelLayout: 'single' | 'split'\
+    \ | 'multi';\n  chatHistory: Record<string, ChatMessage[]>;\n  _hasHydrated: boolean;\n\
+    }\n```\n\n**Key Actions**:\n- `setActiveView(view)` - Navigate between main views\n\
+    - `toggleSidebar()` - Show/hide sidebar\n- `setPanelLayout(layout)` - Change interface\
+    \ layout\n- `addChatMessage(serviceId, message)` - Store chat messages\n- `clearChatHistory(serviceId?)`\
+    \ - Clear conversation history\n\n**Location**: `src/store/viewStateStore.ts`"
+- level: 3
+  title: 3. **settingsStore** - User Preferences
+  type: section
+  content: "**Purpose**: Manages user configuration, preferences, and application\
+    \ settings\n\n```typescript\ninterface SettingsState {\n  theme: {\n    colorScheme:\
+    \ string;\n    customThemes: CustomTheme[];\n    darkMode: boolean;\n  };\n  ai:\
+    \ {\n    defaultModel: string;\n    temperature: number;\n    maxTokens: number;\n\
+    \    streamResponses: boolean;\n  };\n  ui: {\n    language: string;\n    notifications:\
+    \ boolean;\n    autoSave: boolean;\n    compactMode: boolean;\n  };\n  developer:\
+    \ {\n    debugMode: boolean;\n    logLevel: 'error' | 'warn' | 'info' | 'debug';\n\
+    \    showDevTools: boolean;\n  };\n  _hasHydrated: boolean;\n}\n```\n\n**Key Actions**:\n\
+    - `updateTheme(themeConfig)` - Change theme settings\n- `updateAiSettings(settings)`\
+    \ - Configure AI behavior\n- `updateUiSettings(settings)` - Adjust UI preferences\n\
+    - `toggleDebugMode()` - Enable/disable developer features\n\n**Location**: `src/store/settingsStore.ts`"
+- level: 3
+  title: 4. **vaultStore** - Secure Credential Management
+  type: section
+  content: "**Purpose**: Manages encrypted storage of service credentials and sensitive\
+    \ data\n\n```typescript\ninterface VaultState {\n  isUnlocked: boolean;\n  credentials:\
+    \ Record<string, EncryptedCredential>;\n  masterKeyHash: string;\n  securitySettings:\
+    \ {\n    autoLockTimeout: number;\n    requirePasswordForAccess: boolean;\n  \
+    \  enableBiometric: boolean;\n  };\n  _hasHydrated: boolean;\n}\n\ninterface EncryptedCredential\
+    \ {\n  serviceId: string;\n  encryptedData: string;\n  salt: string;\n  createdAt:\
+    \ Date;\n  lastUsed: Date;\n}\n```\n\n**Key Actions**:\n- `unlockVault(password)`\
+    \ - Decrypt and access credentials\n- `lockVault()` - Secure vault and clear decrypted\
+    \ data\n- `storeCredential(serviceId, credential)` - Encrypt and store\n- `getCredential(serviceId)`\
+    \ - Decrypt and retrieve\n- `updateSecuritySettings(settings)` - Configure security\
+    \ options\n\n**Location**: `src/store/vaultStore.ts`"
+- level: 3
+  title: 5. **logStore** - Application Logging
+  type: section
+  content: "**Purpose**: Captures and manages application logs for debugging and monitoring\n\
+    \n```typescript\ninterface LogState {\n  logs: LogEntry[];\n  maxLogs: number;\n\
+    \  logLevel: LogLevel;\n  filters: {\n    level: LogLevel[];\n    source: string[];\n\
+    \    timeRange: [Date, Date];\n  };\n  _hasHydrated: boolean;\n}\n\ninterface\
+    \ LogEntry {\n  id: string;\n  timestamp: Date;\n  level: 'error' | 'warn' | 'info'\
+    \ | 'debug';\n  source: string;\n  message: string;\n  data?: any;\n}\n```\n\n\
+    **Key Actions**:\n- `addLog(level, source, message, data?)` - Add new log entry\n\
+    - `clearLogs()` - Remove all log entries\n- `setLogLevel(level)` - Configure logging\
+    \ verbosity\n- `exportLogs()` - Generate log export for debugging\n\n**Location**:\
+    \ `src/store/logStore.ts`"
+- level: 2
+  title: Chrome Storage Integration
+  type: section
+  content: ''
+- level: 3
+  title: Custom Storage Adapter
+  type: section
+  content: "The Chrome storage adapter provides seamless persistence for Zustand stores:\n\
+    \n```typescript\n// src/store/chromeStorage.ts\ninterface ChromeStorageAdapter\
+    \ {\n  getItem: (name: string) => Promise<string | null>;\n  setItem: (name: string,\
+    \ value: string) => Promise<void>;\n  removeItem: (name: string) => Promise<void>;\n\
+    }\n\nconst chromeStorageAdapter: ChromeStorageAdapter = {\n  getItem: async (name:\
+    \ string) => {\n    const result = await chrome.storage.local.get(name);\n   \
+    \ return result[name] || null;\n  },\n  \n  setItem: async (name: string, value:\
+    \ string) => {\n    await chrome.storage.local.set({ [name]: value });\n  },\n\
+    \  \n  removeItem: async (name: string) => {\n    await chrome.storage.local.remove(name);\n\
+    \  }\n};\n```"
+- level: 3
+  title: Storage Configuration
+  type: section
+  content: "Each store is configured with persistence:\n\n```typescript\nexport const\
+    \ serviceStore = create<ServiceState>()(\n  persist(\n    (set, get) => ({\n \
+    \     // Store implementation\n      services: {},\n      activeService: null,\n\
+    \      isLoading: false,\n      errors: {},\n      _hasHydrated: false,\n    \
+    \  \n      // Actions\n      addService: (definition, config) => {\n        //\
+    \ Implementation\n      },\n      // ... more actions\n    }),\n    {\n      name:\
+    \ 'service-store',\n      storage: chromeStorageAdapter,\n      onRehydrateStorage:\
+    \ () => (state) => {\n        state?._hasHydrated = true;\n        // Migration\
+    \ logic here if needed\n      },\n    }\n  )\n);\n```"
+- level: 2
+  title: Rehydration Pattern
+  type: section
+  content: ''
+- level: 3
+  title: The `_hasHydrated` Flag
+  type: section
+  content: "All stores use a consistent pattern for handling async rehydration:\n\n\
+    ```typescript\n// In components, check rehydration before using store data\nconst\
+    \ Component: React.FC = () => {\n  const hasHydrated = useServiceStore(state =>\
+    \ state._hasHydrated);\n  const services = useServiceStore(state => state.services);\n\
+    \  \n  if (!hasHydrated) {\n    return <LoadingSpinner />;\n  }\n  \n  return\
+    \ (\n    <div>\n      {/* Use services data safely */}\n    </div>\n  );\n};\n\
+    ```"
+- level: 3
+  title: Migration Handling
+  type: section
+  content: "Store migrations are handled during rehydration:\n\n```typescript\nconst\
+    \ onRehydrateStorage = () => (state: ServiceState | undefined) => {\n  if (state)\
+    \ {\n    // Mark as hydrated\n    state._hasHydrated = true;\n    \n    // Handle\
+    \ migrations\n    if (!state.version || state.version < CURRENT_VERSION) {\n \
+    \     state = migrateServiceStore(state);\n    }\n    \n    // URL migration example\
+    \ from memory\n    if (state.services) {\n      Object.values(state.services).forEach(service\
+    \ => {\n        if (service.config.ipType === 'local' || service.config.ipType\
+    \ === 'remote') {\n          const currentConfig = getConfigValue('networking.services');\n\
+    \          const newBaseUrl = generateServiceUrl(service.config.ipType, currentConfig);\n\
+    \          if (service.config.baseUrl !== newBaseUrl) {\n            service.config.baseUrl\
+    \ = newBaseUrl;\n          }\n        }\n      });\n    }\n  }\n};\n```"
+- level: 2
+  title: State Management Patterns
+  type: section
+  content: ''
+- level: 3
+  title: 1. **Immutable Updates**
+  type: section
+  content: "All state updates use immutable patterns:\n\n```typescript\n// Correct:\
+    \ Immutable update\naddService: (definition, config) => \n  set(state => ({\n\
+    \    services: {\n      ...state.services,\n      [definition.id]: {\n       \
+    \ definition,\n        config,\n        status: 'unknown',\n        capabilities:\
+    \ definition.capabilities\n      }\n    }\n  })),\n\n// Incorrect: Direct mutation\n\
+    addService: (definition, config) => \n  set(state => {\n    state.services[definition.id]\
+    \ = { definition, config }; // Don't do this\n    return state;\n  })\n```"
+- level: 3
+  title: 2. **Computed Values**
+  type: section
+  content: "Use selectors for computed values:\n\n```typescript\n// Selector for healthy\
+    \ services\nconst useHealthyServices = () => \n  useServiceStore(state => \n \
+    \   Object.values(state.services).filter(s => s.status === 'healthy')\n  );\n\n\
+    // Selector for services with specific capability\nconst useServicesWithCapability\
+    \ = (capability: Capability) =>\n  useServiceStore(state =>\n    Object.values(state.services).filter(s\
+    \ => \n      s.capabilities.includes(capability)\n    )\n  );\n```"
+- level: 3
+  title: 3. **Action Composition**
+  type: section
+  content: "Complex operations compose multiple actions:\n\n```typescript\n// Complex\
+    \ action that updates multiple stores\nconst switchServiceAndClearHistory = async\
+    \ (serviceId: string) => {\n  const serviceStore = useServiceStore.getState();\n\
+    \  const viewStateStore = useViewStateStore.getState();\n  \n  // Switch active\
+    \ service\n  serviceStore.setActiveService(serviceId);\n  \n  // Clear chat history\
+    \ for previous service\n  viewStateStore.clearChatHistory();\n  \n  // Update\
+    \ UI state\n  viewStateStore.setActiveView('chat');\n};\n```"
+- level: 3
+  title: 4. **Error Handling**
+  type: section
+  content: "Consistent error handling across stores:\n\n```typescript\nupdateServiceStatus:\
+    \ async (serviceId, status) => {\n  try {\n    set(state => ({\n      services:\
+    \ {\n        ...state.services,\n        [serviceId]: {\n          ...state.services[serviceId],\n\
+    \          status,\n          lastCheck: new Date()\n        }\n      },\n   \
+    \   errors: {\n        ...state.errors,\n        [serviceId]: undefined // Clear\
+    \ previous error\n      }\n    }));\n  } catch (error) {\n    set(state => ({\n\
+    \      errors: {\n        ...state.errors,\n        [serviceId]: error.message\n\
+    \      }\n    }));\n    \n    // Log error\n    useLogStore.getState().addLog('error',\
+    \ 'serviceStore', \n      `Failed to update service status: ${error.message}`,\
+    \ { serviceId, status });\n  }\n}\n```"
+- level: 2
+  title: Performance Considerations
+  type: section
+  content: ''
+- level: 3
+  title: 1. **Selective Subscriptions**
+  type: section
+  content: 'Use specific selectors to minimize re-renders:
+
+
+    ```typescript
+
+    // Good: Specific selector
+
+    const activeServiceId = useServiceStore(state => state.activeService);
+
+
+    // Less optimal: Full state subscription
+
+    const fullState = useServiceStore();
+
+    const activeServiceId = fullState.activeService;
+
+    ```'
+- level: 3
+  title: 2. **Debounced Updates**
+  type: section
+  content: "Debounce frequent updates:\n\n```typescript\nimport { debounce } from\
+    \ 'lodash';\n\n// Debounced settings update\nconst debouncedUpdateSettings = debounce((settings)\
+    \ => {\n  useSettingsStore.getState().updateAiSettings(settings);\n}, 300);\n\
+    ```"
+- level: 3
+  title: 3. **Storage Optimization**
+  type: section
+  content: "Optimize what gets persisted:\n\n```typescript\nconst persist = (config)\
+    \ => ({\n  ...config,\n  partialize: (state) => ({\n    // Only persist essential\
+    \ data\n    services: state.services,\n    activeService: state.activeService,\n\
+    \    // Omit temporary state\n    // isLoading: state.isLoading,\n    // errors:\
+    \ state.errors,\n  })\n});\n```"
+- level: 2
+  title: Security Considerations
+  type: section
+  content: ''
+- level: 3
+  title: 1. **Sensitive Data Handling**
+  type: section
+  content: 'Never store sensitive data in plaintext:
+
+
+    ```typescript
+
+    // Correct: Encrypted storage
+
+    vaultStore.storeCredential(serviceId, credential);
+
+
+    // Incorrect: Plaintext storage
+
+    serviceStore.updateService(serviceId, { apiKey: ''plain-text-key'' });
+
+    ```'
+- level: 3
+  title: 2. **State Isolation**
+  type: section
+  content: 'Keep sensitive state isolated:
+
+
+    ```typescript
+
+    // Vault store automatically locks sensitive data
+
+    const isUnlocked = useVaultStore(state => state.isUnlocked);
+
+    const credentials = isUnlocked ? useVaultStore(state => state.credentials) : {};
+
+    ```'
+- level: 2
+  title: For AI Agents
+  type: section
+  content: ''
+- level: 3
+  title: When to Use State Management
+  type: section
+  content: '- ✅ Use when: Storing data that needs persistence across sessions
+
+    - ✅ Use when: Managing complex UI state or user preferences
+
+    - ✅ Use when: Coordinating state between multiple components
+
+    - ✅ Use when: Implementing features that require async data loading
+
+    - ❌ Don''t use when: Managing local component state that doesn''t need persistence'
+- level: 3
+  title: Key Implementation Points
+  type: section
+  content: '1. **Always check `_hasHydrated` flag** before using persisted state
+
+    2. **Use immutable update patterns** for all state modifications
+
+    3. **Handle errors gracefully** with proper error state management
+
+    4. **Follow the migration pattern** when changing store schemas
+
+    5. **Keep sensitive data in the vault store** with proper encryption'
+- level: 3
+  title: Common Patterns
+  type: section
+  content: "```typescript\n// Safe state access with rehydration check\nconst Component:\
+    \ React.FC = () => {\n  const hasHydrated = useServiceStore(state => state._hasHydrated);\n\
+    \  const services = useServiceStore(state => state.services);\n  \n  if (!hasHydrated)\
+    \ {\n    return <div>Loading...</div>;\n  }\n  \n  return <ServiceList services={services}\
+    \ />;\n};\n\n// Action with error handling\nconst handleServiceAction = async\
+    \ (serviceId: string) => {\n  try {\n    const result = await apiClient.request({\n\
+    \      serviceId,\n      endpoint: 'health'\n    });\n    \n    useServiceStore.getState().updateServiceStatus(serviceId,\
+    \ 'healthy');\n  } catch (error) {\n    useServiceStore.getState().updateServiceStatus(serviceId,\
+    \ 'unhealthy');\n    useLogStore.getState().addLog('error', 'healthCheck', error.message);\n\
+    \  }\n};\n```"
+- level: 2
+  title: Migration Considerations for kOS
+  type: section
+  content: ''
+- level: 3
+  title: kOS-Ready Patterns
+  type: section
+  content: '- **Store structure** → Can be distributed across agent mesh
+
+    - **Action patterns** → Map to agent message passing
+
+    - **Error handling** → Foundation for distributed error recovery
+
+    - **Migration system** → Supports schema evolution across agents'
+- level: 3
+  title: Areas Requiring Evolution
+  type: section
+  content: '- **Chrome storage dependency** → Distributed storage systems
+
+    - **Centralized state** → Agent-local state with synchronization
+
+    - **Direct store access** → Message-based state updates
+
+    - **Single-user model** → Multi-agent state coordination'
+- level: 2
+  title: Related Documentation
+  type: section
+  content: '- **Current**: [System Architecture](./01_system-architecture.md) - Overall
+    system design
+
+    - **Current**: [Service Architecture](../services/01_service-architecture.md)
+    - Service integration patterns
+
+    - **Future**: [Core Architecture](../../future/architecture/02_core-architecture.md)
+    - kOS distributed state
+
+    - **Bridge**: [State Migration](../../bridge/06_state-migration.md) - Evolution
+    strategy'
+- level: 2
+  title: External References
+  type: section
+  content: '- [Zustand Documentation](https://github.com/pmndrs/zustand)
+
+    - [Chrome Storage API](https://developer.chrome.com/docs/extensions/reference/storage/)
+
+    - [React State Management Patterns](https://react.dev/learn/managing-state)
+
+
+    ---'

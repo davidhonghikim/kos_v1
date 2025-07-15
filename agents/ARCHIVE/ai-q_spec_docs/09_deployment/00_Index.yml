@@ -1,0 +1,36 @@
+title: 09_deployment Index
+version: '1.0'
+category: 09_deployment
+description: Index of all documentation in 09_deployment
+files:
+- name: k_os_transition_to_source_code_development_phase_organized
+  path: deployment/k_os_transition_to_source_code_development_phase_organized.yml
+  type: documentation
+- name: k_os_contributor_release_notes_and_handoff_package_instructions_organized
+  path: deployment/k_os_contributor_release_notes_and_handoff_package_instructions_organized.yml
+  type: documentation
+- name: k_os_initial_open_api_specification_planning_document_organized
+  path: deployment/k_os_initial_open_api_specification_planning_document_organized.yml
+  type: documentation
+- name: k_os_communication_bus_and_message_routing_layer_organized
+  path: deployment/k_os_communication_bus_and_message_routing_layer_organized.yml
+  type: documentation
+- name: k_os_initial_fast_api_endpoint_stub_plan_organized
+  path: deployment/k_os_initial_fast_api_endpoint_stub_plan_organized.yml
+  type: documentation
+- name: k_os_plugin_and_module_extension_framework_organized
+  path: deployment/k_os_plugin_and_module_extension_framework_organized.yml
+  type: documentation
+- name: k_os_initial_ci_cd_pipeline_configuration_plan_organized
+  path: deployment/k_os_initial_ci_cd_pipeline_configuration_plan_organized.yml
+  type: documentation
+- name: k_os_operational_maintenance_and_iterative_development_plan_organized
+  path: deployment/k_os_operational_maintenance_and_iterative_development_plan_organized.yml
+  type: documentation
+- name: phase_8_module_1_geig_spec_organized
+  path: deployment/phase_8_module_1_geig_spec_organized.yml
+  type: documentation
+- name: k_os_swagger_ui_and_redoc_api_documentation_deployment_plan_organized
+  path: deployment/k_os_swagger_ui_and_redoc_api_documentation_deployment_plan_organized.yml
+  type: documentation
+last_updated: '2025-06-30T03:49:22.885974'

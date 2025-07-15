@@ -1,0 +1,254 @@
+frontmatter:
+  title: KLF Service Discovery
+  description: How agents find available capabilities in the kOS network
+  version: 3.0.0
+  
+sections:
+- title: "Discovering Available Services"
+  content: |
+    # Service Discovery in KLF
+    
+    Agents can dynamically discover what services are available in the kOS network
+    without needing to hardcode connections or endpoints.
+    
+    ## Discovery Endpoint
+    ```http
+    GET /klf/v1/capabilities
+    ```
+    
+    ## Response Format
+    ```json
+    {
+      "network": "kOS Ecosystem",
+      "discovery_time": "2025-06-30T00:00:00Z",
+      "total_agents": 5,
+      "total_services": 12,
+      "agents": [
+        {
+          "did": "did:kos:backend:persona-rag",
+          "type": "backend",
+          "name": "PersonaRAG Bridge",
+          "status": "online",
+          "last_seen": "2025-06-30T00:00:00Z",
+          "capabilities": [
+            "document.upload",
+            "document.query", 
+            "persona.chat",
+            "vector.search",
+            "vault.store",
+            "vault.retrieve"
+          ],
+          "load": "low",
+          "response_time": "50ms"
+        },
+        {
+          "did": "did:kos:agent:weather-service",
+          "type": "service", 
+          "name": "Weather API Service",
+          "status": "online",
+          "capabilities": [
+            "weather.current",
+            "weather.forecast",
+            "weather.alerts"
+          ]
+        }
+      ],
+      "services": [
+        {
+          "name": "document.upload",
+          "providers": ["did:kos:backend:persona-rag"],
+          "description": "Upload documents for RAG processing",
+          "input_format": "multipart/form-data",
+          "output_format": "application/json"
+        },
+        {
+          "name": "weather.current", 
+          "providers": ["did:kos:agent:weather-service"],
+          "description": "Get current weather for a location",
+          "input_format": {"location": "string"},
+          "output_format": {"temperature": "number", "conditions": "string"}
+        }
+      ]
+    }
+    ```
+    
+    ## Filtered Discovery
+    
+    ### By Agent Type
+    ```http
+    GET /klf/v1/capabilities?type=ai
+    ```
+    
+    ### By Capability
+    ```http
+    GET /klf/v1/capabilities?service=document.search
+    ```
+    
+    ### By Status
+    ```http
+    GET /klf/v1/capabilities?status=online
+    ```
+    
+    ## Current kOS Services
+    
+    ### Document Services (PersonaRAG Bridge)
+    ```json
+    {
+      "document.upload": {
+        "description": "Upload files for RAG processing",
+        "provider": "did:kos:backend:persona-rag",
+        "input": {"file": "File", "metadata": "object"},
+        "output": {"document_id": "string", "status": "string"}
+      },
+      "document.query": {
+        "description": "Search through uploaded documents",
+        "provider": "did:kos:backend:persona-rag", 
+        "input": {"query": "string", "limit": "number"},
+        "output": {"results": "array", "count": "number"}
+      },
+      "document.analyze": {
+        "description": "Extract insights from documents",
+        "provider": "did:kos:backend:persona-rag",
+        "input": {"document_id": "string", "analysis_type": "string"},
+        "output": {"insights": "object", "summary": "string"}
+      }
+    }
+    ```
+    
+    ### AI Services (PersonaRAG Bridge)
+    ```json
+    {
+      "persona.chat": {
+        "description": "Chat with AI personas",
+        "provider": "did:kos:backend:persona-rag",
+        "input": {"message": "string", "persona_id": "string"},
+        "output": {"response": "string", "context": "object"}
+      },
+      "text.generate": {
+        "description": "Generate text content",
+        "provider": "did:kos:backend:persona-rag",
+        "input": {"prompt": "string", "parameters": "object"},
+        "output": {"generated_text": "string", "confidence": "number"}
+      },
+      "vector.search": {
+        "description": "Semantic similarity search",
+        "provider": "did:kos:backend:persona-rag",
+        "input": {"query": "string", "threshold": "number"},
+        "output": {"matches": "array", "scores": "array"}
+      }
+    }
+    ```
+    
+    ### System Services (PersonaRAG Bridge)
+    ```json
+    {
+      "auth.login": {
+        "description": "Authenticate users",
+        "provider": "did:kos:backend:persona-rag",
+        "input": {"username": "string", "password": "string"},
+        "output": {"token": "string", "expires": "string"}
+      },
+      "vault.store": {
+        "description": "Store encrypted data",
+        "provider": "did:kos:backend:persona-rag",
+        "input": {"key": "string", "value": "any"},
+        "output": {"stored": "boolean", "key_id": "string"}
+      },
+      "vault.retrieve": {
+        "description": "Retrieve encrypted data",
+        "provider": "did:kos:backend:persona-rag",
+        "input": {"key": "string"},
+        "output": {"value": "any", "retrieved": "boolean"}
+      },
+      "system.status": {
+        "description": "Check system health",
+        "provider": "did:kos:backend:persona-rag",
+        "input": {},
+        "output": {"status": "string", "uptime": "number", "version": "string"}
+      }
+    }
+    ```
+    
+    ## Service Metadata
+    
+    Each service can provide additional metadata:
+    
+    ```json
+    {
+      "service_name": "document.query",
+      "version": "1.2.0",
+      "description": "Search through uploaded documents with AI-powered relevance",
+      "provider": "did:kos:backend:persona-rag",
+      "status": "online",
+      "load": "medium",
+      "response_time": "150ms",
+      "rate_limit": "100/minute",
+      "authentication": "optional",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "query": {"type": "string", "required": true},
+          "limit": {"type": "number", "default": 10},
+          "filters": {"type": "object", "required": false}
+        }
+      },
+      "output_schema": {
+        "type": "object", 
+        "properties": {
+          "results": {"type": "array"},
+          "count": {"type": "number"},
+          "query_time": {"type": "number"}
+        }
+      },
+      "examples": [
+        {
+          "input": {"query": "AI research", "limit": 5},
+          "output": {"results": [...], "count": 3}
+        }
+      ]
+    }
+    ```
+    
+    ## Health Monitoring
+    
+    Discovery also includes real-time health information:
+    
+    ```json
+    {
+      "agent_health": {
+        "did": "did:kos:backend:persona-rag",
+        "status": "online|offline|degraded",
+        "last_heartbeat": "2025-06-30T00:00:00Z",
+        "response_time": "50ms",
+        "error_rate": "0.1%",
+        "load": "low|medium|high",
+        "version": "1.0.0"
+      }
+    }
+    ```
+    
+    ## Dynamic Updates
+    
+    Services can be added/removed dynamically. Agents can:
+    
+    ### Subscribe to Service Changes
+    ```javascript
+    // WebSocket subscription
+    ws.send(JSON.stringify({
+      type: 'subscribe',
+      events: ['service.added', 'service.removed', 'agent.status_changed']
+    }));
+    ```
+    
+    ### Receive Service Updates
+    ```json
+    {
+      "type": "event",
+      "event": "service.added",
+      "data": {
+        "service": "weather.current",
+        "provider": "did:kos:agent:weather-service",
+        "added_at": "2025-06-30T00:01:00Z"
+      }
+    }
+    ``` 

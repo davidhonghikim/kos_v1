@@ -1,0 +1,260 @@
+title: Personal Library System Architecture
+version: "1.0"
+description: "Architecture for personal library system where agents and users have their own libraries with AI-Q as shared source of truth"
+type: architecture
+status: active
+priority: high
+last_updated: "2025-06-30"
+tags:
+  - personal-library
+  - agent-library
+  - user-library
+  - aiq-library
+  - document-management
+  - privacy
+
+---
+
+## Library Hierarchy
+
+### 1. AI-Q Library (Shared Source of Truth)
+- **Location**: `ai-q/` directory
+- **Access**: Read-only for all agents and users
+- **Purpose**: Living library, shared knowledge base
+- **Management**: Centralized updates and versioning
+- **Content**: All official documentation, specifications, and shared resources
+
+### 2. Agent Libraries (Personal Agent Collections)
+- **Location**: `agents/libraries/[agent_id]/`
+- **Structure**:
+  ```
+  agents/libraries/
+  ├── [agent_id]/
+  │   ├── profile.yml          # Agent profile and preferences
+  │   ├── public/              # Public documents (shared with other agents)
+  │   │   ├── documents/
+  │   │   ├── notes/
+  │   │   └── references/
+  │   ├── private/             # Private documents (agent only)
+  │   │   ├── personal_notes/
+  │   │   ├── work_in_progress/
+  │   │   └── sensitive_data/
+  │   └── metadata/
+  │       ├── library_index.yml
+  │       ├── permissions.yml
+  │       └── sync_status.yml
+  ```
+
+### 3. User Libraries (Personal User Collections)
+- **Location**: `users/libraries/[user_id]/`
+- **Structure**:
+  ```
+  users/libraries/
+  ├── [user_id]/
+  │   ├── profile.yml          # User profile and preferences
+  │   ├── private/             # Private user documents
+  │   │   ├── personal_notes/
+  │   │   ├── bookmarks/
+  │   │   ├── annotations/
+  │   │   └── custom_docs/
+  │   └── metadata/
+  │       ├── library_index.yml
+  │       ├── permissions.yml
+  │       └── sync_status.yml
+  ```
+
+## Document Management System
+
+### Document Types
+1. **AI-Q Documents**: Official shared documents (read-only)
+2. **Agent Public Documents**: Shared by specific agents
+3. **Agent Private Documents**: Private to specific agents
+4. **User Private Documents**: Private to specific users
+
+### Document Operations
+- **Copy from AI-Q**: Agents/users can copy AI-Q documents to their libraries
+- **Annotate**: Add personal notes and annotations
+- **Bookmark**: Mark important documents for quick access
+- **Organize**: Create custom categories and tags
+- **Share**: Share documents between agents (with permissions)
+
+### Permissions System
+- **AI-Q**: Read-only for all
+- **Agent Public**: Read by all agents, write by owner
+- **Agent Private**: Read/write by owner only
+- **User Private**: Read/write by user only
+
+## Implementation Components
+
+### 1. Library Manager Service
+- **File**: `services/library-manager.js`
+- **Purpose**: Core library management operations
+- **Functions**:
+  - Create/delete libraries
+  - Add/remove documents
+  - Manage permissions
+  - Sync with AI-Q
+
+### 2. Document Service
+- **File**: `services/document-service.js`
+- **Purpose**: Document operations and metadata
+- **Functions**:
+  - Copy documents
+  - Add annotations
+  - Manage bookmarks
+  - Track changes
+
+### 3. Profile Service
+- **File**: `services/profile-service.js`
+- **Purpose**: Manage agent and user profiles
+- **Functions**:
+  - Create/update profiles
+  - Manage preferences
+  - Track library usage
+
+### 4. Search Service
+- **File**: `services/search-service.js`
+- **Purpose**: Unified search across all libraries
+- **Functions**:
+  - Search AI-Q library
+  - Search personal libraries
+  - Filter by permissions
+  - Rank results
+
+## API Endpoints
+
+### Library Management
+- `POST /api/libraries/create` - Create new library
+- `GET /api/libraries/[id]` - Get library info
+- `DELETE /api/libraries/[id]` - Delete library
+
+### Document Operations
+- `POST /api/documents/copy` - Copy from AI-Q
+- `POST /api/documents/annotate` - Add annotation
+- `POST /api/documents/bookmark` - Add bookmark
+- `GET /api/documents/search` - Search documents
+
+### Profile Management
+- `GET /api/profiles/[id]` - Get profile
+- `PUT /api/profiles/[id]` - Update profile
+- `GET /api/profiles/[id]/library` - Get library stats
+
+## Database Schema
+
+### Libraries Table
+```sql
+CREATE TABLE libraries (
+  id VARCHAR(255) PRIMARY KEY,
+  owner_type ENUM('agent', 'user') NOT NULL,
+  owner_id VARCHAR(255) NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  description TEXT,
+  is_public BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+### Documents Table
+```sql
+CREATE TABLE documents (
+  id VARCHAR(255) PRIMARY KEY,
+  library_id VARCHAR(255) NOT NULL,
+  source_type ENUM('aiq', 'agent', 'user') NOT NULL,
+  source_id VARCHAR(255) NOT NULL,
+  title VARCHAR(255) NOT NULL,
+  content TEXT,
+  metadata JSON,
+  permissions JSON,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (library_id) REFERENCES libraries(id)
+);
+```
+
+### Profiles Table
+```sql
+CREATE TABLE profiles (
+  id VARCHAR(255) PRIMARY KEY,
+  type ENUM('agent', 'user') NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  description TEXT,
+  preferences JSON,
+  library_stats JSON,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+## Security Considerations
+
+### Access Control
+- **Authentication**: Required for all personal library operations
+- **Authorization**: Role-based access control
+- **Encryption**: Private documents encrypted at rest
+- **Audit Logging**: Track all library operations
+
+### Data Privacy
+- **Private Documents**: Never shared without explicit permission
+- **Metadata Protection**: Sensitive metadata encrypted
+- **Deletion**: Secure deletion of private documents
+- **Backup**: Encrypted backups of personal libraries
+
+## Integration with Existing Systems
+
+### RAG System Integration
+- **AI-Q Documents**: Automatically indexed in RAG
+- **Public Documents**: Indexed with owner attribution
+- **Private Documents**: Indexed for owner only
+- **Search**: Unified search across all accessible documents
+
+### Manual Generator Integration
+- **Personal Manuals**: Generate personal manuals for agents/users
+- **Custom Categories**: Support for personal organization
+- **Annotations**: Include personal notes in generated manuals
+
+## Migration Strategy
+
+### Phase 1: Core Infrastructure
+1. Create library management services
+2. Implement basic CRUD operations
+3. Set up database schema
+4. Create API endpoints
+
+### Phase 2: Agent Integration
+1. Create agent profile system
+2. Implement agent library creation
+3. Add document copying from AI-Q
+4. Test with existing agents
+
+### Phase 3: User Integration
+1. Create user profile system
+2. Implement user library creation
+3. Add user interface
+4. Test with sample users
+
+### Phase 4: Advanced Features
+1. Implement search across libraries
+2. Add annotation system
+3. Create sharing mechanisms
+4. Add analytics and insights
+
+## Success Metrics
+
+### Usage Metrics
+- Number of active libraries
+- Documents per library
+- Search queries per day
+- Annotation activity
+
+### Performance Metrics
+- Search response time
+- Document load time
+- API response time
+- Storage usage
+
+### Quality Metrics
+- User satisfaction scores
+- Library organization quality
+- Search result relevance
+- System reliability 

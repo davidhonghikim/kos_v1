@@ -1,0 +1,121 @@
+title: K Os Swagger Ui And Redoc Api Documentation Deployment Plan
+description: ''
+type: documentation
+status: current
+priority: medium
+version: '1.0'
+last_updated: '2025-06-28'
+organization_date: '2025-06-28T19:48:20.348590'
+authors: []
+tags: []
+content_type: documentation
+technical_level: intermediate
+word_count: 455
+has_code_blocks: true
+has_api_specs: true
+has_architecture: true
+has_deployment: true
+has_testing: true
+has_security: false
+has_rag: false
+has_ethics: false
+original_filename: k_os_swagger_ui_and_redoc_api_documentation_deployment_plan.yml
+original_path: /Users/danger/CascadeProjects/griot-node/agents/reference/kos_chatgpt/k_os_swagger_ui_and_redoc_api_documentation_deployment_plan.yml
+category: deployment
+
+---
+
+title: K Os Swagger Ui And Redoc Api Documentation Deployment Plan
+description: ''
+type: documentation
+status: current
+priority: medium
+last_updated: '2025-06-28'
+conversion_date: '2025-06-28T19:30:47.309175'
+original_format: markdown
+content_type: api_specification
+word_count: 423
+line_count: 78
+
+---
+
+# kOS Swagger UI and Redoc API Documentation Deployment Plan
+
+## Overview
+
+The **kOS Swagger UI and Redoc API Documentation Deployment Plan** defines the steps, tooling, and deployment configurations for serving interactive API documentation for TOSE, OEC, and GEIG using **Swagger UI** and **Redoc**.
+
+This ensures internal developers and external contributors can explore, test, and validate all kOS module APIs via web-accessible, human-readable documentation.
+
+---
+
+## 1. API Documentation Tools Selected
+
+| Tool                         | Purpose                                                |
+| ---------------------------- | ------------------------------------------------------ |
+| Swagger UI                   | Interactive API playground for testing requests        |
+| Redoc                        | Static, styled API documentation viewer for publishing |
+| OpenAPI Generator (optional) | Generate client SDKs later                             |
+
+---
+
+## 2. Directory Structure for API Docs
+
+| Directory               | Contents                                         |
+| ----------------------- | ------------------------------------------------ |
+| `/api/openapi_specs/`   | All `.yaml` OpenAPI spec files (TOSE, OEC, GEIG) |
+| `/api/docs/swagger_ui/` | Static Swagger UI HTML + JS bundle               |
+| `/api/docs/redoc/`      | Static Redoc HTML pages for each module          |
+
+---
+
+## 3. Local Developer Workflow
+
+1. Place OpenAPI YAMLs under `/api/openapi_specs/`
+2. Launch Swagger UI locally:
+   - Run Python FastAPI with `from fastapi.openapi.docs import get_swagger_ui_html`
+   - Or run standalone Swagger UI Docker container mounting the OpenAPI specs
+3. Build static Redoc HTML for each module:
+   ```bash
+   redoc-cli bundle ./api/openapi_specs/tose_openapi.yaml -o ./api/docs/redoc/tose.html
+   ```
+4. Repeat for OEC and GEIG
+
+---
+
+## 4. CI/CD API Docs Deployment Steps
+
+| Step                                       | Description                       |
+| ------------------------------------------ | --------------------------------- |
+| Validate OpenAPI Specs                     | Run linter before docs generation |
+| Generate Redoc HTML                        | For TOSE, OEC, GEIG               |
+| Publish to `/public/api-docs/`             | If static site hosting is used    |
+| Auto-deploy to GitHub Pages / GitLab Pages | Optional                          |
+
+---
+
+## 5. Public vs Internal Hosting Options
+
+| Option                          | Use Case                                    |
+| ------------------------------- | ------------------------------------------- |
+| Internal only (private cluster) | For testnet and internal devs               |
+| Public-facing (optional future) | For external contributors and API consumers |
+
+---
+
+## 6. Ethical Compliance for API Docs
+
+- Exclude sensitive or internal-only endpoints from public Redoc builds
+- Include GEIG policy summaries in the Redoc API descriptions
+- Add warning banners for any potentially impactful API routes (e.g., task execution triggers)
+
+---
+
+## Conclusion
+
+The **kOS Swagger UI and Redoc API Documentation Deployment Plan** ensures all kOS modules have well-documented, testable, and ethically governed API documentation—supporting developer efficiency and system transparency.
+
+✅ Next: Ready to help **generate Redoc HTML files**, **set up Swagger UI instances**, or **configure CI/CD jobs for automated docs deployment**.
+
+
+

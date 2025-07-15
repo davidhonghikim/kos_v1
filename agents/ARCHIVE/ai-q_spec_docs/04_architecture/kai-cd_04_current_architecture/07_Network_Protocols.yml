@@ -1,0 +1,411 @@
+metadata:
+  original_file: 07_Network_Protocols.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Network Protocols and Discovery Architecture
+  description: Complete network communication system from current service connectivity
+    to future kOS mesh protocols
+  category: architecture
+  subcategory: networking
+  context: current_implementation
+  implementation_status: partial
+  decision_scope: high
+  complexity: very_high
+  last_updated: '2025-01-20'
+  code_references:
+  - src/utils/apiClient.ts
+  - src/connectors/definitions/
+  - src/config/env.ts
+  related_documents:
+  - ../services/01_service-architecture.md
+  - ../security/01_security-framework.md
+  - ../../future/protocols/01_klp-specification.md
+  - ../../bridge/03_decision-framework.md
+  dependencies:
+  - HTTP
+  - WebSocket
+  - mDNS
+  - WebRTC
+  - KLP Protocol
+  breaking_changes: false
+  agent_notes: Network communication and discovery system - foundation for distributed
+    agent mesh networking
+sections:
+- level: 1
+  title: Network Protocols and Discovery Architecture
+  type: section
+  content: ''
+- level: 2
+  title: Agent Context
+  type: section
+  content: '**For AI Agents**: Complete network communication and discovery framework
+    covering current HTTP-based service communication and evolution to sophisticated
+    mesh networking protocols. Use this when implementing network communication, service
+    discovery, or planning distributed systems. Critical foundation for all networking
+    and connectivity work.
+
+
+    **Implementation Notes**: Contains current HTTP/WebSocket communication patterns
+    and future mesh networking with agent discovery, secure communication, and federated
+    networking protocols. Includes working TypeScript interfaces and protocol specifications.
+
+    **Quality Requirements**: Keep network protocols and communication patterns synchronized
+    with actual implementation. Maintain accuracy of evolution pathway to distributed
+    mesh networking.
+
+    **Integration Points**: Foundation for all network communication, links to service
+    architecture, security framework, and future distributed protocols.
+
+
+    ---'
+- level: 2
+  title: Quick Summary
+  type: section
+  content: Complete network communication and discovery framework covering evolution
+    from current HTTP-based service communication to sophisticated mesh networking
+    protocols with agent discovery, secure communication, and federated networking.
+- level: 2
+  title: Current Network Architecture
+  type: section
+  content: ''
+- level: 3
+  title: HTTP-Based Service Communication
+  type: section
+  content: "The current Kai-CD implementation uses a robust HTTP client system for\
+    \ service communication:\n\n```typescript\ninterface ApiClient {\n  makeRequest<T>(\n\
+    \    service: ServiceDefinition,\n    endpoint: EndpointDefinition,\n    parameters:\
+    \ Record<string, any>\n  ): Promise<T>;\n  \n  handleAuth(service: ServiceDefinition):\
+    \ Promise<AuthHeaders>;\n  handleRetry(request: Request, attempt: number): Promise<Response>;\n\
+    \  handleError(error: Error, context: RequestContext): void;\n}\n```"
+- level: 3
+  title: Current Communication Patterns
+  type: section
+  content: '- **RESTful APIs**: Standard HTTP REST communication
+
+    - **WebSocket Connections**: Real-time bidirectional communication
+
+    - **Server-Sent Events**: Streaming data from services
+
+    - **Polling Mechanisms**: Periodic status and data updates
+
+    - **Authentication**: Bearer tokens, API keys, OAuth flows'
+- level: 3
+  title: Service Discovery
+  type: section
+  content: "Current service discovery through static configuration:\n\n```typescript\n\
+    interface ServiceConfiguration {\n  baseUrl: string;\n  endpoints: EndpointDefinition[];\n\
+    \  healthCheck?: HealthCheckConfig;\n  timeout: number;\n  retryPolicy: RetryConfig;\n\
+    }\n```"
+- level: 2
+  title: Network Protocol Evolution
+  type: section
+  content: ''
+- level: 3
+  title: Multi-Protocol Support Framework
+  type: section
+  content: "Evolution to support multiple communication protocols:\n\n```typescript\n\
+    interface ProtocolManager {\n  // Protocol registration\n  registerProtocol(protocol:\
+    \ Protocol): void;\n  getProtocol(name: string): Protocol;\n  \n  // Connection\
+    \ management\n  establishConnection(target: Target, protocol: string): Promise<Connection>;\n\
+    \  closeConnection(connection: Connection): Promise<void>;\n  \n  // Message routing\n\
+    \  routeMessage(message: Message, target: Target): Promise<Response>;\n  broadcastMessage(message:\
+    \ Message, targets: Target[]): Promise<void>;\n}\n```"
+- level: 3
+  title: Protocol Hierarchy
+  type: section
+  content: '```
+
+    Application Layer
+
+    ├── HTTP/HTTPS (Current)
+
+    ├── WebSocket (Current)
+
+    ├── KLP (Kind Link Protocol) - Future
+
+    └── Custom Protocols - Future
+
+
+    Transport Layer
+
+    ├── TCP (Current)
+
+    ├── UDP (Future)
+
+    ├── WebRTC (Future)
+
+    └── Mesh Protocols (Future)
+
+
+    Network Layer
+
+    ├── IPv4/IPv6 (Current)
+
+    ├── Overlay Networks (Future)
+
+    └── Mesh Routing (Future)
+
+    ```'
+- level: 2
+  title: Agent Discovery Protocols
+  type: section
+  content: ''
+- level: 3
+  title: Local Network Discovery
+  type: section
+  content: 'Multi-layered discovery system for local agents:'
+- level: 4
+  title: mDNS Discovery
+  type: section
+  content: "```typescript\ninterface MDNSDiscovery {\n  // Service announcement\n\
+    \  announceService(service: ServiceInfo): Promise<void>;\n  \n  // Service discovery\n\
+    \  discoverServices(serviceType: string): Promise<ServiceInfo[]>;\n  \n  // Continuous\
+    \ monitoring\n  watchServices(callback: (services: ServiceInfo[]) => void): void;\n\
+    }\n\ninterface ServiceInfo {\n  agent_id: string;\n  capabilities: string[];\n\
+    \  auth_method: AuthMethod;\n  preferred_port: number;\n  protocol_version: string;\n\
+    \  trust_level: TrustLevel;\n}\n```"
+- level: 4
+  title: Local Network Scanning
+  type: section
+  content: "```typescript\ninterface NetworkScanner {\n  scanSubnet(subnet: string):\
+    \ Promise<DiscoveredNode[]>;\n  portScan(host: string, ports: number[]): Promise<OpenPort[]>;\n\
+    \  serviceProbe(host: string, port: number): Promise<ServiceIdentification>;\n\
+    }\n```"
+- level: 3
+  title: Mesh Network Discovery
+  type: section
+  content: 'Advanced discovery for offline and mesh environments:'
+- level: 4
+  title: Gossip Protocol
+  type: section
+  content: "```typescript\ninterface GossipProtocol {\n  // Node announcement\n  announceNode(nodeInfo:\
+    \ NodeInfo): void;\n  \n  // Peer discovery\n  discoverPeers(): Promise<PeerInfo[]>;\n\
+    \  \n  // Information propagation\n  propagateInfo(info: NetworkInfo, ttl: number):\
+    \ void;\n  \n  // Network topology\n  getNetworkTopology(): NetworkTopology;\n\
+    }\n\ninterface NodeInfo {\n  node_id: string;\n  capabilities: string[];\n  last_seen:\
+    \ timestamp;\n  trust_score: number;\n  connection_endpoints: Endpoint[];\n}\n\
+    ```"
+- level: 4
+  title: Distributed Hash Table (DHT)
+  type: section
+  content: "```typescript\ninterface DHTDiscovery {\n  // Node registration\n  registerNode(nodeId:\
+    \ string, nodeInfo: NodeInfo): Promise<void>;\n  \n  // Node lookup\n  findNode(nodeId:\
+    \ string): Promise<NodeInfo>;\n  findNodesWithCapability(capability: string):\
+    \ Promise<NodeInfo[]>;\n  \n  // Routing table management\n  updateRoutingTable(nodes:\
+    \ NodeInfo[]): void;\n  getClosestNodes(targetId: string, count: number): NodeInfo[];\n\
+    }\n```"
+- level: 3
+  title: Cloud-Facilitated Discovery
+  type: section
+  content: "Fallback discovery through centralized services:\n\n```typescript\ninterface\
+    \ CloudDiscovery {\n  // Registration\n  registerAgent(agentInfo: AgentInfo):\
+    \ Promise<RegistrationResult>;\n  \n  // Discovery\n  findAgents(query: DiscoveryQuery):\
+    \ Promise<AgentInfo[]>;\n  \n  // Heartbeat\n  sendHeartbeat(agentId: string):\
+    \ Promise<void>;\n  \n  // Deregistration\n  deregisterAgent(agentId: string):\
+    \ Promise<void>;\n}\n```"
+- level: 2
+  title: Identity and Trust Protocols
+  type: section
+  content: ''
+- level: 3
+  title: Cryptographic Identity System
+  type: section
+  content: "```typescript\ninterface CryptographicIdentity {\n  // Key management\n\
+    \  generateKeyPair(): Promise<KeyPair>;\n  importKey(keyData: KeyData): Promise<CryptoKey>;\n\
+    \  exportKey(key: CryptoKey): Promise<KeyData>;\n  \n  // Identity verification\n\
+    \  signIdentity(identity: Identity): Promise<SignedIdentity>;\n  verifyIdentity(signedIdentity:\
+    \ SignedIdentity): Promise<VerificationResult>;\n  \n  // Trust establishment\n\
+    \  establishTrust(peerId: string): Promise<TrustRelationship>;\n  revokeTrust(peerId:\
+    \ string): Promise<void>;\n}\n```"
+- level: 3
+  title: Self-Signed Identity Envelope
+  type: section
+  content: "```json\n{\n  \"agent_id\": \"planner-004\",\n  \"public_key\": \"04a9ef...\"\
+    ,\n  \"signed_payload\": {\n    \"capabilities\": [\"schedule\", \"reasoning\"\
+    ],\n    \"version\": \"0.3.1\",\n    \"host\": \"192.168.1.44\",\n    \"port\"\
+    : 7702,\n    \"timestamp\": 1718823142,\n    \"trust_level\": \"verified\"\n \
+    \ },\n  \"signature\": \"MEYCIQC...\",\n  \"certificate_chain\": [\"cert1\", \"\
+    cert2\"]\n}\n```"
+- level: 3
+  title: Chain-of-Trust Verification
+  type: section
+  content: "```typescript\ninterface TrustChainVerifier {\n  // Certificate validation\n\
+    \  validateCertificate(cert: Certificate): Promise<ValidationResult>;\n  \n  //\
+    \ Chain verification\n  verifyTrustChain(chain: Certificate[]): Promise<ChainValidationResult>;\n\
+    \  \n  // Revocation checking\n  checkRevocation(cert: Certificate): Promise<RevocationStatus>;\n\
+    \  \n  // Trust scoring\n  calculateTrustScore(identity: Identity): Promise<TrustScore>;\n\
+    }\n```"
+- level: 2
+  title: Secure Communication Protocols
+  type: section
+  content: ''
+- level: 3
+  title: Message Encryption Framework
+  type: section
+  content: "```typescript\ninterface SecureMessaging {\n  // Key exchange\n  performKeyExchange(peerId:\
+    \ string): Promise<SharedSecret>;\n  \n  // Message encryption\n  encryptMessage(message:\
+    \ Message, recipient: string): Promise<EncryptedMessage>;\n  decryptMessage(encryptedMessage:\
+    \ EncryptedMessage): Promise<Message>;\n  \n  // Message signing\n  signMessage(message:\
+    \ Message): Promise<SignedMessage>;\n  verifyMessage(signedMessage: SignedMessage):\
+    \ Promise<VerificationResult>;\n}\n```"
+- level: 3
+  title: Protocol Security Layers
+  type: section
+  content: '- **Transport Security**: TLS 1.3 for HTTP/WebSocket connections
+
+    - **Message Security**: End-to-end encryption for sensitive data
+
+    - **Identity Security**: Cryptographic identity verification
+
+    - **Replay Protection**: Nonce-based replay attack prevention'
+- level: 3
+  title: Authentication and Authorization
+  type: section
+  content: "```typescript\ninterface AuthenticationProtocol {\n  // Authentication\n\
+    \  authenticate(credentials: Credentials): Promise<AuthToken>;\n  validateToken(token:\
+    \ AuthToken): Promise<TokenValidation>;\n  refreshToken(refreshToken: string):\
+    \ Promise<AuthToken>;\n  \n  // Authorization\n  authorize(token: AuthToken, resource:\
+    \ Resource): Promise<boolean>;\n  getPermissions(token: AuthToken): Promise<Permission[]>;\n\
+    }\n```"
+- level: 2
+  title: Future kOS Protocol Integration
+  type: section
+  content: ''
+- level: 3
+  title: Kind Link Protocol (KLP)
+  type: section
+  content: "Advanced protocol for agent-to-agent communication:\n\n```typescript\n\
+    interface KLPProtocol {\n  // Connection establishment\n  establishKLPConnection(peerId:\
+    \ string): Promise<KLPConnection>;\n  \n  // Message exchange\n  sendKLPMessage(message:\
+    \ KLPMessage): Promise<KLPResponse>;\n  \n  // Capability negotiation\n  negotiateCapabilities(capabilities:\
+    \ string[]): Promise<NegotiationResult>;\n  \n  // State synchronization\n  synchronizeState(state:\
+    \ AgentState): Promise<SyncResult>;\n}\n\ninterface KLPMessage {\n  id: string;\n\
+    \  from: DID;\n  to: DID;\n  type: MessageType;\n  protocol: \"klp/1.0\";\n  timestamp:\
+    \ string;\n  payload: any;\n  signature: string;\n  route?: RouteHint[];\n  auth?:\
+    \ TokenGrant;\n}\n```"
+- level: 3
+  title: Mesh Routing Protocol
+  type: section
+  content: "Distributed routing for mesh networks:\n\n```typescript\ninterface MeshRouter\
+    \ {\n  // Route discovery\n  discoverRoute(destination: string): Promise<Route>;\n\
+    \  \n  // Message routing\n  routeMessage(message: Message, destination: string):\
+    \ Promise<void>;\n  \n  // Topology management\n  updateTopology(topology: NetworkTopology):\
+    \ void;\n  optimizeRoutes(): Promise<void>;\n  \n  // Fault tolerance\n  handleNodeFailure(nodeId:\
+    \ string): void;\n  findAlternativeRoute(destination: string): Promise<Route>;\n\
+    }\n```"
+- level: 3
+  title: Federation Gateway
+  type: section
+  content: "Bridge between different network protocols:\n\n```typescript\ninterface\
+    \ FederationGateway {\n  // Protocol bridging\n  bridgeProtocols(sourceProtocol:\
+    \ string, targetProtocol: string): void;\n  \n  // Message translation\n  translateMessage(message:\
+    \ Message, targetProtocol: string): Promise<Message>;\n  \n  // Cross-network\
+    \ routing\n  routeCrossNetwork(message: Message, targetNetwork: string): Promise<void>;\n\
+    }\n```"
+- level: 2
+  title: Network Monitoring and Diagnostics
+  type: section
+  content: ''
+- level: 3
+  title: Connection Health Monitoring
+  type: section
+  content: "```typescript\ninterface NetworkMonitor {\n  // Connection monitoring\n\
+    \  monitorConnection(connection: Connection): Observable<ConnectionHealth>;\n\
+    \  \n  // Latency measurement\n  measureLatency(target: string): Promise<LatencyMetrics>;\n\
+    \  \n  // Bandwidth testing\n  testBandwidth(target: string): Promise<BandwidthMetrics>;\n\
+    \  \n  // Network topology mapping\n  mapNetworkTopology(): Promise<NetworkTopology>;\n\
+    }\n```"
+- level: 3
+  title: Diagnostic Tools
+  type: section
+  content: '- **Network Trace**: End-to-end message tracing
+
+    - **Performance Metrics**: Latency, throughput, error rates
+
+    - **Connection Status**: Real-time connection health
+
+    - **Protocol Analysis**: Protocol-specific diagnostics'
+- level: 2
+  title: Quality of Service (QoS)
+  type: section
+  content: ''
+- level: 3
+  title: Traffic Prioritization
+  type: section
+  content: "```typescript\ninterface QoSManager {\n  // Traffic classification\n \
+    \ classifyTraffic(message: Message): TrafficClass;\n  \n  // Priority scheduling\n\
+    \  scheduleMessage(message: Message, priority: Priority): Promise<void>;\n  \n\
+    \  // Bandwidth allocation\n  allocateBandwidth(connection: Connection, allocation:\
+    \ BandwidthAllocation): void;\n  \n  // Congestion control\n  handleCongestion(congestionInfo:\
+    \ CongestionInfo): void;\n}\n```"
+- level: 3
+  title: Service Level Agreements
+  type: section
+  content: '- **Latency Guarantees**: Maximum response time commitments
+
+    - **Availability Targets**: Uptime service level objectives
+
+    - **Throughput Minimums**: Minimum data transfer rates
+
+    - **Error Rate Limits**: Maximum acceptable error rates'
+- level: 2
+  title: Implementation Strategy
+  type: section
+  content: ''
+- level: 3
+  title: 'Phase 1: Enhanced Current System'
+  type: section
+  content: '- **Multi-Protocol Support**: Add WebSocket and SSE support
+
+    - **Service Discovery**: Implement mDNS-based local discovery
+
+    - **Security Enhancement**: Add message-level encryption
+
+    - **Monitoring Tools**: Basic network monitoring and diagnostics'
+- level: 3
+  title: 'Phase 2: Mesh Networking'
+  type: section
+  content: '- **Gossip Protocol**: Implement peer discovery and information propagation
+
+    - **DHT Integration**: Distributed hash table for scalable discovery
+
+    - **Trust Framework**: Cryptographic identity and trust verification
+
+    - **Routing Protocol**: Basic mesh routing capabilities'
+- level: 3
+  title: 'Phase 3: kOS Integration'
+  type: section
+  content: '- **KLP Implementation**: Full Kind Link Protocol support
+
+    - **Federation Gateway**: Cross-network protocol bridging
+
+    - **Advanced Security**: Zero-trust networking and advanced encryption
+
+    - **Global Discovery**: Worldwide agent discovery and coordination'
+- level: 2
+  title: Development Guidelines
+  type: section
+  content: ''
+- level: 3
+  title: Protocol Design Principles
+  type: section
+  content: '- **Interoperability**: Support for multiple protocols and standards
+
+    - **Security First**: Built-in security at all protocol layers
+
+    - **Scalability**: Designed for growth from local to global scale
+
+    - **Fault Tolerance**: Graceful handling of network failures
+
+    - **Efficiency**: Optimized for low latency and high throughput'
+- level: 3
+  title: Testing and Validation
+  type: section
+  content: '- **Protocol Conformance**: Automated protocol compliance testing
+
+    - **Security Testing**: Penetration testing and vulnerability assessment
+
+    - **Performance Testing**: Load testing and performance benchmarking
+
+    - **Interoperability Testing**: Cross-platform and cross-protocol testing'

@@ -1,0 +1,231 @@
+metadata:
+  original_file: "00_Index.md"
+  conversion_date: "2025-06-30T11:00:00Z"
+  format: "yaml"
+
+frontmatter:
+  description: "The definitive source of truth for kOS and griot-node development"
+  last_updated: "2025-01-28"
+  priority: "critical"
+  status: "canonical"
+  title: "AI-Q: The Knowledge Library"
+  type: "index"
+  version: "1.0.0"
+
+sections:
+  - level: 1
+    title: "kOS Knowledge Library - Index"
+    type: "section"
+    content: |
+      Welcome to the kOS Knowledge Library (AI-Q). This is the definitive source of truth for the project's vision, architecture, and specifications.
+
+  - level: 2
+    title: "Core Philosophy"
+    type: "section"
+    content: |
+      kOS is not a monolithic application but a **composable, AI-driven orchestration framework**. The project is architected as a professional-grade monorepo to facilitate this vision, with a clear separation between the core framework and the applications that consume it.
+
+      - **The Core Framework (`packages/`):** A collection of reusable, versionable libraries containing the essential DNA of the kOS system. This includes the Kind Link Framework (KLF) protocol, base node types, data schemas (`@griot/schemas`), and service connectors. This is the living implementation of the AI-Q system.
+      - **The Applications (`apps/`):** Standalone, runnable applications that consume the core framework libraries to perform specific roles. The primary application, and the first of its kind, is the **Starseed Node**, which serves as the primary orchestrator and system builder.
+      - **The Project (`griot-node`):** The name of the monorepo itself, which contains the entire ecosystem.
+
+      This structure ensures that the core logic is robust, reusable, and clearly distinct from the specific nodes or agents deployed in the ecosystem.
+
+  - level: 2
+    title: "Current Development Status"
+    type: "section"
+    content: |
+      ### Integration Phase: Kitchen → Starseed
+
+      The project is currently in an integration phase, consolidating functionality from two applications:
+
+      - **Griot Kitchen** (`apps/griot-kitchen`): A functional prototype with proven service orchestration capabilities but legacy architecture
+      - **Starseed Node** (`apps/starseed-node`): The primary application with clean, modern architecture using the `@griot/core` framework
+
+      **Integration Goal**: Merge Kitchen's service orchestration functionality into Starseed's architecture to create a complete, production-ready application with:
+      - Full KLF/kOS ecosystem compatibility
+      - Proper database integration using `@griot/schemas`
+      - Service orchestration using `@griot/service-connectors`
+      - Modern persona, skill, and recipe systems
+      - ✅ **PersonaRAG Service**: Operational with 0.20ms query performance
+      - Clean, maintainable codebase
+
+  - level: 2
+    title: "🌟 The Prime Directive"
+    type: "section"
+    content: |
+      > **"One Truth, Many Implementations"**
+      > 
+      > All code, protocols, and components must derive from these specifications. No implementation shall deviate without first updating the AI-Q Library. This ensures perfect interoperability between all agents, nodes, and platforms.
+
+  - level: 2
+    title: "📚 Library Organization"
+    type: "section"
+    content: |
+      ### **🎯 Foundation** (`01_foundation/`)
+
+      The core philosophy, principles, and architectural vision
+      - **00_kOS_Vision.md** - The complete philosophical and strategic vision
+      - **01_Architecture_Principles.md** - Core design principles and patterns
+      - **02_Node_Taxonomy.md** - Complete classification of all node types
+      - **03_System_Overview.md** - High-level system architecture
+
+      ### **📡 Protocols** (`02_protocols/`)
+
+      Communication and interoperability specifications
+      - **00_Protocol_Index.md** - Complete protocol catalog
+      - **01_Kind_Link_Protocol.md** - Core communication protocol
+      - **02_Node_Discovery.md** - Network discovery and registration
+      - **03_Authentication.md** - Identity and security protocols
+      - **04_Message_Formats.md** - Standardized message structures
+
+      ### **🏗️ Implementation** (`03_implementation/`)
+
+      Technical specifications for all components
+      - **00_Implementation_Index.md** - Complete implementation catalog
+      - **01_Griot_Node_Spec.md** - Complete griot-node specification
+      - **02_Frontend_Architecture.md** - UI/UX system specifications
+      - **03_Backend_Architecture.md** - API server specifications
+      - **04_SDK_Specification.md** - Client SDK requirements
+
+      ### **🔧 Components** (`04_components/`)
+
+      Reusable system components and patterns
+      - **00_Component_Index.md** - Complete component catalog
+      - **01_Service_Connectors.md** - Universal service integration patterns
+      - **02_UI_Component_System.md** - React component architecture
+      - **03_Configuration_System.md** - Universal configuration management
+      - **04_Security_Framework.md** - Comprehensive security system
+
+      ### **🚀 Deployment** (`05_deployment/`)
+
+      Installation, configuration, and operational procedures
+      - **00_Deployment_Index.md** - Complete deployment catalog
+      - **01_Installation_System.md** - Automated installation framework
+      - **02_Configuration_Defaults.md** - Default configurations and overrides
+      - **03_Docker_Specifications.md** - Container deployment specs
+      - **04_Network_Setup.md** - Network configuration and discovery
+
+      ### **🔮 Evolution** (`06_evolution/`)
+
+      Future specifications and migration paths
+      - **00_Evolution_Index.md** - Future development roadmap
+      - **01_Migration_Framework.md** - Version migration specifications
+      - **02_Extension_Points.md** - System extensibility patterns
+      - **03_Future_Protocols.md** - Next-generation protocol specifications
+
+  - level: 2
+    title: "🎯 Quick Navigation for Agents"
+    type: "section"
+    content: |
+      ### **For System Architects**
+
+      1. **Start Here**: `01_foundation/00_kOS_Vision.md`
+      2. **Architecture**: `01_foundation/01_Architecture_Principles.md`
+      3. **Protocols**: `02_protocols/01_Kind_Link_Protocol.md`
+
+      ### **For Backend Developers**
+
+      1. **Start Here**: `03_implementation/03_Backend_Architecture.md`
+      2. **API Specs**: `03_implementation/01_Griot_Node_Spec.md`
+      3. **Services**: `04_components/01_Service_Connectors.md`
+
+      ### **For Frontend Developers**
+
+      1. **Start Here**: `03_implementation/02_Frontend_Architecture.md`
+      2. **Components**: `04_components/02_UI_Component_System.md`
+      3. **SDK Usage**: `03_implementation/04_SDK_Specification.md`
+
+      ### **For DevOps Engineers**
+
+      1. **Start Here**: `05_deployment/01_Installation_System.md`
+      2. **Docker**: `05_deployment/03_Docker_Specifications.md`
+      3. **Configuration**: `04_components/03_Configuration_System.md`
+
+  - level: 2
+    title: "🛡️ Core Principles"
+    type: "section"
+    content: |
+      ### **1. Protocol-First Development**
+
+      All implementation must begin with protocol specifications. No code is written until the protocol is defined in this library.
+
+      ### **2. Configuration-Driven Architecture**
+
+      Every component must be fully configurable through standardized configuration files and environment variables.
+
+      ### **3. Universal Interoperability**
+
+      Every node must speak the same protocols and data formats, regardless of implementation language or platform.
+
+      ### **4. Security by Design**
+
+      All protocols include cryptographic verification and zero-trust assumptions.
+
+      ### **5. Local-First Philosophy**
+
+      All nodes operate independently by default, with optional networking capabilities.
+
+  - level: 2
+    title: "📊 Knowledge Metrics"
+    type: "section"
+    content: |
+      ```
+      🏛️ AI-Q LIBRARY METRICS
+      ├── Foundation Documents: 4 (philosophical and architectural core)
+      ├── Protocol Specifications: 5 (complete interoperability framework)
+      ├── Implementation Guides: 5 (technical specifications)
+      ├── Component Blueprints: 5 (reusable system patterns)
+      ├── Deployment Procedures: 5 (operational requirements)
+      └── Evolution Framework: 4 (future development paths)
+
+      Total: 28 canonical documents defining the complete kOS ecosystem
+      ```
+
+  - level: 2
+    title: "🔥 Implementation Status"
+    type: "section"
+    content: |
+      - **📖 Documentation**: ✅ Complete specification framework
+      - **🏗️ Architecture**: ✅ Comprehensive system design
+      - **📡 Protocols**: ✅ Core communication standards
+      - **🤖 AI/RAG Engine**: ✅ PersonaRAG Service operational (0.20ms queries)
+      - **🔧 Components**: 🔄 In development (griot-node reference)
+      - **🚀 Deployment**: 📋 Specified, ready for implementation
+
+  - level: 2
+    title: "🌐 Related Systems"
+    type: "section"
+    content: |
+      - **Kai-CD**: Current implementation and testing ground - reference source only
+      - **Griot-Node**: Reference implementation of the kOS vision
+      - **Future Nodes**: Tohunga, Oracle, and specialized implementations
+
+      ---
+
+      **Library Status**: 🏛️ **CANONICAL SOURCE OF TRUTH**  
+      **Authority Level**: 🔥 **DEFINITIVE REFERENCE**  
+      **Usage**: All development must derive from these specifications
+
+  - level: 2
+    title: "🔄 Recent Updates"
+    type: "section"
+    content: |
+      ### **2025-01-27: PersonaRAG Service Implementation** ✅
+      - **Major Achievement**: Complete RAG engine with persona-aware capabilities
+      - **Performance**: 0.20ms query times (999x faster than 200ms target)
+      - **Integration**: Full kOS skill system integration
+      - **Files Added**: 
+        - `05_modules/ai/persona_rag_implementation.yml`
+        - `07_development/implementation_achievements.yml`
+        - `docs/persona-rag-service.md`
+      - **Status**: ✅ OPERATIONAL, TESTED, DOCUMENTED
+
+      ### **2025-06-30: Complete YAML Conversion**
+      - **Scope**: All 305 ai-q documentation files converted to YAML format
+      - **Impact**: Improved human readability and agent parsing capabilities
+      - **Result**: Project-wide format consistency achieved
+
+      ### **2025-06-29: Enhanced Agent Workflow System**
+      - **Enhancement**: Performance tracking and agent coordination improvements
+      - **Impact**: Better project management and agent workflow efficiency 

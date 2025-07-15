@@ -81,7 +81,7 @@ start_backend() {
     fi
     
     # Start backend with auto-reload
-    python -m uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload &
+    python -m uvicorn backend.main:app --host 0.0.0.0 --port "${KOS_API_INTERNAL_PORT:-8000}" --reload &
     BACKEND_PID=$!
     print_success "Backend started (PID: $BACKEND_PID)"
 }
@@ -93,7 +93,7 @@ start_frontend() {
     cd frontend
     
     # Start frontend with Vite
-    npm run dev &
+    npm run dev -- --port "${KOS_FRONTEND_INTERNAL_PORT:-5173}" &
     FRONTEND_PID=$!
     print_success "Frontend started (PID: $FRONTEND_PID)"
     
@@ -157,8 +157,8 @@ main() {
             start_frontend
             
             print_success "Development environment started!"
-            print_status "Backend: http://localhost:8000"
-            print_status "Frontend: http://localhost:5173"
+            print_status "Backend: http://localhost:${KOS_API_INTERNAL_PORT:-8000}"
+            print_status "Frontend: http://localhost:${KOS_FRONTEND_INTERNAL_PORT:-5173}"
             print_status "Press Ctrl+C to stop"
             
             # Wait for both processes

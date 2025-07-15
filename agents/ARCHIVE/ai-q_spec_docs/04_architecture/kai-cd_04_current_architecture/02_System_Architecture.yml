@@ -1,0 +1,505 @@
+metadata:
+  original_file: 02_System_Architecture.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Kai-CD System Architecture
+  description: Overall system design and architecture of the current Chrome extension
+    implementation
+  category: architecture
+  subcategory: system
+  context: current_implementation
+  implementation_status: complete
+  decision_scope: high
+  complexity: high
+  last_updated: '2025-01-20'
+  code_references:
+  - src/main.tsx
+  - src/tab/Tab.tsx
+  - src/store/
+  - src/components/
+  related_documents:
+  - ./02_state-management.md
+  - ../services/01_service-architecture.md
+  - ../components/01_component-system.md
+  - ../../future/architecture/01_system-overview.md
+  agent_notes: Core architecture of working Kai-CD system - understand this before
+    making any significant changes
+sections:
+- level: 1
+  title: Kai-CD System Architecture
+  type: section
+  content: ''
+- level: 2
+  title: Agent Context
+  type: section
+  content: '**For AI Agents**: Complete architectural overview of the working Kai-CD
+    Chrome extension system. Use this when understanding the overall system structure,
+    making architectural decisions, planning integrations, or implementing major changes.
+    Essential reference for understanding how all components work together.
+
+
+    **Implementation Notes**: Contains production Chrome extension architecture with
+    multi-view system, service connector pattern, state management, and security layers.
+    All diagrams and code examples reflect actual working implementation.
+
+    **Quality Requirements**: Keep architectural descriptions synchronized with actual
+    implementation. Maintain accuracy of data flows, component relationships, and
+    service integration patterns.
+
+    **Integration Points**: Foundation for understanding entire system, links to state
+    management, service architecture, component system, and security implementation.
+
+
+    ---'
+- level: 2
+  title: Quick Summary
+  type: section
+  content: Kai-CD is a Chrome extension that provides a unified interface for multiple
+    AI services. Built with React, TypeScript, and Zustand, it features a service
+    connector architecture, secure credential management, and dynamic UI rendering
+    based on service capabilities.
+- level: 2
+  title: Implementation Status
+  type: section
+  content: '- ✅ **Complete**: Chrome extension framework, multi-view architecture
+
+    - ✅ **Complete**: Service connector system with 20+ integrations
+
+    - ✅ **Complete**: State management with persistence
+
+    - ✅ **Complete**: Security and credential management
+
+    - ✅ **Complete**: Dynamic UI system based on capabilities
+
+    - 🔄 **In Progress**: Enhanced error handling and monitoring
+
+    - 📋 **Planned**: Mobile companion app, kOS compatibility layer'
+- level: 2
+  title: High-Level Architecture
+  type: section
+  content: ''
+- level: 3
+  title: System Overview
+  type: section
+  content: "```mermaid\ngraph TB\n    subgraph \"Chrome Extension\"\n        A[Background\
+    \ Script] --> B[Service Worker]\n        C[Tab Interface] --> D[Main Application]\n\
+    \        E[Popup] --> F[Quick Actions]\n        G[Sidepanel] --> H[Context Actions]\n\
+    \    end\n    \n    subgraph \"Core System\"\n        D --> I[State Management]\n\
+    \        D --> J[Component System]\n        D --> K[Service Layer]\n        I\
+    \ --> L[Persistence Layer]\n    end\n    \n    subgraph \"External Services\"\n\
+    \        K --> M[Ollama]\n        K --> N[OpenAI]\n        K --> O[Anthropic]\n\
+    \        K --> P[ComfyUI]\n        K --> Q[... 16 more services]\n    end\n  \
+    \  \n    L --> R[Chrome Storage]\n    K --> S[Network Layer]\n```"
+- level: 2
+  title: Core Architecture Layers
+  type: section
+  content: ''
+- level: 3
+  title: 1. **Extension Framework Layer**
+  type: section
+  content: 'The Chrome extension provides multiple entry points and contexts:'
+- level: 4
+  title: Tab Interface (`src/tab/`)
+  type: section
+  content: '- **Primary interface** for full AI interactions
+
+    - Multi-panel layout with service selector
+
+    - Full feature access including chat, image generation, settings
+
+    - **Entry Point**: `tab.html` → `src/tab/main.tsx` → `Tab.tsx`'
+- level: 4
+  title: Popup Interface (`src/popup/`)
+  type: section
+  content: "- **Quick access** via browser action button  \n- Simplified interface\
+    \ for common tasks\n- Service status overview and quick settings\n- **Entry Point**:\
+    \ `popup.html` → `src/popup/main.tsx` → `Popup.tsx`"
+- level: 4
+  title: Sidepanel Interface (`src/sidepanel/`)
+  type: section
+  content: '- **Context-aware** interface in Chrome''s side panel
+
+    - Website-specific AI assistance
+
+    - Streamlined for focused tasks
+
+    - **Entry Point**: `sidepanel.html` → `src/sidepanel/main.tsx` → `Sidepanel.tsx`'
+- level: 4
+  title: Background Script (`src/background/`)
+  type: section
+  content: '- Service worker for extension lifecycle
+
+    - Handles installation, updates, and background tasks
+
+    - Manages extension permissions and API access'
+- level: 3
+  title: 2. **Application Core Layer**
+  type: section
+  content: ''
+- level: 4
+  title: State Management (`src/store/`)
+  type: section
+  content: "Built on Zustand with Chrome storage persistence:\n\n```typescript\n//\
+    \ Core stores\nserviceStore      // Service management and configuration\nviewStateStore\
+    \    // UI state and navigation  \nsettingsStore     // User preferences and configuration\n\
+    vaultStore        // Secure credential management\nlogStore          // Application\
+    \ logging and debugging\n```\n\n**Key Pattern**: All stores use the `_hasHydrated`\
+    \ flag for async rehydration from Chrome storage."
+- level: 4
+  title: Component System (`src/components/`)
+  type: section
+  content: 'React components organized by functionality:
+
+
+    ```typescript
+
+    // Dynamic capability rendering
+
+    CapabilityUI      // Routes to appropriate service UI
+
+    LlmChatView       // Chat interface for language models
+
+    ImageGenerationView // Image creation interface
+
+    ServiceSelector   // Service selection and status
+
+    ThemeProvider     // Theme system and customization
+
+    ```'
+- level: 4
+  title: Service Layer (`src/connectors/` + `src/utils/apiClient.ts`)
+  type: section
+  content: 'Universal service integration system:
+
+
+    ```typescript
+
+    ServiceDefinition // Rich service metadata
+
+    apiClient         // Universal HTTP client
+
+    Authentication    // Credential management
+
+    HealthChecking    // Service monitoring
+
+    ```'
+- level: 3
+  title: 3. **Service Integration Layer**
+  type: section
+  content: ''
+- level: 4
+  title: Service Definition Pattern
+  type: section
+  content: "Each service is described by a comprehensive configuration:\n\n```typescript\n\
+    interface ServiceDefinition {\n  id: string;                    // Unique identifier\n\
+    \  name: string;                  // Display name\n  capabilities: Capability[];\
+    \    // What the service can do\n  baseUrl: string;              // API endpoint\n\
+    \  authentication: AuthConfig;   // How to authenticate\n  endpoints: EndpointMap;\
+    \       // API endpoint definitions\n  healthCheck?: HealthConfig;   // How to\
+    \ check if service is up\n}\n```"
+- level: 4
+  title: Universal API Client
+  type: section
+  content: 'Single client handles all service requests:
+
+    - **Dynamic request construction** from ServiceDefinition
+
+    - **Authentication handling** (API keys, bearer tokens, custom headers)
+
+    - **Error handling and retry logic**
+
+    - **Response standardization** across different APIs'
+- level: 4
+  title: Service Registry
+  type: section
+  content: 'Currently integrated services include:
+
+    - **LLM Services**: Ollama, OpenAI, Anthropic, Hugging Face, LLaMA.cpp
+
+    - **Image Generation**: ComfyUI, A1111, Midjourney
+
+    - **Vector Databases**: Chroma, Qdrant, Milvus
+
+    - **Workflow**: n8n integration
+
+    - **Cloud Storage**: Dropbox integration'
+- level: 3
+  title: 4. **Security and Storage Layer**
+  type: section
+  content: ''
+- level: 4
+  title: Vault System (`src/components/security/`)
+  type: section
+  content: 'Comprehensive security framework:
+
+    - **Encrypted credential storage** in Chrome storage
+
+    - **Password generation** with multiple algorithms
+
+    - **Cryptographic tools** for hashing and encoding
+
+    - **Security audit** capabilities'
+- level: 4
+  title: Chrome Storage Integration
+  type: section
+  content: 'Custom persistence adapter (`src/store/chromeStorage.ts`):
+
+    - **Automatic serialization/deserialization**
+
+    - **Storage quota management**
+
+    - **Migration support** for schema changes
+
+    - **Backup and restore** functionality'
+- level: 2
+  title: Data Flow Architecture
+  type: section
+  content: ''
+- level: 3
+  title: Request Flow
+  type: section
+  content: "```mermaid\nsequenceDiagram\n    participant UI as UI Component\n    participant\
+    \ Store as State Store\n    participant Client as API Client\n    participant\
+    \ Service as External Service\n    \n    UI->>Store: User Action\n    Store->>Client:\
+    \ Service Request\n    Client->>Client: Lookup ServiceDefinition\n    Client->>Client:\
+    \ Apply Authentication\n    Client->>Service: HTTP Request\n    Service->>Client:\
+    \ Response\n    Client->>Store: Update State\n    Store->>UI: Re-render\n```"
+- level: 3
+  title: State Management Flow
+  type: section
+  content: "```mermaid\ngraph LR\n    A[User Action] --> B[Store Action]\n    B -->\
+    \ C[State Update]\n    C --> D[Chrome Storage]\n    C --> E[UI Re-render]\n  \
+    \  F[App Load] --> G[Rehydration]\n    G --> D\n    G --> C\n```"
+- level: 2
+  title: Key Architectural Patterns
+  type: section
+  content: ''
+- level: 3
+  title: 1. **Service Definition Pattern**
+  type: section
+  content: '- **Single source of truth** for each service integration
+
+    - **Declarative configuration** drives dynamic behavior
+
+    - **Extensible** - new services added by creating definition files
+
+    - **Consistent** - all services follow same integration pattern'
+- level: 3
+  title: 2. **Capability-Driven UI**
+  type: section
+  content: '- **Services declare capabilities** (`llm_chat`, `image_generation`, etc.)
+
+    - **UI automatically adapts** based on active service capabilities
+
+    - **Dynamic component loading** for different service types
+
+    - **Consistent UX** across different service categories'
+- level: 3
+  title: 3. **Universal Client Pattern**
+  type: section
+  content: '- **Single HTTP client** handles all external service requests
+
+    - **Configuration-driven** request construction
+
+    - **Centralized** authentication, error handling, and logging
+
+    - **Extensible** authentication patterns for different services'
+- level: 3
+  title: 4. **Persistent State with Rehydration**
+  type: section
+  content: '- **All critical state** persisted to Chrome storage
+
+    - **Async rehydration** on app startup
+
+    - **Migration support** for schema evolution
+
+    - **Backup/restore** capabilities'
+- level: 3
+  title: 5. **Multi-Context Architecture**
+  type: section
+  content: '- **Same core components** used across tab, popup, sidepanel
+
+    - **Context-aware rendering** based on available space
+
+    - **Shared state** across all contexts
+
+    - **Consistent behavior** regardless of entry point'
+- level: 2
+  title: Technical Implementation Details
+  type: section
+  content: ''
+- level: 3
+  title: Build System
+  type: section
+  content: '- **Vite** for fast development and optimized builds
+
+    - **TypeScript** for type safety and developer experience
+
+    - **TailwindCSS** for consistent styling
+
+    - **Chrome Extension Manifest V3** compliance'
+- level: 3
+  title: State Management Implementation
+  type: section
+  content: "```typescript\n// Example store structure\ninterface ServiceState {\n\
+    \  services: Record<string, ServiceInstance>;\n  activeService: string | null;\n\
+    \  isLoading: boolean;\n  errors: Record<string, string>;\n  _hasHydrated: boolean;\n\
+    }\n\n// Persistence with Chrome storage\nconst serviceStore = create<ServiceState>()(\n\
+    \  persist(\n    (set, get) => ({\n      // ... store implementation\n    }),\n\
+    \    {\n      name: 'service-store',\n      storage: chromeStorageAdapter,\n \
+    \   }\n  )\n);\n```"
+- level: 3
+  title: Component Organization
+  type: section
+  content: "```typescript\n// Dynamic capability rendering\nconst CapabilityUI: React.FC\
+    \ = () => {\n  const activeService = useServiceStore(s => s.activeService);\n\
+    \  const service = useServiceStore(s => s.services[activeService]);\n  \n  return\
+    \ (\n    <div>\n      {service.capabilities.includes('llm_chat') && <LlmChatView\
+    \ />}\n      {service.capabilities.includes('image_generation') && <ImageGenerationView\
+    \ />}\n      {/* Dynamic rendering based on capabilities */}\n    </div>\n  );\n\
+    };\n```"
+- level: 2
+  title: Performance Characteristics
+  type: section
+  content: ''
+- level: 3
+  title: Strengths
+  type: section
+  content: '- **Fast startup** due to efficient state rehydration
+
+    - **Responsive UI** with React and optimized re-renders
+
+    - **Efficient networking** with request caching and retry logic
+
+    - **Small bundle size** with code splitting and tree shaking'
+- level: 3
+  title: Scalability Considerations
+  type: section
+  content: '- **Service definitions** can be loaded dynamically
+
+    - **Component system** supports lazy loading
+
+    - **State management** handles large numbers of services
+
+    - **Storage system** manages quota and cleanup'
+- level: 2
+  title: Security Architecture
+  type: section
+  content: ''
+- level: 3
+  title: Credential Management
+  type: section
+  content: '- **Never store credentials in plaintext**
+
+    - **Encryption at rest** in Chrome storage
+
+    - **Secure transmission** with HTTPS only
+
+    - **Audit trail** for credential access'
+- level: 3
+  title: Network Security
+  type: section
+  content: '- **HTTPS only** for all external requests
+
+    - **CORS handling** for browser security
+
+    - **Request validation** before sending
+
+    - **Response sanitization** after receiving'
+- level: 3
+  title: Extension Security
+  type: section
+  content: '- **Minimal permissions** in manifest
+
+    - **Content Security Policy** enforcement
+
+    - **No eval() or unsafe operations**
+
+    - **Secure coding practices** throughout'
+- level: 2
+  title: For AI Agents
+  type: section
+  content: ''
+- level: 3
+  title: When to Use This Architecture
+  type: section
+  content: '- ✅ Use when: Understanding system-wide behavior and interactions
+
+    - ✅ Use when: Making changes that affect multiple components
+
+    - ✅ Use when: Adding new service integrations or capabilities
+
+    - ✅ Use when: Planning performance optimizations or refactoring
+
+    - ❌ Don''t use when: Making isolated component changes or bug fixes'
+- level: 3
+  title: Key Implementation Points
+  type: section
+  content: "1. **Follow the Service Definition pattern** for all new services\n2.\
+    \ **Use the universal apiClient** instead of custom HTTP clients  \n3. **Leverage\
+    \ the state management system** for all persistent data\n4. **Implement capability-based\
+    \ UI** for dynamic service rendering\n5. **Maintain Chrome extension security\
+    \ best practices**"
+- level: 3
+  title: Common Integration Patterns
+  type: section
+  content: "```typescript\n// Adding a new service\nexport const newServiceDefinition:\
+    \ ServiceDefinition = {\n  id: 'new-service',\n  name: 'New Service',\n  capabilities:\
+    \ ['llm_chat'],\n  baseUrl: 'https://api.example.com',\n  authentication: {\n\
+    \    type: 'bearer',\n    headerName: 'Authorization'\n  },\n  endpoints: {\n\
+    \    chat: {\n      path: '/chat',\n      method: 'POST',\n      requestSchema:\
+    \ ChatRequestSchema\n    }\n  }\n};\n\n// Using the service\nconst response =\
+    \ await apiClient.request({\n  serviceId: 'new-service',\n  endpoint: 'chat',\n\
+    \  data: { message: 'Hello' }\n});\n```"
+- level: 2
+  title: Migration Considerations for kOS
+  type: section
+  content: ''
+- level: 3
+  title: kOS-Ready Components
+  type: section
+  content: "- **Service Definition pattern** → Can be extended for agent services\n\
+    - **Capability system** → Maps to agent capabilities  \n- **State management**\
+    \ → Can be distributed across agents\n- **Security framework** → Foundation for\
+    \ agent identity"
+- level: 3
+  title: Areas Requiring Evolution
+  type: section
+  content: '- **Chrome extension dependency** → Multi-platform deployment
+
+    - **Centralized state** → Distributed agent state
+
+    - **HTTP-only communication** → Agent messaging protocols
+
+    - **Single-user model** → Multi-agent collaboration'
+- level: 2
+  title: Related Documentation
+  type: section
+  content: '- **Current**: [State Management](./02_state-management.md) - Detailed
+    store implementation
+
+    - **Current**: [Service Architecture](../services/01_service-architecture.md)
+    - Service integration patterns
+
+    - **Current**: [Component System](../components/01_component-system.md) - UI component
+    organization
+
+    - **Future**: [kOS Architecture](../../future/architecture/01_system-overview.md)
+    - Target architecture
+
+    - **Bridge**: [Evolution Strategy](../../bridge/01_evolution-strategy.md) - Migration
+    approach'
+- level: 2
+  title: External References
+  type: section
+  content: '- [Chrome Extension Developer Guide](https://developer.chrome.com/docs/extensions/)
+
+    - [React Architecture Patterns](https://react.dev/learn/thinking-in-react)
+
+    - [Zustand State Management](https://github.com/pmndrs/zustand)
+
+    - [Vite Build Tool](https://vitejs.dev/guide/)
+
+
+    ---'

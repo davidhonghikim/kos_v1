@@ -1,0 +1,139 @@
+title: K Os Vector Store Monitoring And Health Checks
+description: ''
+type: documentation
+status: current
+priority: medium
+version: '1.0'
+last_updated: '2025-06-28'
+organization_date: '2025-06-28T19:48:19.950493'
+authors: []
+tags: []
+content_type: documentation
+technical_level: intermediate
+word_count: 439
+has_code_blocks: true
+has_api_specs: true
+has_architecture: false
+has_deployment: false
+has_testing: false
+has_security: false
+has_rag: true
+has_ethics: false
+original_filename: k_os_vector_store_monitoring_and_health_checks.yml
+original_path: /Users/danger/CascadeProjects/griot-node/agents/reference/RAG/k_os_vector_store_monitoring_and_health_checks.yml
+category: rag_system
+
+---
+
+title: K Os Vector Store Monitoring And Health Checks
+description: ''
+type: documentation
+status: current
+priority: medium
+last_updated: '2025-06-28'
+conversion_date: '2025-06-28T19:38:19.180284'
+original_format: markdown
+content_type: api_specification
+word_count: 409
+line_count: 97
+
+---
+
+## ✅ Health Check Endpoints
+
+| Service          | Endpoint                | Method | Expected Response                        |
+| ---------------- | ----------------------- | ------ | ---------------------------------------- |
+| Vector Store API | `/health`               | GET    | `{ "status": "ok", "uptime": "1234s" }`  |
+| Vector Store API | `/metrics`              | GET    | Prometheus metrics format (for scraping) |
+| Weaviate         | `/v1/.well-known/ready` | GET    | `200 OK` if Weaviate is healthy          |
+| Weaviate         | `/v1/.well-known/live`  | GET    | `200 OK` if Weaviate is live             |
+
+---
+
+## ✅ Vector API `/health` Endpoint Example (FastAPI)
+
+```python
+from fastapi import APIRouter
+import time
+
+start_time = time.time()
+router = APIRouter()
+
+@router.get("/health")
+def health_check():
+    uptime = time.time() - start_time
+    return {"status": "ok", "uptime": f"{int(uptime)}s"}
+```
+
+---
+
+## ✅ Monitoring Stack Recommendation
+
+| Layer                  | Tool                                    | Purpose                                          |
+| ---------------------- | --------------------------------------- | ------------------------------------------------ |
+| Metrics Collection     | **Prometheus**                          | Scrape `/metrics` from API and Weaviate          |
+| Visualization          | **Grafana**                             | Visual dashboards for latency, queries, errors   |
+| Alerting               | **Prometheus Alertmanager**             | Trigger alerts on downtime, error spikes         |
+| Logs                   | **Docker + Filebeat + ELK (Optional)**  | Centralized logging if scaling to multiple nodes |
+| External Health Checks | **UptimeRobot / StatusCake (Optional)** | Public availability monitoring                   |
+
+---
+
+## ✅ Logging Recommendations
+
+| Layer      | Strategy                                                               |
+| ---------- | ---------------------------------------------------------------------- |
+| Vector API | Log all POST and DELETE calls with payload size and agent ID           |
+| Weaviate   | Use built-in logging and enable verbose logs in staging                |
+| Docker     | Redirect container logs to centralized syslog or filebeat agent        |
+| Errors     | Any 5xx or unhandled exception must log full stacktrace with timestamp |
+| Metrics    | Track API latency, query counts, error rates per endpoint              |
+
+---
+
+## ✅ Example Prometheus Alert Rules
+
+```yaml
+groups:
+  - name: vector-store-alerts
+    rules:
+      - alert: VectorAPI_Down
+        expr: up{job="vector_api"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Vector API is down"
+
+      - alert: Weaviate_Unhealthy
+        expr: up{job="weaviate"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Weaviate backend is unhealthy"
+
+      - alert: High_Query_Latency
+        expr: rate(http_request_duration_seconds_sum[5m]) / rate(http_request_duration_seconds_count[5m]) > 1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Vector API response latency is high"
+```
+
+---
+
+## ✅ Next Steps
+
+1. Implement `/health` and `/metrics` endpoints in Vector API
+2. Set up Prometheus scrape configs
+3. Build Grafana dashboards
+4. Configure Prometheus alert rules
+
+---
+
+**Plan ID:** kos\_2025\_06\_vector\_store\_monitoring\
+**Created by:** ChatGPT + User Collaboration\
+**Last Updated:** 2025-06-28T00:00:00Z
+

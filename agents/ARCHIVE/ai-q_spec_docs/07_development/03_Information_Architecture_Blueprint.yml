@@ -1,0 +1,80 @@
+title: Proposed Information Architecture for ai-q (Content-Aware)
+version: '2.0'
+author: Yachay Librarian Agent
+description: This blueprint outlines a new, clean, and organized structure for the
+  ai-q library, generated from a DEEP CONTENT ANALYSIS of all source documents.
+proposed_structure:
+  01_Protocols:
+    description: Contains all documents related to Protocols.
+    source_file_count: 1200
+    proposed_naming_convention: '{document_name}_v{version}.md'
+    tags_summary:
+      agent_workflow: 1200
+      protocols: 1200
+      node_specifications: 1148
+      architecture: 880
+      security: 754
+      governance: 591
+      deployment: 498
+      ui_ux: 495
+      economic_systems: 263
+    versions_summary:
+      '1': 1
+      '1.0': 18
+      1.0.0: 1175
+      '3.8': 1
+      '{''current'': ''Tohunga v1.0 YAML Release''}': 1
+      '{''current_phase'': ''Griot RAG v1.0 YAML Release Batch''}': 1
+      '{''current_phase'': ''Skald Node Class v1.2 Integrated Comms + Media + Narrative Release''}': 1
+      '{''current_phase'': ''Skald Node Class v1.3 Universal Media + Social Cognition + Protocol Adaptation Release''}': 1
+      '{''current_phase'': ''Skald Node v1.3 YAML Release Batch''}': 1
+  02_Architecture:
+    description: Contains all documents related to Architecture.
+    source_file_count: 449
+    proposed_naming_convention: '{document_name}_v{version}.md'
+    tags_summary:
+      architecture: 449
+      agent_workflow: 448
+      node_specifications: 341
+      governance: 173
+      ui_ux: 142
+      security: 140
+      deployment: 104
+      economic_systems: 64
+    versions_summary:
+      '1.0': 15
+      1.0.0: 426
+      1.2.0: 1
+      '3.8': 1
+      '{''current'': ''Ronin v1.0 YAML Release''}': 1
+      '{''current_phase'': ''Ronin Node v1.0 YAML Release''}': 1
+      '{''current_phase'': ''Skald Federation Layer v1.0 YAML Release''}': 1
+      '{''current_phase'': ''Skald-Griot RAG Output Bridge v1.0 YAML Release''}': 1
+      '{''current_phase'': ''Tohunga Node v1.0 YAML Release''}': 1
+      '{''current_phase'': ''kOS Global Orchestrator Layer v1.0 YAML Release''}': 1
+  03_Node_Specifications:
+    description: Contains all documents related to Node_Specifications.
+    source_file_count: 373
+    proposed_naming_convention: '{document_name}_v{version}.md'
+    tags_summary:
+      node_specifications: 373
+      agent_workflow: 368
+      governance: 173
+      security: 89
+      ui_ux: 88
+      deployment: 73
+      economic_systems: 51
+    versions_summary:
+      '1.0': 1
+      1.0.0: 363
+      '2': 1
+      '3.8': 5
+      '3.9': 3
+  06_Governance:
+    description: Contains all documents related to Governance.
+    source_file_count: 4
+    proposed_naming_convention: '{document_name}_v{version}.md'
+    tags_summary:
+      governance: 4
+    versions_summary:
+      1.0.0: 4

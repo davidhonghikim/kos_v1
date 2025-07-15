@@ -1,0 +1,213 @@
+metadata:
+  original_file: 01_Kind_Link_Framework.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Kind Link Framework (KLF) Specification
+  description: The foundational communication framework for the kOS ecosystem
+  type: protocol
+  status: canonical
+  priority: critical
+  last_updated: '2025-01-28'
+  version: 1.0.0
+sections:
+- level: 1
+  title: Kind Link Framework (KLF) Specification
+  type: section
+  content: ''
+- level: 2
+  title: 🎯 Overview
+  type: section
+  content: 'The Kind Link Framework (KLF) is the foundational communication standard
+    that enables all kOS nodes to discover, authenticate, and collaborate with each
+    other regardless of their class, implementation language, or hosting environment.
+
+
+    It is a **protocol-agnostic framework**, meaning it defines the *structure* and
+    *rules* of communication, but can be implemented over various transport layers
+    like HTTP/2, WebSockets, or QUIC. This ensures maximum flexibility and future-proofing.'
+- level: 3
+  title: Core Principles
+  type: section
+  content: '1. **Service-Oriented**: All interactions are modeled as service requests
+    and responses.
+
+    2. **Secure by Default**: All messages are cryptographically signed and verified.
+
+    3. **Covenant Aware**: Every message is implicitly validated against the HIEROS
+    Codex.
+
+    4. **Interoperable**: Standardized message formats ensure seamless communication.
+
+    5. **Discoverable**: Built-in mechanisms for node discovery and capability negotiation.'
+- level: 2
+  title: 🏗️ System Architecture
+  type: section
+  content: '```
+
+    🏛️ KLF FRAMEWORK STACK
+
+    ├── 🤝 Application Layer (Service Calls)
+
+    ├── 🛡️ Security Layer (Authentication & HIEROS)
+
+    ├── 📦 Message Layer (Standardized Formats)
+
+    ├── 📡 Transport Layer (HTTP/2, WebSockets)
+
+    └── 🌐 Network Layer (IP, mDNS, DHT)
+
+    ```'
+- level: 2
+  title: 🔐 Security & Authentication
+  type: section
+  content: ''
+- level: 3
+  title: 1. Cryptographic Identity
+  type: section
+  content: Every kOS node **must** have a public/private key pair (e.g., Ed25519)
+    that serves as its permanent, verifiable identity. The public key is used to derive
+    the node's unique Decentralized Identifier (DID).
+- level: 3
+  title: 2. Signed Messages
+  type: section
+  content: Every message sent over the KLF **must** be signed by the sender's private
+    key. The recipient **must** verify the signature against the sender's public key.
+    This ensures both message integrity (it wasn't tampered with) and authenticity
+    (it came from who it says it came from).
+- level: 3
+  title: 3. HIEROS Codex Validation
+  type: section
+  content: Before processing any request, a node **must** validate the sender's identity
+    against the HIEROS Codex. This involves checking that the sender's identity document
+    includes a valid, unrevoked signature of the canonical HIEROS Codex hash. This
+    is the "genetic handshake" that establishes mutual trust.
+- level: 3
+  title: 4. Transport Layer Security (TLS)
+  type: section
+  content: All communication over public networks **must** be encrypted using TLS
+    1.3 or higher to ensure confidentiality.
+- level: 2
+  title: 📦 Message Format
+  type: section
+  content: "All KLF messages share a common structure:\n\n```json\n{\n  \"klf\": {\n\
+    \    \"version\": \"1.0.0\",\n    \"timestamp\": \"2025-01-28T10:00:00Z\"\n  },\n\
+    \  \"sender\": {\n    \"did\": \"did:kos:griot:a1b2c3d4\",\n    \"signature\"\
+    : \"...\"\n  },\n  \"recipient\": {\n    \"did\": \"did:kos:tohunga:e5f6g7h8\"\
+    \n  },\n  \"payload\": {\n    \"type\": \"service_request\",\n    \"service\"\
+    : \"knowledge.curate\",\n    \"body\": {\n      \"source_url\": \"https://example.com/data\"\
+    ,\n      \"curation_level\": \"deep\"\n    }\n  }\n}\n```"
+- level: 3
+  title: Key Fields
+  type: section
+  content: "- **`klf`**: Contains metadata about the KLF version.\n- **`sender`**:\
+    \ The DID of the sending node and the signature of the `payload`.\n- **`recipient`**:\
+    \ The DID of the target node.\n- **`payload`**: The actual content of the message.\n\
+    \  - **`type`**: The type of message (e.g., `service_request`, `service_response`,\
+    \ `discovery_query`).\n  - **`service`**: For service requests, the name of the\
+    \ service being called.\n  - **`body`**: The specific parameters for the message."
+- level: 2
+  title: 🛡️ KLF TRUST HIERARCHY
+  type: section
+  content: '1.  **Level 1: Self-Signed Identity** - A node can always trust itself.
+
+    2.  **Level 2: HIEROS Codex Alignment** - A node can trust another node that has
+    verifiably signed the same version of the HIEROS Codex.
+
+    3.  **Level 3: Federated Trust** - A node can extend trust to other nodes within
+    an established federation, governed by specific rules.
+
+    4.  **Level 4: Community Vouching** - A node can trust another node if it has
+    been vouched for by a trusted third party or a decentralized web-of-trust.'
+- level: 2
+  title: 📡 Core API Endpoints
+  type: section
+  content: 'While KLF is transport-agnostic, for HTTP-based implementations, the following
+    endpoints provide a standardized interface.
+
+
+    ```http'
+- level: 1
+  title: Node Identity & Discovery
+  type: section
+  content: 'GET  /klf/v1/identity          # Node identity information
+
+    GET  /klf/v1/capabilities      # Available capabilities
+
+    POST /klf/v1/discover          # Discover other nodes'
+- level: 1
+  title: Service Interaction
+  type: section
+  content: 'POST /klf/v1/request           # Service requests'
+- level: 1
+  title: Health & Status
+  type: section
+  content: 'GET  /klf/v1/health            # Health check with ethics validation
+
+    ```'
+- level: 2
+  title: 🐍 Python Example
+  type: section
+  content: "```python\nimport httpx\nfrom cryptography.hazmat.primitives import hashes\n\
+    from cryptography.hazmat.primitives.asymmetric import ed25519\n\nclass KLFClient:\n\
+    \    def __init__(self, private_key: ed25519.Ed25519PrivateKey, base_url: str):\n\
+    \        self.private_key = private_key\n        self.public_key = private_key.public_key()\n\
+    \        self.did = f\"did:kos:node:{self.public_key.public_bytes(...)}\"\n  \
+    \      self.client = httpx.Client(base_url=base_url)\n\n    def send_request(self,\
+    \ recipient_did: str, service: str, body: dict) -> dict:\n        payload = {\n\
+    \            \"type\": \"service_request\",\n            \"service\": service,\n\
+    \            \"body\": body\n        }\n        # In a real implementation, the\
+    \ payload would be canonicalized JSON\n        signature = self.private_key.sign(str(payload).encode('utf-8'))\n\
+    \n        klf_message = {\n            \"klf\": {\"version\": \"1.0.0\", \"timestamp\"\
+    : ...},\n            \"sender\": {\"did\": self.did, \"signature\": signature.hex()},\n\
+    \            \"recipient\": {\"did\": recipient_did},\n            \"payload\"\
+    : payload\n        }\n\n        response = self.client.post(\"/klf/v1/request\"\
+    , json=klf_message)\n        response.raise_for_status()\n        # Real implementation\
+    \ would verify the response signature\n        return response.json()\n\ndef validate_klf_message(message:\
+    \ dict) -> bool:\n    \"\"\"Validate KLF message format and signature\"\"\"\n\
+    \    # 1. Check schema\n    # 2. Get sender's public key from their DID\n    #\
+    \ 3. Verify signature\n    return True\n```"
+- level: 2
+  title: 📊 Metrics & Observability
+  type: section
+  content: 'To ensure the health and performance of the framework, nodes should expose
+    the following metrics:
+
+
+    ```'
+- level: 1
+  title: Discovery Metrics
+  type: section
+  content: 'klf_discovery_requests_total{method="mdns|dht|registry"}
+
+    klf_discovery_latency_seconds{method="mdns|dht|registry"}'
+- level: 1
+  title: Message Metrics
+  type: section
+  content: 'klf_messages_sent_total{type="request|response|advertisement"}
+
+    klf_messages_received_total{type="request|response|advertisement"}
+
+    klf_message_processing_duration_seconds'
+- level: 1
+  title: Security Metrics
+  type: section
+  content: 'klf_auth_attempts_total{result="success|failure"}
+
+    klf_auth_duration_seconds'
+- level: 1
+  title: HIEROS Metrics
+  type: section
+  content: 'klf_ethical_intentions_validations_total{result="pass|fail"}
+
+    klf_ethics_violations_total{intention="honor_all_beings|..."}
+
+    ```'
+- level: 2
+  title: ✅ Implementation Requirements
+  type: section
+  content: '-   **Specification**: `Kind Link Framework v1.0.0`
+
+    -   **Implementation**: All kOS nodes must implement KLF v1.0.0 for interoperability.
+
+    -   **Next Review**: 2025-07-28'

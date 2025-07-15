@@ -1,0 +1,158 @@
+title: "Modular Codebase Architecture"
+version: "1.0"
+description: "Architecture documentation for the modular, non-monolithic codebase RAG system"
+
+architecture_overview:
+  principle: "Modular and focused components following project guidelines"
+  file_size_standards:
+    source_code: "100-300 lines preferred, hard limit ~500 lines"
+    documentation: "<1000 lines, preferably <500 lines"
+    configuration: "<1MB each"
+    interfaces: "<100KB each"
+
+core_components:
+  codebase_librarian:
+    file: "packages/data/core/codebase/codebase_librarian.ts"
+    purpose: "Orchestrates analysis components without being monolithic"
+    responsibilities:
+      - "File analysis coordination"
+      - "Component integration"
+      - "Documentation generation"
+      - "Real-time monitoring"
+    dependencies:
+      - "PersonaRAGService"
+      - "CodeAnalyzer"
+      - "SemanticGraph"
+      - "CodeVersioning"
+
+  interfaces:
+    file: "packages/data/core/codebase/interfaces/code_analysis_interfaces.ts"
+    purpose: "Focused interface definitions for code analysis"
+    interfaces:
+      - "CodeAnalysisResult"
+      - "CodeIssue"
+      - "CodeSuggestion"
+      - "CodeMetrics"
+      - "CodeSearchResult"
+      - "RefactoringSuggestion"
+      - "DependencyGraph"
+      - "CodebaseDocumentation"
+
+  configuration:
+    file: "packages/data/core/codebase/config/codebase_librarian_config.ts"
+    purpose: "Centralized configuration management"
+    config_options:
+      enableRealTimeAnalysis: "boolean"
+      enableBugDetection: "boolean"
+      enableSecurityScanning: "boolean"
+      enablePerformanceProfiling: "boolean"
+      maxFileSize: "number (bytes)"
+      supportedExtensions: "string[]"
+
+  utilities:
+    file: "packages/data/core/codebase/utils/file_utils.ts"
+    purpose: "Focused file operation utilities"
+    functions:
+      - "isFileSupported"
+      - "readFile"
+      - "findCodeFiles"
+      - "getFileSize"
+      - "isFileSizeValid"
+      - "getFileName"
+      - "sanitizeFilename"
+
+modular_design_principles:
+  single_responsibility:
+    description: "Each module has one clear purpose"
+    examples:
+      - "FileUtils handles only file operations"
+      - "Interfaces define only data structures"
+      - "Config manages only settings"
+
+  dependency_injection:
+    description: "Services receive dependencies through constructors"
+    example: "PersonaRAGService requires VectorStore, EmbeddingService, PersonaVectorizationService"
+
+  configuration_driven:
+    description: "Behavior controlled through config objects"
+    example: "CodebaseLibrarianConfig controls analysis features"
+
+  interface_separation:
+    description: "Clear contracts between components"
+    example: "CodeAnalysisResult interface defines analysis output structure"
+
+file_organization:
+  structure:
+    packages_data_core_codebase:
+      interfaces:
+        - "code_analysis_interfaces.ts"
+      config:
+        - "codebase_librarian_config.ts"
+      utils:
+        - "file_utils.ts"
+      main_files:
+        - "codebase_librarian.ts"
+        - "code_analyzer.ts"
+        - "semantic_graph.ts"
+
+  naming_conventions:
+    interfaces: "snake_case with .ts extension"
+    config: "snake_case with .ts extension"
+    utilities: "snake_case with .ts extension"
+    main_classes: "PascalCase with .ts extension"
+
+testing:
+  test_file: "scripts/test-modular-codebase-rag.js"
+  test_coverage:
+    - "File utilities validation"
+    - "Single file analysis"
+    - "Codebase search"
+    - "Refactoring suggestions"
+    - "Dependency analysis"
+    - "Documentation generation"
+
+benefits:
+  maintainability:
+    - "Small, focused files are easier to understand"
+    - "Clear separation of concerns"
+    - "Reduced cognitive load"
+
+  testability:
+    - "Each component can be tested independently"
+    - "Mock dependencies easily"
+    - "Isolated unit tests"
+
+  extensibility:
+    - "New analysis types can be added without touching core"
+    - "Configuration-driven feature toggles"
+    - "Interface-based contracts"
+
+  performance:
+    - "Only load required components"
+    - "Efficient file size for AI context windows"
+    - "Optimized token usage"
+
+compliance:
+  project_standards:
+    - "Follows file size guidelines (100-300 lines preferred)"
+    - "Uses YAML for documentation"
+    - "Maintains modular structure"
+    - "Implements proper interfaces"
+
+  ai_agent_optimization:
+    - "Files sized for optimal context window usage"
+    - "Clear, focused responsibilities"
+    - "Minimal dependencies between modules"
+    - "Self-documenting code structure"
+
+integration_with_rag:
+  documentation_upload:
+    - "All new documentation uploaded to RAG system"
+    - "Searchable by agents for future reference"
+    - "Version-controlled with codebase changes"
+
+  agent_workflow:
+    - "Agents can query modular architecture"
+    - "Understand component relationships"
+    - "Follow established patterns"
+    - "Maintain consistency across sessions" 

@@ -1,0 +1,739 @@
+frontmatter:
+  title: KLF Implementation Examples
+  description: Ready-to-use code examples for connecting agents to kOS
+  version: 3.0.0
+  
+sections:
+- title: "Universal KLF Client"
+  content: |
+    # Copy-Paste KLF Implementations
+    
+    Ready-to-use client libraries for any programming language.
+    All examples connect to the live kOS backend at `http://localhost:30436`.
+    
+    ## TypeScript/JavaScript (Universal)
+    
+    ```typescript
+    // Universal KLF Client - Works for ANY agent type
+    export class UniversalKLFClient {
+      private agentId: string;
+      private agentType: 'ai' | 'human' | 'service' | 'device' | 'frontend' | 'backend';
+      private capabilities: string[];
+      private wsConnection?: WebSocket;
+      
+      constructor(
+        private baseUrl = 'http://localhost:30436',
+        agentConfig: {
+          id: string;
+          type: 'ai' | 'human' | 'service' | 'device' | 'frontend' | 'backend';
+          name: string;
+          capabilities?: string[];
+          requires?: string[];
+        }
+      ) {
+        this.agentId = agentConfig.id;
+        this.agentType = agentConfig.type;
+        this.capabilities = agentConfig.capabilities || [];
+      }
+      
+      // 1. Check if KLF network is available
+      async ping(): Promise<{status: string, version: string, network: string}> {
+        const response = await fetch(`${this.baseUrl}/klf/v1/health`);
+        return response.json();
+      }
+      
+      // 2. Register this agent with the network
+      async register(): Promise<{success: boolean, assigned_did: string}> {
+        const agent = {
+          did: `did:kos:agent:${this.agentId}`,
+          type: this.agentType,
+          name: this.agentId,
+          capabilities: this.capabilities,
+          transport: ['http', 'websocket']
+        };
+        
+        const response = await fetch(`${this.baseUrl}/klf/v1/agents/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ agent })
+        });
+        
+        return response.json();
+      }
+      
+      // 3. Discover available services
+      async discoverCapabilities(): Promise<{
+        agents: Array<{did: string, type: string, capabilities: string[]}>,
+        services: string[]
+      }> {
+        const response = await fetch(`${this.baseUrl}/klf/v1/capabilities`);
+        return response.json();
+      }
+      
+      // 4. Send message to any agent with capability
+      async requestCapability(capability: string, params: any): Promise<any> {
+        const message = {
+          klf: { 
+            version: '1.0.0', 
+            timestamp: new Date().toISOString(),
+            routing: 'capability-based'
+          },
+          sender: { did: `did:kos:agent:${this.agentId}` },
+          recipient: { capability },
+          payload: { 
+            type: 'request', 
+            service: capability, 
+            body: params 
+          }
+        };
+        
+        const response = await fetch(`${this.baseUrl}/klf/v1/message`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(message)
+        });
+        
+        return response.json();
+      }
+      
+      // 5. Subscribe to real-time events
+      async subscribeToEvents(eventTypes: string[] = ['all']): Promise<void> {
+        const wsUrl = this.baseUrl.replace('http', 'ws') + '/klf/v1/events';
+        this.wsConnection = new WebSocket(wsUrl);
+        
+        this.wsConnection.onopen = () => {
+          this.wsConnection?.send(JSON.stringify({
+            type: 'subscribe',
+            agent_did: `did:kos:agent:${this.agentId}`,
+            events: eventTypes
+          }));
+        };
+        
+        this.wsConnection.onmessage = (event) => {
+          const message = JSON.parse(event.data);
+          this.handleIncomingMessage(message);
+        };
+      }
+      
+      // Override this in your implementation
+      protected handleIncomingMessage(message: any): void {
+        console.log('Received message:', message);
+      }
+    }
+    
+    // Quick usage example
+    const agent = new UniversalKLFClient('http://localhost:30436', {
+      id: 'my-ai-assistant',
+      type: 'ai',
+      name: 'AI Assistant',
+      capabilities: ['text.generate']
+    });
+    
+    await agent.register();
+    const result = await agent.requestCapability('document.query', {
+      query: 'AI research papers'
+    });
+    ```
+    
+- title: "Python Implementation"
+  content: |
+    ## Python KLF Agent
+    
+    ```python
+    import requests
+    import json
+    import websocket
+    from datetime import datetime
+    from typing import List, Dict, Any, Optional
+    
+    class KLFAgent:
+        def __init__(self, base_url: str = "http://localhost:30436"):
+            self.base_url = base_url
+            self.agent_id = None
+            self.agent_type = None
+            self.capabilities = []
+            self.ws = None
+            
+        def setup_agent(self, agent_id: str, agent_type: str, 
+                       capabilities: List[str] = None):
+            """Configure this agent"""
+            self.agent_id = agent_id
+            self.agent_type = agent_type
+            self.capabilities = capabilities or []
+            
+        def ping(self) -> Dict[str, Any]:
+            """Check if KLF network is available"""
+            response = requests.get(f"{self.base_url}/klf/v1/health")
+            return response.json()
+            
+        def register(self) -> Dict[str, Any]:
+            """Register this agent with the network"""
+            agent_data = {
+                "agent": {
+                    "did": f"did:kos:agent:{self.agent_id}",
+                    "type": self.agent_type,
+                    "name": self.agent_id,
+                    "capabilities": self.capabilities,
+                    "transport": ["http", "websocket"]
+                }
+            }
+            
+            response = requests.post(
+                f"{self.base_url}/klf/v1/agents/register",
+                json=agent_data
+            )
+            return response.json()
+            
+        def discover_capabilities(self) -> Dict[str, Any]:
+            """Find available services"""
+            response = requests.get(f"{self.base_url}/klf/v1/capabilities")
+            return response.json()
+            
+        def request_capability(self, capability: str, params: Dict[str, Any]) -> Dict[str, Any]:
+            """Request a service from any agent that provides it"""
+            message = {
+                "klf": {
+                    "version": "1.0.0",
+                    "timestamp": datetime.utcnow().isoformat() + "Z",
+                    "routing": "capability-based"
+                },
+                "sender": {"did": f"did:kos:agent:{self.agent_id}"},
+                "recipient": {"capability": capability},
+                "payload": {
+                    "type": "request",
+                    "service": capability,
+                    "body": params
+                }
+            }
+            
+            response = requests.post(
+                f"{self.base_url}/klf/v1/message",
+                json=message
+            )
+            return response.json()
+            
+        def subscribe_to_events(self, event_types: List[str] = None):
+            """Subscribe to WebSocket events"""
+            if event_types is None:
+                event_types = ["all"]
+                
+            ws_url = self.base_url.replace("http", "ws") + "/klf/v1/events"
+            
+            def on_open(ws):
+                subscribe_msg = {
+                    "type": "subscribe",
+                    "agent_did": f"did:kos:agent:{self.agent_id}",
+                    "events": event_types
+                }
+                ws.send(json.dumps(subscribe_msg))
+                
+            def on_message(ws, message):
+                data = json.loads(message)
+                self.handle_incoming_message(data)
+                
+            self.ws = websocket.WebSocketApp(
+                ws_url,
+                on_open=on_open,
+                on_message=on_message
+            )
+            
+        def handle_incoming_message(self, message: Dict[str, Any]):
+            """Override this method to handle incoming messages"""
+            print(f"Received message: {message}")
+            
+        def start_listening(self):
+            """Start WebSocket listener (blocking)"""
+            if self.ws:
+                self.ws.run_forever()
+    
+    # Example usage
+    class AIResearchAgent(KLFAgent):
+        def __init__(self):
+            super().__init__()
+            self.setup_agent(
+                agent_id="ai-research-assistant",
+                agent_type="ai", 
+                capabilities=["research.analyze", "text.summarize"]
+            )
+            
+        def start(self):
+            # Register with the network
+            registration = self.register()
+            print(f"Registered as: {registration.get('assigned_did')}")
+            
+            # Discover available services
+            capabilities = self.discover_capabilities()
+            print(f"Available services: {capabilities.get('services', [])}")
+            
+            # Search for documents
+            result = self.request_capability("document.query", {
+                "query": "AI research papers",
+                "limit": 5
+            })
+            print(f"Search results: {result}")
+            
+            # Subscribe to events and start listening
+            self.subscribe_to_events(["document.uploaded", "chat.message"])
+            self.start_listening()
+            
+        def handle_incoming_message(self, message):
+            if message.get("type") == "event":
+                event_type = message.get("event")
+                if event_type == "document.uploaded":
+                    # Automatically analyze new documents
+                    doc_data = message.get("data", {})
+                    self.analyze_document(doc_data.get("document_id"))
+                    
+        def analyze_document(self, document_id: str):
+            result = self.request_capability("document.analyze", {
+                "document_id": document_id,
+                "analysis_type": "research_summary"
+            })
+            print(f"Analysis complete: {result}")
+    
+    # Start the AI agent
+    if __name__ == "__main__":
+        agent = AIResearchAgent()
+        agent.start()
+    ```
+    
+- title: "Rust Implementation"
+  content: |
+    ## Rust KLF Agent
+    
+    ```rust
+    use serde::{Deserialize, Serialize};
+    use serde_json::json;
+    use reqwest::Client;
+    use tokio_tungstenite::{connect_async, tungstenite::Message};
+    use futures_util::{SinkExt, StreamExt};
+    use std::collections::HashMap;
+    
+    #[derive(Debug, Serialize, Deserialize)]
+    struct KLFMessage {
+        klf: KLFHeader,
+        sender: Agent,
+        recipient: Recipient,
+        payload: Payload,
+    }
+    
+    #[derive(Debug, Serialize, Deserialize)]
+    struct KLFHeader {
+        version: String,
+        timestamp: String,
+        routing: String,
+    }
+    
+    #[derive(Debug, Serialize, Deserialize)]
+    struct Agent {
+        did: String,
+        #[serde(rename = "type")]
+        agent_type: Option<String>,
+    }
+    
+    #[derive(Debug, Serialize, Deserialize)]
+    struct Recipient {
+        did: Option<String>,
+        capability: Option<String>,
+    }
+    
+    #[derive(Debug, Serialize, Deserialize)]
+    struct Payload {
+        #[serde(rename = "type")]
+        payload_type: String,
+        service: Option<String>,
+        body: serde_json::Value,
+    }
+    
+    pub struct RustKLFAgent {
+        client: Client,
+        base_url: String,
+        agent_id: String,
+        agent_type: String,
+        capabilities: Vec<String>,
+    }
+    
+    impl RustKLFAgent {
+        pub fn new(agent_id: String, agent_type: String, capabilities: Vec<String>) -> Self {
+            Self {
+                client: Client::new(),
+                base_url: "http://localhost:30436".to_string(),
+                agent_id,
+                agent_type,
+                capabilities,
+            }
+        }
+        
+        pub async fn ping(&self) -> Result<serde_json::Value, reqwest::Error> {
+            let response = self.client
+                .get(&format!("{}/klf/v1/health", self.base_url))
+                .send()
+                .await?;
+            response.json().await
+        }
+        
+        pub async fn register(&self) -> Result<serde_json::Value, reqwest::Error> {
+            let agent_data = json!({
+                "agent": {
+                    "did": format!("did:kos:agent:{}", self.agent_id),
+                    "type": self.agent_type,
+                    "name": self.agent_id,
+                    "capabilities": self.capabilities,
+                    "transport": ["http", "websocket"]
+                }
+            });
+            
+            let response = self.client
+                .post(&format!("{}/klf/v1/agents/register", self.base_url))
+                .json(&agent_data)
+                .send()
+                .await?;
+                
+            response.json().await
+        }
+        
+        pub async fn discover_capabilities(&self) -> Result<serde_json::Value, reqwest::Error> {
+            let response = self.client
+                .get(&format!("{}/klf/v1/capabilities", self.base_url))
+                .send()
+                .await?;
+            response.json().await
+        }
+        
+        pub async fn request_capability(
+            &self, 
+            capability: &str, 
+            params: serde_json::Value
+        ) -> Result<serde_json::Value, reqwest::Error> {
+            let message = json!({
+                "klf": {
+                    "version": "1.0.0",
+                    "timestamp": chrono::Utc::now().to_rfc3339(),
+                    "routing": "capability-based"
+                },
+                "sender": {"did": format!("did:kos:agent:{}", self.agent_id)},
+                "recipient": {"capability": capability},
+                "payload": {
+                    "type": "request",
+                    "service": capability,
+                    "body": params
+                }
+            });
+            
+            let response = self.client
+                .post(&format!("{}/klf/v1/message", self.base_url))
+                .json(&message)
+                .send()
+                .await?;
+                
+            response.json().await
+        }
+        
+        pub async fn subscribe_to_events(&self, event_types: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
+            let ws_url = format!("ws://localhost:30436/klf/v1/events");
+            let (ws_stream, _) = connect_async(&ws_url).await?;
+            let (mut write, mut read) = ws_stream.split();
+            
+            // Subscribe to events
+            let subscribe_msg = json!({
+                "type": "subscribe",
+                "agent_did": format!("did:kos:agent:{}", self.agent_id),
+                "events": event_types
+            });
+            
+            write.send(Message::Text(subscribe_msg.to_string())).await?;
+            
+            // Listen for messages
+            while let Some(message) = read.next().await {
+                match message? {
+                    Message::Text(text) => {
+                        let data: serde_json::Value = serde_json::from_str(&text)?;
+                        self.handle_incoming_message(data).await;
+                    }
+                    _ => {}
+                }
+            }
+            
+            Ok(())
+        }
+        
+        async fn handle_incoming_message(&self, message: serde_json::Value) {
+            println!("Received message: {}", message);
+            // Override this in your implementation
+        }
+    }
+    
+    // Example usage
+    #[tokio::main]
+    async fn main() -> Result<(), Box<dyn std::error::Error>> {
+        let agent = RustKLFAgent::new(
+            "rust-data-processor".to_string(),
+            "service".to_string(),
+            vec!["data.crunch".to_string(), "crypto.hash".to_string()]
+        );
+        
+        // Register with the network
+        let registration = agent.register().await?;
+        println!("Registration: {:?}", registration);
+        
+        // Discover services
+        let capabilities = agent.discover_capabilities().await?;
+        println!("Available services: {:?}", capabilities);
+        
+        // Request document search
+        let search_result = agent.request_capability(
+            "document.query",
+            json!({"query": "blockchain technology", "limit": 3})
+        ).await?;
+        println!("Search results: {:?}", search_result);
+        
+        // Subscribe to events
+        agent.subscribe_to_events(vec!["document.uploaded".to_string()]).await?;
+        
+        Ok(())
+    }
+    ```
+    
+- title: "Go Implementation"
+  content: |
+    ## Go KLF Agent
+    
+    ```go
+    package main
+    
+    import (
+        "bytes"
+        "encoding/json"
+        "fmt"
+        "net/http"
+        "time"
+        "github.com/gorilla/websocket"
+    )
+    
+    type KLFAgent struct {
+        BaseURL      string
+        AgentID      string
+        AgentType    string
+        Capabilities []string
+        client       *http.Client
+        wsConn       *websocket.Conn
+    }
+    
+    type KLFMessage struct {
+        KLF       KLFHeader   `json:"klf"`
+        Sender    Agent       `json:"sender"`
+        Recipient Recipient   `json:"recipient"`
+        Payload   Payload     `json:"payload"`
+    }
+    
+    type KLFHeader struct {
+        Version   string `json:"version"`
+        Timestamp string `json:"timestamp"`
+        Routing   string `json:"routing"`
+    }
+    
+    type Agent struct {
+        DID  string `json:"did"`
+        Type string `json:"type,omitempty"`
+    }
+    
+    type Recipient struct {
+        DID        string `json:"did,omitempty"`
+        Capability string `json:"capability,omitempty"`
+    }
+    
+    type Payload struct {
+        Type    string      `json:"type"`
+        Service string      `json:"service,omitempty"`
+        Body    interface{} `json:"body"`
+    }
+    
+    func NewKLFAgent(agentID, agentType string, capabilities []string) *KLFAgent {
+        return &KLFAgent{
+            BaseURL:      "http://localhost:30436",
+            AgentID:      agentID,
+            AgentType:    agentType,
+            Capabilities: capabilities,
+            client:       &http.Client{Timeout: 30 * time.Second},
+        }
+    }
+    
+    func (k *KLFAgent) Ping() (map[string]interface{}, error) {
+        resp, err := k.client.Get(k.BaseURL + "/klf/v1/health")
+        if err != nil {
+            return nil, err
+        }
+        defer resp.Body.Close()
+        
+        var result map[string]interface{}
+        err = json.NewDecoder(resp.Body).Decode(&result)
+        return result, err
+    }
+    
+    func (k *KLFAgent) Register() (map[string]interface{}, error) {
+        agentData := map[string]interface{}{
+            "agent": map[string]interface{}{
+                "did":          fmt.Sprintf("did:kos:agent:%s", k.AgentID),
+                "type":         k.AgentType,
+                "name":         k.AgentID,
+                "capabilities": k.Capabilities,
+                "transport":    []string{"http", "websocket"},
+            },
+        }
+        
+        jsonData, err := json.Marshal(agentData)
+        if err != nil {
+            return nil, err
+        }
+        
+        resp, err := k.client.Post(
+            k.BaseURL+"/klf/v1/agents/register",
+            "application/json",
+            bytes.NewBuffer(jsonData),
+        )
+        if err != nil {
+            return nil, err
+        }
+        defer resp.Body.Close()
+        
+        var result map[string]interface{}
+        err = json.NewDecoder(resp.Body).Decode(&result)
+        return result, err
+    }
+    
+    func (k *KLFAgent) DiscoverCapabilities() (map[string]interface{}, error) {
+        resp, err := k.client.Get(k.BaseURL + "/klf/v1/capabilities")
+        if err != nil {
+            return nil, err
+        }
+        defer resp.Body.Close()
+        
+        var result map[string]interface{}
+        err = json.NewDecoder(resp.Body).Decode(&result)
+        return result, err
+    }
+    
+    func (k *KLFAgent) RequestCapability(capability string, params interface{}) (map[string]interface{}, error) {
+        message := KLFMessage{
+            KLF: KLFHeader{
+                Version:   "1.0.0",
+                Timestamp: time.Now().UTC().Format(time.RFC3339),
+                Routing:   "capability-based",
+            },
+            Sender: Agent{
+                DID: fmt.Sprintf("did:kos:agent:%s", k.AgentID),
+            },
+            Recipient: Recipient{
+                Capability: capability,
+            },
+            Payload: Payload{
+                Type:    "request",
+                Service: capability,
+                Body:    params,
+            },
+        }
+        
+        jsonData, err := json.Marshal(message)
+        if err != nil {
+            return nil, err
+        }
+        
+        resp, err := k.client.Post(
+            k.BaseURL+"/klf/v1/message",
+            "application/json",
+            bytes.NewBuffer(jsonData),
+        )
+        if err != nil {
+            return nil, err
+        }
+        defer resp.Body.Close()
+        
+        var result map[string]interface{}
+        err = json.NewDecoder(resp.Body).Decode(&result)
+        return result, err
+    }
+    
+    func (k *KLFAgent) SubscribeToEvents(eventTypes []string) error {
+        wsURL := "ws://localhost:30436/klf/v1/events"
+        conn, _, err := websocket.DefaultDialer.Dial(wsURL, nil)
+        if err != nil {
+            return err
+        }
+        k.wsConn = conn
+        
+        // Subscribe to events
+        subscribeMsg := map[string]interface{}{
+            "type":      "subscribe",
+            "agent_did": fmt.Sprintf("did:kos:agent:%s", k.AgentID),
+            "events":    eventTypes,
+        }
+        
+        err = conn.WriteJSON(subscribeMsg)
+        if err != nil {
+            return err
+        }
+        
+        // Listen for messages
+        go func() {
+            for {
+                var message map[string]interface{}
+                err := conn.ReadJSON(&message)
+                if err != nil {
+                    fmt.Printf("WebSocket read error: %v\n", err)
+                    break
+                }
+                k.handleIncomingMessage(message)
+            }
+        }()
+        
+        return nil
+    }
+    
+    func (k *KLFAgent) handleIncomingMessage(message map[string]interface{}) {
+        fmt.Printf("Received message: %v\n", message)
+        // Override this in your implementation
+    }
+    
+    // Example usage
+    func main() {
+        agent := NewKLFAgent(
+            "go-data-service",
+            "service",
+            []string{"data.transform", "file.process"},
+        )
+        
+        // Register with the network
+        registration, err := agent.Register()
+        if err != nil {
+            panic(err)
+        }
+        fmt.Printf("Registration: %v\n", registration)
+        
+        // Discover services
+        capabilities, err := agent.DiscoverCapabilities()
+        if err != nil {
+            panic(err)
+        }
+        fmt.Printf("Available services: %v\n", capabilities)
+        
+        // Request document search
+        searchResult, err := agent.RequestCapability("document.query", map[string]interface{}{
+            "query": "Go programming",
+            "limit": 5,
+        })
+        if err != nil {
+            panic(err)
+        }
+        fmt.Printf("Search results: %v\n", searchResult)
+        
+        // Subscribe to events
+        err = agent.SubscribeToEvents([]string{"document.uploaded", "system.alert"})
+        if err != nil {
+            panic(err)
+        }
+        
+        // Keep the program running
+        select {}
+    }
+    ```
+    

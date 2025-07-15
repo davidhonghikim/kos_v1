@@ -1,0 +1,39 @@
+name: kos-v1
+services:
+  huggingface:
+    image: huggingface/transformers-pytorch-gpu:latest
+    container_name: kos-huggingface
+    ports:
+    - 8084:8082
+    environment:
+    - HUGGINGFACE_API_TOKEN=
+    - HUGGINGFACE_CATEGORY=heavy_ai
+    - HUGGINGFACE_CLOUD_ENABLE=false
+    - HUGGINGFACE_COMPOSE_GROUP=heavy_ai
+    - HUGGINGFACE_CONTAINER_NAME=kos-huggingface
+    - HUGGINGFACE_DEFAULT_MODEL=microsoft/DialoGPT-medium
+    - HUGGINGFACE_DEPENDS_ON=
+    - HUGGINGFACE_ENABLE=true
+    - HUGGINGFACE_EXTERNAL_PORT=8084
+    - HUGGINGFACE_HEALTH_CHECK_COMMAND=curl -f http://kos-huggingface:8082 || exit
+      1
+    - HUGGINGFACE_HEALTH_CHECK_INTERVAL=30s
+    - HUGGINGFACE_HEALTH_CHECK_RETRIES=3
+    - HUGGINGFACE_HEALTH_CHECK_TIMEOUT=10s
+    - HUGGINGFACE_IMAGE=huggingface/transformers-pytorch-gpu:latest
+    - HUGGINGFACE_INTERNAL_PORT=8082
+    - HUGGINGFACE_NETWORK=kos-network
+    - HUGGINGFACE_PROFILE=ai
+    - HUGGINGFACE_RESTART_POLICY=unless-stopped
+    - ADMIN_USER=kos-admin
+    - ADMIN_PASSWORD=kos-30437
+    networks:
+    - kos-network
+    restart: unless-stopped
+networks:
+  kos-network:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 172.20.0.0/16
+volumes: {}

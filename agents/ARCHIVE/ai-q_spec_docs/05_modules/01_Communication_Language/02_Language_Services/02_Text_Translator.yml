@@ -1,0 +1,385 @@
+metadata:
+  original_file: 02_Text_Translator.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Text Translator
+  version: '1.0'
+  category: Communication & Language
+  subcategory: Language Services
+  description: Multi-language text translation and localization with high quality
+sections:
+- level: 1
+  title: '**Text Translator**'
+  type: section
+  content: ''
+- level: 2
+  title: '**Overview**'
+  type: section
+  content: The Text Translator module provides comprehensive capabilities for translating
+    text between multiple languages with high quality, context awareness, and cultural
+    adaptation. It supports 100+ languages with professional-quality translations
+    and intelligent quality validation.
+- level: 2
+  title: '**Core Principles**'
+  type: section
+  content: ''
+- level: 3
+  title: '**High-Quality Translation**'
+  type: section
+  content: '- **Professional Quality**: Professional-quality translations with accuracy
+    validation
+
+    - **Context Awareness**: Context-aware translation for improved accuracy
+
+    - **Cultural Adaptation**: Cultural adaptation and localization support
+
+    - **Quality Validation**: Automatic quality assessment and validation'
+- level: 3
+  title: '**Multi-Language Support**'
+  type: section
+  content: '- **100+ Languages**: Support for 100+ languages and dialects
+
+    - **Bidirectional Translation**: Bidirectional translation between all supported
+    languages
+
+    - **Specialized Domains**: Domain-specific translation for technical, medical,
+    legal content
+
+    - **Format Preservation**: Preserve formatting and structure during translation'
+- level: 3
+  title: '**Performance & Scalability**'
+  type: section
+  content: '- **Fast Translation**: < 500ms translation time for standard content
+
+    - **Batch Processing**: Efficient batch translation processing
+
+    - **Caching**: Intelligent caching for frequently translated content
+
+    - **Scalability**: Horizontal and vertical scaling capabilities'
+- level: 2
+  title: '**Function Specifications**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Primary Functions**'
+  type: section
+  content: ''
+- level: 4
+  title: '**translateText(text: string, sourceLang: string, targetLang: string, options?:
+    TranslationOptions): TranslationResult**'
+  type: section
+  content: "- **Purpose**: Translate text from source language to target language\n\
+    - **Parameters**:\n  - `text`: Source text for translation\n  - `sourceLang`:\
+    \ Source language code\n  - `targetLang`: Target language code\n  - `options`:\
+    \ Optional translation configuration\n- **Returns**: Translation result with translated\
+    \ text, confidence score, and metadata\n- **Performance**: < 500ms translation\
+    \ time, professional quality"
+- level: 4
+  title: '**translateBatch(texts: string[], sourceLang: string, targetLang: string,
+    options?: BatchTranslationOptions): BatchTranslationResult**'
+  type: section
+  content: "- **Purpose**: Translate multiple texts in batch\n- **Parameters**:\n\
+    \  - `texts`: Array of source texts\n  - `sourceLang`: Source language code\n\
+    \  - `targetLang`: Target language code\n  - `options`: Optional batch translation\
+    \ configuration\n- **Returns**: Array of translation results\n- **Performance**:\
+    \ < 1s for 10 texts, efficient batch processing"
+- level: 4
+  title: '**validateTranslation(sourceText: string, translatedText: string, sourceLang:
+    string, targetLang: string): ValidationResult**'
+  type: section
+  content: "- **Purpose**: Validate translation quality and accuracy\n- **Parameters**:\n\
+    \  - `sourceText`: Original source text\n  - `translatedText`: Translated text\
+    \ for validation\n  - `sourceLang`: Source language code\n  - `targetLang`: Target\
+    \ language code\n- **Returns**: Validation result with quality score and feedback\n\
+    - **Performance**: < 200ms validation time"
+- level: 4
+  title: '**adaptCulture(text: string, sourceCulture: string, targetCulture: string):
+    CulturalAdaptationResult**'
+  type: section
+  content: "- **Purpose**: Adapt text for cultural differences and preferences\n-\
+    \ **Parameters**:\n  - `text`: Text for cultural adaptation\n  - `sourceCulture`:\
+    \ Source culture identifier\n  - `targetCulture`: Target culture identifier\n\
+    - **Returns**: Culturally adapted text with adaptation notes\n- **Performance**:\
+    \ < 300ms adaptation time"
+- level: 3
+  title: '**Configuration Functions**'
+  type: section
+  content: ''
+- level: 4
+  title: '**configureTranslation(options: TranslationConfig): void**'
+  type: section
+  content: "- **Purpose**: Configure translation parameters and preferences\n- **Parameters**:\n\
+    \  - `options`: Translation configuration object\n- **Returns**: void\n- **Performance**:\
+    \ < 10ms configuration time"
+- level: 4
+  title: '**addCustomTranslation(customTranslation: CustomTranslation): void**'
+  type: section
+  content: "- **Purpose**: Add custom translation rules and preferences\n- **Parameters**:\n\
+    \  - `customTranslation`: Custom translation configuration\n- **Returns**: void\n\
+    - **Performance**: < 50ms addition time"
+- level: 2
+  title: '**Integration Patterns**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Basic Translation Flow**'
+  type: section
+  content: "```mermaid\ngraph TD\n    A[Source Text] --> B[Language Detection]\n \
+    \   B --> C[Context Analysis]\n    C --> D[Translation Engine]\n    D --> E[Quality\
+    \ Assessment]\n    E --> F{Quality Acceptable?}\n    F -->|Yes| G[Final Translation]\n\
+    \    F -->|No| H[Alternative Translation]\n    H --> I[Quality Reassessment]\n\
+    \    I --> G\n```"
+- level: 3
+  title: '**Batch Translation Flow**'
+  type: section
+  content: "```mermaid\ngraph TD\n    A[Text Batch] --> B[Batch Preprocessing]\n \
+    \   B --> C[Parallel Translation]\n    C --> D[Quality Validation]\n    D -->\
+    \ E[Result Aggregation]\n    E --> F[Batch Output]\n```"
+- level: 3
+  title: '**Cultural Adaptation Flow**'
+  type: section
+  content: "```mermaid\ngraph TD\n    A[Source Text] --> B[Cultural Analysis]\n  \
+    \  B --> C[Adaptation Planning]\n    C --> D[Cultural Translation]\n    D -->\
+    \ E[Localization]\n    E --> F[Cultural Validation]\n    F --> G[Adapted Output]\n\
+    ```"
+- level: 2
+  title: '**Capabilities**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Translation Services**'
+  type: section
+  content: '- **High-Quality Translation**: Professional-quality translations with
+    validation
+
+    - **Context Awareness**: Context-aware translation for improved accuracy
+
+    - **Cultural Adaptation**: Cultural adaptation and localization support
+
+    - **Quality Validation**: Automatic quality assessment and validation
+
+    - **Batch Translation**: Efficient batch translation processing'
+- level: 3
+  title: '**Language Support**'
+  type: section
+  content: '- **100+ Languages**: Support for 100+ languages and dialects
+
+    - **Bidirectional Translation**: Bidirectional translation between all supported
+    languages
+
+    - **Specialized Domains**: Domain-specific translation for technical, medical,
+    legal content
+
+    - **Format Preservation**: Preserve formatting and structure during translation'
+- level: 3
+  title: '**Advanced Features**'
+  type: section
+  content: '- **Neural Translation**: Neural machine translation for high quality
+
+    - **Statistical Translation**: Statistical translation for fallback scenarios
+
+    - **Rule-Based Translation**: Rule-based translation for specialized content
+
+    - **Hybrid Translation**: Hybrid approaches for optimal quality'
+- level: 3
+  title: '**Quality Assurance**'
+  type: section
+  content: '- **Quality Assessment**: Automatic quality assessment and scoring
+
+    - **Validation Checks**: Multiple validation checks for accuracy
+
+    - **Feedback Integration**: Integration of user feedback for improvement
+
+    - **Continuous Learning**: Continuous learning and model improvement'
+- level: 2
+  title: '**Configuration Examples**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Basic Translation Configuration**'
+  type: section
+  content: "```yaml\ntranslation:\n  engines:\n    primary: \"google_translate\"\n\
+    \    fallback: \"microsoft_translate\"\n    custom: \"openai_gpt\"\n  quality:\n\
+    \    minimum_confidence: 0.85\n    quality_validation: true\n    cultural_adaptation:\
+    \ true\n    context_awareness: true\n  languages:\n    source_languages: [\"en\"\
+    , \"es\", \"fr\", \"de\", \"zh\", \"ja\", \"ko\", \"ar\"]\n    target_languages:\
+    \ [\"en\", \"es\", \"fr\", \"de\", \"zh\", \"ja\", \"ko\", \"ar\"]\n  performance:\n\
+    \    caching: true\n    cache_ttl: \"24h\"\n    batch_translation: true\n    parallel_processing:\
+    \ true\n```"
+- level: 3
+  title: '**Advanced Translation Configuration**'
+  type: section
+  content: "```yaml\ntranslation:\n  models:\n    neural_model: \"transformer\"\n\
+    \    statistical_model: \"phrase_based\"\n    rule_based_model: \"custom_rules\"\
+    \n    hybrid_model: \"ensemble\"\n  features:\n    context_awareness: true\n \
+    \   cultural_adaptation: true\n    domain_specialization: true\n    format_preservation:\
+    \ true\n  quality:\n    quality_assessment: true\n    validation_checks: true\n\
+    \    feedback_integration: true\n    continuous_learning: true\n  optimization:\n\
+    \    parallel_processing: true\n    memory_optimization: true\n    gpu_acceleration:\
+    \ true\n    model_caching: true\n```"
+- level: 3
+  title: '**Cultural Adaptation Configuration**'
+  type: section
+  content: "```yaml\ncultural_adaptation:\n  cultures:\n    supported_cultures:\n\
+    \      - \"en-US\"\n      - \"en-GB\"\n      - \"es-ES\"\n      - \"es-MX\"\n\
+    \      - \"fr-FR\"\n      - \"fr-CA\"\n      - \"de-DE\"\n      - \"zh-CN\"\n\
+    \  adaptation:\n    cultural_sensitivity: true\n    local_preferences: true\n\
+    \    regional_variations: true\n    cultural_validation: true\n  features:\n \
+    \   date_formatting: true\n    number_formatting: true\n    currency_formatting:\
+    \ true\n    address_formatting: true\n```"
+- level: 2
+  title: '**Error Handling**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Translation Errors**'
+  type: section
+  content: '- **Translation Failures**: Automatic fallback to alternative engines
+
+    - **Quality Issues**: Automatic quality assessment and retranslation
+
+    - **Context Errors**: Context validation and correction
+
+    - **API Failures**: Graceful degradation and error reporting'
+- level: 3
+  title: '**Configuration Errors**'
+  type: section
+  content: '- **Invalid Configuration**: Configuration validation and error reporting
+
+    - **Model Errors**: Automatic model switching and fallback
+
+    - **Resource Errors**: Resource management and optimization
+
+    - **Performance Errors**: Performance monitoring and optimization'
+- level: 3
+  title: '**Integration Errors**'
+  type: section
+  content: '- **API Errors**: API error handling and retry mechanisms
+
+    - **Timeout Errors**: Timeout handling and fallback procedures
+
+    - **Memory Errors**: Memory management and garbage collection
+
+    - **Network Errors**: Network error handling and recovery'
+- level: 2
+  title: '**Performance Considerations**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Translation Performance**'
+  type: section
+  content: '- **Translation Speed**: < 500ms for standard translations
+
+    - **Quality**: Professional-quality translations with validation
+
+    - **Throughput**: 1,000+ translations per minute
+
+    - **Caching**: Intelligent caching for improved performance'
+- level: 3
+  title: '**Batch Translation Performance**'
+  type: section
+  content: '- **Batch Speed**: < 1s for 10 texts, efficient batch processing
+
+    - **Parallel Processing**: Parallel processing for improved throughput
+
+    - **Memory Usage**: Efficient memory management for batch operations
+
+    - **Scalability**: Horizontal scaling for high-volume batch processing'
+- level: 3
+  title: '**Quality Validation Performance**'
+  type: section
+  content: '- **Validation Speed**: < 200ms for quality validation
+
+    - **Accuracy**: High accuracy for quality assessment
+
+    - **Comprehensive Checks**: Multiple validation checks for thorough assessment
+
+    - **Feedback Integration**: Efficient feedback integration and learning'
+- level: 3
+  title: '**Scalability**'
+  type: section
+  content: '- **Horizontal Scaling**: Horizontal scaling for high-volume processing
+
+    - **Vertical Scaling**: Vertical scaling for resource optimization
+
+    - **Load Balancing**: Intelligent load balancing and distribution
+
+    - **Resource Management**: Efficient resource allocation and management'
+- level: 2
+  title: '**Monitoring & Observability**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Translation Metrics**'
+  type: section
+  content: '- **Translation Quality**: Quality scores and validation results
+
+    - **Translation Speed**: Average translation time and throughput
+
+    - **Engine Performance**: Performance comparison across engines
+
+    - **Error Rates**: Translation error rates and failure analysis'
+- level: 3
+  title: '**Performance Metrics**'
+  type: section
+  content: '- **Processing Speed**: Average processing time and throughput
+
+    - **Memory Usage**: Memory usage and optimization metrics
+
+    - **CPU Usage**: CPU usage and optimization metrics
+
+    - **Throughput**: Overall system throughput and capacity'
+- level: 3
+  title: '**Quality Metrics**'
+  type: section
+  content: '- **Quality Scores**: Distribution of quality scores and trends
+
+    - **Validation Results**: Validation success rates and accuracy
+
+    - **User Feedback**: User feedback and satisfaction metrics
+
+    - **Improvement Trends**: Quality improvement trends over time'
+- level: 3
+  title: '**Operational Metrics**'
+  type: section
+  content: '- **System Health**: Overall system health and availability
+
+    - **Resource Utilization**: Resource utilization and optimization
+
+    - **Error Tracking**: Error tracking and analysis
+
+    - **Performance Trends**: Performance trends and optimization'
+- level: 2
+  title: '**Security Considerations**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Data Privacy**'
+  type: section
+  content: '- **Text Privacy**: End-to-end encryption for text content
+
+    - **Translation Privacy**: Privacy protection for translation data
+
+    - **Consent Management**: User consent for translation services
+
+    - **Data Retention**: Configurable retention policies'
+- level: 3
+  title: '**Access Control**'
+  type: section
+  content: '- **Authentication**: Strong authentication for translation services
+
+    - **Authorization**: Role-based access control for translation functions
+
+    - **API Security**: Secure API access and rate limiting
+
+    - **Audit Logging**: Comprehensive audit trails for all operations'
+- level: 3
+  title: '**Content Security**'
+  type: section
+  content: "- **Input Validation**: Comprehensive input validation and sanitization\n\
+    - **Malware Detection**: Detection of malicious content in text\n- **Content Filtering**:\
+    \ Automatic filtering of inappropriate content\n- **Output Validation**: Validation\
+    \ of translation outputs and results\n\n---\n\n**Version**: 1.0  \n**Category**:\
+    \ Communication & Language  \n**Subcategory**: Language Services  \n**Focus**:\
+    \ High-quality multi-language translation with cultural adaptation and validation"

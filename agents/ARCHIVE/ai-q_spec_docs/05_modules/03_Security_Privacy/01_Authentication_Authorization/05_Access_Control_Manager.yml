@@ -1,0 +1,648 @@
+metadata:
+  original_file: 05_Access_Control_Manager.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Access Control Manager
+  version: '1.0'
+sections:
+- level: 1
+  title: '**Access Control Manager**'
+  type: section
+  content: ''
+- level: 2
+  title: '**Purpose**'
+  type: section
+  content: The Access Control Manager provides comprehensive access control capabilities
+    for the kOS ecosystem, implementing Role-Based Access Control (RBAC), Attribute-Based
+    Access Control (ABAC), and Policy-Based Access Control (PBAC) models. It ensures
+    secure resource access with granular permissions, dynamic policy evaluation, and
+    comprehensive audit trails.
+- level: 2
+  title: '**Core Principles**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Access Control Models**'
+  type: section
+  content: '- **Role-Based Access Control (RBAC)**: Access control based on user roles
+    and responsibilities
+
+    - **Attribute-Based Access Control (ABAC)**: Dynamic access control based on user
+    attributes
+
+    - **Policy-Based Access Control (PBAC)**: Rule-based access control with complex
+    policies
+
+    - **Hierarchical Access Control**: Nested access control with inheritance
+
+    - **Time-Based Access Control**: Access control with temporal constraints'
+- level: 3
+  title: '**Security Standards**'
+  type: section
+  content: '- **Principle of Least Privilege**: Grant minimum necessary permissions
+
+    - **Zero Trust Architecture**: Never trust, always verify every access request
+
+    - **Continuous Authorization**: Ongoing verification of access permissions
+
+    - **Audit Trail**: Complete audit trail for all access control decisions
+
+    - **Compliance**: Compliance with security standards and regulations'
+- level: 3
+  title: '**Access Control Lifecycle**'
+  type: section
+  content: '- **Permission Assignment**: Granular permission assignment to users and
+    roles
+
+    - **Permission Inheritance**: Permission inheritance through role hierarchies
+
+    - **Permission Delegation**: Temporary permission delegation for specific tasks
+
+    - **Permission Auditing**: Permission audit logging and compliance reporting
+
+    - **Permission Optimization**: Permission optimization and cleanup'
+- level: 2
+  title: '**Function Specifications**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Core Functions**'
+  type: section
+  content: ''
+- level: 4
+  title: '**checkAccess(userId: string, resource: string, action: string, context?:
+    AccessContext): Promise<AccessDecision>**'
+  type: section
+  content: "Checks if a user has permission to perform an action on a specific resource.\n\
+    \n**Parameters:**\n- `userId`: Unique user identifier\n- `resource`: Resource\
+    \ identifier to access\n- `action`: Action to perform on the resource\n- `context`:\
+    \ Optional access context (time, location, device, etc.)\n\n**Returns:**\n- `AccessDecision`:\
+    \ Access decision with reason and metadata\n\n**Example:**\n```typescript\nconst\
+    \ decision = await accessControlManager.checkAccess(\n  \"user123\",\n  \"database:users\"\
+    ,\n  \"read\",\n  {\n    time: new Date(),\n    location: \"US-East-1\",\n   \
+    \ deviceId: \"device456\",\n    ipAddress: \"192.168.1.100\"\n  }\n);\n\nif (decision.granted)\
+    \ {\n  console.log(`Access granted: ${decision.reason}`);\n} else {\n  console.log(`Access\
+    \ denied: ${decision.reason}`);\n}\n```"
+- level: 4
+  title: '**assignRole(userId: string, roleId: string, scope?: string): Promise<void>**'
+  type: section
+  content: 'Assigns a role to a user with optional scope limitation.
+
+
+    **Parameters:**
+
+    - `userId`: User identifier to assign role to
+
+    - `roleId`: Role identifier to assign
+
+    - `scope`: Optional scope limitation for the role
+
+
+    **Returns:**
+
+    - `void`: Success confirmation
+
+
+    **Example:**
+
+    ```typescript
+
+    await accessControlManager.assignRole("user123", "admin", "department:engineering");
+
+    console.log("Role assigned successfully");
+
+    ```'
+- level: 4
+  title: '**revokeRole(userId: string, roleId: string): Promise<void>**'
+  type: section
+  content: 'Revokes a role from a user.
+
+
+    **Parameters:**
+
+    - `userId`: User identifier to revoke role from
+
+    - `roleId`: Role identifier to revoke
+
+
+    **Returns:**
+
+    - `void`: Success confirmation
+
+
+    **Example:**
+
+    ```typescript
+
+    await accessControlManager.revokeRole("user123", "admin");
+
+    console.log("Role revoked successfully");
+
+    ```'
+- level: 4
+  title: '**createRole(roleId: string, permissions: string[], metadata?: RoleMetadata):
+    Promise<Role>**'
+  type: section
+  content: "Creates a new role with specified permissions.\n\n**Parameters:**\n- `roleId`:\
+    \ Unique role identifier\n- `permissions`: Array of permission identifiers\n-\
+    \ `metadata`: Optional role metadata (description, category, etc.)\n\n**Returns:**\n\
+    - `Role`: Created role object\n\n**Example:**\n```typescript\nconst role = await\
+    \ accessControlManager.createRole(\n  \"data_analyst\",\n  [\"data:read\", \"\
+    reports:generate\", \"dashboards:view\"],\n  {\n    description: \"Data analyst\
+    \ with read access and reporting capabilities\",\n    category: \"analytics\"\
+    ,\n    createdBy: \"admin\"\n  }\n);\n```"
+- level: 4
+  title: '**updateRole(roleId: string, updates: Partial<Role>): Promise<Role>**'
+  type: section
+  content: "Updates an existing role with new permissions or metadata.\n\n**Parameters:**\n\
+    - `roleId`: Role identifier to update\n- `updates`: Partial role updates\n\n**Returns:**\n\
+    - `Role`: Updated role object\n\n**Example:**\n```typescript\nconst updatedRole\
+    \ = await accessControlManager.updateRole(\n  \"data_analyst\",\n  {\n    permissions:\
+    \ [\"data:read\", \"reports:generate\", \"dashboards:view\", \"data:export\"],\n\
+    \    metadata: { description: \"Enhanced data analyst role with export capabilities\"\
+    \ }\n  }\n);\n```"
+- level: 4
+  title: '**deleteRole(roleId: string): Promise<void>**'
+  type: section
+  content: 'Deletes a role and removes it from all users.
+
+
+    **Parameters:**
+
+    - `roleId`: Role identifier to delete
+
+
+    **Returns:**
+
+    - `void`: Success confirmation
+
+
+    **Example:**
+
+    ```typescript
+
+    await accessControlManager.deleteRole("data_analyst");
+
+    console.log("Role deleted successfully");
+
+    ```'
+- level: 3
+  title: '**Advanced Functions**'
+  type: section
+  content: ''
+- level: 4
+  title: '**delegatePermission(userId: string, targetUserId: string, permission: string,
+    duration: string): Promise<Delegation>**'
+  type: section
+  content: "Temporarily delegates a specific permission to another user.\n\n**Parameters:**\n\
+    - `userId`: User delegating the permission\n- `targetUserId`: User receiving the\
+    \ permission\n- `permission`: Permission to delegate\n- `duration`: Duration of\
+    \ delegation (e.g., \"2h\", \"1d\")\n\n**Returns:**\n- `Delegation`: Delegation\
+    \ object with details\n\n**Example:**\n```typescript\nconst delegation = await\
+    \ accessControlManager.delegatePermission(\n  \"admin123\",\n  \"user456\",\n\
+    \  \"database:write\",\n  \"4h\"\n);\nconsole.log(`Permission delegated until\
+    \ ${delegation.expiresAt}`);\n```"
+- level: 4
+  title: '**revokeDelegation(delegationId: string): Promise<void>**'
+  type: section
+  content: 'Revokes a previously granted delegation.
+
+
+    **Parameters:**
+
+    - `delegationId`: Delegation identifier to revoke
+
+
+    **Returns:**
+
+    - `void`: Success confirmation
+
+
+    **Example:**
+
+    ```typescript
+
+    await accessControlManager.revokeDelegation("delegation789");
+
+    console.log("Delegation revoked successfully");
+
+    ```'
+- level: 4
+  title: '**evaluatePolicy(policyId: string, context: PolicyContext): Promise<PolicyEvaluation>**'
+  type: section
+  content: "Evaluates a specific policy against the given context.\n\n**Parameters:**\n\
+    - `policyId`: Policy identifier to evaluate\n- `context`: Context for policy evaluation\n\
+    \n**Returns:**\n- `PolicyEvaluation`: Policy evaluation result\n\n**Example:**\n\
+    ```typescript\nconst evaluation = await accessControlManager.evaluatePolicy(\n\
+    \  \"data_access_policy\",\n  {\n    userId: \"user123\",\n    resource: \"database:users\"\
+    ,\n    action: \"read\",\n    time: new Date(),\n    location: \"US-East-1\"\n\
+    \  }\n);\nconsole.log(`Policy evaluation: ${evaluation.result}`);\n```"
+- level: 4
+  title: '**getUserPermissions(userId: string): Promise<UserPermissions>**'
+  type: section
+  content: 'Retrieves all permissions for a specific user.
+
+
+    **Parameters:**
+
+    - `userId`: User identifier to query permissions for
+
+
+    **Returns:**
+
+    - `UserPermissions`: Complete user permissions with roles and direct permissions
+
+
+    **Example:**
+
+    ```typescript
+
+    const permissions = await accessControlManager.getUserPermissions("user123");
+
+    console.log(`User has ${permissions.roles.length} roles`);
+
+    console.log(`Direct permissions: ${permissions.directPermissions.length}`);
+
+    ```'
+- level: 4
+  title: '**getResourcePermissions(resourceId: string): Promise<ResourcePermissions>**'
+  type: section
+  content: 'Retrieves all permissions for a specific resource.
+
+
+    **Parameters:**
+
+    - `resourceId`: Resource identifier to query permissions for
+
+
+    **Returns:**
+
+    - `ResourcePermissions`: Complete resource permissions with users and roles
+
+
+    **Example:**
+
+    ```typescript
+
+    const permissions = await accessControlManager.getResourcePermissions("database:users");
+
+    console.log(`Resource has ${permissions.users.length} users with access`);
+
+    console.log(`Roles with access: ${permissions.roles.length}`);
+
+    ```'
+- level: 2
+  title: '**Integration Patterns**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Access Control Flow**'
+  type: section
+  content: "```mermaid\ngraph TD\n    A[Access Request] --> B[Extract User Context]\n\
+    \    B --> C[Load User Roles]\n    C --> D[Load User Permissions]\n    D --> E[Evaluate\
+    \ RBAC]\n    E --> F[Evaluate ABAC]\n    F --> G[Evaluate PBAC]\n    G --> H[Combine\
+    \ Decisions]\n    H --> I[Log Decision]\n    I --> J[Return Result]\n```"
+- level: 3
+  title: '**Role Assignment Flow**'
+  type: section
+  content: "```mermaid\ngraph TD\n    A[Role Assignment Request] --> B[Validate User]\n\
+    \    B --> C[Validate Role]\n    C --> D[Check Conflicts]\n    D --> E[Assign\
+    \ Role]\n    E --> F[Update Permissions]\n    F --> G[Log Assignment]\n    G -->\
+    \ H[Notify User]\n```"
+- level: 3
+  title: '**Permission Delegation Flow**'
+  type: section
+  content: "```mermaid\ngraph TD\n    A[Delegation Request] --> B[Validate Delegator]\n\
+    \    B --> C[Validate Delegatee]\n    C --> D[Check Permission]\n    D --> E[Create\
+    \ Delegation]\n    E --> F[Set Expiration]\n    F --> G[Log Delegation]\n    G\
+    \ --> H[Notify Parties]\n```"
+- level: 3
+  title: '**Policy Evaluation Flow**'
+  type: section
+  content: "```mermaid\ngraph TD\n    A[Policy Evaluation] --> B[Load Policy]\n  \
+    \  B --> C[Extract Context]\n    C --> D[Evaluate Conditions]\n    D --> E[Apply\
+    \ Rules]\n    E --> F[Calculate Decision]\n    F --> G[Log Evaluation]\n    G\
+    \ --> H[Return Result]\n```"
+- level: 2
+  title: '**Access Control Manager Capabilities**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Role-Based Access Control (RBAC)**'
+  type: section
+  content: '- **Role Management**: Complete role lifecycle management
+
+    - **Permission Assignment**: Granular permission assignment to roles
+
+    - **Role Hierarchy**: Hierarchical role inheritance and relationships
+
+    - **Role Constraints**: Role constraints and limitations
+
+    - **Role Auditing**: Complete role audit trail and reporting'
+- level: 3
+  title: '**Attribute-Based Access Control (ABAC)**'
+  type: section
+  content: '- **Attribute Evaluation**: Dynamic attribute evaluation and processing
+
+    - **Context Awareness**: Context-aware access control decisions
+
+    - **Environmental Factors**: Environmental and situational factors
+
+    - **Dynamic Policies**: Dynamic policy evaluation and enforcement
+
+    - **Attribute Sources**: Multiple attribute sources and providers'
+- level: 3
+  title: '**Policy-Based Access Control (PBAC)**'
+  type: section
+  content: '- **Policy Management**: Complete policy lifecycle management
+
+    - **Rule Evaluation**: Complex rule evaluation and processing
+
+    - **Policy Composition**: Policy composition and combination
+
+    - **Policy Optimization**: Policy performance optimization
+
+    - **Policy Auditing**: Policy audit trail and compliance reporting'
+- level: 3
+  title: '**Access Control Enforcement**'
+  type: section
+  content: '- **Real-Time Enforcement**: Real-time access control enforcement
+
+    - **Caching**: Intelligent caching for performance optimization
+
+    - **Distributed Enforcement**: Distributed enforcement across nodes
+
+    - **Fail-Safe**: Fail-safe access control with default deny
+
+    - **Performance Optimization**: Performance optimization and scaling'
+- level: 3
+  title: '**Access Control Monitoring**'
+  type: section
+  content: '- **Real-Time Monitoring**: Real-time access control monitoring
+
+    - **Analytics Collection**: Comprehensive access control analytics
+
+    - **Performance Metrics**: Access control performance metrics
+
+    - **Security Monitoring**: Security event monitoring and alerting
+
+    - **Compliance Reporting**: Compliance and audit reporting'
+- level: 2
+  title: '**Configuration Examples**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Basic Access Control Configuration**'
+  type: section
+  content: "```yaml\naccess_control:\n  models:\n    rbac:\n      enabled: true\n\
+    \      role_hierarchy: true\n      permission_inheritance: true\n    abac:\n \
+    \     enabled: true\n      attribute_sources:\n        - user_profile\n      \
+    \  - system_context\n        - environmental\n    pbac:\n      enabled: true\n\
+    \      policy_evaluation: \"realtime\"\n  enforcement:\n    caching_enabled: true\n\
+    \    cache_ttl: \"5m\"\n    default_decision: \"deny\"\n    audit_logging: true\n\
+    \  roles:\n    predefined_roles:\n      - admin\n      - user\n      - guest\n\
+    \      - moderator\n    custom_roles: true\n    role_constraints: true\n```"
+- level: 3
+  title: '**Advanced Access Control Configuration**'
+  type: section
+  content: "```yaml\naccess_control:\n  security:\n    encryption:\n      enabled:\
+    \ true\n      algorithm: \"AES-256-GCM\"\n      key_rotation: \"24h\"\n    token_validation:\n\
+    \      signature_verification: true\n      audience_validation: true\n      issuer_validation:\
+    \ true\n    session_validation:\n      continuous_validation: true\n      context_validation:\
+    \ true\n      device_validation: true\n  distributed_management:\n    cluster_mode:\
+    \ true\n    replication_factor: 3\n    consistency_level: \"strong\"\n    failover_enabled:\
+    \ true\n  monitoring:\n    metrics_collection: true\n    audit_logging: true\n\
+    \    performance_monitoring: true\n    security_monitoring: true\n```"
+- level: 3
+  title: '**Policy Configuration**'
+  type: section
+  content: "```yaml\npolicies:\n  data_access_policy:\n    description: \"Policy for\
+    \ data access control\"\n    rules:\n      - condition: \"user.role == 'admin'\"\
+    \n        action: \"allow\"\n        resources: [\"*\"]\n      - condition: \"\
+    user.role == 'user' AND resource.type == 'public'\"\n        action: \"allow\"\
+    \n        resources: [\"data:public:*\"]\n      - condition: \"user.role == 'user'\
+    \ AND resource.owner == user.id\"\n        action: \"allow\"\n        resources:\
+    \ [\"data:user:*\"]\n      - condition: \"default\"\n        action: \"deny\"\n\
+    \    attributes:\n      - user.role\n      - user.department\n      - resource.type\n\
+    \      - resource.owner\n      - time.hour\n      - location.country\n```"
+- level: 2
+  title: '**Error Handling**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Access Control Errors**'
+  type: section
+  content: '- **User Not Found**: Return access denied with user not found error
+
+    - **Role Not Found**: Return access denied with role not found error
+
+    - **Permission Not Found**: Return access denied with permission not found error
+
+    - **Policy Evaluation Failure**: Return access denied with policy error
+
+    - **Context Validation Failure**: Return access denied with context error'
+- level: 3
+  title: '**Role Management Errors**'
+  type: section
+  content: '- **Role Assignment Failure**: Retry with conflict resolution
+
+    - **Role Revocation Failure**: Retry with cleanup procedures
+
+    - **Role Creation Failure**: Return error with validation details
+
+    - **Role Update Failure**: Return error with conflict information
+
+    - **Role Deletion Failure**: Return error with dependency information'
+- level: 3
+  title: '**Permission Delegation Errors**'
+  type: section
+  content: '- **Delegation Creation Failure**: Return error with validation details
+
+    - **Delegation Validation Failure**: Return error with validation information
+
+    - **Delegation Expiration Failure**: Return error with expiration details
+
+    - **Delegation Revocation Failure**: Return error with revocation information
+
+    - **Delegation Conflict Failure**: Return error with conflict resolution'
+- level: 3
+  title: '**Policy Evaluation Errors**'
+  type: section
+  content: '- **Policy Loading Failure**: Return error with policy loading details
+
+    - **Policy Parsing Failure**: Return error with parsing information
+
+    - **Policy Execution Failure**: Return error with execution details
+
+    - **Policy Context Failure**: Return error with context information
+
+    - **Policy Decision Failure**: Return error with decision details'
+- level: 2
+  title: '**Performance Considerations**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Access Control Performance**'
+  type: section
+  content: '- **Permission Checking**: Optimized permission lookups with indexing
+
+    - **Role Resolution**: Fast role resolution with hierarchical caching
+
+    - **Policy Evaluation**: Cached policy evaluation with intelligent invalidation
+
+    - **Attribute Evaluation**: Optimized attribute evaluation with lazy loading
+
+    - **Decision Caching**: Intelligent decision caching with context awareness'
+- level: 3
+  title: '**Role Management Performance**'
+  type: section
+  content: '- **Role Assignment**: Optimized role assignment with batch processing
+
+    - **Role Revocation**: Efficient role revocation with cleanup optimization
+
+    - **Role Creation**: Fast role creation with validation optimization
+
+    - **Role Updates**: Optimized role updates with change detection
+
+    - **Role Deletion**: Efficient role deletion with dependency resolution'
+- level: 3
+  title: '**Permission Delegation Performance**'
+  type: section
+  content: '- **Delegation Creation**: Optimized delegation creation with validation
+
+    - **Delegation Validation**: Fast delegation validation with caching
+
+    - **Delegation Expiration**: Efficient expiration checking with scheduling
+
+    - **Delegation Revocation**: Optimized revocation with cleanup
+
+    - **Delegation Conflict Resolution**: Fast conflict resolution with algorithms'
+- level: 3
+  title: '**Policy Evaluation Performance**'
+  type: section
+  content: '- **Policy Loading**: Optimized policy loading with caching
+
+    - **Policy Parsing**: Fast policy parsing with optimization
+
+    - **Policy Execution**: Efficient policy execution with compilation
+
+    - **Policy Context**: Optimized context processing with caching
+
+    - **Policy Decision**: Fast decision calculation with optimization'
+- level: 2
+  title: '**Security Considerations**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Access Control Security**'
+  type: section
+  content: '- **Permission Validation**: Comprehensive permission validation and verification
+
+    - **Role Security**: Secure role management and assignment
+
+    - **Policy Security**: Secure policy management and evaluation
+
+    - **Delegation Security**: Secure permission delegation and management
+
+    - **Context Security**: Secure context validation and processing'
+- level: 3
+  title: '**Data Security**'
+  type: section
+  content: '- **Data Encryption**: Encryption of all access control data in transit
+    and at rest
+
+    - **Access Control**: Strict access control for access control data
+
+    - **Audit Logging**: Comprehensive audit logging for all access control operations
+
+    - **Data Minimization**: Minimal collection and storage of access control data
+
+    - **Data Retention**: Secure data retention and disposal policies'
+- level: 3
+  title: '**System Security**'
+  type: section
+  content: '- **Authentication Integration**: Secure integration with authentication
+    systems
+
+    - **Authorization Enforcement**: Enforcement of authorization policies
+
+    - **Session Security**: Secure session validation and authorization
+
+    - **Token Security**: Secure token management and validation
+
+    - **API Security**: Secure API access and validation'
+- level: 3
+  title: '**Distributed Security**'
+  type: section
+  content: '- **Node Authentication**: Authentication of all distributed nodes
+
+    - **Secure Communication**: Secure communication between nodes
+
+    - **Data Consistency**: Consistency guarantees for distributed access control
+    data
+
+    - **Failover Security**: Secure failover without security compromise
+
+    - **Monitoring Security**: Secure monitoring and alerting systems'
+- level: 2
+  title: '**Monitoring & Observability**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Access Control Metrics**'
+  type: section
+  content: '- **Access Decisions**: Track access granted/denied decisions
+
+    - **Role Usage**: Monitor role assignment and usage patterns
+
+    - **Permission Usage**: Track permission usage and effectiveness
+
+    - **Policy Evaluations**: Monitor policy evaluation performance
+
+    - **Delegation Activity**: Track permission delegation activity'
+- level: 3
+  title: '**Performance Metrics**'
+  type: section
+  content: '- **Access Control Latency**: Track access control response times
+
+    - **Role Management Performance**: Monitor role management operations
+
+    - **Policy Evaluation Performance**: Track policy evaluation times
+
+    - **Permission Lookup Performance**: Monitor permission lookup performance
+
+    - **Cache Performance**: Track cache effectiveness and performance'
+- level: 3
+  title: '**Security Metrics**'
+  type: section
+  content: '- **Access Violations**: Track access violations and security incidents
+
+    - **Role Conflicts**: Monitor role conflicts and resolution
+
+    - **Policy Violations**: Track policy violations and enforcement
+
+    - **Delegation Abuse**: Monitor delegation abuse and misuse
+
+    - **Security Policy Violations**: Track security policy violations'
+- level: 3
+  title: '**Operational Metrics**'
+  type: section
+  content: '- **User Activity**: Monitor user access patterns and activity
+
+    - **Resource Usage**: Track resource access patterns and usage
+
+    - **System Health**: Monitor access control system health
+
+    - **Compliance Status**: Track compliance with access control policies
+
+    - **Audit Completeness**: Monitor audit log completeness and quality'
+- level: 3
+  title: '**Alerting**'
+  type: section
+  content: "- **Access Control Alerts**: Alerts for access violations and security\
+    \ incidents\n- **Performance Alerts**: Alerts for performance degradation\n- **Security\
+    \ Alerts**: Alerts for security violations and threats\n- **Compliance Alerts**:\
+    \ Alerts for compliance violations and audit failures\n- **System Alerts**: Alerts\
+    \ for system health and availability issues\n\n---\n\n**Version**: 1.0  \n**Focus**:\
+    \ Comprehensive access control management for secure resource access in kOS ecosystem"

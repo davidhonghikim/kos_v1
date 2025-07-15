@@ -1,0 +1,140 @@
+title: K Os Vector Store Deployment Readme
+description: ''
+type: documentation
+status: current
+priority: medium
+version: '1.0'
+last_updated: '2025-06-28'
+organization_date: '2025-06-28T19:48:19.901563'
+authors: []
+tags: []
+content_type: documentation
+technical_level: intermediate
+word_count: 278
+has_code_blocks: true
+has_api_specs: true
+has_architecture: false
+has_deployment: true
+has_testing: true
+has_security: false
+has_rag: true
+has_ethics: false
+original_filename: k_os_vector_store_deployment_readme.yml
+original_path: /Users/danger/CascadeProjects/griot-node/agents/reference/RAG/k_os_vector_store_deployment_readme.yml
+category: rag_system
+
+---
+
+title: K Os Vector Store Deployment Readme
+description: ''
+type: documentation
+status: current
+priority: medium
+last_updated: '2025-06-28'
+conversion_date: '2025-06-28T19:38:19.188168'
+original_format: markdown
+content_type: api_specification
+word_count: 250
+line_count: 98
+
+---
+
+## ✅ Requirements
+
+- Docker Engine v20+
+- Docker Compose v2+
+- Python 3.11+ (for local testing without Docker)
+
+Optional:
+
+- FastAPI knowledge
+- Weaviate basics
+
+---
+
+## ✅ Deployment Options
+
+| Mode                             | Description                                                               |
+| -------------------------------- | ------------------------------------------------------------------------- |
+| **Standalone (Local Python)**    | Run Weaviate via Docker and the Vector API using local Python environment |
+| **Docker Compose (Recommended)** | Run both Weaviate and Vector API in containers with isolated networking   |
+
+---
+
+## ✅ Quick Start (Docker Compose)
+
+### 1. Create `docker-compose.yml`
+
+```yaml
+version: '3.8'
+
+services:
+  weaviate:
+    image: semitechnologies/weaviate:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - QUERY_DEFAULTS_LIMIT=25
+      - AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED=true
+
+  vector_api:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - weaviate
+```
+
+### 2. Build and Run
+
+```bash
+docker-compose up --build
+```
+
+- Vector API → Available at: `http://localhost:8000`
+- Weaviate → Available at: `http://localhost:8080`
+
+---
+
+## ✅ Running Locally Without Docker (For Devs)
+
+1. Start Weaviate using Docker:
+
+```bash
+docker run -p 8080:8080 semitechnologies/weaviate:latest
+```
+
+2. Set up Python environment:
+
+```bash
+pip install fastapi uvicorn weaviate-client pydantic pytest
+```
+
+3. Run API locally:
+
+```bash
+uvicorn vector_store_rest:app --reload
+```
+
+---
+
+## ✅ Health Checks
+
+- Vector API: `GET http://localhost:8000/docs` (FastAPI Swagger UI)
+- Weaviate: `http://localhost:8080/v1/.well-known/ready`
+
+---
+
+## ✅ Next Steps After Deployment
+
+- ✅ Deploy JSON schemas into Weaviate using `VectorStoreAPI.ensure_schema()`
+- ✅ Run pytest suite: `pytest tests/`
+- ✅ Load initial data using `batch_loader.py`
+- ✅ Expose the Vector API to agents via internal service registry
+
+---
+
+**Plan ID:** kos\_2025\_06\_vector\_store\_deploy\_readme\
+**Created by:** ChatGPT + User Collaboration\
+**Last Updated:** 2025-06-28T00:00:00Z
+

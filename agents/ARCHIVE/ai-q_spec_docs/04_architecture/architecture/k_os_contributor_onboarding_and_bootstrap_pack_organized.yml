@@ -1,0 +1,157 @@
+title: K Os Contributor Onboarding And Bootstrap Pack
+description: ''
+type: documentation
+status: current
+priority: medium
+version: '1.0'
+last_updated: '2025-06-28'
+organization_date: '2025-06-28T19:48:20.035383'
+authors: []
+tags: []
+content_type: documentation
+technical_level: advanced
+word_count: 535
+has_code_blocks: true
+has_api_specs: true
+has_architecture: true
+has_deployment: false
+has_testing: true
+has_security: false
+has_rag: false
+has_ethics: false
+original_filename: k_os_contributor_onboarding_and_bootstrap_pack.yml
+original_path: /Users/danger/CascadeProjects/griot-node/agents/reference/kos_chatgpt/k_os_contributor_onboarding_and_bootstrap_pack.yml
+category: architecture
+
+---
+
+title: K Os Contributor Onboarding And Bootstrap Pack
+description: ''
+type: documentation
+status: current
+priority: medium
+last_updated: '2025-06-28'
+conversion_date: '2025-06-28T19:30:47.273107'
+original_format: markdown
+content_type: api_specification
+word_count: 506
+line_count: 114
+
+---
+
+# 🚀 kOS Contributor Onboarding and Bootstrap Pack
+
+Welcome to the **kOS ecosystem (kind operating system)**—a **modular, life-mimicking, agent-driven orchestration framework** designed with clarity, sovereignty, and personality in mind.
+
+---
+
+## ✅ Core Concepts
+
+| Concept                         | Summary                                                                                  |
+| ------------------------------- | ---------------------------------------------------------------------------------------- |
+| **Modular / Cellular Design**   | Every part of kOS is a small, focused, swappable unit—like digital cells                 |
+| **Life-Mimicking Behavior**     | System grows, adapts, spawns, retires, and evolves agents over time                      |
+| **Flow-Centric**                | Pacing, throttling, and load management modeled after Taoist flow and Systema principles |
+| **Freedom & Sovereignty**       | Everything is opt-in, overrideable, and user-controlled                                  |
+| **DOPE Layer**                  | Personality injection into CLI/logs—non-functional, purely aesthetic                     |
+| **dawgs as Agent Class**        | dawgs = agents with optional mood-based output layers, not literal dogs                  |
+| **UR / Resistance Layer**       | Optional anti-censorship, peer-to-peer, and resilience tools                             |
+| **Numerology & Mythic Context** | Non-functional, lore-based optional layers for theming and Easter eggs                   |
+| **Regenerative Architecture**   | Agents spawn, mutate, retire, recycle                                                    |
+| **Observer State**              | Everything in the system watches, logs, and adapts                                       |
+
+---
+
+## ✅ Directory Structure Overview
+
+```
+/kOS
+├── /engine
+├── /agents
+│   ├── /core_agents
+│   ├── /dawgs
+│   ├── /LOO
+│   └── /experimental
+├── /flow
+├── /memory
+├── /dope
+├── /ur
+├── /chaos
+├── /tests
+└── /ui
+```
+
+---
+
+## ✅ Coding Style Expectations
+
+| Rule                | Summary                                            |
+| ------------------- | -------------------------------------------------- |
+| **Language**        | Python (PEP8, black formatting, strong type hints) |
+| **Function Naming** | snake\_case                                        |
+| **Class Naming**    | PascalCase                                         |
+| **Docstrings**      | Google or NumPy style                              |
+| **Linting**         | Flake8, pylint recommended                         |
+| **Testing**         | Unit + behavioral tests for every module           |
+
+Full style guide: See `kOS_System_and_Code_Style_Guide.md`
+
+---
+
+## ✅ Contributor Rules of Engagement
+
+> "**Keep core code clean.**\
+> **Inject personality only at UI, CLI, or YAML layers.**\
+> **Document everything.**\
+> **Think like a gardener and a systems architect.**\
+> **Let structure enable creativity, not restrict it.**"
+
+---
+
+## ✅ Quick Bootstrap Prompts for New Agents (Copy/Paste Ready)
+
+### 🛠️ To Create a New Agent Module:
+
+1. Duplicate `/agents/core_agents/template_agent.py`
+2. Rename and implement single responsibility logic
+3. Register with `/engine/agent_dispatcher.py`
+4. Add to `/tests/`
+
+### 🐾 To Create a New Dawg:
+
+1. Copy `/dawgs/template_dawg.yaml`
+2. Modify name, speech style, and state transitions
+3. Add to `/dawg_manifest.yaml`
+4. Optional: Link mood responses in `/dope/`
+
+### 🔁 To Add a New Flow Control:
+
+1. Add module to `/flow/`
+2. Register pacing logic in `/engine/flow_regulator.py`
+
+### 📣 To Inject a New CLI Mood Response:
+
+1. Modify `/dope/output_filter.py`
+2. Check mood intensity settings in `/config/mood.yaml`
+
+---
+
+## ✅ First Tasks for New Contributors:
+
+- Clone kOS repo
+- Run unit tests
+- Familiarize with `/engine/`, `/agents/`, and `/flow/`
+- Review: `kOS_Ecosystem_Overview.md`, `kOS_Engine_Spec.md`, `kOS_Modular_Building_Blocks_and_Cellular_Design.md`, `kOS_System_and_Code_Style_Guide.md`
+- Try building a **simple agent** or **CLI extension**
+
+---
+
+## ✅ Closing Mantra:
+
+> "**Structure gives you freedom.**\
+> **Flow gives you speed.**\
+> **Personality makes it human.**\
+> **kOS is yours to grow.**"
+
+
+

@@ -1,0 +1,155 @@
+frontmatter:
+  title: KLF Message Format
+  description: Universal message structure for agent-to-agent communication
+  version: 3.0.0
+  
+sections:
+- title: "Universal KLF Message Structure"
+  content: |
+    # KLF Message Format
+    
+    All communication in the kOS ecosystem uses this standardized message format,
+    regardless of transport (HTTP, WebSocket, gRPC, etc.).
+    
+    ## Message Schema
+    ```typescript
+    interface KLFMessage {
+      klf: {
+        version: string;           // Protocol version (e.g., "1.0.0")
+        timestamp: string;         // ISO 8601 timestamp
+        routing: 'direct' | 'broadcast' | 'capability-based';
+        correlation_id?: string;   // For request/response matching
+      };
+      sender: {
+        did: string;              // Sender's DID (e.g., "did:kos:agent:my-ai")
+        type?: string;            // Agent type: ai|human|service|device|frontend|backend
+        name?: string;            // Human-readable name
+      };
+      recipient: {
+        did?: string;             // Direct recipient DID
+        capability?: string;      // Service capability needed (e.g., "document.search")
+        type?: string;            // Agent type filter
+      };
+      payload: {
+        type: 'request' | 'response' | 'event' | 'data';
+        service?: string;         // Service being called
+        event?: string;           // Event type for broadcasts
+        body: any;               // Message content (service-specific)
+      };
+    }
+    ```
+    
+    ## Message Types
+    
+    ### 1. Request Message
+    ```json
+    {
+      "klf": {
+        "version": "1.0.0",
+        "timestamp": "2025-06-30T00:00:00Z",
+        "routing": "capability-based",
+        "correlation_id": "req-123"
+      },
+      "sender": {
+        "did": "did:kos:agent:my-ai-assistant",
+        "type": "ai"
+      },
+      "recipient": {
+        "capability": "document.search"
+      },
+      "payload": {
+        "type": "request",
+        "service": "document.search",
+        "body": {
+          "query": "AI research papers",
+          "limit": 10
+        }
+      }
+    }
+    ```
+    
+    ### 2. Response Message
+    ```json
+    {
+      "klf": {
+        "version": "1.0.0",
+        "timestamp": "2025-06-30T00:00:05Z",
+        "routing": "direct",
+        "correlation_id": "req-123"
+      },
+      "sender": {
+        "did": "did:kos:backend:persona-rag",
+        "type": "backend"
+      },
+      "recipient": {
+        "did": "did:kos:agent:my-ai-assistant"
+      },
+      "payload": {
+        "type": "response",
+        "service": "document.search",
+        "body": {
+          "results": [...],
+          "count": 5,
+          "status": "success"
+        }
+      }
+    }
+    ```
+    
+    ### 3. Event Message (Broadcast)
+    ```json
+    {
+      "klf": {
+        "version": "1.0.0",
+        "timestamp": "2025-06-30T00:01:00Z",
+        "routing": "broadcast"
+      },
+      "sender": {
+        "did": "did:kos:backend:persona-rag",
+        "type": "backend"
+      },
+      "recipient": {
+        "type": "all"
+      },
+      "payload": {
+        "type": "event",
+        "event": "document.uploaded",
+        "body": {
+          "document_id": "doc-456",
+          "filename": "research.pdf",
+          "size": 1024000
+        }
+      }
+    }
+    ```
+    
+    ## Routing Types
+    
+    ### Direct Routing
+    - Use when you know the exact DID of the target agent
+    - Most efficient for point-to-point communication
+    - Example: `"recipient": {"did": "did:kos:agent:weather-service"}`
+    
+    ### Capability-Based Routing
+    - Use when you need a service but don't care which agent provides it
+    - KLF finds the best available agent with that capability
+    - Example: `"recipient": {"capability": "weather.current"}`
+    
+    ### Broadcast Routing
+    - Use for events that multiple agents might be interested in
+    - All subscribed agents receive the message
+    - Example: `"recipient": {"type": "all"}` or `"recipient": {"type": "ai"}`
+    
+    ## DID Format
+    ```
+    did:kos:agent:unique-identifier
+    did:kos:backend:service-name
+    did:kos:frontend:app-name
+    did:kos:device:device-id
+    ```
+    
+    Examples:
+    - `did:kos:agent:my-python-ai`
+    - `did:kos:backend:persona-rag`
+    - `did:kos:frontend:griot-kitchen`
+    - `did:kos:device:smart-sensor-01` 

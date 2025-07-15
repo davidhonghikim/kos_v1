@@ -10,7 +10,7 @@ RUN apk add --no-cache curl
 COPY frontend/package*.json ./
 
 # Install dependencies
-RUN npm ci --only=production
+RUN npm install
 
 # Copy source code
 COPY frontend/ ./
@@ -21,12 +21,16 @@ RUN npm run build
 # Install serve to run the built app
 RUN npm install -g serve
 
+# Set environment variables
+ENV KOS_APP_NAME="KOS v1 Knowledge Library Framework"
+ENV KOS_VERSION="1.0.0"
+
 # Expose port
-EXPOSE 3000
+EXPOSE ${KOS_FRONTEND_INTERNAL_PORT:-3000}
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:3000 || exit 1
+    CMD curl -f http://localhost:${KOS_FRONTEND_INTERNAL_PORT:-3000} || exit 1
 
 # Serve the built application
-CMD ["serve", "-s", "dist", "-l", "3000"] 
+CMD ["serve", "-s", "dist", "-l", "${KOS_FRONTEND_INTERNAL_PORT:-3000}"] 

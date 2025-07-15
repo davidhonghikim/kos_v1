@@ -1,0 +1,244 @@
+metadata:
+  original_file: 02_Component_System.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Component System Module
+  description: HIEROS-compliant React component architecture for kOS frontend
+  type: architecture_module
+  status: active
+  priority: high
+  last_updated: '2025-01-28'
+  version: 1.0.0
+  parent_document: 02_Frontend_Architecture.md
+  module_index: 2
+sections:
+- level: 1
+  title: Component System Module
+  type: section
+  content: '**HIEROS-Compliant React Component Architecture**
+
+
+    > **Module Overview**: This module defines the complete component system architecture
+    ensuring all UI components maintain HIEROS covenant compliance, cultural sensitivity,
+    and accessibility standards across the kOS ecosystem.'
+- level: 2
+  title: 🧩 HIEROS-Compliant Base Components
+  type: section
+  content: ''
+- level: 3
+  title: Core Component Interface
+  type: section
+  content: "```typescript\n// Base component interface for all kOS UI components\n\
+    interface KOSComponentProps {\n  theme?: CulturalTheme;\n  accessibility?: AccessibilityProps;\n\
+    \  hieros?: HIEROSContextProps;\n  children?: React.ReactNode;\n  className?:\
+    \ string;\n}\n\ninterface HIEROSContextProps {\n  culturalAttributions: CulturalAttribution[];\n\
+    \  consentLevel: \"full\" | \"limited\" | \"minimal\";\n  privacyMode: boolean;\n\
+    \  auditLogging: boolean;\n  intentionsValidated: HIEROSIntention[];\n}\n\ninterface\
+    \ AccessibilityProps {\n  altText?: string;\n  ariaLabel?: string;\n  ariaDescription?:\
+    \ string;\n  keyboardNav?: boolean;\n  screenReaderOptimized?: boolean;\n  colorBlindAccessible?:\
+    \ boolean;\n  highContrast?: boolean;\n  reducedMotion?: boolean;\n}\n```"
+- level: 3
+  title: Base Component Framework
+  type: section
+  content: "```typescript\n// HOC for HIEROS compliance\nconst withHIEROSCompliance\
+    \ = <P extends KOSComponentProps>(\n  WrappedComponent: React.ComponentType<P>\n\
+    ) => {\n  const HIEROSCompliantComponent = (props: P) => {\n    const hierosContext\
+    \ = useHIEROSContext();\n    const accessibility = useAccessibility();\n    const\
+    \ cultural = useCulturalContext();\n    \n    // Validate HIEROS compliance\n\
+    \    const compliance = validateHIEROSCompliance(props, hierosContext);\n    if\
+    \ (!compliance.valid) {\n      console.warn('HIEROS compliance violation:', compliance.violations);\n\
+    \    }\n    \n    // Apply accessibility enhancements\n    const enhancedProps\
+    \ = {\n      ...props,\n      accessibility: {\n        ...accessibility,\n  \
+    \      ...props.accessibility\n      },\n      hieros: {\n        ...hierosContext,\n\
+    \        ...props.hieros\n      },\n      theme: props.theme || cultural.defaultTheme\n\
+    \    };\n    \n    return <WrappedComponent {...enhancedProps} />;\n  };\n  \n\
+    \  HIEROSCompliantComponent.displayName = `withHIEROSCompliance(${WrappedComponent.displayName})`;\n\
+    \  return HIEROSCompliantComponent;\n};\n```"
+- level: 2
+  title: 🎨 Core UI Components
+  type: section
+  content: ''
+- level: 3
+  title: Cultural Header Component
+  type: section
+  content: "```tsx\ninterface CulturalHeaderProps extends KOSComponentProps {\n  nodeClass:\
+    \ NodeClass;\n  nodeName: string;\n  culturalContext: CulturalAttribution;\n \
+    \ statusIndicators: StatusIndicator[];\n  onCulturalInfoClick?: () => void;\n\
+    }\n\nconst CulturalHeader: React.FC<CulturalHeaderProps> = ({\n  nodeClass,\n\
+    \  nodeName,\n  culturalContext,\n  statusIndicators,\n  onCulturalInfoClick,\n\
+    \  theme,\n  hieros,\n  accessibility\n}) => {\n  const { t } = useTranslation();\n\
+    \  const { highContrast, reducedMotion } = useAccessibility();\n  \n  return (\n\
+    \    <header \n      className={cn(\n        \"cultural-header\",\n        `cultural-header--${nodeClass.toLowerCase()}`,\n\
+    \        highContrast && \"high-contrast\",\n        className\n      )}\n   \
+    \   role=\"banner\"\n      aria-label={accessibility?.ariaLabel || `${nodeClass}\
+    \ node header`}\n    >\n      {/* Cultural symbol with attribution */}\n     \
+    \ <div className=\"cultural-symbol-container\">\n        <CulturalIcon \n    \
+    \      symbol={theme.iconography.symbols.identity}\n          attribution={culturalContext}\n\
+    \          onClick={onCulturalInfoClick}\n          aria-label={`Cultural symbol\
+    \ representing ${culturalContext.tradition}`}\n        />\n        <CulturalAttributionTooltip\
+    \ attribution={culturalContext} />\n      </div>\n      \n      {/* Node identity\
+    \ */}\n      <div className=\"node-identity\">\n        <h1 className=\"node-name\"\
+    >{nodeName}</h1>\n        <p className=\"node-class\" aria-describedby=\"node-class-description\"\
+    >\n          {nodeClass} Node\n        </p>\n        <span id=\"node-class-description\"\
+    \ className=\"sr-only\">\n          {t(`node.${nodeClass.toLowerCase()}.description`)}\n\
+    \        </span>\n        \n        {/* Cultural context information */}\n   \
+    \     <CulturalContextBadge \n          attribution={culturalContext}\n      \
+    \    compact={true}\n          onClick={onCulturalInfoClick}\n        />\n   \
+    \   </div>\n      \n      {/* Status indicators */}\n      <div className=\"status-indicators\"\
+    \ role=\"status\" aria-live=\"polite\">\n        {statusIndicators.map(indicator\
+    \ => (\n          <StatusBadge \n            key={indicator.type} \n         \
+    \   {...indicator}\n            accessibility={{\n              ariaLabel: `${indicator.type}\
+    \ status: ${indicator.status}`\n            }}\n          />\n        ))}\n  \
+    \    </div>\n      \n      {/* HIEROS compliance indicator */}\n      <HIEROSComplianceBadge\
+    \ \n        compliance={hieros.covenantCompliance}\n        accessibility={{\n\
+    \          ariaLabel: \"HIEROS covenant compliance status\"\n        }}\n    \
+    \  />\n    </header>\n  );\n};\n\nexport default withHIEROSCompliance(CulturalHeader);\n\
+    ```"
+- level: 3
+  title: Service Connector Interface
+  type: section
+  content: "```tsx\ninterface ServiceConnectorProps extends KOSComponentProps {\n\
+    \  service: ServiceDefinition;\n  capabilities: Capability[];\n  connectionStatus:\
+    \ 'disconnected' | 'connecting' | 'connected' | 'error';\n  onConnect: (config:\
+    \ ConnectionConfig) => Promise<void>;\n  onDisconnect: () => Promise<void>;\n\
+    \  onTest: () => Promise<TestResult>;\n}\n\nconst ServiceConnector: React.FC<ServiceConnectorProps>\
+    \ = ({\n  service,\n  capabilities,\n  connectionStatus,\n  onConnect,\n  onDisconnect,\n\
+    \  onTest,\n  theme,\n  hieros,\n  accessibility\n}) => {\n  const [isConfigExpanded,\
+    \ setIsConfigExpanded] = useState(false);\n  const [testResults, setTestResults]\
+    \ = useState<TestResult | null>(null);\n  const { t } = useTranslation();\n\n\
+    \  const handleTest = async () => {\n    try {\n      const results = await onTest();\n\
+    \      setTestResults(results);\n    } catch (error) {\n      setTestResults({\
+    \ success: false, error: error.message });\n    }\n  };\n  \n  return (\n    <div\
+    \ \n      className=\"service-connector\"\n      role=\"region\"\n      aria-label={`${service.name}\
+    \ service connector`}\n    >\n      <div className=\"service-header\">\n     \
+    \   <div className=\"service-info\">\n          <h3 className=\"service-name\"\
+    >{service.name}</h3>\n          <p className=\"service-description\">{service.description}</p>\n\
+    \          <ServiceTypeBadge type={service.type} />\n        </div>\n        \n\
+    \        <div className=\"connection-controls\">\n          <ConnectionStatusIndicator\
+    \ \n            status={connectionStatus}\n            accessibility={{\n    \
+    \          ariaLabel: `Connection status: ${connectionStatus}`\n            }}\n\
+    \          />\n          \n          {connectionStatus === 'connected' ? (\n \
+    \           <Button\n              variant=\"secondary\"\n              onClick={onDisconnect}\n\
+    \              accessibility={{\n                ariaLabel: `Disconnect from ${service.name}`\n\
+    \              }}\n            >\n              {t('service.disconnect')}\n  \
+    \          </Button>\n          ) : (\n            <Button\n              variant=\"\
+    primary\"\n              onClick={() => setIsConfigExpanded(true)}\n         \
+    \     accessibility={{\n                ariaLabel: `Connect to ${service.name}`\n\
+    \              }}\n            >\n              {t('service.connect')}\n     \
+    \       </Button>\n          )}\n        </div>\n      </div>\n\n      {/* Capabilities\
+    \ overview */}\n      <div className=\"capabilities-overview\">\n        <h4>{t('service.capabilities')}</h4>\n\
+    \        <div className=\"capabilities-grid\">\n          {capabilities.map(capability\
+    \ => (\n            <CapabilityCard\n              key={capability.id}\n     \
+    \         capability={capability}\n              accessibility={{\n          \
+    \      ariaLabel: `${capability.name} capability`\n              }}\n        \
+    \    />\n          ))}\n        </div>\n      </div>\n\n      {/* Configuration\
+    \ modal */}\n      <ServiceConfigModal\n        isOpen={isConfigExpanded}\n  \
+    \      service={service}\n        onClose={() => setIsConfigExpanded(false)}\n\
+    \        onConnect={onConnect}\n        accessibility={{\n          ariaLabel:\
+    \ `Configuration for ${service.name}`\n        }}\n      />\n\n      {/* Test\
+    \ results */}\n      {testResults && (\n        <TestResultsDisplay\n        \
+    \  results={testResults}\n          onClear={() => setTestResults(null)}\n   \
+    \       accessibility={{\n            ariaLabel: \"Service test results\"\n  \
+    \        }}\n        />\n      )}\n    </div>\n  );\n};\n\nexport default withHIEROSCompliance(ServiceConnector);\n\
+    ```"
+- level: 3
+  title: HIEROS Compliance Dashboard
+  type: section
+  content: "```tsx\ninterface HIEROSComplianceDashboardProps extends KOSComponentProps\
+    \ {\n  nodeClass: NodeClass;\n  complianceStatus: HIEROSComplianceStatus;\n  culturalAudits:\
+    \ CulturalAudit[];\n  accessibilityScore: number;\n  onRunAudit: () => Promise<void>;\n\
+    \  onViewDetails: (audit: CulturalAudit) => void;\n}\n\nconst HIEROSComplianceDashboard:\
+    \ React.FC<HIEROSComplianceDashboardProps> = ({\n  nodeClass,\n  complianceStatus,\n\
+    \  culturalAudits,\n  accessibilityScore,\n  onRunAudit,\n  onViewDetails,\n \
+    \ theme,\n  hieros,\n  accessibility\n}) => {\n  const { t } = useTranslation();\n\
+    \  const [isAuditing, setIsAuditing] = useState(false);\n\n  const handleRunAudit\
+    \ = async () => {\n    setIsAuditing(true);\n    try {\n      await onRunAudit();\n\
+    \    } finally {\n      setIsAuditing(false);\n    }\n  };\n\n  return (\n   \
+    \ <div \n      className=\"hieros-compliance-dashboard\"\n      role=\"main\"\n\
+    \      aria-label=\"HIEROS covenant compliance dashboard\"\n    >\n      <div\
+    \ className=\"dashboard-header\">\n        <h2>{t('hieros.compliance.title')}</h2>\n\
+    \        <p className=\"dashboard-description\">\n          {t('hieros.compliance.description',\
+    \ { nodeClass })}\n        </p>\n      </div>\n\n      {/* Seven Intentions Status\
+    \ */}\n      <div className=\"intentions-status\" role=\"region\" aria-label=\"\
+    Seven Sacred Intentions status\">\n        <h3>{t('hieros.intentions.title')}</h3>\n\
+    \        <div className=\"intentions-grid\">\n          {HIEROS_INTENTIONS.map(intention\
+    \ => (\n            <IntentionStatusCard\n              key={intention.id}\n \
+    \             intention={intention}\n              status={complianceStatus.intentions[intention.id]}\n\
+    \              onViewDetails={() => onViewDetails(intention.lastAudit)}\n    \
+    \          accessibility={{\n                ariaLabel: `${intention.name} compliance\
+    \ status`\n              }}\n            />\n          ))}\n        </div>\n \
+    \     </div>\n\n      {/* Cultural Compliance Summary */}\n      <div className=\"\
+    cultural-compliance\" role=\"region\" aria-label=\"Cultural compliance summary\"\
+    >\n        <h3>{t('hieros.cultural.title')}</h3>\n        <div className=\"compliance-metrics\"\
+    >\n          <ComplianceMetric\n            label={t('hieros.cultural.authenticity')}\n\
+    \            score={complianceStatus.culturalAuthenticity}\n            threshold={0.9}\n\
+    \            accessibility={{\n              ariaLabel: `Cultural authenticity\
+    \ score: ${complianceStatus.culturalAuthenticity * 100}%`\n            }}\n  \
+    \        />\n          <ComplianceMetric\n            label={t('hieros.accessibility.score')}\n\
+    \            score={accessibilityScore}\n            threshold={0.9}\n       \
+    \     accessibility={{\n              ariaLabel: `Accessibility score: ${accessibilityScore\
+    \ * 100}%`\n            }}\n          />\n          <ComplianceMetric\n      \
+    \      label={t('hieros.stewardship.impact')}\n            score={complianceStatus.stewardshipImpact}\n\
+    \            threshold={0.8}\n            accessibility={{\n              ariaLabel:\
+    \ `Stewardship impact score: ${complianceStatus.stewardshipImpact * 100}%`\n \
+    \           }}\n          />\n        </div>\n      </div>\n\n      {/* Recent\
+    \ Audits */}\n      <div className=\"recent-audits\" role=\"region\" aria-label=\"\
+    Recent cultural audits\">\n        <div className=\"audits-header\">\n       \
+    \   <h3>{t('hieros.audits.recent')}</h3>\n          <Button\n            variant=\"\
+    primary\"\n            onClick={handleRunAudit}\n            disabled={isAuditing}\n\
+    \            accessibility={{\n              ariaLabel: \"Run new HIEROS compliance\
+    \ audit\"\n            }}\n          >\n            {isAuditing ? t('hieros.audits.running')\
+    \ : t('hieros.audits.run')}\n          </Button>\n        </div>\n        \n \
+    \       <div className=\"audits-list\">\n          {culturalAudits.map(audit =>\
+    \ (\n            <CulturalAuditCard\n              key={audit.id}\n          \
+    \    audit={audit}\n              onViewDetails={() => onViewDetails(audit)}\n\
+    \              accessibility={{\n                ariaLabel: `Cultural audit from\
+    \ ${audit.date}`\n              }}\n            />\n          ))}\n        </div>\n\
+    \      </div>\n\n      {/* Recommendations */}\n      <div className=\"recommendations\"\
+    \ role=\"region\" aria-label=\"Compliance recommendations\">\n        <h3>{t('hieros.recommendations.title')}</h3>\n\
+    \        <RecommendationsList\n          recommendations={complianceStatus.recommendations}\n\
+    \          onApplyRecommendation={(rec) => console.log('Apply:', rec)}\n     \
+    \     accessibility={{\n            ariaLabel: \"Compliance improvement recommendations\"\
+    \n          }}\n        />\n      </div>\n    </div>\n  );\n};\n\nexport default\
+    \ withHIEROSCompliance(HIEROSComplianceDashboard);\n```"
+- level: 2
+  title: 🔧 Component Utilities
+  type: section
+  content: ''
+- level: 3
+  title: Theme Context Provider
+  type: section
+  content: "```tsx\ninterface ThemeContextValue {\n  currentTheme: CulturalTheme;\n\
+    \  availableThemes: CulturalTheme[];\n  setTheme: (themeId: string) => void;\n\
+    \  culturalContext: CulturalContext;\n  accessibility: AccessibilityConfig;\n\
+    }\n\nconst ThemeContext = createContext<ThemeContextValue | undefined>(undefined);\n\
+    \nexport const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children\
+    \ }) => {\n  const [currentTheme, setCurrentTheme] = useState<CulturalTheme>(defaultTheme);\n\
+    \  const [culturalContext, setCulturalContext] = useState<CulturalContext>(defaultCulturalContext);\n\
+    \  const accessibility = useAccessibilityConfig();\n\n  const setTheme = useCallback((themeId:\
+    \ string) => {\n    const theme = availableThemes.find(t => t.id === themeId);\n\
+    \    if (theme) {\n      setCurrentTheme(theme);\n      // Validate HIEROS compliance\n\
+    \      validateThemeCompliance(theme, culturalContext);\n    }\n  }, [availableThemes,\
+    \ culturalContext]);\n\n  const value = useMemo(() => ({\n    currentTheme,\n\
+    \    availableThemes,\n    setTheme,\n    culturalContext,\n    accessibility\n\
+    \  }), [currentTheme, setTheme, culturalContext, accessibility]);\n\n  return\
+    \ (\n    <ThemeContext.Provider value={value}>\n      <div className={`theme-${currentTheme.id}`}\
+    \ data-cultural-context={culturalContext.primary}>\n        {children}\n     \
+    \ </div>\n    </ThemeContext.Provider>\n  );\n};\n\nexport const useTheme = ():\
+    \ ThemeContextValue => {\n  const context = useContext(ThemeContext);\n  if (!context)\
+    \ {\n    throw new Error('useTheme must be used within a ThemeProvider');\n  }\n\
+    \  return context;\n};\n```"
+- level: 2
+  title: 🔄 Cross-References
+  type: section
+  content: '- **Cultural Design System**: See `01_Cultural_Design_System.md` for theme
+    definitions and cultural compliance
+
+    - **State Management**: See `03_State_Management.md` for component state patterns
+
+    - **Accessibility Framework**: See `04_Accessibility_Framework.md` for accessibility
+    implementation details
+
+    - **Application Architecture**: See parent document sections 816-975 for app-level
+    component integration'

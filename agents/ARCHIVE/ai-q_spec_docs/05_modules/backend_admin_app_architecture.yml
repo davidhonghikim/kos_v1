@@ -1,0 +1,35 @@
+---
+title: "Backend Admin App Architecture"
+version: "0.1.0"
+modules:
+  - name: ServiceDiscovery
+    description: Detects and manages connections to all running kOS services (Open WebUI, Ollama, Jellyfin, etc.)
+  - name: ChatEngine
+    description: Modular chat adapters for each backend (OpenAI, Ollama, etc.), with model/parameter selection
+  - name: ChatOrchestrator
+    description: Enables multi-LLM group chat, message routing, and aggregation
+  - name: SessionManager
+    description: Handles chat/session history, import/export, and persistence (IndexedDB, Mongo)
+  - name: PromptManager
+    description: Save, optimize, and manage prompts; integrates with RAG
+  - name: TokenManager
+    description: Tracks and displays token usage in real time
+  - name: UI
+    description: Modern, responsive UI/UX with sidebar, top bar, and main chat window
+  - name: RAGIntegration
+    description: Loads docs, bootstrap, and codebase context from RAG for onboarding and context
+integrations:
+  - MongoDB
+  - IndexedDB
+  - RAG
+  - All running kOS services
+features:
+  - Multi-backend chat
+  - Model/parameter selection
+  - Multi-LLM group chat
+  - Session/history management
+  - Import/export (YAML/JSON)
+  - Token/prompt management
+  - Service status
+  - Modern UI/UX
+--- 

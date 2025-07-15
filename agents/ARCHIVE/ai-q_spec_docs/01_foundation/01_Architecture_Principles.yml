@@ -1,0 +1,109 @@
+metadata:
+  original_file: 01_Architecture_Principles.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: 'kOS Architecture Principles: The Unwavering Foundation'
+  description: The mandatory architectural principles that govern all kOS development.
+    All agents must adhere to these rules.
+  type: architecture
+  status: canonical
+  priority: critical
+  last_updated: '2024-07-23'
+  version: 2.0.0
+  agent_notes: Rewritten to explicitly codify the 'neutral framework' and 'freedom
+    of connection' philosophy. This is the new canonical source for the project's
+    architectural soul.
+sections:
+- level: 1
+  title: kOS Architecture Principles
+  type: section
+  content: '**The Canoncial Source of Truth for *How* We Build**
+
+
+    This document outlines the non-negotiable architectural philosophy of the Kind
+    Operating System (kOS). It is the companion to the `kOS_Vision.md`, which defines
+    *what* we are building. These principles ensure the ecosystem is maximally free,
+    modular, scalable, and resilient.
+
+
+    Failure to adhere to these principles will result in brittle, single-purpose code
+    that violates the core mission. All development, by any agent, must be measured
+    against these standards.'
+- level: 2
+  title: '1. The Prime Directive: A Neutral Framework for Connection'
+  type: section
+  content: '**We are building a generic, neutral framework that enables connection,
+    not a system that enforces morality or a specific worldview.**
+
+
+    The kOS is analogous to the TCP/IP protocol. TCP/IP provides the universal rules
+    for data packet transmission, but it is completely agnostic about the content
+    of those packets. It provides the *means* of connection, but the *choice* to connect
+    and the *purpose* of the connection is left entirely to the endpoints.
+
+
+    -   **The System''s Role:** Provide robust, reliable, and generic tools for discovery,
+    communication, security, and policy validation.
+
+    -   **The User''s Role:** Use those tools to connect with any other node—human
+    or AI—and decide for themselves if the connection is desirable or aligned with
+    their own goals. The system does not, and must not, make this choice for them.
+
+    -   **Our Philosophy:** Hope for the best, plan for the worst. Give users the
+    freedom to create and connect, and the tools to protect themselves.'
+- level: 2
+  title: '2. The Lego Principle: Generic Tools, Not Specific Applications'
+  type: section
+  content: '**Every node must be a generic, multipurpose "Lego brick," not a finished,
+    single-use toy.**
+
+
+    -   **Wrong:** Building a `Hakim` node that is a "wellness application."
+
+    -   **Right:** Building a `Hakim` node that is a generic **health monitoring framework**,
+    capable of running any health-check job for any other node.
+
+    -   **Wrong:** Building a `Junzi` node that is an "ethical advisor."
+
+    -   **Right:** Building a `Junzi` node that is a generic **policy engine**, capable
+    of validating any data object against any user-supplied set of rules.
+
+
+    The node classes (`Griot`, `Tohunga`, etc.) define a component''s **domain of
+    operation** (e.g., "seeding," "data acquisition," "security"), not a limitation
+    on its function.'
+- level: 2
+  title: '3. The Inspiration Principle: Metaphorical, Not Literal'
+  type: section
+  content: '**The cultural, spiritual, and biological themes are powerful metaphors
+    to guide design, not literal features to be implemented.**
+
+
+    The purpose of this rich, metaphorical language is to guide our architecture.
+    We mimic the robust, time-tested patterns of nature and human culture to build
+    an elegant and resilient system.
+
+
+    -   The concept of a "Junzi" as a moral exemplar inspires us to build a robust
+    and incorruptible **policy engine**. It does not mean we are building an AI to
+    dispense Confucian wisdom.
+
+    -   The concept of a "Musa" as a guardian inspires us to build a powerful and
+    flexible **security framework**. It does not mean we are building a system that
+    makes its own judgments about what to protect.
+
+
+    The output of the framework—its APIs, data models, and documentation—must be professional,
+    clean, and use standard technical language.'
+- level: 2
+  title: '4. The Universal Language: KLF'
+  type: section
+  content: '**The Kind Link Framework (KLF) is the universal interface for all communication
+    between components.**
+
+
+    No component shall ever communicate with another component through any means other
+    than KLF. This guarantees that any component can be replaced, upgraded, or re-implemented
+    without breaking the system, as long as its KLF interface remains the same. It
+    is the TCP/IP of our ecosystem.'

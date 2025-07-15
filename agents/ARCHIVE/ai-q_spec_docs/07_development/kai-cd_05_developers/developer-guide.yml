@@ -1,0 +1,496 @@
+metadata:
+  original_file: developer-guide.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Developer Documentation Guide
+  description: How human developers should navigate and contribute to the kOS documentation
+    system
+  category: documentation
+  context: bridge_strategy
+  implementation_status: complete
+  decision_scope: medium
+  last_updated: '2025-01-20'
+sections:
+- level: 1
+  title: Developer Documentation Guide
+  type: section
+  content: "> **Agent Context**: Guide for human developers using the kOS documentation\
+    \ system  \n> **Implementation**: ✅ Complete system ready for developer use  \n\
+    > **Use When**: Onboarding developers or contributing to documentation"
+- level: 2
+  title: Overview
+  type: section
+  content: This guide helps human developers navigate the kOS documentation system,
+    contribute effectively, and understand the relationship between current implementation
+    (Kai-CD) and future vision (kOS).
+- level: 2
+  title: Quick Navigation
+  type: section
+  content: ''
+- level: 3
+  title: For New Developers
+  type: section
+  content: '1. **Start here**: [Master Index](./03_MASTER_INDEX.md) - Complete overview
+
+    2. **Understand current system**: `current/` directory - What exists now
+
+    3. **Learn the vision**: `future/` directory - Where we''re going
+
+    4. **Make decisions**: `bridge/` directory - How to connect them'
+- level: 3
+  title: For Contributing Developers
+  type: section
+  content: '1. **Read**: [Documentation System](./00_DOCUMENTATION_SYSTEM.md) - Standards
+    and conventions
+
+    2. **Follow**: Content structure templates and frontmatter standards
+
+    3. **Cross-reference**: Link related documents appropriately
+
+    4. **Test**: Ensure all links work and content is accurate'
+- level: 2
+  title: Documentation Structure
+  type: section
+  content: ''
+- level: 3
+  title: Understanding the Categories
+  type: section
+  content: ''
+- level: 4
+  title: Current Implementation (`current/`)
+  type: section
+  content: '**Purpose**: Document the existing Kai-CD system
+
+    - **What to document**: Actual working code and architecture
+
+    - **Audience**: Developers working on current features
+
+    - **Status**: Fully implemented and tested
+
+    - **When to use**: Building features, fixing bugs, understanding the system'
+- level: 4
+  title: Future Vision (`future/`)
+  type: section
+  content: '**Purpose**: Document the kOS target architecture
+
+    - **What to document**: Planned architecture and protocols
+
+    - **Audience**: Architects planning long-term evolution
+
+    - **Status**: Design phase, some prototyping
+
+    - **When to use**: Making architectural decisions, planning major features'
+- level: 4
+  title: Bridge Strategy (`bridge/`)
+  type: section
+  content: '**Purpose**: Connect current reality with future vision
+
+    - **What to document**: Migration strategies and decision frameworks
+
+    - **Audience**: Developers making architectural choices
+
+    - **Status**: Strategic guidance
+
+    - **When to use**: Planning evolution, resolving conflicts'
+- level: 4
+  title: Reference Materials (`reference/`)
+  type: section
+  content: '**Purpose**: Quick lookup and supporting information
+
+    - **What to document**: Glossaries, patterns, cross-references
+
+    - **Audience**: All developers needing quick answers
+
+    - **Status**: Living reference
+
+    - **When to use**: Looking up terms, finding patterns'
+- level: 2
+  title: Contributing to Documentation
+  type: section
+  content: ''
+- level: 3
+  title: Creating New Documentation
+  type: section
+  content: ''
+- level: 4
+  title: 1. **Determine Category**
+  type: section
+  content: 'Ask yourself:
+
+    - Does this document existing, working code? → `current/`
+
+    - Does this document future vision/architecture? → `future/`
+
+    - Does this help connect current to future? → `bridge/`
+
+    - Is this a quick reference or lookup? → `reference/`'
+- level: 4
+  title: 2. **Follow Naming Conventions**
+  type: section
+  content: '```
+
+    Format: NN_descriptive-name.md
+
+    Examples:
+
+    ✅ 01_service-architecture.md
+
+    ✅ 05_security-framework.md
+
+    ❌ ServiceArch.md
+
+    ❌ 1-svc-arch.md
+
+    ```'
+- level: 4
+  title: 3. **Use the Template**
+  type: section
+  content: "```markdown\n---\ntitle: \"Human-readable title\"\ndescription: \"Brief\
+    \ description\"\ncategory: \"primary category\"\ncontext: \"current_implementation\
+    \ | future_vision | bridge_strategy\"\nimplementation_status: \"complete | partial\
+    \ | planned | research\"\ndecision_scope: \"high | medium | low\"\nlast_updated:\
+    \ \"YYYY-MM-DD\"\ncode_references: \n  - \"src/relevant/code/path\"\nrelated_documents:\n\
+    \  - \"./relative-path.md\"\n---"
+- level: 1
+  title: Document Title
+  type: section
+  content: '> **Agent Context**: Brief guidance for AI agents
+
+    > **Implementation**: ✅ Status with emoji
+
+    > **Use When**: Specific scenarios'
+- level: 2
+  title: Quick Summary
+  type: section
+  content: Brief overview for rapid understanding
+- level: 2
+  title: Implementation Status
+  type: section
+  content: '- ✅ **Complete**: What''s fully implemented
+
+    - 🔄 **In Progress**: What''s being worked on
+
+    - 📋 **Planned**: What''s coming next
+
+
+    [Main content sections...]'
+- level: 2
+  title: For AI Agents
+  type: section
+  content: ''
+- level: 3
+  title: When to Use This
+  type: section
+  content: '- ✅ Use when: [scenarios]
+
+    - ❌ Don''t use when: [scenarios]'
+- level: 2
+  title: Related Documentation
+  type: section
+  content: '- **Current**: [links to current docs]
+
+    - **Future**: [links to future docs]
+
+    - **Bridge**: [links to bridge docs]
+
+    ```'
+- level: 3
+  title: Updating Existing Documentation
+  type: section
+  content: ''
+- level: 4
+  title: When to Update
+  type: section
+  content: '- Code changes that affect documented patterns
+
+    - New features that extend existing architecture
+
+    - Bug fixes that change documented behavior
+
+    - Architectural decisions that impact multiple areas'
+- level: 4
+  title: Update Process
+  type: section
+  content: '1. **Identify affected documents** using cross-references
+
+    2. **Update content** to reflect changes
+
+    3. **Update frontmatter** (especially `last_updated`)
+
+    4. **Check cross-references** to ensure links still work
+
+    5. **Update Master Index** if structure changed'
+- level: 3
+  title: Content Quality Standards
+  type: section
+  content: ''
+- level: 4
+  title: Writing Guidelines
+  type: section
+  content: '- **Clear and concise**: Developers should understand quickly
+
+    - **Practical examples**: Include code snippets where relevant
+
+    - **Complete coverage**: Don''t leave gaps in important topics
+
+    - **Accurate information**: All content must be current and correct'
+- level: 4
+  title: Technical Standards
+  type: section
+  content: '- **Valid markdown**: Proper syntax and formatting
+
+    - **Working links**: All internal and external links functional
+
+    - **Consistent style**: Follow established conventions
+
+    - **Complete metadata**: All required frontmatter fields'
+- level: 4
+  title: Agent Optimization
+  type: section
+  content: '- **Structured information**: Use headers and bullet points
+
+    - **Context blocks**: Include specific guidance for AI agents
+
+    - **Implementation clarity**: Clear status indicators
+
+    - **Cross-references**: Rich linking for navigation'
+- level: 2
+  title: Working with AI Agents
+  type: section
+  content: ''
+- level: 3
+  title: Understanding Agent Needs
+  type: section
+  content: 'AI agents using this documentation need:
+
+    - **Clear status indicators** (what''s implemented vs planned)
+
+    - **Specific guidance** for when to apply patterns
+
+    - **Code references** to see actual implementation
+
+    - **Decision frameworks** for architectural choices'
+- level: 3
+  title: Writing for Agents
+  type: section
+  content: 'When documenting for AI agents:
+
+    - **Be explicit**: Don''t assume context or knowledge
+
+    - **Provide examples**: Show actual code patterns
+
+    - **Indicate scope**: Clarify impact of decisions
+
+    - **Cross-reference**: Link to related concepts'
+- level: 3
+  title: Agent Context Blocks
+  type: section
+  content: 'Every document should include agent-specific guidance:
+
+    ```markdown
+
+    > **Agent Context**: Build new services using ServiceDefinition pattern
+
+    > **Implementation**: ✅ Complete - 18 services working with this pattern
+
+    > **Use When**: Adding any external service integration
+
+    ```'
+- level: 2
+  title: Best Practices
+  type: section
+  content: ''
+- level: 3
+  title: Documentation Development Workflow
+  type: section
+  content: ''
+- level: 4
+  title: For New Features
+  type: section
+  content: '1. **Plan documentation** alongside feature development
+
+    2. **Document as you build** to ensure accuracy
+
+    3. **Include agent guidance** for future AI development
+
+    4. **Cross-reference** with existing documentation
+
+    5. **Test documentation** by having others follow it'
+- level: 4
+  title: For Architectural Changes
+  type: section
+  content: '1. **Document the decision** in `bridge/` directory
+
+    2. **Update affected current** documentation
+
+    3. **Consider future impact** and update vision docs
+
+    4. **Provide migration guidance** for other developers
+
+    5. **Update cross-references** throughout system'
+- level: 3
+  title: Collaboration Guidelines
+  type: section
+  content: ''
+- level: 4
+  title: Working with Team Members
+  type: section
+  content: '- **Review documentation changes** like code changes
+
+    - **Discuss architectural documentation** in design reviews
+
+    - **Keep documentation current** with regular updates
+
+    - **Share knowledge** through clear documentation'
+- level: 4
+  title: Working with AI Agents
+  type: section
+  content: '- **Provide clear guidance** in Agent Context blocks
+
+    - **Indicate implementation status** accurately
+
+    - **Include practical examples** for pattern application
+
+    - **Cross-reference comprehensively** for context'
+- level: 2
+  title: Common Scenarios
+  type: section
+  content: ''
+- level: 3
+  title: Adding a New Service Integration
+  type: section
+  content: '1. **Document the pattern** in `current/services/`
+
+    2. **Update service overview** with new capability
+
+    3. **Add agent guidance** for similar integrations
+
+    4. **Cross-reference** with implementation guides'
+- level: 3
+  title: Making Architectural Changes
+  type: section
+  content: '1. **Document the decision** in `bridge/decision-log.md`
+
+    2. **Update relevant current/** documentation
+
+    3. **Consider future/** compatibility
+
+    4. **Provide migration guidance** for other changes'
+- level: 3
+  title: Bug Fixes
+  type: section
+  content: '1. **Update affected documentation** if behavior changed
+
+    2. **Note the fix** in relevant troubleshooting docs
+
+    3. **Update examples** if they were affected
+
+    4. **Check cross-references** for accuracy'
+- level: 3
+  title: Planning New Features
+  type: section
+  content: '1. **Check future/** docs for vision alignment
+
+    2. **Use bridge/** docs for decision making
+
+    3. **Document new patterns** in appropriate category
+
+    4. **Plan incremental implementation** toward kOS'
+- level: 2
+  title: Tool Recommendations
+  type: section
+  content: ''
+- level: 3
+  title: Editors
+  type: section
+  content: '- **VS Code**: Excellent markdown support with extensions
+
+    - **Markdown Preview Enhanced**: Enhanced preview capabilities
+
+    - **markdownlint**: Ensure consistent formatting
+
+    - **GitHub''s web editor**: Quick edits and preview'
+- level: 3
+  title: Validation Tools
+  type: section
+  content: '- **markdown-link-check**: Validate all links
+
+    - **Alex**: Check for inclusive language
+
+    - **Grammarly**: Grammar and style checking
+
+    - **Custom scripts**: Frontmatter validation'
+- level: 3
+  title: Workflow Integration
+  type: section
+  content: '- **GitHub Actions**: Automated link checking
+
+    - **Pre-commit hooks**: Validate before commits
+
+    - **Documentation review**: Include in PR process
+
+    - **Automated builds**: Generate navigation indices'
+- level: 2
+  title: Maintenance
+  type: section
+  content: ''
+- level: 3
+  title: Regular Tasks
+  type: section
+  content: '- **Weekly**: Check for broken links in modified files
+
+    - **Monthly**: Review cross-references for accuracy
+
+    - **Quarterly**: Complete documentation audit
+
+    - **As needed**: Update based on code changes'
+- level: 3
+  title: Quality Assurance
+  type: section
+  content: '- **Link validation**: Ensure all references work
+
+    - **Content review**: Check for outdated information
+
+    - **Structure consistency**: Maintain naming conventions
+
+    - **Agent optimization**: Verify AI agent guidance is clear'
+- level: 2
+  title: Getting Help
+  type: section
+  content: ''
+- level: 3
+  title: Internal Resources
+  type: section
+  content: '- [Documentation System Standards](./00_DOCUMENTATION_SYSTEM.md)
+
+    - [Master Index](./03_MASTER_INDEX.md) for navigation
+
+    - Team slack/discord for questions
+
+    - Architecture review meetings for complex decisions'
+- level: 3
+  title: External Resources
+  type: section
+  content: '- [GitHub Markdown Guide](https://guides.github.com/features/mastering-markdown/)
+
+    - [Markdown Style Guide](https://www.markdownguide.org/basic-syntax/)
+
+    - [Documentation Best Practices](https://www.writethedocs.org/guide/)
+
+
+    ---'
+- level: 2
+  title: 'Remember: Documentation as Code'
+  type: section
+  content: 'Treat documentation with the same care as code:
+
+    - **Version control**: Track changes and evolution
+
+    - **Code review**: Have others review your documentation
+
+    - **Testing**: Ensure it works for its intended audience
+
+    - **Maintenance**: Keep it current and accurate
+
+    - **Refactoring**: Improve structure and clarity over time'

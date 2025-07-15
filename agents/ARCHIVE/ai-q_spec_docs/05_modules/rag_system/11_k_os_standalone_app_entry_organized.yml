@@ -1,0 +1,200 @@
+title: 11 K Os Standalone App Entry
+description: ''
+type: documentation
+status: current
+priority: medium
+version: '1.0'
+last_updated: '2025-06-28'
+organization_date: '2025-06-28T19:48:20.341884'
+authors: []
+tags: []
+content_type: documentation
+technical_level: intermediate
+word_count: 479
+has_code_blocks: true
+has_api_specs: true
+has_architecture: true
+has_deployment: true
+has_testing: true
+has_security: false
+has_rag: true
+has_ethics: false
+original_filename: 11_k_os_standalone_app_entry.yml
+original_path: /Users/danger/CascadeProjects/griot-node/agents/reference/kos_chatgpt/11_k_os_standalone_app_entry.yml
+category: rag_system
+
+---
+
+title: 11 K Os Standalone App Entry
+description: ''
+type: documentation
+status: current
+priority: medium
+last_updated: '2025-06-28'
+conversion_date: '2025-06-28T19:30:47.398934'
+original_format: markdown
+content_type: api_specification
+word_count: 451
+line_count: 157
+
+---
+
+# kOS Standalone App Bootstrap
+
+This document defines the complete standalone installation and deployment version of the kOS system that can be run locally to function as a fully automatic, agentic node. This version includes everything needed to bootstrap, install dependencies, deploy Docker containers, configure databases, download LLM models, install multi-provider APIs, integrate media generation engines, and initialize system agents — with full support for local development, optional orchestration, and future mesh expansion.
+
+---
+
+## 🎯 Purpose
+
+- Fully autonomous install & deployment node
+- Includes containerized databases, vector stores, memory layers
+- Installs LLM toolchains, plugins, media tools, and default agents
+- Prepares agent workspace and local development env with config-based switching between commercial and open-source components
+
+---
+
+## 🔧 Supported Systems (Major Categories)
+
+- **LLMs**: Ollama, vLLM, llama.cpp, LocalAI, OpenAI, HuggingFace, Claude, Cohere, AI21, Google Cloud
+- **Vector DBs**: ChromaDB, Weaviate, FAISS
+- **Structured DBs**: PostgreSQL, SQLite, MySQL
+- **TTS/STT**: ElevenLabs, Coqui TTS, Whisper, AssemblyAI
+- **Image Gen**: AUTOMATIC1111 (Stable Diffusion Web UI), ComfyUI, DALL·E, Midjourney
+- **Video Gen**: RunwayML, Pika Labs
+- **Agent & Workflow**: LangChain, Semantic Kernel, AutoGPT, n8n
+- **Media+UI**: FastAPI, React, MUI, Axios, WebSockets
+
+All services support config-based enablement via environment variables or YAML templates.
+
+---
+
+## 📦 Core Files (Highlights)
+
+### `main.py`
+
+```python
+from install import install_all
+from init_agents import boot_agents
+from ui_server import start_ui
+
+if __name__ == '__main__':
+    print("[kOS] Beginning full install...")
+    install_all()
+    print("[kOS] Booting agents...")
+    boot_agents()
+    print("[kOS] Starting UI...")
+    start_ui()
+```
+
+### `install.py`
+
+```python
+import os
+import subprocess
+
+def run(cmd):
+    print(f"[kOS install] $ {cmd}")
+    subprocess.run(cmd, shell=True, check=True)
+
+def install_all():
+    run("sudo apt update && sudo apt install -y docker.io docker-compose git curl wget make python3-pip")
+    run("pip install -r requirements.txt")
+    run("docker-compose up -d")
+
+    # Ollama setup
+    run("curl -fsSL https://ollama.com/install.sh | sh")
+    run("ollama pull mistral")
+
+    # Optional: llama.cpp setup
+    run("git clone https://github.com/ggerganov/llama.cpp models/llama.cpp || true")
+    run("cd models/llama.cpp && make")
+    run("wget -P models https://huggingface.co/TheBloke/Mistral-7B-v0.1-GGUF/resolve/main/mistral-7b-v0.1.Q4_K_M.gguf")
+
+    # Local repos for LangChain, plugins, workflows
+    run("git clone https://github.com/kind-os/kOS-core.git repos/kOS-core || true")
+    run("git clone https://github.com/langchain-ai/langchain.git repos/langchain || true")
+    run("git clone https://github.com/duckdb/duckdb.git repos/duckdb || true")
+
+    # Clone and optionally install A1111, ComfyUI, n8n, etc. (TBD in `advanced_install.sh`)
+```
+
+---
+
+## ⚙️ Setup Files
+
+### `requirements.txt`
+
+```
+fastapi
+uvicorn
+pyyaml
+requests
+psycopg2-binary
+chromadb
+weaviate-client
+langchain
+duckdb
+```
+
+### `docker-compose.yml`
+
+```yaml
+version: '3.9'
+services:
+  postgres:
+    image: postgres:14
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: kos_memory
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  chromadb:
+    image: chromadb/chroma
+    ports:
+      - "8000:8000"
+    volumes:
+      - chromadata:/chroma/.chroma/index
+
+  weaviate:
+    image: semitechnologies/weaviate:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - QUERY_DEFAULTS_LIMIT=25
+      - AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED=true
+      - PERSISTENCE_DATA_PATH=/var/lib/weaviate
+
+volumes:
+  pgdata:
+  chromadata:
+```
+
+---
+
+## 🧪 Run Script
+
+### `run.sh`
+
+```bash
+#!/bin/bash
+python3 main.py
+```
+
+---
+
+## ✅ Next:
+
+Would you like to now generate:
+
+- `agents/echo_agent.py`
+- `advanced_install.sh`
+- or auto-env + `.env.example` with full LLM/media provider configs?
+
+
+

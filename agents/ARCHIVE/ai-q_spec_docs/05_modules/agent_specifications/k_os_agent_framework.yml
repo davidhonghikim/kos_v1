@@ -1,0 +1,145 @@
+---
+title: "kOS Agent Framework"
+description: "Defines the internal structure, behavior, and operational lifecycle of all agents operating within the kOS ecosystem. Ensures all agents adhere to consistent lifecycle, interface standard, communication protocol, and ethical alignment layer."
+type: "agent_specification"
+status: "current"
+priority: "critical"
+version: "1.0"
+last_updated: "2025-06-28"
+organization_date: "2025-06-28T20:00:00Z"
+authors:
+  - "ChatGPT (OpenAI)"
+tags:
+  - "agent_framework"
+  - "agent_lifecycle"
+  - "agent_communication"
+  - "agent_ethics"
+  - "agent_skills"
+  - "agent_audit"
+  - "kos"
+  - "agent_system"
+content_type: "agent_specification"
+technical_level: "advanced"
+word_count: 613
+has_architecture: true
+has_api_specs: true
+has_ethics: true
+has_testing: true
+original_sources:
+  - "kos_chatgpt/k_os_agent_framework.yml"
+---
+
+# kOS Agent Framework
+
+## Overview
+
+The kOS Agent Framework defines the internal structure, behavior, and operational lifecycle of all agents operating within the kOS ecosystem. This framework ensures all agents—regardless of role, specialization, or deployment context—adhere to a consistent lifecycle, interface standard, communication protocol, and ethical alignment layer.
+
+## Core Principles
+
+1. **Modularity**  
+Each agent is a modular, composable unit with clearly defined responsibilities and upgrade paths.
+
+2. **Autonomy with Oversight**  
+Agents operate autonomously but are subject to multi-layered ethical and system governance through HIEROS and JUNZI layers.
+
+3. **Interoperability**  
+All agents can interact, share context, and exchange state through the kOS messaging bus and common API.
+
+4. **Self-Auditing**  
+Agents regularly checkpoint state, performance, alignment, and external interactions to a tamper-evident audit trail.
+
+5. **Dynamic Skill Injection**  
+Agents can load, unload, and update skill modules at runtime from the Skill Registry.
+
+## Agent Lifecycle
+
+| Phase                | Description                                    |
+|----------------------|-----------------------------------------------|
+| Initialization       | Load core config, bootstrap environment, verify dependencies |
+| Identity Registration | Register agent ID, capabilities, and roles with the kOS Registry |
+| Skill Loading        | Load predefined or user-assigned skill modules |
+| Ethical Binding      | Bind to JUNZI for ethical alignment enforcement |
+| Context Sync         | Connect to GAL and Skald for context-awareness and communication |
+| Active Operation     | Perform assigned tasks, monitor environment, handle events |
+| Audit Checkpoint     | Periodically checkpoint state, context, and decisions for auditability |
+| Shutdown / Respawn   | On termination, gracefully release resources and prepare for hot reload or reallocation |
+
+## Standard Interfaces
+
+### Agent API
+- `register()`
+- `load_skills()`
+- `bind_ethics()`
+- `listen()`
+- `act()`
+- `checkpoint()`
+- `shutdown()`
+
+### Event Types
+- `Instruction`
+- `ContextUpdate`
+- `EthicsAlert`
+- `SkillUpdate`
+- `Heartbeat`
+
+## Skill Architecture
+
+- **Skill Format:** YAML / JSON declarative + embedded Python
+- **Versioning:** Semantic (Skill vX.Y.Z)
+- **Deployment:** On-demand load from Skill Registry or P2P discovery
+- **Runtime Context:** Skills operate within isolated sandboxes per agent
+
+## Communication Model
+
+- **Messaging Bus:** Publish/Subscribe model
+- **Supported Channels:** gRPC, WebSocket, local IPC, HTTP REST, and optional LoRa / mesh
+- **Payload Format:** JSON + optional Protocol Buffers for low-bandwidth links
+
+## Ethical Layer Enforcement (JUNZI)
+
+| Layer                | Role                                        |
+|----------------------|--------------------------------------------|
+| Pre-Action Filter    | Review agent actions before execution for ethical compliance |
+| Real-Time Intervention | Interrupt unsafe or policy-violating behavior in real time |
+| Post-Action Review   | Evaluate completed actions for retrospective accountability |
+
+## Logging and Audit Trail
+
+- **Log Types:**
+  - Action Logs
+  - Error Logs
+  - Context Logs
+  - Ethics Violations
+
+- **Storage:**
+  - Local agent cache
+  - Remote immutable ledger (optional blockchain-backed)
+
+## Failure Modes and Recovery
+
+| Failure Mode         | Recovery Strategy                            |
+|----------------------|---------------------------------------------|
+| Skill Crash          | Auto-reload or fallback skill               |
+| Ethics Violation     | Quarantine agent, notify overseer, require manual review |
+| Communication Failure | Failover to alternate channel or cached mode |
+| Memory Leak          | Trigger self-restart or escalate to orchestration layer |
+
+## Agent Categories (Example Roles)
+- **Skald Agents:** Narrative, conversation, and language handling
+- **Junzi Agents:** Ethical governance and compliance enforcement
+- **Tokidao Agents:** Economic, blockchain, and incentive layer functions
+- **Other Node Class-Specific Agents:** As defined per kOS Node Class design
+
+## Next Steps
+
+Following this framework, the next set of documents will define:
+1. Agent Deployment Pipelines
+2. Skill Registry Specification
+3. Communication Bus Detailed Spec
+4. Contextual Trigger Engine
+5. Full Audit and Compliance Layer
+
+---
+
+This document defines the baseline operational behavior of all agents in the kOS ecosystem and serves as the mandatory standard for all future agent development. 

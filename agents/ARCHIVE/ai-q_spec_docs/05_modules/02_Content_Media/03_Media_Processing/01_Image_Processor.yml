@@ -1,0 +1,609 @@
+metadata:
+  original_file: 01_Image_Processor.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Image Processor
+  version: '1.0'
+  subcategory: Media Processing
+  category: Content & Media
+  description: Advanced image processing, enhancement, and transformation with support
+    for all major image formats
+sections:
+- level: 1
+  title: '**Image Processor**'
+  type: section
+  content: ''
+- level: 2
+  title: '**Overview**'
+  type: section
+  content: The Image Processor provides comprehensive image processing capabilities
+    including resizing, filtering, enhancement, format conversion, and optimization.
+    This module supports **all major image formats including raster, vector, CAD,
+    3D, scientific, medical, satellite, HDR, and emerging formats** and provides both
+    basic and advanced processing operations with quality preservation and performance
+    optimization.
+- level: 3
+  title: '**Comprehensive Format Support**'
+  type: section
+  content: '- **Raster Formats**: JPEG, PNG, GIF, WebP, TIFF, AVIF, HEIC, BMP, ICO,
+    TGA, PPM, PGM, PBM
+
+    - **Vector Formats**: SVG, AI, CDR, EPS, PDF, WMF, EMF, CGM, DXF
+
+    - **CAD Formats**: DWG, DXF, STEP, IGES, STL, OBJ, 3DS, MAX, BLEND
+
+    - **3D Formats**: OBJ, STL, PLY, FBX, DAE, 3DS, MAX, BLEND, MA, MB
+
+    - **Scientific Formats**: FITS, HDF5, NetCDF, GeoTIFF, ENVI, NITF
+
+    - **Medical Formats**: DICOM, NIfTI, Analyze, MINC, ECAT
+
+    - **Satellite Formats**: GeoTIFF, HDF, NetCDF, ENVI, NITF, CEOS
+
+    - **HDR Formats**: EXR, HDR, TIFF, Radiance, OpenEXR
+
+    - **3D Printing Formats**: STL, OBJ, PLY, 3MF, AMF, GCODE previews
+
+    - **New Media Formats**: AI-generated images, Neural style transfer, Deepfake
+    detection, Quantum imaging data
+
+    - **Niche Formats**: IFF, PCX, TGA, SGI, Sun Raster, XBM, XPM'
+- level: 2
+  title: '**Core Functionality**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Image Transformation**'
+  type: section
+  content: '- **Resizing**: Intelligent resizing with quality preservation and aspect
+    ratio maintenance
+
+    - **Cropping**: Smart cropping with content-aware algorithms
+
+    - **Rotation & Flipping**: Precise rotation and mirror operations
+
+    - **Format Conversion**: Convert between all supported image formats
+
+    - **Color Space Conversion**: RGB, CMYK, HSL, LAB color space transformations'
+- level: 3
+  title: '**Image Enhancement**'
+  type: section
+  content: '- **Quality Enhancement**: AI-powered image quality improvement
+
+    - **Noise Reduction**: Advanced noise reduction algorithms
+
+    - **Sharpening**: Intelligent sharpening with edge preservation
+
+    - **Brightness & Contrast**: Precise brightness and contrast adjustment
+
+    - **Color Correction**: Automatic and manual color correction'
+- level: 3
+  title: '**Advanced Processing**'
+  type: section
+  content: '- **Filter Application**: Apply artistic and technical filters
+
+    - **Effects Processing**: Add visual effects and overlays
+
+    - **Background Removal**: AI-powered background removal
+
+    - **Object Detection**: Detect and process specific objects
+
+    - **Face Recognition**: Face detection and enhancement'
+- level: 3
+  title: '**Batch Processing**'
+  type: section
+  content: '- **Batch Operations**: Process multiple images simultaneously
+
+    - **Pipeline Processing**: Chain multiple operations together
+
+    - **Quality Validation**: Validate output quality automatically
+
+    - **Progress Tracking**: Track processing progress and status'
+- level: 2
+  title: '**Technical Specifications**'
+  type: section
+  content: ''
+- level: 3
+  title: '**TypeScript Interfaces**'
+  type: section
+  content: "```typescript\n// Core Image Interfaces\ninterface ImageData {\n  id:\
+    \ string;\n  format: ImageFormat;\n  width: number;\n  height: number;\n  channels:\
+    \ number;\n  bitDepth: number;\n  colorSpace: ColorSpace;\n  metadata: ImageMetadata;\n\
+    \  data: Buffer | string; // Buffer for binary data, string for base64\n}\n\n\
+    interface ImageFormat {\n  name: 'jpeg' | 'png' | 'gif' | 'webp' | 'tiff' | 'svg'\
+    \ | 'avif' | 'heic' | 'bmp' | 'ico';\n  mimeType: string;\n  extensions: string[];\n\
+    \  supportsTransparency: boolean;\n  supportsAnimation: boolean;\n  compressionType:\
+    \ 'lossy' | 'lossless' | 'both';\n}\n\ninterface ImageMetadata {\n  exif?: ExifData;\n\
+    \  iptc?: IptcData;\n  xmp?: XmpData;\n  icc?: IccProfile;\n  custom?: Record<string,\
+    \ any>;\n}\n\ninterface ExifData {\n  camera?: string;\n  lens?: string;\n  exposureTime?:\
+    \ string;\n  fNumber?: number;\n  iso?: number;\n  focalLength?: number;\n  dateTime?:\
+    \ Date;\n  gps?: GpsData;\n}\n\n// Processing Interfaces\ninterface ImageProcessingOptions\
+    \ {\n  quality?: number; // 1-100\n  format?: ImageFormat;\n  resize?: ResizeOptions;\n\
+    \  crop?: CropOptions;\n  enhance?: EnhancementOptions;\n  filter?: FilterOptions;\n\
+    \  effects?: EffectOptions;\n  metadata?: MetadataOptions;\n}\n\ninterface ResizeOptions\
+    \ {\n  width?: number;\n  height?: number;\n  mode: 'fit' | 'fill' | 'crop' |\
+    \ 'stretch';\n  algorithm: 'lanczos' | 'bicubic' | 'bilinear' | 'nearest';\n \
+    \ maintainAspectRatio?: boolean;\n  upscale?: boolean;\n}\n\ninterface CropOptions\
+    \ {\n  x: number;\n  y: number;\n  width: number;\n  height: number;\n  mode:\
+    \ 'manual' | 'auto' | 'smart';\n  aspectRatio?: number;\n}\n\ninterface EnhancementOptions\
+    \ {\n  brightness?: number; // -100 to 100\n  contrast?: number; // -100 to 100\n\
+    \  saturation?: number; // -100 to 100\n  sharpness?: number; // 0 to 100\n  noiseReduction?:\
+    \ number; // 0 to 100\n  autoEnhance?: boolean;\n  aiEnhancement?: boolean;\n\
+    }\n\ninterface FilterOptions {\n  type: 'blur' | 'sharpen' | 'emboss' | 'edge'\
+    \ | 'custom';\n  intensity: number; // 0 to 100\n  radius?: number;\n  customKernel?:\
+    \ number[][];\n}\n\ninterface EffectOptions {\n  effects: ImageEffect[];\n  blendMode?:\
+    \ BlendMode;\n  opacity?: number;\n}\n\ninterface ImageEffect {\n  type: 'vintage'\
+    \ | 'blackwhite' | 'sepia' | 'vignette' | 'frame' | 'texture';\n  intensity: number;\n\
+    \  parameters?: Record<string, any>;\n}\n\n// Batch Processing Interfaces\ninterface\
+    \ BatchProcessingJob {\n  id: string;\n  images: ImageData[];\n  operations: ImageProcessingOptions[];\n\
+    \  status: 'pending' | 'processing' | 'completed' | 'failed';\n  progress: number;\
+    \ // 0-100\n  results: ProcessedImage[];\n  errors: ProcessingError[];\n  createdAt:\
+    \ Date;\n  completedAt?: Date;\n}\n\ninterface ProcessedImage {\n  originalId:\
+    \ string;\n  processedId: string;\n  operations: string[];\n  quality: QualityMetrics;\n\
+    \  fileSize: number;\n  processingTime: number;\n}\n\ninterface QualityMetrics\
+    \ {\n  psnr?: number; // Peak Signal-to-Noise Ratio\n  ssim?: number; // Structural\
+    \ Similarity Index\n  mse?: number; // Mean Squared Error\n  compressionRatio?:\
+    \ number;\n  visualQuality?: number; // 1-10 subjective quality\n}\n\n// Image\
+    \ Processor Service Interface\ninterface ImageProcessorService {\n  // Core Processing\
+    \ Methods\n  processImage(image: ImageData, options: ImageProcessingOptions):\
+    \ Promise<ImageData>;\n  resizeImage(image: ImageData, options: ResizeOptions):\
+    \ Promise<ImageData>;\n  cropImage(image: ImageData, options: CropOptions): Promise<ImageData>;\n\
+    \  enhanceImage(image: ImageData, options: EnhancementOptions): Promise<ImageData>;\n\
+    \  applyFilter(image: ImageData, options: FilterOptions): Promise<ImageData>;\n\
+    \  applyEffects(image: ImageData, options: EffectOptions): Promise<ImageData>;\n\
+    \  \n  // Format Conversion\n  convertFormat(image: ImageData, targetFormat: ImageFormat,\
+    \ quality?: number): Promise<ImageData>;\n  getSupportedFormats(): ImageFormat[];\n\
+    \  validateFormat(format: ImageFormat): boolean;\n  \n  // Batch Processing\n\
+    \  processBatch(job: BatchProcessingJob): Promise<BatchProcessingJob>;\n  getBatchStatus(jobId:\
+    \ string): Promise<BatchProcessingJob>;\n  cancelBatch(jobId: string): Promise<void>;\n\
+    \  \n  // Analysis and Validation\n  analyzeImage(image: ImageData): Promise<ImageAnalysis>;\n\
+    \  validateQuality(image: ImageData, criteria: QualityCriteria): Promise<QualityValidation>;\n\
+    \  extractMetadata(image: ImageData): Promise<ImageMetadata>;\n  \n  // Utility\
+    \ Methods\n  getImageInfo(image: ImageData): Promise<ImageInfo>;\n  optimizeImage(image:\
+    \ ImageData, targetSize?: number): Promise<ImageData>;\n  createThumbnail(image:\
+    \ ImageData, size: number): Promise<ImageData>;\n  \n  // Configuration\n  configureProcessor(config:\
+    \ ProcessorConfig): Promise<void>;\n  getProcessorCapabilities(): ProcessorCapabilities;\n\
+    }\n```"
+- level: 3
+  title: '**Configuration Examples**'
+  type: section
+  content: ''
+- level: 4
+  title: '**Basic Image Processing Configuration**'
+  type: section
+  content: "```yaml\nimage_processor:\n  formats:\n    supported:\n      - name: \"\
+    jpeg\"\n        mime_type: \"image/jpeg\"\n        extensions: [\"jpg\", \"jpeg\"\
+    ]\n        supports_transparency: false\n        supports_animation: false\n \
+    \       compression_type: \"lossy\"\n      - name: \"png\"\n        mime_type:\
+    \ \"image/png\"\n        extensions: [\"png\"]\n        supports_transparency:\
+    \ true\n        supports_animation: false\n        compression_type: \"lossless\"\
+    \n      - name: \"webp\"\n        mime_type: \"image/webp\"\n        extensions:\
+    \ [\"webp\"]\n        supports_transparency: true\n        supports_animation:\
+    \ true\n        compression_type: \"both\"\n      - name: \"gif\"\n        mime_type:\
+    \ \"image/gif\"\n        extensions: [\"gif\"]\n        supports_transparency:\
+    \ true\n        supports_animation: true\n        compression_type: \"lossless\"\
+    \n      - name: \"tiff\"\n        mime_type: \"image/tiff\"\n        extensions:\
+    \ [\"tiff\", \"tif\"]\n        supports_transparency: true\n        supports_animation:\
+    \ false\n        compression_type: \"both\"\n      - name: \"svg\"\n        mime_type:\
+    \ \"image/svg+xml\"\n        extensions: [\"svg\"]\n        supports_transparency:\
+    \ true\n        supports_animation: true\n        compression_type: \"lossless\"\
+    \n      - name: \"avif\"\n        mime_type: \"image/avif\"\n        extensions:\
+    \ [\"avif\"]\n        supports_transparency: true\n        supports_animation:\
+    \ true\n        compression_type: \"both\"\n      - name: \"heic\"\n        mime_type:\
+    \ \"image/heic\"\n        extensions: [\"heic\", \"heif\"]\n        supports_transparency:\
+    \ true\n        supports_animation: false\n        compression_type: \"lossy\"\
+    \n  processing:\n    max_resolution: \"8K\"\n    max_file_size: \"100MB\"\n  \
+    \  quality_preservation: true\n    parallel_processing: true\n    cache_enabled:\
+    \ true\n  enhancement:\n    ai_enhancement: true\n    auto_enhancement: true\n\
+    \    noise_reduction: true\n    sharpening: true\n    color_correction: true\n\
+    \  optimization:\n    compression_quality: 85\n    progressive_loading: true\n\
+    \    metadata_preservation: true\n    thumbnail_generation: true\n```"
+- level: 4
+  title: '**Advanced Image Processing Configuration**'
+  type: section
+  content: "```yaml\nimage_processor:\n  formats:\n    supported:\n      - name: \"\
+    jpeg\"\n        mime_type: \"image/jpeg\"\n        extensions: [\"jpg\", \"jpeg\"\
+    ]\n        supports_transparency: false\n        supports_animation: false\n \
+    \       compression_type: \"lossy\"\n        quality_range: [1, 100]\n       \
+    \ progressive: true\n      - name: \"png\"\n        mime_type: \"image/png\"\n\
+    \        extensions: [\"png\"]\n        supports_transparency: true\n        supports_animation:\
+    \ false\n        compression_type: \"lossless\"\n        compression_level: [0,\
+    \ 9]\n        interlaced: true\n      - name: \"webp\"\n        mime_type: \"\
+    image/webp\"\n        extensions: [\"webp\"]\n        supports_transparency: true\n\
+    \        supports_animation: true\n        compression_type: \"both\"\n      \
+    \  quality_range: [1, 100]\n        lossless: true\n      - name: \"gif\"\n  \
+    \      mime_type: \"image/gif\"\n        extensions: [\"gif\"]\n        supports_transparency:\
+    \ true\n        supports_animation: true\n        compression_type: \"lossless\"\
+    \n        color_palette: 256\n        dithering: true\n      - name: \"tiff\"\n\
+    \        mime_type: \"image/tiff\"\n        extensions: [\"tiff\", \"tif\"]\n\
+    \        supports_transparency: true\n        supports_animation: false\n    \
+    \    compression_type: \"both\"\n        compression_methods: [\"lzw\", \"deflate\"\
+    , \"jpeg\", \"none\"]\n        multi_page: true\n      - name: \"svg\"\n     \
+    \   mime_type: \"image/svg+xml\"\n        extensions: [\"svg\"]\n        supports_transparency:\
+    \ true\n        supports_animation: true\n        compression_type: \"lossless\"\
+    \n        minification: true\n        optimization: true\n      - name: \"avif\"\
+    \n        mime_type: \"image/avif\"\n        extensions: [\"avif\"]\n        supports_transparency:\
+    \ true\n        supports_animation: true\n        compression_type: \"both\"\n\
+    \        quality_range: [1, 100]\n        speed_range: [0, 10]\n      - name:\
+    \ \"heic\"\n        mime_type: \"image/heic\"\n        extensions: [\"heic\",\
+    \ \"heif\"]\n        supports_transparency: true\n        supports_animation:\
+    \ false\n        compression_type: \"lossy\"\n        quality_range: [1, 100]\n\
+    \        hdr_support: true\n  processing:\n    max_resolution: \"16K\"\n    max_file_size:\
+    \ \"500MB\"\n    quality_preservation: true\n    parallel_processing: true\n \
+    \   cache_enabled: true\n    gpu_acceleration: true\n    memory_optimization:\
+    \ true\n  enhancement:\n    ai_enhancement: true\n    auto_enhancement: true\n\
+    \    noise_reduction: true\n    sharpening: true\n    color_correction: true\n\
+    \    face_enhancement: true\n    background_removal: true\n    super_resolution:\
+    \ true\n  optimization:\n    compression_quality: 85\n    progressive_loading:\
+    \ true\n    metadata_preservation: true\n    thumbnail_generation: true\n    format_optimization:\
+    \ true\n    size_optimization: true\n    quality_optimization: true\n  batch_processing:\n\
+    \    max_concurrent_jobs: 10\n    max_images_per_job: 1000\n    progress_tracking:\
+    \ true\n    error_recovery: true\n    result_aggregation: true\n```"
+- level: 3
+  title: '**Integration Patterns**'
+  type: section
+  content: ''
+- level: 4
+  title: '**Image Processing Pipeline**'
+  type: section
+  content: "```typescript\n// Image Processing Pipeline Implementation\nclass ImageProcessingPipeline\
+    \ {\n  private processor: ImageProcessorService;\n  private operations: ProcessingOperation[]\
+    \ = [];\n  \n  constructor(processor: ImageProcessorService) {\n    this.processor\
+    \ = processor;\n  }\n  \n  addOperation(operation: ProcessingOperation): ImageProcessingPipeline\
+    \ {\n    this.operations.push(operation);\n    return this;\n  }\n  \n  async\
+    \ process(image: ImageData): Promise<ImageData> {\n    let processedImage = image;\n\
+    \    \n    for (const operation of this.operations) {\n      try {\n        processedImage\
+    \ = await this.executeOperation(processedImage, operation);\n        \n      \
+    \  // Validate quality after each operation\n        const quality = await this.processor.validateQuality(processedImage,\
+    \ {\n          minQuality: 70,\n          maxFileSize: 10 * 1024 * 1024 // 10MB\n\
+    \        });\n        \n        if (!quality.passed) {\n          console.warn(`Quality\
+    \ check failed after operation: ${operation.type}`);\n        }\n      } catch\
+    \ (error) {\n        console.error(`Operation failed: ${operation.type}`, error);\n\
+    \        throw new Error(`Pipeline failed at operation: ${operation.type}`);\n\
+    \      }\n    }\n    \n    return processedImage;\n  }\n  \n  private async executeOperation(image:\
+    \ ImageData, operation: ProcessingOperation): Promise<ImageData> {\n    switch\
+    \ (operation.type) {\n      case 'resize':\n        return await this.processor.resizeImage(image,\
+    \ operation.options as ResizeOptions);\n      case 'crop':\n        return await\
+    \ this.processor.cropImage(image, operation.options as CropOptions);\n      case\
+    \ 'enhance':\n        return await this.processor.enhanceImage(image, operation.options\
+    \ as EnhancementOptions);\n      case 'filter':\n        return await this.processor.applyFilter(image,\
+    \ operation.options as FilterOptions);\n      case 'effects':\n        return\
+    \ await this.processor.applyEffects(image, operation.options as EffectOptions);\n\
+    \      case 'convert':\n        return await this.processor.convertFormat(image,\
+    \ operation.options.format, operation.options.quality);\n      default:\n    \
+    \    throw new Error(`Unknown operation type: ${operation.type}`);\n    }\n  }\n\
+    }\n\n// Usage Example\nconst pipeline = new ImageProcessingPipeline(imageProcessor)\n\
+    \  .addOperation({\n    type: 'resize',\n    options: { width: 1920, height: 1080,\
+    \ mode: 'fit', algorithm: 'lanczos' }\n  })\n  .addOperation({\n    type: 'enhance',\n\
+    \    options: { brightness: 10, contrast: 15, sharpness: 20, autoEnhance: true\
+    \ }\n  })\n  .addOperation({\n    type: 'convert',\n    options: { format: { name:\
+    \ 'webp', mimeType: 'image/webp' }, quality: 85 }\n  });\n\nconst processedImage\
+    \ = await pipeline.process(originalImage);\n```"
+- level: 4
+  title: '**Batch Processing Implementation**'
+  type: section
+  content: "```typescript\n// Batch Image Processing Manager\nclass BatchImageProcessor\
+    \ {\n  private processor: ImageProcessorService;\n  private activeJobs: Map<string,\
+    \ BatchProcessingJob> = new Map();\n  private maxConcurrentJobs: number = 5;\n\
+    \  \n  constructor(processor: ImageProcessorService) {\n    this.processor = processor;\n\
+    \  }\n  \n  async processBatch(images: ImageData[], operations: ImageProcessingOptions[]):\
+    \ Promise<string> {\n    const jobId = this.generateJobId();\n    \n    const\
+    \ job: BatchProcessingJob = {\n      id: jobId,\n      images,\n      operations,\n\
+    \      status: 'pending',\n      progress: 0,\n      results: [],\n      errors:\
+    \ [],\n      createdAt: new Date()\n    };\n    \n    this.activeJobs.set(jobId,\
+    \ job);\n    \n    // Start processing in background\n    this.processJob(job);\n\
+    \    \n    return jobId;\n  }\n  \n  private async processJob(job: BatchProcessingJob):\
+    \ Promise<void> {\n    try {\n      job.status = 'processing';\n      \n     \
+    \ const totalImages = job.images.length;\n      let processedCount = 0;\n    \
+    \  \n      // Process images in batches for memory efficiency\n      const batchSize\
+    \ = 10;\n      for (let i = 0; i < totalImages; i += batchSize) {\n        const\
+    \ batch = job.images.slice(i, i + batchSize);\n        \n        // Process batch\
+    \ in parallel\n        const batchPromises = batch.map(async (image) => {\n  \
+    \        try {\n            let processedImage = image;\n            \n      \
+    \      // Apply all operations\n            for (const operation of job.operations)\
+    \ {\n              processedImage = await this.processor.processImage(processedImage,\
+    \ operation);\n            }\n            \n            // Analyze quality\n \
+    \           const analysis = await this.processor.analyzeImage(processedImage);\n\
+    \            \n            const result: ProcessedImage = {\n              originalId:\
+    \ image.id,\n              processedId: processedImage.id,\n              operations:\
+    \ job.operations.map(op => op.type || 'unknown'),\n              quality: {\n\
+    \                psnr: analysis.psnr,\n                ssim: analysis.ssim,\n\
+    \                compressionRatio: analysis.compressionRatio,\n              \
+    \  visualQuality: analysis.visualQuality\n              },\n              fileSize:\
+    \ processedImage.data.length,\n              processingTime: Date.now() - job.createdAt.getTime()\n\
+    \            };\n            \n            job.results.push(result);\n       \
+    \     processedCount++;\n            job.progress = (processedCount / totalImages)\
+    \ * 100;\n            \n          } catch (error) {\n            job.errors.push({\n\
+    \              imageId: image.id,\n              error: error.message,\n     \
+    \         timestamp: new Date()\n            });\n          }\n        });\n \
+    \       \n        await Promise.all(batchPromises);\n      }\n      \n      job.status\
+    \ = 'completed';\n      job.completedAt = new Date();\n      \n    } catch (error)\
+    \ {\n      job.status = 'failed';\n      job.errors.push({\n        imageId: 'batch',\n\
+    \        error: error.message,\n        timestamp: new Date()\n      });\n   \
+    \ }\n  }\n  \n  async getJobStatus(jobId: string): Promise<BatchProcessingJob\
+    \ | null> {\n    return this.activeJobs.get(jobId) || null;\n  }\n  \n  async\
+    \ cancelJob(jobId: string): Promise<void> {\n    const job = this.activeJobs.get(jobId);\n\
+    \    if (job && job.status === 'processing') {\n      job.status = 'failed';\n\
+    \      job.errors.push({\n        imageId: 'batch',\n        error: 'Job cancelled\
+    \ by user',\n        timestamp: new Date()\n      });\n    }\n  }\n  \n  private\
+    \ generateJobId(): string {\n    return `batch_${Date.now()}_${Math.random().toString(36).substr(2,\
+    \ 9)}`;\n  }\n}\n```"
+- level: 2
+  title: '**Error Handling**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Image Processing Error Handling**'
+  type: section
+  content: "```typescript\nclass ImageProcessingErrorHandler {\n  static async handleProcessingError(error:\
+    \ Error, context: string): Promise<void> {\n    const errorLog = {\n      timestamp:\
+    \ new Date(),\n      error: error.message,\n      context,\n      stack: error.stack,\n\
+    \      severity: this.determineSeverity(error)\n    };\n    \n    // Log error\
+    \ for debugging\n    console.error('Image Processing Error:', errorLog);\n   \
+    \ \n    // Handle specific error types\n    switch (error.constructor.name) {\n\
+    \      case 'UnsupportedFormatError':\n        await this.handleUnsupportedFormat(error);\n\
+    \        break;\n      case 'ProcessingTimeoutError':\n        await this.handleTimeout(error);\n\
+    \        break;\n      case 'MemoryError':\n        await this.handleMemoryError(error);\n\
+    \        break;\n      case 'QualityError':\n        await this.handleQualityError(error);\n\
+    \        break;\n      default:\n        await this.handleGenericError(error);\n\
+    \    }\n  }\n  \n  private static async handleUnsupportedFormat(error: Error):\
+    \ Promise<void> {\n    // Attempt format conversion to supported format\n    await\
+    \ this.convertToSupportedFormat(error);\n    \n    // Notify user of format limitation\n\
+    \    await this.notifyUser('Image format not supported. Converting to compatible\
+    \ format.');\n  }\n  \n  private static async handleTimeout(error: Error): Promise<void>\
+    \ {\n    // Reduce processing quality or resolution\n    await this.reduceProcessingComplexity();\n\
+    \    \n    // Retry with simplified processing\n    await this.retryWithSimplifiedProcessing();\n\
+    \  }\n  \n  private static async handleMemoryError(error: Error): Promise<void>\
+    \ {\n    // Clear processing cache\n    await this.clearProcessingCache();\n \
+    \   \n    // Reduce batch size\n    await this.reduceBatchSize();\n    \n    //\
+    \ Notify user of memory constraints\n    await this.notifyUser('Processing limited\
+    \ due to memory constraints.');\n  }\n  \n  private static async handleQualityError(error:\
+    \ Error): Promise<void> {\n    // Adjust quality parameters\n    await this.adjustQualityParameters();\n\
+    \    \n    // Retry with adjusted settings\n    await this.retryWithAdjustedSettings();\n\
+    \  }\n  \n  private static determineSeverity(error: Error): 'low' | 'medium' |\
+    \ 'high' | 'critical' {\n    if (error.message.includes('memory')) return 'high';\n\
+    \    if (error.message.includes('timeout')) return 'medium';\n    if (error.message.includes('unsupported\
+    \ format')) return 'low';\n    if (error.message.includes('corruption')) return\
+    \ 'critical';\n    return 'medium';\n  }\n}\n```"
+- level: 2
+  title: '**Performance Optimization**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Image Processing Performance Optimization**'
+  type: section
+  content: "```typescript\nclass ImageProcessingOptimizer {\n  private cache: Map<string,\
+    \ ImageData> = new Map();\n  private processingQueue: ProcessingTask[] = [];\n\
+    \  private maxConcurrentTasks: number = 4;\n  private activeTasks: Set<string>\
+    \ = new Set();\n  \n  async optimizeProcessing(image: ImageData, operations: ImageProcessingOptions[]):\
+    \ Promise<ImageData> {\n    // Check cache first\n    const cacheKey = this.generateCacheKey(image,\
+    \ operations);\n    if (this.cache.has(cacheKey)) {\n      return this.cache.get(cacheKey)!;\n\
+    \    }\n    \n    // Optimize operation order for better performance\n    const\
+    \ optimizedOperations = this.optimizeOperationOrder(operations);\n    \n    //\
+    \ Process image with optimized operations\n    let processedImage = image;\n \
+    \   for (const operation of optimizedOperations) {\n      processedImage = await\
+    \ this.processWithOptimization(processedImage, operation);\n    }\n    \n    //\
+    \ Cache result\n    this.cache.set(cacheKey, processedImage);\n    \n    return\
+    \ processedImage;\n  }\n  \n  private optimizeOperationOrder(operations: ImageProcessingOptions[]):\
+    \ ImageProcessingOptions[] {\n    // Reorder operations for optimal performance\n\
+    \    // 1. Resize first (reduces data size)\n    // 2. Crop second (further reduces\
+    \ data size)\n    // 3. Enhancement operations\n    // 4. Filters and effects\n\
+    \    // 5. Format conversion last\n    \n    const ordered: ImageProcessingOptions[]\
+    \ = [];\n    \n    // Add resize operations first\n    operations.filter(op =>\
+    \ op.resize).forEach(op => ordered.push(op));\n    \n    // Add crop operations\n\
+    \    operations.filter(op => op.crop).forEach(op => ordered.push(op));\n    \n\
+    \    // Add enhancement operations\n    operations.filter(op => op.enhance).forEach(op\
+    \ => ordered.push(op));\n    \n    // Add filter operations\n    operations.filter(op\
+    \ => op.filter).forEach(op => ordered.push(op));\n    \n    // Add effect operations\n\
+    \    operations.filter(op => op.effects).forEach(op => ordered.push(op));\n  \
+    \  \n    // Add format conversion last\n    operations.filter(op => op.format).forEach(op\
+    \ => ordered.push(op));\n    \n    return ordered;\n  }\n  \n  private async processWithOptimization(image:\
+    \ ImageData, operation: ImageProcessingOptions): Promise<ImageData> {\n    //\
+    \ Implement processing with memory and performance optimization\n    const taskId\
+    \ = this.generateTaskId();\n    \n    try {\n      this.activeTasks.add(taskId);\n\
+    \      \n      // Use Web Workers for CPU-intensive operations\n      if (this.isCPUIntensive(operation))\
+    \ {\n        return await this.processWithWebWorker(image, operation);\n     \
+    \ }\n      \n      // Use GPU acceleration for supported operations\n      if\
+    \ (this.isGPUAccelerated(operation)) {\n        return await this.processWithGPU(image,\
+    \ operation);\n      }\n      \n      // Standard processing\n      return await\
+    \ this.standardProcessing(image, operation);\n      \n    } finally {\n      this.activeTasks.delete(taskId);\n\
+    \    }\n  }\n  \n  private isCPUIntensive(operation: ImageProcessingOptions):\
+    \ boolean {\n    return !!(operation.enhance?.aiEnhancement || \n            \
+    \  operation.filter?.type === 'custom' || \n              operation.effects?.effects.length\
+    \ > 2);\n  }\n  \n  private isGPUAccelerated(operation: ImageProcessingOptions):\
+    \ boolean {\n    return !!(operation.resize || \n              operation.filter?.type\
+    \ === 'blur' || \n              operation.enhance?.brightness || \n          \
+    \    operation.enhance?.contrast);\n  }\n  \n  private generateCacheKey(image:\
+    \ ImageData, operations: ImageProcessingOptions[]): string {\n    const operationHash\
+    \ = operations.map(op => JSON.stringify(op)).join('|');\n    return `${image.id}_${operationHash}`;\n\
+    \  }\n  \n  private generateTaskId(): string {\n    return `task_${Date.now()}_${Math.random().toString(36).substr(2,\
+    \ 9)}`;\n  }\n}\n```"
+- level: 2
+  title: '**Security & Privacy**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Image Processing Security Manager**'
+  type: section
+  content: "```typescript\nclass ImageProcessingSecurityManager {\n  private allowedFormats:\
+    \ Set<string> = new Set();\n  private maxFileSize: number = 100 * 1024 * 1024;\
+    \ // 100MB\n  private maxResolution: number = 8192 * 8192; // 8K\n  private blockedContent:\
+    \ Set<string> = new Set();\n  \n  async validateImage(image: ImageData): Promise<ValidationResult>\
+    \ {\n    const validations = await Promise.all([\n      this.validateFormat(image),\n\
+    \      this.validateFileSize(image),\n      this.validateResolution(image),\n\
+    \      this.validateContent(image),\n      this.scanForMalware(image)\n    ]);\n\
+    \    \n    const passed = validations.every(v => v.passed);\n    const errors\
+    \ = validations.filter(v => !v.passed).map(v => v.error);\n    \n    return {\n\
+    \      passed,\n      errors,\n      warnings: validations.filter(v => v.warning).map(v\
+    \ => v.warning)\n    };\n  }\n  \n  private async validateFormat(image: ImageData):\
+    \ Promise<ValidationResult> {\n    const isValid = this.allowedFormats.has(image.format.name);\n\
+    \    \n    return {\n      passed: isValid,\n      error: isValid ? undefined\
+    \ : `Format ${image.format.name} is not allowed`,\n      warning: undefined\n\
+    \    };\n  }\n  \n  private async validateFileSize(image: ImageData): Promise<ValidationResult>\
+    \ {\n    const size = image.data.length;\n    const isValid = size <= this.maxFileSize;\n\
+    \    \n    return {\n      passed: isValid,\n      error: isValid ? undefined\
+    \ : `File size ${size} exceeds maximum ${this.maxFileSize}`,\n      warning: size\
+    \ > this.maxFileSize * 0.8 ? 'File size approaching limit' : undefined\n    };\n\
+    \  }\n  \n  private async validateResolution(image: ImageData): Promise<ValidationResult>\
+    \ {\n    const resolution = image.width * image.height;\n    const isValid = resolution\
+    \ <= this.maxResolution;\n    \n    return {\n      passed: isValid,\n      error:\
+    \ isValid ? undefined : `Resolution ${resolution} exceeds maximum ${this.maxResolution}`,\n\
+    \      warning: resolution > this.maxResolution * 0.8 ? 'Resolution approaching\
+    \ limit' : undefined\n    };\n  }\n  \n  private async validateContent(image:\
+    \ ImageData): Promise<ValidationResult> {\n    // Implement content validation\
+    \ (e.g., inappropriate content detection)\n    const contentAnalysis = await this.analyzeContent(image);\n\
+    \    \n    return {\n      passed: !contentAnalysis.isBlocked,\n      error: contentAnalysis.isBlocked\
+    \ ? 'Content violates policy' : undefined,\n      warning: contentAnalysis.isSuspicious\
+    \ ? 'Content may be inappropriate' : undefined\n    };\n  }\n  \n  private async\
+    \ scanForMalware(image: ImageData): Promise<ValidationResult> {\n    // Implement\
+    \ malware scanning for image files\n    const malwareScan = await this.scanFile(image.data);\n\
+    \    \n    return {\n      passed: !malwareScan.detected,\n      error: malwareScan.detected\
+    \ ? 'Malware detected in image' : undefined,\n      warning: undefined\n    };\n\
+    \  }\n  \n  async sanitizeImage(image: ImageData): Promise<ImageData> {\n    //\
+    \ Remove potentially harmful metadata\n    const sanitizedMetadata = this.sanitizeMetadata(image.metadata);\n\
+    \    \n    // Strip EXIF data if configured\n    if (this.shouldStripExif()) {\n\
+    \      delete sanitizedMetadata.exif;\n    }\n    \n    return {\n      ...image,\n\
+    \      metadata: sanitizedMetadata\n    };\n  }\n  \n  private sanitizeMetadata(metadata:\
+    \ ImageMetadata): ImageMetadata {\n    const sanitized = { ...metadata };\n  \
+    \  \n    // Remove GPS data for privacy\n    if (sanitized.exif?.gps) {\n    \
+    \  delete sanitized.exif.gps;\n    }\n    \n    // Remove personal information\n\
+    \    if (sanitized.exif?.camera) {\n      // Keep camera info but remove serial\
+    \ numbers\n      sanitized.exif.camera = this.sanitizeCameraInfo(sanitized.exif.camera);\n\
+    \    }\n    \n    return sanitized;\n  }\n}\n```"
+- level: 2
+  title: '**Monitoring & Observability**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Image Processing Health Monitor**'
+  type: section
+  content: "```typescript\nclass ImageProcessingHealthMonitor {\n  private metrics:\
+    \ ProcessingMetrics = {\n    imagesProcessed: 0,\n    processingTime: 0,\n   \
+    \ errors: 0,\n    cacheHits: 0,\n    cacheMisses: 0,\n    averageQuality: 0\n\
+    \  };\n  \n  async monitorProcessingHealth(): Promise<HealthStatus> {\n    const\
+    \ healthChecks = await Promise.all([\n      this.checkProcessingPerformance(),\n\
+    \      this.checkErrorRate(),\n      this.checkCacheEfficiency(),\n      this.checkQualityMetrics(),\n\
+    \      this.checkResourceUsage()\n    ]);\n    \n    const overallHealth = healthChecks.every(check\
+    \ => check.status === 'healthy');\n    \n    return {\n      status: overallHealth\
+    \ ? 'healthy' : 'degraded',\n      checks: healthChecks,\n      timestamp: new\
+    \ Date(),\n      metrics: this.metrics\n    };\n  }\n  \n  private async checkProcessingPerformance():\
+    \ Promise<HealthCheck> {\n    const avgProcessingTime = this.metrics.processingTime\
+    \ / this.metrics.imagesProcessed;\n    const healthyTime = avgProcessingTime <\
+    \ 5000; // < 5 seconds\n    \n    return {\n      name: 'processing_performance',\n\
+    \      status: healthyTime ? 'healthy' : 'degraded',\n      details: {\n     \
+    \   averageProcessingTime: avgProcessingTime,\n        imagesProcessed: this.metrics.imagesProcessed\n\
+    \      }\n    };\n  }\n  \n  private async checkErrorRate(): Promise<HealthCheck>\
+    \ {\n    const errorRate = this.metrics.errors / this.metrics.imagesProcessed;\n\
+    \    const healthyRate = errorRate < 0.05; // < 5% error rate\n    \n    return\
+    \ {\n      name: 'error_rate',\n      status: healthyRate ? 'healthy' : 'degraded',\n\
+    \      details: {\n        errorRate,\n        totalErrors: this.metrics.errors,\n\
+    \        totalProcessed: this.metrics.imagesProcessed\n      }\n    };\n  }\n\
+    \  \n  private async checkCacheEfficiency(): Promise<HealthCheck> {\n    const\
+    \ hitRate = this.metrics.cacheHits / (this.metrics.cacheHits + this.metrics.cacheMisses);\n\
+    \    const healthyHitRate = hitRate > 0.7; // > 70% cache hit rate\n    \n   \
+    \ return {\n      name: 'cache_efficiency',\n      status: healthyHitRate ? 'healthy'\
+    \ : 'degraded',\n      details: {\n        hitRate,\n        cacheHits: this.metrics.cacheHits,\n\
+    \        cacheMisses: this.metrics.cacheMisses\n      }\n    };\n  }\n  \n  private\
+    \ async checkQualityMetrics(): Promise<HealthCheck> {\n    const healthyQuality\
+    \ = this.metrics.averageQuality > 7; // > 7/10 quality\n    \n    return {\n \
+    \     name: 'quality_metrics',\n      status: healthyQuality ? 'healthy' : 'degraded',\n\
+    \      details: {\n        averageQuality: this.metrics.averageQuality\n     \
+    \ }\n    };\n  }\n  \n  private async checkResourceUsage(): Promise<HealthCheck>\
+    \ {\n    const memoryUsage = process.memoryUsage();\n    const cpuUsage = process.cpuUsage();\n\
+    \    \n    const healthyMemory = memoryUsage.heapUsed < 1024 * 1024 * 1024; //\
+    \ < 1GB\n    const healthyCPU = cpuUsage.user < 1000000; // < 1 second CPU time\n\
+    \    \n    return {\n      name: 'resource_usage',\n      status: healthyMemory\
+    \ && healthyCPU ? 'healthy' : 'degraded',\n      details: {\n        memoryUsage:\
+    \ memoryUsage.heapUsed,\n        cpuUsage: cpuUsage.user\n      }\n    };\n  }\n\
+    }\n```"
+- level: 2
+  title: '**Testing Strategy**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Image Processing Testing Framework**'
+  type: section
+  content: "```typescript\nclass ImageProcessingTestSuite {\n  private processor:\
+    \ ImageProcessorService;\n  \n  constructor(processor: ImageProcessorService)\
+    \ {\n    this.processor = processor;\n  }\n  \n  async runImageProcessingTests():\
+    \ Promise<TestResults> {\n    const tests = [\n      this.testFormatConversion(),\n\
+    \      this.testResizeOperations(),\n      this.testEnhancementOperations(),\n\
+    \      this.testFilterOperations(),\n      this.testBatchProcessing(),\n     \
+    \ this.testQualityValidation(),\n      this.testPerformanceMetrics()\n    ];\n\
+    \    \n    const results = await Promise.all(tests);\n    \n    return {\n   \
+    \   total: results.length,\n      passed: results.filter(r => r.passed).length,\n\
+    \      failed: results.filter(r => !r.passed).length,\n      results\n    };\n\
+    \  }\n  \n  private async testFormatConversion(): Promise<TestResult> {\n    try\
+    \ {\n      const testImage = await this.createTestImage('png');\n      \n    \
+    \  // Test conversion to various formats\n      const formats = ['jpeg', 'webp',\
+    \ 'gif', 'tiff'];\n      const conversions = await Promise.all(\n        formats.map(format\
+    \ => \n          this.processor.convertFormat(testImage, { name: format, mimeType:\
+    \ `image/${format}` })\n        )\n      );\n      \n      const allSuccessful\
+    \ = conversions.every(img => img.format.name !== testImage.format.name);\n   \
+    \   \n      return {\n        name: 'format_conversion',\n        passed: allSuccessful,\n\
+    \        details: { \n          originalFormat: testImage.format.name,\n     \
+    \     convertedFormats: conversions.map(img => img.format.name)\n        }\n \
+    \     };\n    } catch (error) {\n      return {\n        name: 'format_conversion',\n\
+    \        passed: false,\n        error: error.message\n      };\n    }\n  }\n\
+    \  \n  private async testResizeOperations(): Promise<TestResult> {\n    try {\n\
+    \      const testImage = await this.createTestImage('jpeg', 1920, 1080);\n   \
+    \   \n      const resizeOptions: ResizeOptions = {\n        width: 800,\n    \
+    \    height: 600,\n        mode: 'fit',\n        algorithm: 'lanczos'\n      };\n\
+    \      \n      const resizedImage = await this.processor.resizeImage(testImage,\
+    \ resizeOptions);\n      \n      const aspectRatioPreserved = Math.abs(\n    \
+    \    (testImage.width / testImage.height) - (resizedImage.width / resizedImage.height)\n\
+    \      ) < 0.1;\n      \n      return {\n        name: 'resize_operations',\n\
+    \        passed: resizedImage.width <= 800 && resizedImage.height <= 600 && aspectRatioPreserved,\n\
+    \        details: {\n          originalSize: `${testImage.width}x${testImage.height}`,\n\
+    \          resizedSize: `${resizedImage.width}x${resizedImage.height}`,\n    \
+    \      aspectRatioPreserved\n        }\n      };\n    } catch (error) {\n    \
+    \  return {\n        name: 'resize_operations',\n        passed: false,\n    \
+    \    error: error.message\n      };\n    }\n  }\n  \n  private async createTestImage(format:\
+    \ string, width: number = 100, height: number = 100): Promise<ImageData> {\n \
+    \   // Create a simple test image for testing\n    const canvas = document.createElement('canvas');\n\
+    \    canvas.width = width;\n    canvas.height = height;\n    const ctx = canvas.getContext('2d')!;\n\
+    \    \n    // Draw a simple pattern\n    ctx.fillStyle = '#ff0000';\n    ctx.fillRect(0,\
+    \ 0, width, height);\n    ctx.fillStyle = '#00ff00';\n    ctx.fillRect(width/4,\
+    \ height/4, width/2, height/2);\n    \n    const dataUrl = canvas.toDataURL(`image/${format}`);\n\
+    \    const base64Data = dataUrl.split(',')[1];\n    \n    return {\n      id:\
+    \ `test_${Date.now()}`,\n      format: { name: format as any, mimeType: `image/${format}`\
+    \ },\n      width,\n      height,\n      channels: 4,\n      bitDepth: 8,\n  \
+    \    colorSpace: 'rgb',\n      metadata: {},\n      data: Buffer.from(base64Data,\
+    \ 'base64')\n    };\n  }\n}\n```"
+- level: 2
+  title: '**Deployment & Configuration**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Image Processing Service Deployment**'
+  type: section
+  content: '```yaml'
+- level: 1
+  title: Docker Compose Configuration
+  type: section
+  content: "version: '3.8'\nservices:\n  image-processor:\n    image: kos/image-processor:latest\n\
+    \    environment:\n      - REDIS_URL=redis://redis:6379\n      - DATABASE_URL=postgresql://processor:password@db:5432/image_processing\n\
+    \      - MAX_CONCURRENT_JOBS=10\n      - MAX_FILE_SIZE=100MB\n      - CACHE_ENABLED=true\n\
+    \      - GPU_ACCELERATION=true\n    volumes:\n      - image-cache:/var/cache/images\n\
+    \      - ./config/image-processing.yml:/app/config/processing.yml\n    ports:\n\
+    \      - \"8080:8080\"\n    depends_on:\n      - redis\n      - db\n    healthcheck:\n\
+    \      test: [\"CMD\", \"curl\", \"-f\", \"http://localhost:8080/health\"]\n \
+    \     interval: 30s\n      timeout: 10s\n      retries: 3\n    deploy:\n     \
+    \ resources:\n        limits:\n          memory: 4G\n          cpus: '2.0'\n \
+    \       reservations:\n          memory: 2G\n          cpus: '1.0'\n\n  image-processor-worker:\n\
+    \    image: kos/image-processor-worker:latest\n    environment:\n      - REDIS_URL=redis://redis:6379\n\
+    \      - DATABASE_URL=postgresql://processor:password@db:5432/image_processing\n\
+    \      - WORKER_ID=${WORKER_ID}\n      - MAX_MEMORY_USAGE=2G\n    volumes:\n \
+    \     - ./config/image-processing.yml:/app/config/processing.yml\n    depends_on:\n\
+    \      - redis\n      - db\n    deploy:\n      replicas: 3\n      resources:\n\
+    \        limits:\n          memory: 2G\n          cpus: '1.0'\n\n  image-cache:\n\
+    \    image: redis:7-alpine\n    volumes:\n      - image-cache-data:/data\n   \
+    \ ports:\n      - \"6379:6379\"\n    command: redis-server --maxmemory 2gb --maxmemory-policy\
+    \ allkeys-lru\n```\n\nThis comprehensive Image Processor specification provides\
+    \ all necessary components for implementation, including detailed TypeScript interfaces,\
+    \ configuration examples, error handling, performance optimization, security measures,\
+    \ monitoring capabilities, and testing strategies. The module supports all major\
+    \ image formats (JPEG, PNG, GIF, WebP, TIFF, SVG, AVIF, HEIC) and provides both\
+    \ basic and advanced processing operations with quality preservation and performance\
+    \ optimization."

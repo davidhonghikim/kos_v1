@@ -1,0 +1,155 @@
+metadata:
+  original_file: 02_Recipe_Studio_and_Generative_UI.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: 02_Recipe_Studio_and_Generative_UI
+  version: 1.0
+  status: PROPOSED
+sections:
+- level: 1
+  title: '**Spec: Recipe Studio & Generative UI**'
+  type: section
+  content: ''
+- level: 2
+  title: 1. Overview
+  type: section
+  content: The `RecipeStudio` is the central component of the Griot-Seed client. It
+    is a dynamic and interactive workspace for loading, configuring, and executing
+    generative art recipes. This specification details the required controls and behaviors,
+    with a primary focus on supporting the full feature set of an **A1111 (Stable
+    Diffusion Web UI)** service.
+- level: 2
+  title: 2. Dynamic Form Generation
+  type: section
+  content: 'The Studio must dynamically render a set of UI controls based on the `parameters`
+    block of a loaded Recipe. The UI framework must be able to map a parameter''s
+    type and metadata to a specific React component.
+
+
+    **Control Mapping:**
+
+
+    | Parameter Type | UI Control         | Example Parameter           |
+
+    | -------------- | ------------------ | --------------------------- |
+
+    | `string:prompt`| `PromptTextArea`   | `prompt`, `negative_prompt` |
+
+    | `integer:slider`| `ValueSlider`      | `steps`, `cfg_scale`        |
+
+    | `string:enum`  | `SearchableDropdown`| `sampler_name`, `checkpoint`|
+
+    | `boolean`      | `StyledSwitch`     | `restore_faces`             |
+
+    | `array:lora`   | `LoraSelector`     | `loras`                     |
+
+    | `array:controlnet`|`ControlNetPanel`  | `controlnets`               |
+
+
+    ---'
+- level: 2
+  title: 3. UI Control Specifications
+  type: section
+  content: ''
+- level: 3
+  title: '**3.1. `PromptTextArea`**'
+  type: section
+  content: "- **Component:** A multi-line text area with support for dynamic token\
+    \ highlighting.\n- **Features:**\n  - Character and token count.\n  - Integration\
+    \ with a \"Prompt Manager\" (see section 4) to save/load prompts.\n  - Syntax\
+    \ highlighting for LoRA syntax (e.g., `<lora:lora_name:0.8>`)."
+- level: 3
+  title: '**3.2. `ValueSlider`**'
+  type: section
+  content: "- **Component:** A combination of a visual slider and a precise numerical\
+    \ input.\n- **Features:**\n  - Must be configured with `min`, `max`, and `step`\
+    \ values from the recipe parameter metadata.\n  - Dragging the slider updates\
+    \ the number input, and typing in the input updates the slider position.\n  -\
+    \ A \"reset to default\" button."
+- level: 3
+  title: '**3.3. `SearchableDropdown`**'
+  type: section
+  content: "- **Component:** A dropdown/select box with a text input for filtering\
+    \ options.\n- **Features:**\n  - Options must be fetched from the backend API\
+    \ (e.g., `GET /v1/services/a1111/options?type=samplers`).\n  - Must support a\
+    \ \"None\" or \"Not Selected\" option.\n  - Should display a thumbnail preview\
+    \ next to the option if available (e.g., for model checkpoints)."
+- level: 3
+  title: '**3.4. `LoraSelector`**'
+  type: section
+  content: "- **Component:** A specialized panel for managing LoRAs.\n- **Features:**\n\
+    \  - A `SearchableDropdown` to select an available LoRA.\n  - A `ValueSlider`\
+    \ to control the LoRA's weight (0.0 to 1.0).\n  - An \"Add/Remove\" button to\
+    \ manage multiple LoRAs in a list.\n  - The list of available LoRAs is fetched\
+    \ from the backend."
+- level: 3
+  title: '**3.5. `ControlNetPanel`**'
+  type: section
+  content: "- **Component:** An advanced, collapsible panel for a single ControlNet\
+    \ unit.\n- **Features:**\n  - **Image Slot:** An area to upload or select a pre-processor\
+    \ image.\n  - **Enabled Switch:** To toggle the unit on/off.\n  - **Dropdowns:**\
+    \ For selecting `preprocessor` (e.g., `canny`, `openpose`) and `model`.\n  - **Sliders:**\
+    \ For `weight` and `guidance_end`.\n  - The main view must support adding multiple\
+    \ `ControlNetPanel` components.\n\n---"
+- level: 2
+  title: 4. Associated Systems UI
+  type: section
+  content: ''
+- level: 3
+  title: '**4.1. Prompt Manager / Vault**'
+  type: section
+  content: "- **Component:** A modal or sidebar panel.\n- **Features:**\n  - Displays\
+    \ a searchable list of saved prompts (positive and negative).\n  - Allows saving\
+    \ the current text from the `PromptTextArea` with a name.\n  - Clicking a saved\
+    \ prompt populates the active text area.\n  - This system provides the user with\
+    \ a \"vault\" of reusable prompt snippets."
+- level: 3
+  title: '**4.2. A1111 Parameter List (Comprehensive)**'
+  type: section
+  content: 'The `RecipeStudio` must support rendering controls for the following A1111
+    parameters:
+
+
+    **Core Parameters:**
+
+    - `prompt`: `PromptTextArea`
+
+    - `negative_prompt`: `PromptTextArea`
+
+    - `seed`: `integer` field with a "random" button (-1).
+
+    - `sampler_name`: `SearchableDropdown` (e.g., `DPM++ 2M Karras`, `Euler a`)
+
+    - `steps`: `ValueSlider` (e.g., min: 1, max: 150, default: 20)
+
+    - `cfg_scale`: `ValueSlider` (e.g., min: 1.0, max: 30.0, default: 7.0)
+
+    - `width`: `ValueSlider` (e.g., min: 64, max: 2048, step: 8, default: 512)
+
+    - `height`: `ValueSlider` (e.g., min: 64, max: 2048, step: 8, default: 512)
+
+
+    **Advanced Parameters (often in a collapsible "Advanced" section):**
+
+    - `restore_faces`: `StyledSwitch`
+
+    - `tiling`: `StyledSwitch`
+
+    - `override_settings`: A text field for JSON overrides.
+
+
+    **Model & Refiner:**
+
+    - `sd_model_checkpoint`: `SearchableDropdown`
+
+    - `refiner_checkpoint`: `SearchableDropdown` (optional)
+
+    - `refiner_switch_at`: `ValueSlider` (0.0 to 1.0)
+
+
+    **Arrays/Complex Objects:**
+
+    - `loras`: `LoraSelector` list
+
+    - `controlnet_units`: `ControlNetPanel` list'

@@ -1,0 +1,170 @@
+title: K Os Vector Store Abstraction Spec Weaviate
+description: ''
+type: documentation
+status: current
+priority: medium
+version: '1.0'
+last_updated: '2025-06-28'
+organization_date: '2025-06-28T19:48:19.899128'
+authors: []
+tags: []
+content_type: documentation
+technical_level: advanced
+word_count: 692
+has_code_blocks: true
+has_api_specs: true
+has_architecture: true
+has_deployment: true
+has_testing: true
+has_security: false
+has_rag: true
+has_ethics: false
+original_filename: k_os_vector_store_abstraction_spec_weaviate.yml
+original_path: /Users/danger/CascadeProjects/griot-node/agents/reference/RAG/k_os_vector_store_abstraction_spec_weaviate.yml
+category: rag_system
+
+---
+
+title: K Os Vector Store Abstraction Spec Weaviate
+description: ''
+type: documentation
+status: current
+priority: medium
+last_updated: '2025-06-28'
+conversion_date: '2025-06-28T19:38:19.184845'
+original_format: markdown
+content_type: api_specification
+word_count: 663
+line_count: 128
+
+---
+
+## ✅ Architectural Goals
+
+| Goal                       | Description                                                                            |
+| -------------------------- | -------------------------------------------------------------------------------------- |
+| **Weaviate Native**        | Primary backend for production deployments                                             |
+| **Adapter Pattern**        | Support for other backends (ChromaDB, etc) via backend adapters                        |
+| **API-Level Abstraction**  | All agent queries and inserts route through a unified internal API                     |
+| **Schema-Driven**          | Full use of Weaviate's Class-based object schema model                                 |
+| **Metadata-Rich**          | Each vector includes AKU/Skill/Recipe IDs, timestamps, source agent, and semantic tags |
+| **Batch-Optimized**        | Support for bulk upserts and batch queries                                             |
+| **Agent-Friendly Formats** | All queries and responses in JSON with LLM-friendly field names                        |
+
+---
+
+## ✅ Core Components
+
+| Component             | Description                                                                                      |
+| --------------------- | ------------------------------------------------------------------------------------------------ |
+| `VectorStoreAPI`      | The master Python module exposing insert, query, delete, export, and schema-management functions |
+| `WeaviateAdapter`     | Implements VectorStoreAPI using Weaviate REST / GraphQL                                          |
+| `VectorSchemaManager` | Handles automatic schema creation, validation, and upgrades in Weaviate                          |
+| `DataIngestor`        | Handles bulk insertion of AKUs, Skills, Recipes, and other knowledge artifacts                   |
+| `VectorQueryEngine`   | Handles KNN search, hybrid BM25+vector search, and metadata-filtered queries                     |
+| `EmbeddingManager`    | Ensures embeddings (OpenAI, Hugging Face, etc) are generated and stored with each object         |
+| `ExportManager`       | Handles JSON/NDJSON export of all vectors and metadata for backup/migration                      |
+
+---
+
+## ✅ API Design
+
+### Python Interface (For All Agents)
+
+```python
+def upsert_vectors(objects: List[Dict]):
+    pass
+
+def query_vectors(query_vector: List[float], filters: Dict, top_k: int = 10):
+    pass
+
+def delete_vectors(object_ids: List[str]):
+    pass
+
+def export_vectors(output_path: str):
+    pass
+
+def ensure_schema():
+    pass
+```
+
+### Input Object Example (for Upserts)
+
+```json
+{
+  "id": "aku_20250628_001",
+  "class": "AKU",
+  "vector": [0.123, 0.456, ...],
+  "metadata": {
+    "aku_id": "aku_20250628_001",
+    "source_file": "ai-q/01_foundation/00_kOS_Vision.md",
+    "tags": ["vision", "architecture"],
+    "timestamp": "2025-06-28T12:34:56Z",
+    "agent_id": "claude-sonnet-4"
+  }
+}
+```
+
+---
+
+## ✅ Weaviate Schema Design (Initial Classes)
+
+| Class              | Description                                       | Example Fields                                                             |
+| ------------------ | ------------------------------------------------- | -------------------------------------------------------------------------- |
+| **AKU**            | Atomic Knowledge Units                            | `aku_id`, `content_summary`, `tags`, `timestamp`, `agent_id`               |
+| **Skill**          | Agent skills or reusable capabilities             | `skill_id`, `description`, `associated_nodes`, `creation_date`             |
+| **Recipe**         | Multi-step procedural patterns                    | `recipe_id`, `steps_summary`, `used_by_agents`, `last_used`                |
+| **AgentSession**   | Per-agent task session logs                       | `agent_id`, `session_id`, `task_description`, `quality_score`, `timestamp` |
+| **ChangelogEvent** | Changelog events (summarized for semantic search) | `event_id`, `event_type`, `message`, `timestamp`                           |
+| **Handoff**        | Handoff documents for continuity                  | `handoff_id`, `summary`, `key_findings`, `timestamp`                       |
+
+---
+
+## ✅ Search Pattern Support
+
+| Search Type                   | Supported                                                 |
+| ----------------------------- | --------------------------------------------------------- |
+| Vector Similarity             | ✅                                                         |
+| Hybrid BM25 + Vector          | ✅                                                         |
+| Metadata Filtered             | ✅ (via `where` filter in GraphQL)                         |
+| Full-text Keyword Search      | ✅ (via BM25 module)                                       |
+| Time-based Range Queries      | ✅ (using Weaviate filters on timestamps)                  |
+| Semantic Relationship Queries | ✅ (via vector cosine similarity + metadata graph filters) |
+
+---
+
+## ✅ Deployment Recommendations
+
+| Environment          | Setup                                                                   |
+| -------------------- | ----------------------------------------------------------------------- |
+| **Dev**              | Local Docker deployment of Weaviate                                     |
+| **Production**       | Dedicated VPS or Weaviate Cloud deployment with replication and backups |
+| **Optional Offline** | Continue with ChromaDB backend for air-gapped agents if needed          |
+
+---
+
+## ✅ Risks & Mitigation
+
+| Risk                      | Mitigation                                                            |
+| ------------------------- | --------------------------------------------------------------------- |
+| Weaviate Service Downtime | Keep ChromaDB adapter as fallback backend                             |
+| Vendor Lock-in            | Export all data periodically as NDJSON                                |
+| API Version Drift         | Pin Weaviate client library versions and monitor for breaking changes |
+| Scaling Bottlenecks       | Start small, but design for horizontal scaling later                  |
+
+---
+
+## ✅ Next Steps
+
+1. Write Python implementation for `VectorStoreAPI` with WeaviateAdapter
+2. Define and deploy Weaviate classes for all listed entities
+3. Implement bulk ingest for all historical AKUs, Skills, Recipes, and Changelog events
+4. Create CLI tools for manual query testing and batch exports
+5. Document API and provide examples for agent developers
+
+---
+
+**Plan ID:** kos\_2025\_06\_vector\_store\_weaviate\
+**Created by:** ChatGPT + User Collaboration\
+**Last Updated:** 2025-06-28T00:00:00Z
+

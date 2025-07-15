@@ -1,0 +1,350 @@
+title: "Backend Admin App User Guide"
+version: "1.0"
+status: "ACTIVE"
+created: "2025-07-01T21:35:00Z"
+last_updated: "2025-07-01T21:35:00Z"
+
+app_overview:
+  name: "kOS Backend Admin App"
+  description: "A unified, modern admin frontend for all kOS services with advanced chat, LLM orchestration, and service management"
+  url: "http://localhost:5174"
+  version: "0.1.0"
+
+quick_start:
+  access_app:
+    - "Open your browser and navigate to: http://localhost:5174"
+    - "The app will automatically detect and connect to running services"
+    - "You should see the main interface with sidebar, top bar, and chat window"
+  
+  first_chat:
+    - "Select a service from the top bar (Open WebUI, Ollama, etc.)"
+    - "Choose a model from the dropdown"
+    - "Type your message in the chat input and press Enter"
+    - "The AI will respond using the selected service and model"
+
+interface_overview:
+  layout:
+    sidebar:
+      location: "Left side of the screen"
+      features:
+        - "Session management (create, switch, import/export)"
+        - "Service status monitoring"
+        - "Prompt library management"
+        - "Token usage tracking"
+        - "Settings and configuration"
+    
+    top_bar:
+      location: "Top of the screen"
+      features:
+        - "Service selection dropdown"
+        - "Model selection dropdown"
+        - "Advanced parameters toggle"
+        - "Group chat mode toggle"
+        - "System prompt input"
+    
+    chat_window:
+      location: "Main area"
+      features:
+        - "Message history display"
+        - "Real-time chat input"
+        - "Message timestamps and metadata"
+        - "Copy message functionality"
+        - "Message editing (coming soon)"
+
+core_features:
+  multi_backend_chat:
+    description: "Chat with multiple AI services simultaneously"
+    supported_services:
+      openwebui:
+        name: "Open WebUI"
+        url: "http://localhost:3000"
+        features: "OpenAI-compatible API, multiple models"
+      ollama:
+        name: "Ollama"
+        url: "http://localhost:11434"
+        features: "Local LLM models, fast inference"
+    
+    usage:
+      - "Select a service from the top bar"
+      - "Choose a model from the dropdown"
+      - "Start chatting - the app will route messages to the selected service"
+  
+  group_chat:
+    description: "Send messages to multiple AI services simultaneously"
+    strategies:
+      parallel:
+        description: "Send to all services at once"
+        use_case: "Get multiple perspectives quickly"
+      sequential:
+        description: "Send to services one after another"
+        use_case: "Chain responses between services"
+      consensus:
+        description: "Get responses and find common ground"
+        use_case: "Validate information across models"
+    
+    usage:
+      - "Enable group chat mode in the top bar"
+      - "Select multiple services"
+      - "Choose a strategy (parallel, sequential, consensus)"
+      - "Send your message - all selected services will respond"
+  
+  advanced_parameters:
+    description: "Fine-tune AI responses with advanced parameters"
+    parameters:
+      temperature:
+        range: "0.0 - 2.0"
+        description: "Controls randomness (0 = deterministic, 2 = very random)"
+        default: "0.7"
+      top_p:
+        range: "0.0 - 1.0"
+        description: "Controls diversity via nucleus sampling"
+        default: "0.9"
+      max_tokens:
+        range: "1 - 4096"
+        description: "Maximum number of tokens in response"
+        default: "1000"
+      frequency_penalty:
+        range: "-2.0 - 2.0"
+        description: "Reduces repetition of common phrases"
+        default: "0.0"
+      presence_penalty:
+        range: "-2.0 - 2.0"
+        description: "Encourages new topics"
+        default: "0.0"
+    
+    usage:
+      - "Click 'Show Advanced' in the top bar"
+      - "Adjust parameters using sliders and inputs"
+      - "Parameters apply to all subsequent messages"
+  
+  system_prompts:
+    description: "Set custom system prompts to guide AI behavior"
+    usage:
+      - "Enter your system prompt in the top bar"
+      - "The prompt will be sent with every message"
+      - "Use to set AI personality, role, or constraints"
+    examples:
+      - "You are a helpful coding assistant. Always provide code examples."
+      - "You are a creative writer. Be imaginative and descriptive."
+      - "You are a technical expert. Provide detailed explanations."
+
+session_management:
+  creating_sessions:
+    - "Click 'New Session' in the sidebar"
+    - "Enter a session name"
+    - "The new session will be created and activated"
+  
+  switching_sessions:
+    - "Click on any session in the sidebar"
+    - "The chat will switch to that session's history"
+    - "Current session is highlighted"
+  
+  importing_sessions:
+    - "Click 'Import Session' in the sidebar"
+    - "Select a JSON or YAML file"
+    - "The session will be imported with all messages"
+  
+  exporting_sessions:
+    - "Click the export icon next to a session"
+    - "Choose JSON or YAML format"
+    - "The session will be downloaded to your computer"
+
+service_management:
+  service_discovery:
+    description: "The app automatically detects running services"
+    supported_services:
+      - "Open WebUI (port 3000)"
+      - "Jellyfin (port 8096)"
+      - "Ollama (port 11434)"
+    
+    status_indicators:
+      running: "Green dot - service is accessible"
+      down: "Red dot - service is not responding"
+      unknown: "Gray dot - service status unknown"
+  
+  manual_service_add:
+    - "Click 'Add Service' in the sidebar"
+    - "Enter service details (name, URL, type)"
+    - "The service will be added to your list"
+  
+  service_monitoring:
+    - "Services are checked every 30 seconds"
+    - "Status updates automatically in the sidebar"
+    - "Failed services are marked with red indicators"
+
+prompt_management:
+  creating_prompts:
+    - "Click 'New Prompt' in the sidebar"
+    - "Enter prompt title and content"
+    - "Add tags for organization"
+    - "Save the prompt to your library"
+  
+  using_prompts:
+    - "Click on any prompt in the sidebar"
+    - "The prompt content will be inserted into the chat"
+    - "You can edit the prompt before sending"
+  
+  organizing_prompts:
+    - "Use tags to categorize prompts"
+    - "Search prompts by title or content"
+    - "Import/export prompt libraries"
+
+token_management:
+  usage_tracking:
+    description: "Track token usage across all services"
+    features:
+      - "Real-time token counting"
+      - "Usage history per session"
+      - "Cost estimation (if available)"
+      - "Usage limits and alerts"
+  
+  setting_limits:
+    - "Click 'Token Settings' in the sidebar"
+    - "Set daily or session limits"
+    - "Receive alerts when approaching limits"
+  
+  usage_reports:
+    - "View detailed usage statistics"
+    - "Export usage reports"
+    - "Monitor costs over time"
+
+rag_integration:
+  description: "Load context and documentation from the RAG system"
+  features:
+    - "Automatic context loading for relevant topics"
+    - "Documentation search and retrieval"
+    - "Fallback responses when RAG is unavailable"
+  
+  usage:
+    - "RAG integration works automatically"
+    - "Context is loaded based on your messages"
+    - "No manual configuration required"
+
+troubleshooting:
+  common_issues:
+    app_not_loading:
+      problem: "App doesn't load in browser"
+      solution: "Check if development server is running on port 5174"
+      command: "cd apps/backend && ./start-dev.sh"
+    
+    services_not_connecting:
+      problem: "Services show as 'down'"
+      solution: "Verify services are running with docker ps"
+      command: "docker ps"
+    
+    chat_not_working:
+      problem: "Messages don't get responses"
+      solution: "Check service URLs and API endpoints"
+      check: "Verify Open WebUI is accessible at http://localhost:3000"
+    
+    build_errors:
+      problem: "npm run build fails"
+      solution: "Use npx vite build instead"
+      command: "cd apps/backend && npx vite build"
+  
+  getting_help:
+    - "Check the browser console for error messages"
+    - "Verify all required services are running"
+    - "Check the README.md file for detailed setup instructions"
+    - "Review the deployment guide for production issues"
+
+keyboard_shortcuts:
+  general:
+    "Ctrl+Enter": "Send message"
+    "Ctrl+N": "New session"
+    "Ctrl+S": "Save current session"
+    "Ctrl+O": "Open session"
+    "Ctrl+P": "Focus prompt input"
+  
+  navigation:
+    "Ctrl+1-9": "Switch to session 1-9"
+    "Ctrl+Tab": "Next session"
+    "Ctrl+Shift+Tab": "Previous session"
+    "Ctrl+F": "Search messages"
+
+advanced_usage:
+  custom_adapters:
+    description: "Add support for new AI services"
+    process:
+      - "Create a new adapter class extending ChatAdapter"
+      - "Implement sendMessage and getModels methods"
+      - "Register the adapter in ChatEngine"
+      - "Update service configuration"
+  
+  api_integration:
+    description: "Integrate with external APIs"
+    features:
+      - "Custom API endpoints"
+      - "Authentication handling"
+      - "Response processing"
+      - "Error handling"
+  
+  automation:
+    description: "Automate common tasks"
+    possibilities:
+      - "Batch message processing"
+      - "Scheduled conversations"
+      - "Response templates"
+      - "Integration with other tools"
+
+performance_tips:
+  optimization:
+    - "Use appropriate model sizes for your needs"
+    - "Adjust temperature for faster responses"
+    - "Limit max_tokens for shorter responses"
+    - "Use group chat strategically"
+  
+  resource_management:
+    - "Close unused sessions to free memory"
+    - "Export and archive old conversations"
+    - "Monitor token usage to control costs"
+    - "Use local models (Ollama) for privacy"
+
+security_considerations:
+  data_privacy:
+    - "Messages are stored locally in IndexedDB"
+    - "No data is sent to external servers (except AI services)"
+    - "Use local models for sensitive conversations"
+    - "Export and delete sessions as needed"
+  
+  service_security:
+    - "Verify service URLs and certificates"
+    - "Use HTTPS for production deployments"
+    - "Implement authentication for sensitive services"
+    - "Monitor service access logs"
+
+future_features:
+  planned:
+    - "Message editing and deletion"
+    - "Advanced search and filtering"
+    - "Custom themes and styling"
+    - "Plugin system for extensions"
+    - "Collaborative chat sessions"
+    - "Advanced analytics and insights"
+  
+  community_requests:
+    - "Voice input and output"
+    - "File upload and processing"
+    - "Integration with more services"
+    - "Mobile app version"
+    - "Offline mode support"
+
+support_and_community:
+  documentation:
+    - "README.md: Setup and development guide"
+    - "Architecture docs: Technical implementation details"
+    - "API docs: Service integration reference"
+    - "Deployment guide: Production setup instructions"
+  
+  getting_help:
+    - "Check the troubleshooting section above"
+    - "Review the browser console for errors"
+    - "Verify all prerequisites are installed"
+    - "Test with different services and models"
+  
+  contributing:
+    - "Follow modular architecture principles"
+    - "Keep files under 300 lines"
+    - "Use TypeScript for all new code"
+    - "Update documentation and RAG system"
+    - "Test with multiple services" 

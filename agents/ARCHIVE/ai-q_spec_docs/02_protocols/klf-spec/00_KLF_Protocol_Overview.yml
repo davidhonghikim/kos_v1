@@ -1,0 +1,47 @@
+frontmatter:
+  title: KLF Protocol Overview
+  description: Universal agent communication protocol for the kOS ecosystem
+  version: 3.0.0
+  
+sections:
+- title: "KLF: Kind Link Framework"
+  content: |
+    # The Universal "Telephone Operator" for kOS
+    
+    KLF enables ANY agent (AI, human, service, device) to discover and communicate 
+    with ANY other agent in the kOS network through a standardized protocol.
+    
+    ## Core Philosophy
+    - **Agent-Agnostic**: Works for AI agents, humans, services, IoT devices, frontends, backends
+    - **Service Discovery**: Agents can find capabilities without hardcoding connections
+    - **Message Routing**: KLF routes messages based on capabilities, not addresses
+    - **Transport Independence**: HTTP, WebSocket, gRPC - KLF adapts to any transport
+    
+    ## Quick Start
+    1. **Connect**: `GET /klf/v1/health` - Check if KLF network is available
+    2. **Register**: `POST /klf/v1/agents/register` - Join the network as an agent
+    3. **Discover**: `GET /klf/v1/capabilities` - Find available services
+    4. **Communicate**: `POST /klf/v1/message` - Send messages to any agent
+    
+    ## Current Backend
+    - **URL**: `http://localhost:30436` (PersonaRAG Bridge Server)
+    - **Status**: ✅ Live and operational
+    - **WebSocket**: `ws://localhost:30436/klf/v1/events` for real-time events
+    
+    ## Available Now
+    - Document upload/search/analysis
+    - AI persona chat and text generation
+    - Vector similarity search
+    - Secure vault operations
+    - System health monitoring
+    
+    ## File Structure
+    ```
+    ai-q/02_protocols/klf-spec/
+    ├── 00_KLF_Protocol_Overview.yml          # This file - introduction
+    ├── 01_KLF_Message_Format.yml            # Universal message structure
+    ├── 02_KLF_Agent_Registration.yml        # How agents join the network
+    ├── 03_KLF_Service_Discovery.yml         # Finding available capabilities
+    ├── 04_KLF_Transport_Options.yml         # HTTP, WebSocket, future protocols
+    └── 05_KLF_Implementation_Examples.yml   # Code examples in multiple languages
+    ``` 

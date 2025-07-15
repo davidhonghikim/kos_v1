@@ -1,0 +1,142 @@
+#!/usr/bin/env python3
+"""
+kOS v1 Environment Audit Script (env_audit.py)
+- Detects port conflicts and missing enable flags
+- Logs all findings to logs/env_audit.log
+- Always runs env_loader.py and generate_docker_compose.py after audit
+- OS-agnostic, robust, and uses current timestamp
+"""
+import os
+import sys
+import re
+import subprocess
+from datetime import datetime
+
+# --- Constants ---
+PORTS_ENV = os.path.join('env', 'ports.env')
+SETTINGS_ENV = os.path.join('env', 'settings.env')
+LOCAL_ENV = os.path.join('env', 'local.env')
+LOG_DIR = 'logs'
+LOG_FILE = os.path.join(LOG_DIR, 'env_audit.log')
+ENV_LOADER = 'env_loader.py'
+DOCKER_GEN = 'generate_docker_compose.py'
+
+# --- Logging ---
+def log(msg, level='INFO'):
+    now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    entry = f"{now} - env_audit - {level} - {msg}"
+    print(entry) if level in ('ERROR', 'WARNING') else None
+    if not os.path.exists(LOG_DIR):
+        os.makedirs(LOG_DIR, exist_ok=True)
+    with open(LOG_FILE, 'a', encoding='utf-8') as f:
+        f.write(entry + '\n')
+
+def print_summary(summary):
+    print("\n===== kOS v1 Environment Audit Summary =====")
+    for line in summary:
+        print(line)
+    print("===========================================\n")
+
+# --- Utility Functions ---
+def parse_env_file(filepath):
+    env = {}
+    if not os.path.exists(filepath):
+        log(f"Env file not found: {filepath}", 'ERROR')
+        return env
+    with open(filepath, 'r', encoding='utf-8') as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith('#'):
+                continue
+            if '=' in line:
+                k, v = line.split('=', 1)
+                env[k.strip()] = v.strip()
+    return env
+
+def get_services_from_ports_env(env):
+    services = set()
+    for k in env:
+        m = re.match(r'KOS_([A-Z0-9_]+)_EXTERNAL_PORT', k)
+        if m:
+            services.add(m.group(1))
+    return sorted(services)
+
+def get_port_map(env):
+    port_map = {}
+    for k, v in env.items():
+        m = re.match(r'KOS_([A-Z0-9_]+)_EXTERNAL_PORT', k)
+        if m:
+            port = v
+            service = m.group(1)
+            port_map.setdefault(port, []).append(service)
+    return port_map
+
+def get_enable_flags(settings_env, local_env):
+    flags = set()
+    for env in (settings_env, local_env):
+        for k in env:
+            m = re.match(r'KOS_([A-Z0-9_]+)_ENABLE', k)
+            if m:
+                flags.add(m.group(1))
+    return flags
+
+def run_script(script):
+    if not os.path.exists(script):
+        log(f"Script not found: {script}", 'WARNING')  # Changed from ERROR to WARNING
+        return 0  # Do not treat as error
+    log(f"Running {script}...", 'INFO')
+    result = subprocess.run([sys.executable, script], capture_output=True, text=True)
+    if result.returncode != 0:
+        log(f"{script} failed: {result.stderr}", 'ERROR')
+    else:
+        log(f"{script} completed successfully.", 'INFO')
+    return result.returncode
+
+# --- Main Audit Logic ---
+# Only require enable flags for real, user-requested, separately managed services
+REQUIRED_ENABLE_FLAGS = [
+    'KOS_SUPABASE_STUDIO_ENABLE',
+    # Add other real, user-requested service enable flags here as needed
+]
+
+def main():
+    summary = []
+    # Parse env files
+    ports_env = parse_env_file(PORTS_ENV)
+    settings_env = parse_env_file(SETTINGS_ENV)
+    local_env = parse_env_file(LOCAL_ENV)
+    if not ports_env:
+        log("Failed to parse ports.env. Aborting audit.", 'ERROR')
+        sys.exit(1)
+    # 1. Port Conflict Audit
+    port_map = get_port_map(ports_env)
+    conflicts = {p: s for p, s in port_map.items() if len(s) > 1}
+    if conflicts:
+        for port, services in conflicts.items():
+            msg = f"Port conflict: {port} used by {', '.join(services)}"
+            log(msg, 'ERROR')
+            summary.append(f"ERROR: {msg}")
+    else:
+        log("No port conflicts detected.", 'INFO')
+        summary.append("No port conflicts detected.")
+    # 2. Enable Flag Audit (only for REQUIRED_ENABLE_FLAGS)
+    all_flags = set(list(settings_env.keys()) + list(local_env.keys()))
+    missing_flags = [flag for flag in REQUIRED_ENABLE_FLAGS if flag not in all_flags]
+    if missing_flags:
+        for flag in missing_flags:
+            msg = f"Required enable flag missing: {flag}"
+            log(msg, 'WARNING')
+            summary.append(f"WARNING: {msg}")
+    else:
+        log("All required enable flags present.", 'INFO')
+        summary.append("All required enable flags present.")
+    # 3. Summary
+    summary.append(f"Total port conflicts: {len(conflicts)}")
+    summary.append(f"Total missing required enable flags: {len(missing_flags)}")
+    print_summary(summary)
+    # 4. Always run env_loader.py and generate_docker_compose.py
+    run_script(ENV_LOADER)
+    run_script(DOCKER_GEN)
+
+if __name__ == '__main__':
+    main() 

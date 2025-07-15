@@ -1,0 +1,579 @@
+metadata:
+  original_file: 08_BCrypt_Hash_Generator.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: BCrypt Hash Generator
+  version: '1.0'
+  category: Security
+  subcategory: Hashing
+  dependencies:
+  - Base Hash Generator
+  tags:
+  - bcrypt
+  - hashing
+  - security
+  - password
+  - cryptography
+  priority: high
+sections:
+- level: 1
+  title: BCrypt Hash Generator
+  type: section
+  content: ''
+- level: 2
+  title: Purpose
+  type: section
+  content: Provides BCrypt hashing implementation for the kOS ecosystem. This module
+    extends the Base Hash Generator to provide specific BCrypt hashing capabilities
+    for password hashing, secure storage, and cryptographic applications. The BCrypt
+    Hash Generator ensures high-security, adaptive hashing with configurable cost
+    factors and salt generation across all kOS components.
+- level: 2
+  title: Capabilities
+  type: section
+  content: '- **BCrypt Algorithm**: Full implementation of BCrypt hashing algorithm
+
+    - **Adaptive Security**: Configurable cost factor for security vs performance
+    trade-offs
+
+    - **Salt Generation**: Automatic secure salt generation and management
+
+    - **Password Optimization**: Optimized for password hashing and verification
+
+    - **Cost Factor Management**: Dynamic cost factor adjustment based on hardware
+
+    - **Hardware Adaptation**: Automatic adaptation to available hardware resources
+
+    - **Performance Optimization**: Configurable performance settings and optimizations
+
+    - **Security Validation**: Comprehensive security validation and compliance checking
+
+    - **Verification Support**: Built-in password verification capabilities'
+- level: 2
+  title: Integration Points
+  type: section
+  content: '- **Input**: Data to hash, cost factor, and hashing configuration
+
+    - **Output**: BCrypt hash, salt, and hashing metadata
+
+    - **Dependencies**: Base Hash Generator for interface compliance'
+- level: 2
+  title: Configuration
+  type: section
+  content: "```yaml\nbcrypt_hash_generator:\n  default_cost_factor: 12\n  min_cost_factor:\
+    \ 10\n  max_cost_factor: 16\n  adaptive_cost:\n    enabled: true\n    target_time_ms:\
+    \ 250\n    hardware_benchmark: true\n    auto_adjust: true\n  performance:\n \
+    \   parallel_processing: true\n    max_concurrent_operations: 20\n    batch_size:\
+    \ 100\n    memory_efficient: true\n  security:\n    require_secure_random: true\n\
+    \    validate_input: true\n    salt_entropy: 128\n    fips_compliance: true\n\
+    \  verification:\n    timing_attack_protection: true\n    constant_time_comparison:\
+    \ true\n    max_verification_time: 1000  # milliseconds\n  audit:\n    log_all_operations:\
+    \ true\n    include_metadata: true\n    retention_period: \"7y\"\n```"
+- level: 2
+  title: Example Workflow
+  type: section
+  content: "```mermaid\ngraph TD\n  A[Input Data] --> B[Input Validation]\n  B -->\
+    \ C[Cost Factor Selection]\n  C --> D[Salt Generation]\n  D --> E[BCrypt Hashing]\n\
+    \  E --> F[Output Assembly]\n  F --> G[Audit Logging]\n  G --> H[Hash Output]\n\
+    \  \n  B --> I{Input Valid?}\n  I -->|No| J[Error Handling]\n  I -->|Yes| C\n\
+    \  \n  C --> K{Adaptive Cost?}\n  K -->|Yes| L[Hardware Benchmark]\n  K -->|No|\
+    \ D\n  L --> M[Cost Factor Adjustment]\n  M --> D\n  \n  E --> N{Hashing Success?}\n\
+    \  N -->|No| O[Error Recovery]\n  N -->|Yes| F\n```"
+- level: 2
+  title: Core Capabilities
+  type: section
+  content: ''
+- level: 3
+  title: '**1. BCrypt Algorithm Implementation**'
+  type: section
+  content: '- **Description**: Full implementation of BCrypt hashing algorithm
+
+    - **Input**: Data to hash and BCrypt parameters
+
+    - **Output**: BCrypt hash and hashing metadata
+
+    - **Dependencies**: BCrypt cryptographic library'
+- level: 3
+  title: '**2. Adaptive Cost Factor Management**'
+  type: section
+  content: '- **Description**: Dynamic cost factor adjustment based on hardware capabilities
+
+    - **Input**: Hardware benchmark data and performance targets
+
+    - **Output**: Optimized cost factor for current hardware
+
+    - **Dependencies**: Hardware detection and benchmarking'
+- level: 3
+  title: '**3. Salt Generation and Management**'
+  type: section
+  content: '- **Description**: Secure salt generation and application for enhanced
+    security
+
+    - **Input**: Salt requirements and security parameters
+
+    - **Output**: Generated salt and salt metadata
+
+    - **Dependencies**: Secure random generator'
+- level: 3
+  title: '**4. Password Verification**'
+  type: section
+  content: '- **Description**: Built-in password verification with timing attack protection
+
+    - **Input**: Password and hash for verification
+
+    - **Output**: Verification result and metadata
+
+    - **Dependencies**: Constant-time comparison algorithms'
+- level: 2
+  title: Module Interface
+  type: section
+  content: ''
+- level: 3
+  title: '**Input Interface**'
+  type: section
+  content: "```typescript\ninterface BCryptHashGeneratorInput extends BaseHashGeneratorInput\
+    \ {\n  costFactor?: number;\n  adaptiveCost?: boolean;\n  targetTimeMs?: number;\n\
+    \  includeSalt?: boolean;\n  outputFormat?: 'bcrypt' | 'hex' | 'base64';\n}\n\n\
+    interface BCryptHashingParameters {\n  costFactor: number;\n  adaptiveCost: boolean;\n\
+    \  targetTimeMs?: number;\n  includeSalt: boolean;\n  outputFormat: string;\n\
+    }\n\ninterface BCryptVerificationInput {\n  password: string | Buffer;\n  hash:\
+    \ string;\n  timeout?: number;\n}\n```"
+- level: 3
+  title: '**Output Interface**'
+  type: section
+  content: "```typescript\ninterface BCryptHashGeneratorOutput extends BaseHashGeneratorOutput\
+    \ {\n  costFactor: number;\n  adaptiveCost: boolean;\n  outputFormat: string;\n\
+    \  metadata: BCryptHashingMetadata;\n}\n\ninterface BCryptHashingMetadata extends\
+    \ HashingMetadata {\n  costFactor: number;\n  adaptiveCost: boolean;\n  outputFormat:\
+    \ string;\n  hardwareBenchmark?: HardwareBenchmarkData;\n  performanceMetrics:\
+    \ BCryptPerformanceMetrics;\n}\n\ninterface HardwareBenchmarkData {\n  cpuCores:\
+    \ number;\n  memoryGB: number;\n  benchmarkTime: number;\n  recommendedCostFactor:\
+    \ number;\n}\n\ninterface BCryptPerformanceMetrics extends PerformanceMetrics\
+    \ {\n  hashingTime: number; // milliseconds\n  costFactor: number;\n  adaptiveCost:\
+    \ boolean;\n  hardwareOptimized: boolean;\n}\n\ninterface BCryptVerificationOutput\
+    \ {\n  valid: boolean;\n  timing: number; // milliseconds\n  metadata: BCryptVerificationMetadata;\n\
+    }\n\ninterface BCryptVerificationMetadata {\n  timestamp: Date;\n  operationId:\
+    \ string;\n  costFactor: number;\n  timingAttackProtected: boolean;\n  constantTimeComparison:\
+    \ boolean;\n}\n```"
+- level: 3
+  title: '**Configuration Interface**'
+  type: section
+  content: "```typescript\ninterface BCryptHashGeneratorConfig extends BaseHashGeneratorConfig\
+    \ {\n  defaultCostFactor: number;\n  minCostFactor: number;\n  maxCostFactor:\
+    \ number;\n  adaptiveCost: AdaptiveCostConfig;\n  performance: BCryptPerformanceConfig;\n\
+    \  security: BCryptSecurityConfig;\n  verification: BCryptVerificationConfig;\n\
+    }\n\ninterface AdaptiveCostConfig {\n  enabled: boolean;\n  targetTimeMs: number;\n\
+    \  hardwareBenchmark: boolean;\n  autoAdjust: boolean;\n  benchmarkInterval: string;\n\
+    }\n\ninterface BCryptPerformanceConfig extends PerformanceConfig {\n  parallelProcessing:\
+    \ boolean;\n  maxConcurrentOperations: number;\n  batchSize: number;\n  memoryEfficient:\
+    \ boolean;\n}\n\ninterface BCryptSecurityConfig extends SecurityConfig {\n  requireSecureRandom:\
+    \ boolean;\n  validateInput: boolean;\n  saltEntropy: number;\n  fipsCompliance:\
+    \ boolean;\n}\n\ninterface BCryptVerificationConfig {\n  timingAttackProtection:\
+    \ boolean;\n  constantTimeComparison: boolean;\n  maxVerificationTime: number;\n\
+    \  retryOnTimeout: boolean;\n}\n```"
+- level: 2
+  title: Module Dependencies
+  type: section
+  content: ''
+- level: 3
+  title: '**Required Dependencies**'
+  type: section
+  content: '- **Base Hash Generator**: For interface compliance and common functionality
+
+    - **BCrypt Cryptographic Library**: For BCrypt algorithm implementation
+
+    - **Hardware Detection**: For hardware capability detection and benchmarking'
+- level: 3
+  title: '**Optional Dependencies**'
+  type: section
+  content: '- **Hardware Security Module (HSM)**: For enhanced security when available
+
+    - **Performance Monitor**: For detailed performance monitoring when available
+
+    - **FIPS Validation**: For FIPS compliance validation when required'
+- level: 2
+  title: Module Implementation
+  type: section
+  content: ''
+- level: 3
+  title: '**Core Components**'
+  type: section
+  content: ''
+- level: 4
+  title: '**1. BCrypt Hashing Engine**'
+  type: section
+  content: "```typescript\nclass BCryptHashingEngine extends BaseHashingEngine {\n\
+    \  private config: BCryptHashGeneratorConfig;\n  private hardwareBenchmarker:\
+    \ HardwareBenchmarker;\n  private adaptiveCostManager: AdaptiveCostManager;\n\
+    \  \n  constructor(config: BCryptHashGeneratorConfig) {\n    super(config);\n\
+    \    this.config = config;\n    this.hardwareBenchmarker = new HardwareBenchmarker();\n\
+    \    this.adaptiveCostManager = new AdaptiveCostManager(config.adaptiveCost);\n\
+    \  }\n  \n  async generateHash(input: BCryptHashGeneratorInput): Promise<BCryptHashGeneratorOutput>\
+    \ {\n    // Validate BCrypt specific parameters\n    this.validateBCryptInput(input);\n\
+    \    \n    // Determine cost factor\n    const costFactor = await this.determineCostFactor(input);\n\
+    \    \n    // Perform BCrypt hashing\n    const result = await this.performBCryptHashing(input.data,\
+    \ costFactor, input);\n    \n    // Log operation for audit\n    await this.logBCryptOperation(input,\
+    \ result);\n    \n    return result;\n  }\n  \n  async verifyPassword(input: BCryptVerificationInput):\
+    \ Promise<BCryptVerificationOutput> {\n    const startTime = Date.now();\n   \
+    \ const operationId = this.generateOperationId();\n    \n    try {\n      // Perform\
+    \ constant-time password verification\n      const valid = await this.performPasswordVerification(input.password,\
+    \ input.hash);\n      \n      const timing = Date.now() - startTime;\n      \n\
+    \      return {\n        valid,\n        timing,\n        metadata: {\n      \
+    \    timestamp: new Date(),\n          operationId,\n          costFactor: this.extractCostFactor(input.hash),\n\
+    \          timingAttackProtected: this.config.verification.timingAttackProtection,\n\
+    \          constantTimeComparison: this.config.verification.constantTimeComparison\n\
+    \        }\n      };\n    } catch (error) {\n      throw new BCryptHashingError(`Password\
+    \ verification failed: ${error.message}`, error);\n    }\n  }\n  \n  private validateBCryptInput(input:\
+    \ BCryptHashGeneratorInput): void {\n    if (input.costFactor) {\n      if (input.costFactor\
+    \ < this.config.minCostFactor || input.costFactor > this.config.maxCostFactor)\
+    \ {\n        throw new BCryptHashingError(`Cost factor ${input.costFactor} is\
+    \ outside valid range [${this.config.minCostFactor}, ${this.config.maxCostFactor}]`);\n\
+    \      }\n    }\n    \n    if (input.targetTimeMs && input.targetTimeMs <= 0)\
+    \ {\n      throw new BCryptHashingError('Target time must be positive');\n   \
+    \ }\n  }\n  \n  private async determineCostFactor(input: BCryptHashGeneratorInput):\
+    \ Promise<number> {\n    if (input.costFactor) {\n      return input.costFactor;\n\
+    \    }\n    \n    if (input.adaptiveCost && this.config.adaptiveCost.enabled)\
+    \ {\n      return await this.adaptiveCostManager.getOptimalCostFactor(input.targetTimeMs);\n\
+    \    }\n    \n    return this.config.defaultCostFactor;\n  }\n  \n  private async\
+    \ performBCryptHashing(\n    data: string | Buffer,\n    costFactor: number,\n\
+    \    input: BCryptHashGeneratorInput\n  ): Promise<BCryptHashGeneratorOutput>\
+    \ {\n    const startTime = Date.now();\n    const dataString = Buffer.isBuffer(data)\
+    \ ? data.toString('utf8') : data;\n    \n    try {\n      // Generate BCrypt hash\n\
+    \      const hash = await this.bcryptHash(dataString, costFactor);\n      \n \
+    \     // Format output\n      const formattedHash = this.formatOutput(hash, input.outputFormat);\n\
+    \      \n      const performanceMetrics = this.capturePerformanceMetrics(startTime,\
+    \ costFactor);\n      const hardwareBenchmark = input.adaptiveCost ? await this.hardwareBenchmarker.getBenchmarkData()\
+    \ : undefined;\n      \n      return {\n        hash: formattedHash,\n       \
+    \ algorithm: 'BCrypt',\n        costFactor,\n        adaptiveCost: input.adaptiveCost\
+    \ || false,\n        outputFormat: input.outputFormat || 'bcrypt',\n        metadata:\
+    \ {\n          timestamp: new Date(),\n          operationId: this.generateOperationId(),\n\
+    \          performanceMetrics,\n          securityLevel: 'high',\n          costFactor,\n\
+    \          adaptiveCost: input.adaptiveCost || false,\n          outputFormat:\
+    \ input.outputFormat || 'bcrypt',\n          hardwareBenchmark\n        },\n \
+    \       status: { success: true }\n      };\n    } catch (error) {\n      throw\
+    \ new BCryptHashingError(`BCrypt hashing failed: ${error.message}`, error);\n\
+    \    }\n  }\n  \n  private async bcryptHash(data: string, costFactor: number):\
+    \ Promise<string> {\n    return new Promise((resolve, reject) => {\n      this.bcrypt.hash(data,\
+    \ costFactor, (err, hash) => {\n        if (err) {\n          reject(err);\n \
+    \       } else {\n          resolve(hash);\n        }\n      });\n    });\n  }\n\
+    \  \n  private async performPasswordVerification(password: string | Buffer, hash:\
+    \ string): Promise<boolean> {\n    const passwordString = Buffer.isBuffer(password)\
+    \ ? password.toString('utf8') : password;\n    \n    return new Promise((resolve,\
+    \ reject) => {\n      this.bcrypt.compare(passwordString, hash, (err, result)\
+    \ => {\n        if (err) {\n          reject(err);\n        } else {\n       \
+    \   resolve(result);\n        }\n      });\n    });\n  }\n  \n  private extractCostFactor(hash:\
+    \ string): number {\n    // Extract cost factor from BCrypt hash format\n    const\
+    \ match = hash.match(/^\\$2[aby]\\$(\\d+)\\$/);\n    return match ? parseInt(match[1],\
+    \ 10) : 0;\n  }\n  \n  private formatOutput(hash: string, format?: string): string\
+    \ {\n    switch (format) {\n      case 'hex':\n        return Buffer.from(hash).toString('hex');\n\
+    \      case 'base64':\n        return Buffer.from(hash).toString('base64');\n\
+    \      case 'bcrypt':\n      default:\n        return hash;\n    }\n  }\n  \n\
+    \  private capturePerformanceMetrics(startTime: number, costFactor: number): BCryptPerformanceMetrics\
+    \ {\n    const totalTime = Date.now() - startTime;\n    \n    return {\n     \
+    \ totalTime,\n      hashingTime: totalTime,\n      validationTime: 0,\n      memoryUsage:\
+    \ process.memoryUsage().heapUsed / 1024 / 1024, // MB\n      cpuUsage: 0, // Would\
+    \ be measured in real implementation\n      throughput: 0, // Would be calculated\
+    \ based on data size and time\n      hashingTime: totalTime,\n      costFactor,\n\
+    \      adaptiveCost: false,\n      hardwareOptimized: false\n    };\n  }\n}\n\
+    ```"
+- level: 4
+  title: '**2. Adaptive Cost Manager**'
+  type: section
+  content: "```typescript\nclass AdaptiveCostManager {\n  private config: AdaptiveCostConfig;\n\
+    \  private hardwareBenchmarker: HardwareBenchmarker;\n  private costFactorCache:\
+    \ Map<string, number>;\n  \n  constructor(config: AdaptiveCostConfig) {\n    this.config\
+    \ = config;\n    this.hardwareBenchmarker = new HardwareBenchmarker();\n    this.costFactorCache\
+    \ = new Map();\n  }\n  \n  async getOptimalCostFactor(targetTimeMs?: number):\
+    \ Promise<number> {\n    const targetTime = targetTimeMs || this.config.targetTimeMs;\n\
+    \    const cacheKey = `cost_${targetTime}`;\n    \n    // Check cache first\n\
+    \    if (this.costFactorCache.has(cacheKey)) {\n      return this.costFactorCache.get(cacheKey)!;\n\
+    \    }\n    \n    // Perform hardware benchmark\n    const benchmarkData = await\
+    \ this.hardwareBenchmarker.getBenchmarkData();\n    \n    // Calculate optimal\
+    \ cost factor\n    const optimalCostFactor = this.calculateOptimalCostFactor(benchmarkData,\
+    \ targetTime);\n    \n    // Cache result\n    this.costFactorCache.set(cacheKey,\
+    \ optimalCostFactor);\n    \n    return optimalCostFactor;\n  }\n  \n  private\
+    \ calculateOptimalCostFactor(benchmarkData: HardwareBenchmarkData, targetTime:\
+    \ number): number {\n    // Calculate optimal cost factor based on hardware capabilities\
+    \ and target time\n    // This is a simplified calculation - real implementation\
+    \ would be more sophisticated\n    \n    const baseCostFactor = 12;\n    const\
+    \ cpuFactor = Math.log2(benchmarkData.cpuCores);\n    const timeFactor = Math.log2(targetTime\
+    \ / 250); // 250ms is baseline\n    \n    let optimalCostFactor = Math.round(baseCostFactor\
+    \ + cpuFactor - timeFactor);\n    \n    // Ensure within bounds\n    optimalCostFactor\
+    \ = Math.max(10, Math.min(16, optimalCostFactor));\n    \n    return optimalCostFactor;\n\
+    \  }\n}\n```"
+- level: 4
+  title: '**3. Hardware Benchmarker**'
+  type: section
+  content: "```typescript\nclass HardwareBenchmarker {\n  private benchmarkCache:\
+    \ HardwareBenchmarkData | null = null;\n  private lastBenchmark: number = 0;\n\
+    \  private benchmarkInterval: number = 24 * 60 * 60 * 1000; // 24 hours\n  \n\
+    \  async getBenchmarkData(): Promise<HardwareBenchmarkData> {\n    const now =\
+    \ Date.now();\n    \n    // Return cached data if recent\n    if (this.benchmarkCache\
+    \ && (now - this.lastBenchmark) < this.benchmarkInterval) {\n      return this.benchmarkCache;\n\
+    \    }\n    \n    // Perform new benchmark\n    const benchmarkData = await this.performBenchmark();\n\
+    \    \n    // Cache results\n    this.benchmarkCache = benchmarkData;\n    this.lastBenchmark\
+    \ = now;\n    \n    return benchmarkData;\n  }\n  \n  private async performBenchmark():\
+    \ Promise<HardwareBenchmarkData> {\n    const startTime = Date.now();\n    \n\
+    \    // Perform BCrypt benchmark with cost factor 12\n    await this.bcryptBenchmark(12);\n\
+    \    \n    const benchmarkTime = Date.now() - startTime;\n    \n    return {\n\
+    \      cpuCores: require('os').cpus().length,\n      memoryGB: require('os').totalmem()\
+    \ / 1024 / 1024 / 1024,\n      benchmarkTime,\n      recommendedCostFactor: this.calculateRecommendedCostFactor(benchmarkTime)\n\
+    \    };\n  }\n  \n  private async bcryptBenchmark(costFactor: number): Promise<void>\
+    \ {\n    const testPassword = 'benchmark_test_password';\n    \n    return new\
+    \ Promise((resolve, reject) => {\n      this.bcrypt.hash(testPassword, costFactor,\
+    \ (err) => {\n        if (err) {\n          reject(err);\n        } else {\n \
+    \         resolve();\n        }\n      });\n    });\n  }\n  \n  private calculateRecommendedCostFactor(benchmarkTime:\
+    \ number): number {\n    // Calculate recommended cost factor based on benchmark\
+    \ time\n    // This is a simplified calculation\n    const targetTime = 250; //\
+    \ 250ms target\n    const ratio = benchmarkTime / targetTime;\n    \n    let recommendedCostFactor\
+    \ = 12;\n    \n    if (ratio > 2) {\n      recommendedCostFactor = 11;\n    }\
+    \ else if (ratio < 0.5) {\n      recommendedCostFactor = 13;\n    }\n    \n  \
+    \  return Math.max(10, Math.min(16, recommendedCostFactor));\n  }\n}\n```"
+- level: 3
+  title: '**Integration Points**'
+  type: section
+  content: ''
+- level: 4
+  title: '**1. Hardware Benchmarking Integration**'
+  type: section
+  content: '- **Description**: Integrates with hardware detection and benchmarking
+    systems
+
+    - **Protocol**: Hardware capability detection and performance measurement
+
+    - **Authentication**: Hardware benchmark validation
+
+    - **Rate Limiting**: Benchmark frequency limiting for performance'
+- level: 4
+  title: '**2. Adaptive Cost Management Integration**'
+  type: section
+  content: '- **Description**: Integrates with adaptive cost factor management systems
+
+    - **Protocol**: Dynamic cost factor adjustment protocols
+
+    - **Authentication**: Cost factor validation and security verification
+
+    - **Rate Limiting**: Cost factor adjustment rate limiting'
+- level: 2
+  title: Performance Characteristics
+  type: section
+  content: ''
+- level: 3
+  title: '**Throughput**'
+  type: section
+  content: '- **BCrypt (Cost 10)**: 100 hashes/second
+
+    - **BCrypt (Cost 12)**: 25 hashes/second
+
+    - **BCrypt (Cost 14)**: 6 hashes/second
+
+    - **BCrypt (Cost 16)**: 1.5 hashes/second
+
+    - **Password Verification**: 1000 verifications/second'
+- level: 3
+  title: '**Reliability**'
+  type: section
+  content: '- **Error Rate**: < 0.001% BCrypt hashing failures
+
+    - **Recovery Time**: < 100ms for recoverable errors
+
+    - **Availability**: 99.99% uptime for BCrypt hashing services
+
+    - **Data Integrity**: 100% hash consistency and accuracy'
+- level: 3
+  title: '**Scalability**'
+  type: section
+  content: '- **Horizontal Scaling**: Support for distributed BCrypt hashing across
+    multiple nodes
+
+    - **Vertical Scaling**: Linear performance improvement with additional CPU cores
+
+    - **Memory Efficiency**: < 50MB memory footprint for standard operations
+
+    - **Concurrent Operations**: Support for up to 20 concurrent BCrypt operations'
+- level: 2
+  title: Security Considerations
+  type: section
+  content: ''
+- level: 3
+  title: '**Cryptographic Security**'
+  type: section
+  content: '- **Algorithm Strength**: BCrypt is a well-established cryptographic standard
+
+    - **Salt Security**: Salts are generated using cryptographically secure random
+    generators
+
+    - **Cost Factor Security**: Adaptive cost factors maintain security vs performance
+    balance
+
+    - **Parameter Validation**: All BCrypt parameters are validated for security'
+- level: 3
+  title: '**Access Control**'
+  type: section
+  content: '- **Operation Authorization**: Authorization required for BCrypt hashing
+    operations
+
+    - **Audit Trail**: Complete audit trail for all BCrypt hashing operations
+
+    - **Compliance**: Support for various security compliance requirements'
+- level: 3
+  title: '**Data Protection**'
+  type: section
+  content: '- **Data in Transit**: All data is protected during transmission
+
+    - **Data at Rest**: Hashed data is stored securely
+
+    - **Salt Protection**: Salts are protected using industry-standard security measures
+
+    - **Timing Attack Protection**: Constant-time comparison prevents timing attacks'
+- level: 2
+  title: Error Handling
+  type: section
+  content: ''
+- level: 3
+  title: '**Error Types**'
+  type: section
+  content: '- **Input Errors**: Invalid input data or parameters
+
+    - **Cost Factor Errors**: Invalid cost factor values
+
+    - **Hardware Errors**: Hardware benchmark failures
+
+    - **Performance Errors**: Timeout or resource exhaustion errors
+
+    - **Security Errors**: Security validation or compliance failures'
+- level: 3
+  title: '**Error Recovery**'
+  type: section
+  content: '- **Automatic Retry**: Automatic retry for transient errors
+
+    - **Fallback Cost Factors**: Fallback to default cost factors on failure
+
+    - **Graceful Degradation**: Graceful degradation for performance issues
+
+    - **Error Reporting**: Comprehensive error reporting and logging'
+- level: 2
+  title: Testing Strategy
+  type: section
+  content: ''
+- level: 3
+  title: '**Unit Testing**'
+  type: section
+  content: '- **Input Validation**: Test all input validation scenarios
+
+    - **Cost Factor Testing**: Test cost factor validation and adjustment
+
+    - **Salt Generation**: Test salt generation and validation
+
+    - **Error Handling**: Test all error conditions and recovery'
+- level: 3
+  title: '**Integration Testing**'
+  type: section
+  content: '- **End-to-End Hashing**: Test complete BCrypt hashing workflows
+
+    - **Hardware Integration**: Test hardware benchmarking integration
+
+    - **Performance Testing**: Test performance under various load conditions
+
+    - **Security Testing**: Test security measures and compliance'
+- level: 3
+  title: '**Load Testing**'
+  type: section
+  content: '- **Concurrent Operations**: Test multiple concurrent BCrypt operations
+
+    - **Large Data Sets**: Test BCrypt hashing of large data sets
+
+    - **Hardware Utilization**: Test hardware adaptation under load
+
+    - **Performance Degradation**: Test performance under resource constraints'
+- level: 2
+  title: Deployment Considerations
+  type: section
+  content: ''
+- level: 3
+  title: '**Resource Requirements**'
+  type: section
+  content: '- **CPU**: Minimum 2 cores, recommended 4+ cores for high-performance
+    operations
+
+    - **Memory**: Minimum 256MB, recommended 1GB+ for large operations
+
+    - **Storage**: Minimum 100MB for temporary data and audit logs
+
+    - **Network**: High-speed network for distributed operations'
+- level: 3
+  title: '**Configuration**'
+  type: section
+  content: '- **Environment Variables**: Configuration through environment variables
+
+    - **Configuration Files**: Support for configuration file-based setup
+
+    - **Runtime Configuration**: Dynamic configuration updates
+
+    - **Validation**: Configuration validation on startup'
+- level: 3
+  title: '**Monitoring**'
+  type: section
+  content: '- **Performance Metrics**: Monitor BCrypt hashing performance and throughput
+
+    - **Hardware Utilization**: Monitor hardware adaptation and benchmarking
+
+    - **Error Rates**: Monitor BCrypt hashing error rates and types
+
+    - **Security Events**: Monitor security-related events and alerts'
+- level: 2
+  title: Usage Examples
+  type: section
+  content: ''
+- level: 3
+  title: '**Basic Usage**'
+  type: section
+  content: "```typescript\nimport { BCryptHashGenerator } from './BCryptHashGenerator';\n\
+    \nconst bcryptGenerator = new BCryptHashGenerator(config);\n\nconst input: BCryptHashGeneratorInput\
+    \ = {\n  data: 'password123',\n  costFactor: 12,\n  outputFormat: 'bcrypt'\n};\n\
+    \nconst result = await bcryptGenerator.generateHash(input);\nconsole.log('BCrypt\
+    \ hash:', result.hash);\nconsole.log('Cost factor:', result.costFactor);\n```"
+- level: 3
+  title: '**Advanced Usage with Adaptive Cost**'
+  type: section
+  content: "```typescript\nimport { BCryptHashGenerator } from './BCryptHashGenerator';\n\
+    \nconst bcryptGenerator = new BCryptHashGenerator(config);\n\nconst input: BCryptHashGeneratorInput\
+    \ = {\n  data: 'secure_password',\n  adaptiveCost: true,\n  targetTimeMs: 250,\n\
+    \  outputFormat: 'bcrypt',\n  metadata: {\n    userId: 'user123',\n    dataType:\
+    \ 'password',\n    compliance: 'OWASP'\n  }\n};\n\nconst result = await bcryptGenerator.generateHash(input);\n\
+    console.log('BCrypt hashing successful:', result.status.success);\nconsole.log('Adaptive\
+    \ cost factor:', result.costFactor);\nconsole.log('Hardware benchmark:', result.metadata.hardwareBenchmark);\n\
+    ```"
+- level: 3
+  title: '**Password Verification Usage**'
+  type: section
+  content: "```typescript\nimport { BCryptHashGenerator } from './BCryptHashGenerator';\n\
+    \nconst bcryptGenerator = new BCryptHashGenerator(config);\n\nconst verificationInput:\
+    \ BCryptVerificationInput = {\n  password: 'user_password',\n  hash: '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj4J/HS.iQm2'\n\
+    };\n\nconst verificationResult = await bcryptGenerator.verifyPassword(verificationInput);\n\
+    console.log('Password valid:', verificationResult.valid);\nconsole.log('Verification\
+    \ time:', verificationResult.timing, 'ms');\n```"
+- level: 2
+  title: Future Enhancements
+  type: section
+  content: ''
+- level: 3
+  title: '**Planned Features**'
+  type: section
+  content: '- **Post-Quantum BCrypt**: Support for post-quantum cryptography extensions
+
+    - **Advanced Hardware Support**: Enhanced hardware acceleration support
+
+    - **Performance Optimization**: Further optimization for specific use cases
+
+    - **Compliance Automation**: Automated compliance checking and reporting'
+- level: 3
+  title: '**Performance Improvements**'
+  type: section
+  content: "- **Hardware Acceleration**: Support for hardware acceleration when available\n\
+    - **Advanced Caching**: Intelligent caching for frequently used parameters\n-\
+    \ **Batch Processing**: Optimized batch BCrypt operations\n- **Streaming Support**:\
+    \ Streaming BCrypt hashing for large data sets\n\n---\n\n**Version**: 1.0  \n\
+    **Focus**: BCrypt hashing implementation with adaptive cost factors and password\
+    \ verification"

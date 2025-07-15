@@ -1,287 +1,89 @@
-# kOS v1 Environment Configuration System
+# kOS v1 Centralized Environment, Configuration, and Docker Generation System
 
-This directory contains the modular environment configuration system for kOS v1, using a sophisticated variable resolution system.
+---
+**CRITICAL ARCHITECTURE: DO NOT DEVIATE**
+This system's stability depends on a strict separation of configuration files. Failure to follow these rules *will* break the automated installers and generators.
 
-## Overview
+- **`ports.env`**: **ONLY** for network settings. This includes port assignments, container names, network configs (`KOS_CONTAINER_NETWORK`), admin credentials, and health check/restart policies. **NO enable flags or image tags here.**
 
-The environment system uses multiple separate `.env` files that are loaded in a specific order and combined into a unified configuration. This allows for:
+- **`settings.env`**: **ONLY** for system-wide flags and secrets. This includes all `KOS_*_ENABLE` flags and secret keys (`JWT_SECRET`, etc.). **NO ports or container names here.**
 
-- **Centralized Management**: Admin credentials and ports in one place
-- **Variable Resolution**: Cross-references between files with cycle detection
-- **Modularity**: Different aspects of configuration are separated
-- **Flexibility**: Easy to modify specific parts without affecting others
-- **Clarity**: Clear organization of settings by purpose
+- **`local.env`**: **ONLY** for service definitions. This includes image tags (`KOS_*_IMAGE`), compose profiles (`..._PROFILE`), dependencies (`..._DEPENDS_ON`), and any special commands.
 
-## File Structure
+- **`api-keys.env` & `cloud.env`**: For external service keys. These are loaded with the lowest priority.
 
-```
+**Never duplicate or move variables between these files.** The `env_loader.py` script depends on this structure to assemble the final, unified `.env` file.
+---
+
+## 1. Centralized Environment System Overview
+
+All configuration for kOS v1 is managed through modular `.env` files, strictly separated by purpose. This ensures a single source of truth for all settings. All downstream systems (including Docker and backend services) consume **only** the generated unified `.env` file.
+
+## 2. File Structure and Roles
+Use code with caution.
+Markdown
 env/
-├── ports.env                  # Centralized ports, container names, admin credentials
-├── local.env                  # Local development service configurations
-├── cloud.env                  # Cloud deployment settings
-├── api-keys.env               # API keys and secrets (not committed)
-├── settings/                  # Service-specific settings
-│   ├── api.settings.env
-│   ├── ollama.settings.env
-│   └── openwebui.settings.env
-└── README.md                  # This file
-```
-
-## Environment Loader System (`scripts/env_loader.py`)
-
-### Load Order
-The environment loader loads files in this specific order:
-
-1. **`ports.env`** - Centralized ports, container names, admin credentials
-2. **`local.env`** - Local development settings
-3. **`cloud.env`** - Cloud deployment settings
-4. **Additional environment-specific files**
-
-### Variable Resolution Features
-
-- **Recursive Resolution**: Variables can reference other variables (e.g., `${KOS_ADMIN_EMAIL}`)
-- **Cycle Detection**: Prevents infinite loops in variable references
-- **Recursion Depth Limit**: Maximum 10 levels to prevent stack overflow
-- **Fallback Values**: Graceful handling of missing variables
-- **Cross-Reference Support**: Variables from any loaded file can reference others
-
-### Example Variable Resolution
-
-```bash
-# ports.env (loaded first)
-KOS_ADMIN_EMAIL=admin@kos.local
-KOS_ADMIN_USER=kos-admin
-KOS_ADMIN_PASSWORD=kos-30437
-
-# local.env (loaded second)
-KOS_PGADMIN_EMAIL=${KOS_ADMIN_EMAIL}        # Resolves to: admin@kos.local
-KOS_PGADMIN_USER=${KOS_ADMIN_USER}          # Resolves to: kos-admin
-KOS_PGADMIN_PASSWORD=${KOS_ADMIN_PASSWORD}  # Resolves to: kos-30437
-```
-
-### Usage
-
-```bash
-python scripts/env_loader.py
-```
-
-This generates a unified `.env` file with all variables resolved and displays the source of each variable.
-
-## Configuration Files
-
-### ports.env (Centralized Configuration)
-**This is the single source of truth for:**
-- Admin credentials (user, password, email)
-- All port assignments (external and internal)
-- Container names
-- Network configuration
-
-**Key Variables:**
-```bash
-# Admin credentials (EDIT THESE ONCE FOR ALL SERVICES)
-KOS_ADMIN_USER=kos-admin
-KOS_ADMIN_PASSWORD=kos-30437
-KOS_ADMIN_EMAIL=admin@kos.local
-
-# Port assignments
-KOS_POSTGRES_EXTERNAL_PORT=5432
-KOS_REDIS_EXTERNAL_PORT=6379
-KOS_API_EXTERNAL_PORT=8000
-# ... etc
-```
-
-### local.env (Service Configuration)
-Contains service-specific configurations organized by category:
-- Core Services (API, Frontend, Databases)
-- AI/ML Services (Ollama, OpenWebUI, Automatic1111, ComfyUI, InvokeAI)
-- Storage Services (Weaviate, MinIO, Elasticsearch, Neo4j)
-- Development Services (Gitea, Supabase, BrowserUse, Context7, Codium)
-- Monitoring Services (Prometheus, Grafana, cAdvisor)
-- Workflow Services (N8N, Penpot)
-- Self-hosted Services (Nextcloud, Admin Panel, etc.)
-
-### cloud.env (Cloud Deployment)
-Contains cloud-specific settings for production deployments.
-
-### api-keys.env (Sensitive Data)
-Contains all API keys, secrets, and sensitive configuration. **Never commit this file with real keys.**
-
-### settings/ (Service-Specific Settings)
-Contains service-specific advanced settings that can be customized per service.
-
-## Usage
-
-### 1. Initial Setup
-
-1. Copy the example files to create your actual configuration:
-   ```bash
-   cp env/ports.env.example env/ports.env
-   cp env/local.env.example env/local.env
-   cp env/api-keys.env.example env/api-keys.env
-   cp env/cloud.env.example env/cloud.env
-   ```
-
-2. Copy settings files as needed:
-   ```bash
-   cp env/settings/api.settings.env.example env/settings/api.settings.env
-   cp env/settings/ollama.settings.env.example env/settings/ollama.settings.env
-   cp env/settings/openwebui.settings.env.example env/settings/openwebui.settings.env
-   ```
-
-### 2. Generate Unified Environment
-
-Run the environment loader to combine all files:
-
-```bash
-python scripts/env_loader.py
-```
-
-This creates a `.env` file in the project root with all variables resolved and combined.
-
-### 3. Customize Configuration
-
-Edit the individual `.env` files to customize your setup:
-
-- **ports.env**: Change admin credentials and port assignments
-- **local.env**: Modify service configurations
-- **api-keys.env**: Add your actual API keys and secrets
-- **cloud.env**: Configure for your cloud provider
-- **settings/*.env**: Customize service-specific settings
-
-### 4. Regenerate After Changes
-
-After making changes to any `.env` file, regenerate the unified environment:
-
-```bash
-python scripts/env_loader.py
-```
-
-## Environment Variables
-
-### Centralized Admin Credentials (ports.env)
-
-```bash
-# Single source of truth for all admin credentials
-KOS_ADMIN_USER=kos-admin
-KOS_ADMIN_PASSWORD=kos-30437
-KOS_ADMIN_EMAIL=admin@kos.local
-```
-
-**Benefits:**
-- Update once, applies everywhere
-- No duplication across files
-- Consistent credentials across all services
-- Easy to change for different environments
-
-### Service Enablement
-
-Each service has an enable flag:
-```bash
-KOS_API_ENABLE=true
-KOS_POSTGRES_ENABLE=true
-KOS_OLLAMA_ENABLE=true
-KOS_INVOKEAI_ENABLE=true
-# etc.
-```
-
-### Port Configuration
-
-Services use both external and internal ports:
-```bash
-KOS_API_EXTERNAL_PORT=8000    # Host port
-KOS_API_INTERNAL_PORT=8000    # Container port
-```
-
-## Best Practices
-
-1. **Never commit real API keys**: Only commit `.example` files
-2. **Use centralized admin credentials**: Edit only `ports.env` for admin settings
-3. **Use consistent naming**: All variables prefixed with `KOS_`
-4. **Reference centralized variables**: Use `${KOS_ADMIN_EMAIL}` in configurations
-5. **Group related settings**: Keep related variables together
-6. **Document changes**: Update this README when adding new services
-
-## Troubleshooting
-
-### Port Conflicts
-If you get port conflicts, modify `ports.env` to use different external ports.
-
-### Missing Variables
-If a service complains about missing variables, check that the corresponding `.env` file exists and contains the required variables.
-
-### Variable Resolution Errors
-If variable resolution fails:
-1. Check for circular references
-2. Verify all referenced variables exist
-3. Run `python scripts/env_loader.py` to see resolution details
-
-### Generation Errors
-If the generator fails, check that all referenced `.env` files exist and have valid syntax.
-
-## Integration with Docker
-
-The generated `.env` file is used by Docker Compose files. The system supports both legacy Docker format and modern format:
-
-- Legacy: `KOS_API_PORT=8000`
-- Modern: `KOS_API_EXTERNAL_PORT=8000`, `KOS_API_INTERNAL_PORT=8000`
-
-Both formats are included for compatibility.
+├── api-keys.env # (Optional) External API keys (e.g., OPENAI_API_KEY)
+├── cloud.env # (Optional) Cloud deployment overrides
+├── local.env # Service definitions (images, profiles, dependencies)
+├── ports.env # Network/Orchestration (ports, names, health checks)
+├── settings.env # Feature Flags & Secrets (ENABLE flags, JWT_SECRET)
+└── README.md # This file
 
 ## Canonical Port Mapping (Validated)
+**This table is the single source of truth for port assignments and must be kept in sync with `ports.env`.**
 
-| Service/Variable                | External Port | Notes/Standard         |
-|---------------------------------|--------------|-----------------------|
-| **Core Services**               |              |                       |
-| API                             | 8000         | API standard          |
-| Frontend                        | 3000         | Web UI                |
-| NGINX                           | 80           | HTTP standard         |
-| NGINX SSL                       | 443          | HTTPS standard        |
-| Postgres                        | 5432         | DB standard           |
-| Redis                           | 6379         | DB standard           |
-| MongoDB                         | 27017        | DB standard           |
-| Neo4j                           | 7687         | DB standard           |
-| Neo4j HTTP                      | 7474         | DB standard           |
-| Elasticsearch                   | 9200         | DB standard           |
-| Elasticsearch Cluster           | 9300         | DB standard           |
-| Weaviate                        | 8082         | DB standard           |
-| MinIO                           | 9000         | Storage std           |
-| Nextcloud                       | 8083         | Web UI                |
+| Service/Variable         | External Port | Internal Port | Notes/Standard         |
+|-------------------------|--------------|--------------|-----------------------|
+| Gitea SSH               | 22           | 2222         | SSH                   |
+| NGINX                   | 80           | 80           | HTTP standard         |
+| NGINX SSL               | 443          | 443          | HTTPS standard        |
+| Frontend                | 3000         | 3000         | Web UI                |
+| OpenWebUI               | 3001         | 8080         | Web UI                |
+| Gitea                   | 3002         | 3000         | Web UI                |
+| Supabase Studio         | 3003         | 3000         | Web UI                |
+| Browseruse              | 3004         | 3000         | Web UI                |
+| Context7                | 3005         | 3000         | Web UI                |
+| Codium                  | 3006         | 8080         | Web UI                |
+| Grafana                 | 3007         | 3000         | Monitoring UI         |
+| Prompt Manager          | 3008         | 8000         | Manager UI            |
+| Artifact Manager        | 3009         | 8000         | Manager UI            |
+| Registry                | 5000         | 5000         | Registry std          |
+| Postgres                | 5432         | 5432         | DB standard           |
+| PGAdmin                 | 5433         | 80           | DB admin UI           |
+| N8N                     | 5678         | 5678         | Workflow std          |
+| Redis                   | 6379         | 6379         | DB standard           |
+| Redis Commander         | 6380         | 8081         | DB admin UI           |
+| Neo4j HTTP              | 7474         | 7474         | DB standard           |
+| Neo4j                   | 7687         | 7687         | DB standard           |
+| Automatic1111           | 7860         | 7860         | AI/ML std             |
+| API                     | 8000         | 8000         | API standard          |
+| cAdvisor                | 8081         | 8081         | Monitoring            |
+| Weaviate                | 8082         | 8080         | DB standard           |
+| Nextcloud               | 8083         | 8083         | Web UI                |
+| Huggingface             | 8084         | 8082         | AI/ML std             |
+| ComfyUI                 | 8188         | 8188         | AI/ML std             |
+| InvokeAI                | 8189         | 8189         | AI/ML std             |
+| MinIO                   | 9000         | 9000         | Storage std           |
+| MinIO Console           | 9001         | 9001         | Storage UI            |
+| Penpot                  | 9002         | 9002         | Web UI                |
+| Admin Panel             | 9003         | 9003         | Web UI                |
+| Prometheus              | 9090         | 9090         | Monitoring            |
+| Elasticsearch           | 9200         | 9200         | DB standard           |
+| Elasticsearch Cluster   | 9300         | 9300         | DB standard           |
+| Ollama                  | 11434        | 11434        | AI/ML std             |
+| MongoDB                 | 27017        | 27017        | DB standard           |
+| Mongo Express           | 27018        | 8081         | DB admin UI           |
+| Supabase                | 54321        | 5432         | DB                    |
 
-| **Admin Tools**                 |              |                       |
-| pgAdmin                         | 5433         | DB admin UI           |
-| Redis Commander                 | 6380         | DB admin UI           |
-| Mongo Express                   | 27018        | DB admin UI           |
-| Registry                        | 5000         | Registry std          |
-| MinIO Console                   | 9001         | Storage UI            |
+## 3. Workflow
 
-| **Monitoring**                  |              |                       |
-| Prometheus                      | 9090         | Monitoring            |
-| Grafana                         | 3007         | Monitoring UI         |
-| cAdvisor                        | 8081         | Monitoring            |
+1.  Edit the appropriate `env/*.env` files according to the rules.
+2.  Run the install script (`kos-install.sh` or `.bat`). This will:
+    *   Audit the environment for correctness (`env_audit.py`).
+    *   Load and merge all `.env` files into a single, unified `.env` file (`env_loader.py`).
+    *   Generate all `docker-compose-*.yml` files from the unified `.env` file (`generate_docker_compose.py`).
+3.  Deploy the stack: `docker-compose -f docker/docker-compose.full.yml up -d`.
+4.  Review logs in the `logs/` directory to troubleshoot.
 
-| **Development**                 |              |                       |
-| Gitea                           | 3002         | Web UI                |
-| Gitea SSH                       | 2222         | SSH                   |
-| Supabase                        | 54321        | DB                    |
-| Supabase Studio                 | 3003         | Web UI                |
-| Browseruse                      | 3004         | Web UI                |
-| Context7                        | 3005         | Web UI                |
-| Codium                          | 3006         | Web UI                |
-
-| **Workflow**                    |              |                       |
-| n8n                             | 5678         | Workflow std          |
-| Penpot                          | 9002         | Web UI                |
-| Admin Panel                     | 9003         | Web UI                |
-| Prompt Manager                  | 3008         | Manager UI            |
-| Artifact Manager                | 3009         | Manager UI            |
-
-| **AI/ML**                       |              |                       |
-| Ollama                          | 11434        | AI/ML std             |
-| Huggingface                     | 8084         | AI/ML std             |
-| Automatic1111                   | 7860         | AI/ML std             |
-| ComfyUI                         | 8188         | AI/ML std             |
-
-| **Security**                    |              |                       |
-| Vault                           | 8200         | Security std          |
-
-**This table is generated from the current ports.env and validated to have no conflicts.** 
+--- END OF FILE README.md ---

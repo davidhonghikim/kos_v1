@@ -1,0 +1,274 @@
+title: "TARDIS Rename Process: PersonaRAG → TARDIS"
+version: "1.0.0"
+timestamp: "2025-07-02T07:05:00Z"
+description: "Comprehensive guide for renaming PersonaRAG Bridge to TARDIS Bridge without breaking existing functionality"
+type: "development_guide"
+status: "planning"
+priority: "high"
+
+# Overview
+overview: |
+  This document outlines the complete process for renaming the PersonaRAG Bridge service to TARDIS Bridge,
+  aligning with the T.A.R.D.I.S. Soul Engine vision. The process must be executed carefully to avoid
+  breaking existing functionality, especially KLF protocol compatibility and service discovery.
+
+# Current State Analysis
+current_state:
+  service_name: "PersonaRAG Bridge"
+  directory: "apps/persona-rag-bridge"
+  docker_service: "persona-rag-bridge"
+  container_name: "griot-persona-rag-bridge"
+  port: 30436
+  did_identifier: "did:kos:backend:persona-rag"
+  database_prefix: "persona-rag-sync"
+  vault_name: "persona-rag-vault"
+
+# Target State
+target_state:
+  service_name: "TARDIS Bridge"
+  directory: "apps/tardis-bridge"
+  docker_service: "tardis-bridge"
+  container_name: "griot-tardis-bridge"
+  port: 30436 (unchanged)
+  did_identifier: "did:kos:backend:tardis"
+  database_prefix: "tardis-sync"
+  vault_name: "tardis-vault"
+
+# Phase 1: Directory & File Renames (Low Risk)
+phase_1_directory_renames:
+  description: "Physical file and directory renames"
+  steps:
+    - step: "Create backup"
+      command: "cp -r apps/persona-rag-bridge apps/persona-rag-bridge.backup"
+      risk: "none"
+      
+    - step: "Rename main directory"
+      command: "mv apps/persona-rag-bridge apps/tardis-bridge"
+      risk: "low"
+      
+    - step: "Update docker-compose.yml"
+      changes:
+        - "Service name: persona-rag-bridge → tardis-bridge"
+        - "Build context: apps/persona-rag-bridge/Dockerfile → apps/tardis-bridge/Dockerfile"
+        - "Container name: griot-persona-rag-bridge → griot-tardis-bridge"
+        - "Volume paths: ./apps/persona-rag-bridge/.vault → ./apps/tardis-bridge/.vault"
+      risk: "low"
+      
+    - step: "Update package.json references"
+      changes:
+        - "name: 'owu-plus-extension' → 'tardis-bridge'"
+        - "description: Update to reflect TARDIS branding"
+        - "keywords: Add 'tardis', 'soul-engine'"
+      risk: "medium"
+
+# Phase 2: Code References (High Risk - Needs Testing)
+phase_2_code_references:
+  description: "Update all code references and service definitions"
+  steps:
+    - step: "Service definitions"
+      files:
+        - "src/services/definitions/persona-rag.ts → tardis.ts"
+        - "src/services/definitions/index.ts (update imports)"
+      changes:
+        - "personaRAGDefinition → tardisDefinition"
+        - "persona-rag → tardis in all references"
+      risk: "high"
+      
+    - step: "Database names"
+      files:
+        - "src/modules/sync/client-sync-manager.ts"
+      changes:
+        - "persona-rag-sync-${deviceType} → tardis-sync-${deviceType}"
+      risk: "high"
+      
+    - step: "Vault references"
+      files:
+        - "src/vault/vault-cli.ts"
+        - "src/vault/vault-web.ts"
+        - "src/vault/web/public/app.js"
+      changes:
+        - "persona-rag-vault → tardis-vault"
+        - "persona-rag.env → tardis.env"
+      risk: "medium"
+      
+    - step: "DID identifiers (Critical)"
+      files:
+        - "ai-q/02_protocols/klf-spec/01_KLF_Message_Format.yml"
+        - "ai-q/02_protocols/klf-spec/02_KLF_Agent_Registration.yml"
+        - "ai-q/02_protocols/klf-spec/03_KLF_Service_Discovery.yml"
+      changes:
+        - "did:kos:backend:persona-rag → did:kos:backend:tardis"
+      risk: "critical"
+      notes: "These are used in KLF protocol and may be cached by other services"
+
+# Phase 3: Documentation Updates (Low Risk)
+phase_3_documentation:
+  description: "Update all documentation and references"
+  steps:
+    - step: "Update documentation files"
+      files:
+        - "ai-q/00_Index.yml"
+        - "ai-q/04_architecture/frontend_specs/*.yml"
+        - "ai-q/05_modules/ai/persona_rag_implementation.yml"
+        - "agents/handoff/LATEST_HANDOFF.yml"
+        - "PERSONA_RAG_QUICKSTART.md"
+      changes:
+        - "Replace 'PersonaRAG' with 'TARDIS'"
+        - "Update file paths"
+        - "Update API references"
+      risk: "low"
+      
+    - step: "Update service store references"
+      files:
+        - "apps/backend/src/stores/serviceStore.ts"
+        - "apps/backend/src/services/ragIntegration.ts"
+      changes:
+        - "persona-rag-bridge → tardis-bridge"
+      risk: "medium"
+
+# Phase 4: Environment & Configuration (Medium Risk)
+phase_4_environment:
+  description: "Update environment variables and configuration"
+  steps:
+    - step: "Environment variables"
+      changes:
+        - "PERSONA_RAG_* → TARDIS_*"
+        - "Update any hardcoded URLs or endpoints"
+      risk: "medium"
+      
+    - step: "Docker environment"
+      changes:
+        - "Update environment variable names in docker-compose.yml"
+        - "Update any external service configurations"
+      risk: "medium"
+
+# Phase 5: Testing & Validation (Critical)
+phase_5_testing:
+  description: "Comprehensive testing at each phase"
+  steps:
+    - step: "Build testing"
+      commands:
+        - "npm run build:bridge (after rename)"
+        - "docker-compose build tardis-bridge"
+      risk: "none"
+      
+    - step: "Integration testing"
+      tests:
+        - "KLF client connections"
+        - "Service discovery"
+        - "RAG operations"
+        - "Auto-sync functionality"
+        - "Vault operations"
+      risk: "none"
+      
+    - step: "Protocol compatibility"
+      tests:
+        - "DID resolution"
+        - "KLF message format"
+        - "Service registration"
+      risk: "none"
+
+# Safety Measures
+safety_measures:
+  backup_strategy:
+    - "Create full backup: cp -r apps/persona-rag-bridge apps/persona-rag-bridge.backup"
+    - "Git branch: git checkout -b feature/tardis-rename"
+    - "Document current state before starting"
+    
+  incremental_approach:
+    - "Phase 1-2 first (low risk)"
+    - "Test thoroughly after each phase"
+    - "Phase 3-4 only after successful testing"
+    - "Final validation before production"
+    
+  rollback_plan:
+    - "Keep backup directory until fully validated"
+    - "Document rollback commands for each phase"
+    - "Test rollback procedures"
+
+# Potential Breaking Points
+breaking_points:
+  critical:
+    - "DID identifiers - Used in KLF protocol and may be cached"
+    - "Database names - Existing sync data might be lost"
+    - "Service discovery - Other services expecting old names"
+    
+  medium:
+    - "Environment variables - External services expecting old names"
+    - "Docker volumes - Existing vault data paths"
+    - "Build scripts - Package.json name changes"
+    
+  low:
+    - "Documentation references"
+    - "UI text and labels"
+    - "Log messages"
+
+# Alternative Approaches
+alternative_approaches:
+  parallel_implementation:
+    description: "Keep PersonaRAG running while building TARDIS"
+    pros:
+      - "Zero downtime"
+      - "Easy rollback"
+      - "Gradual migration"
+    cons:
+      - "More complex"
+      - "Resource intensive"
+      - "Dual maintenance"
+      
+  feature_flags:
+    description: "Allow switching between old/new names"
+    pros:
+      - "Safe testing"
+      - "Easy rollback"
+      - "Gradual rollout"
+    cons:
+      - "Code complexity"
+      - "Configuration management"
+
+# Success Criteria
+success_criteria:
+  functional:
+    - "TARDIS Bridge builds successfully"
+    - "All KLF operations work correctly"
+    - "Service discovery functions properly"
+    - "RAG operations complete successfully"
+    - "Auto-sync continues working"
+    
+  operational:
+    - "Docker container starts without errors"
+    - "All environment variables resolved"
+    - "Database connections established"
+    - "Vault operations functional"
+    
+  integration:
+    - "Backend admin connects to TARDIS"
+    - "ServiceMonitor shows correct status"
+    - "All dependent services work"
+    - "No breaking changes to external APIs"
+
+# Implementation Timeline
+timeline:
+  phase_1: "1-2 hours (low risk)"
+  phase_2: "2-4 hours (high risk, needs testing)"
+  phase_3: "1-2 hours (low risk)"
+  phase_4: "1-2 hours (medium risk)"
+  phase_5: "2-4 hours (testing and validation)"
+  total_estimate: "7-14 hours"
+
+# Post-Implementation Tasks
+post_implementation:
+  cleanup:
+    - "Remove backup directory after validation"
+    - "Update any external documentation"
+    - "Notify team of changes"
+    
+  monitoring:
+    - "Monitor logs for any issues"
+    - "Verify all integrations working"
+    - "Check performance metrics"
+    
+  documentation:
+    - "Update deployment guides"
+    - "Update troubleshooting docs"
+    - "Archive old documentation" 

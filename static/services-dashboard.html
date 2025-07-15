@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOS v1 Services Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-around;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .service-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+
+        .service-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .service-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        .status-online { background: #4CAF50; }
+        .status-offline { background: #f44336; }
+        .status-checking { background: #ff9800; animation: pulse 1.5s infinite; }
+        .status-disabled { background: #9e9e9e; }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .service-info {
+            margin-bottom: 15px;
+        }
+
+        .service-port {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .service-description {
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.4;
+        }
+
+        .service-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+
+        .btn-secondary:hover {
+            background: #e8e8e8;
+        }
+
+        .category-header {
+            color: white;
+            font-size: 1.5rem;
+            margin: 30px 0 20px 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .refresh-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .refresh-btn:hover {
+            transform: rotate(180deg);
+            background: #5a6fd8;
+        }
+
+        .loading {
+            text-align: center;
+            color: white;
+            font-size: 1.2rem;
+            margin: 50px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 KOS v1 Services Dashboard</h1>
+            <p>Real-time monitoring of all KOS v1 infrastructure and services</p>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat">
+                <span class="stat-number" id="total-services">0</span>
+                <span class="stat-label">Total Services</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number" id="online-services">0</span>
+                <span class="stat-label">Online</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number" id="offline-services">0</span>
+                <span class="stat-label">Offline</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number" id="checking-services">0</span>
+                <span class="stat-label">Checking</span>
+            </div>
+        </div>
+
+        <div id="services-container">
+            <div class="loading">Loading services...</div>
+        </div>
+    </div>
+
+    <button class="refresh-btn" onclick="checkAllServices()" title="Refresh Status">🔄</button>
+
+    <script>
+        const services = [
+            // Core Infrastructure
+            {
+                name: 'API Server',
+                port: 8000,
+                url: 'http://localhost:8000',
+                healthUrl: 'http://localhost:8000/health',
+                description: 'KOS v1 Backend API Server',
+                category: 'Core Infrastructure'
+            },
+            {
+                name: 'Frontend Dashboard',
+                port: 3000,
+                url: 'http://localhost:3000',
+                healthUrl: 'http://localhost:3000',
+                description: 'KOS v1 Web Dashboard',
+                category: 'Core Infrastructure'
+            },
+            {
+                name: 'PostgreSQL Database',
+                port: 5432,
+                url: 'http://localhost:5432',
+                healthUrl: 'http://localhost:5432',
+                description: 'Primary Database',
+                category: 'Core Infrastructure'
+            },
+            {
+                name: 'Redis Cache',
+                port: 6379,
+                url: 'http://localhost:6379',
+                healthUrl: 'http://localhost:6379',
+                description: 'In-Memory Cache & Session Store',
+                category: 'Core Infrastructure'
+            },
+            {
+                name: 'Nginx Proxy',
+                port: 80,
+                url: 'http://localhost:80',
+                healthUrl: 'http://localhost:80',
+                description: 'Reverse Proxy & Load Balancer',
+                category: 'Core Infrastructure'
+            },
+            {
+                name: 'MinIO Storage',
+                port: 9000,
+                url: 'http://localhost:9000',
+                healthUrl: 'http://localhost:9000/minio/health/live',
+                description: 'Object Storage Service',
+                category: 'Core Infrastructure'
+            },
+            {
+                name: 'MinIO Console',
+                port: 9001,
+                url: 'http://localhost:9001',
+                healthUrl: 'http://localhost:9001',
+                description: 'MinIO Web Console',
+                category: 'Core Infrastructure'
+            },
+            {
+                name: 'Elasticsearch',
+                port: 9200,
+                url: 'http://localhost:9200',
+                healthUrl: 'http://localhost:9200/_cluster/health',
+                description: 'Search & Analytics Engine',
+                category: 'Core Infrastructure'
+            },
+            {
+                name: 'Neo4j Graph DB',
+                port: 7474,
+                url: 'http://localhost:7474',
+                healthUrl: 'http://localhost:7474',
+                description: 'Graph Database',
+                category: 'Core Infrastructure'
+            },
+            {
+                name: 'Weaviate Vector DB',
+                port: 8082,
+                url: 'http://localhost:8082',
+                healthUrl: 'http://localhost:8082/v1/.well-known/ready',
+                description: 'Vector Database for AI',
+                category: 'Core Infrastructure'
+            },
+            {
+                name: 'Vault Secrets',
+                port: 8200,
+                url: 'http://localhost:8200',
+                healthUrl: 'http://localhost:8200/v1/sys/health',
+                description: 'Secrets Management',
+                category: 'Core Infrastructure'
+            },
+
+            // Monitoring & Observability
+            {
+                name: 'Grafana',
+                port: 3007,
+                url: 'http://localhost:3007',
+                healthUrl: 'http://localhost:3007/api/health',
+                description: 'Metrics Visualization',
+                category: 'Monitoring & Observability'
+            },
+            {
+                name: 'Prometheus',
+                port: 9090,
+                url: 'http://localhost:9090',
+                healthUrl: 'http://localhost:9090/-/healthy',
+                description: 'Metrics Collection',
+                category: 'Monitoring & Observability'
+            },
+            {
+                name: 'cAdvisor',
+                port: 8081,
+                url: 'http://localhost:8081',
+                healthUrl: 'http://localhost:8081/healthz',
+                description: 'Container Monitoring',
+                category: 'Monitoring & Observability'
+            },
+
+            // Applications
+            {
+                name: 'Nextcloud',
+                port: 8083,
+                url: 'http://localhost:8083',
+                healthUrl: 'http://localhost:8083/status.php',
+                description: 'File Storage & Collaboration',
+                category: 'Applications'
+            },
+
+            // Admin Tools
+            {
+                name: 'pgAdmin',
+                port: 5000,
+                url: 'http://localhost:5000',
+                healthUrl: 'http://localhost:5000/misc/ping',
+                description: 'PostgreSQL Administration',
+                category: 'Admin Tools'
+            },
+            {
+                name: 'Redis Commander',
+                port: 8085,
+                url: 'http://localhost:8085',
+                healthUrl: 'http://localhost:8085',
+                description: 'Redis Administration',
+                category: 'Admin Tools'
+            },
+            {
+                name: 'Portainer',
+                port: 9003,
+                url: 'http://localhost:9003',
+                healthUrl: 'http://localhost:9003/api/status',
+                description: 'Container Management',
+                category: 'Admin Tools'
+            },
+            {
+                name: 'Mongo Express',
+                port: 8081,
+                url: 'http://localhost:8081',
+                healthUrl: 'http://localhost:8081',
+                description: 'MongoDB Administration',
+                category: 'Admin Tools'
+            }
+        ];
+
+        let serviceStatuses = {};
+
+        async function checkServiceHealth(service) {
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 5000);
+                
+                const response = await fetch(service.healthUrl, {
+                    method: 'GET',
+                    signal: controller.signal,
+                    mode: 'no-cors'
+                });
+                
+                clearTimeout(timeoutId);
+                return 'online';
+            } catch (error) {
+                return 'offline';
+            }
+        }
+
+        async function checkAllServices() {
+            const container = document.getElementById('services-container');
+            container.innerHTML = '<div class="loading">Checking services...</div>';
+
+            // Group services by category
+            const categories = {};
+            services.forEach(service => {
+                if (!categories[service.category]) {
+                    categories[service.category] = [];
+                }
+                categories[service.category].push(service);
+            });
+
+            let html = '';
+            let totalServices = 0;
+            let onlineServices = 0;
+            let offlineServices = 0;
+            let checkingServices = 0;
+
+            for (const [category, categoryServices] of Object.entries(categories)) {
+                html += `<h2 class="category-header">${category}</h2>`;
+                html += '<div class="services-grid">';
+
+                for (const service of categoryServices) {
+                    totalServices++;
+                    serviceStatuses[service.name] = 'checking';
+                    checkingServices++;
+
+                    html += `
+                        <div class="service-card" id="service-${service.name.replace(/\s+/g, '-')}">
+                            <div class="service-header">
+                                <span class="service-name">${service.name}</span>
+                                <span class="status-indicator status-checking"></span>
+                            </div>
+                            <div class="service-info">
+                                <div class="service-port">Port: ${service.port}</div>
+                                <div class="service-description">${service.description}</div>
+                            </div>
+                            <div class="service-actions">
+                                <a href="${service.url}" target="_blank" class="btn btn-primary">Open</a>
+                                <button class="btn btn-secondary" onclick="checkService('${service.name}')">Check</button>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                html += '</div>';
+            }
+
+            container.innerHTML = html;
+
+            // Check each service
+            for (const service of services) {
+                await checkService(service.name);
+            }
+
+            updateStats();
+        }
+
+        async function checkService(serviceName) {
+            const service = services.find(s => s.name === serviceName);
+            if (!service) return;
+
+            const status = await checkServiceHealth(service);
+            serviceStatuses[serviceName] = status;
+
+            const card = document.getElementById(`service-${serviceName.replace(/\s+/g, '-')}`);
+            if (card) {
+                const indicator = card.querySelector('.status-indicator');
+                indicator.className = `status-indicator status-${status}`;
+            }
+
+            updateStats();
+        }
+
+        function updateStats() {
+            const stats = {
+                total: services.length,
+                online: Object.values(serviceStatuses).filter(s => s === 'online').length,
+                offline: Object.values(serviceStatuses).filter(s => s === 'offline').length,
+                checking: Object.values(serviceStatuses).filter(s => s === 'checking').length
+            };
+
+            document.getElementById('total-services').textContent = stats.total;
+            document.getElementById('online-services').textContent = stats.online;
+            document.getElementById('offline-services').textContent = stats.offline;
+            document.getElementById('checking-services').textContent = stats.checking;
+        }
+
+        // Auto-refresh every 30 seconds
+        setInterval(checkAllServices, 30000);
+
+        // Initial load
+        checkAllServices();
+    </script>
+</body>
+</html> 

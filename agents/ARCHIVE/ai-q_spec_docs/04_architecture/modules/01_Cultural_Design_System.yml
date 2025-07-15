@@ -1,0 +1,202 @@
+metadata:
+  original_file: 01_Cultural_Design_System.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Cultural Design System Module
+  description: HIEROS-compliant cultural theming and design system for kOS frontend
+  type: architecture_module
+  status: active
+  priority: high
+  last_updated: '2025-01-28'
+  version: 1.0.0
+  parent_document: 02_Frontend_Architecture.md
+  module_index: 1
+sections:
+- level: 1
+  title: Cultural Design System Module
+  type: section
+  content: '**HIEROS-Compliant Cultural Theming Framework**
+
+
+    > **Module Overview**: This module defines the comprehensive cultural design system
+    that ensures authentic, respectful, and accessible user interfaces across all
+    kOS nodes while maintaining strict HIEROS covenant compliance.'
+- level: 2
+  title: 🏛️ HIEROS-Aligned Design Principles
+  type: section
+  content: ''
+- level: 3
+  title: Seven HIEROS Intentions in UI/UX
+  type: section
+  content: '1. **Honor All Beings**: Interfaces accessible to diverse abilities and
+    cultures
+
+    2. **Interoperability Over Control**: Open component system with standard APIs
+
+    3. **Equity of Voice**: Equal representation across cultural perspectives
+
+    4. **Respect Cultural Flow**: Authentic cultural design elements and naming
+
+    5. **Openness With Boundaries**: Transparent operations with privacy controls
+
+    6. **Stewardship Not Extraction**: Sustainable UI patterns, minimal resource usage
+
+    7. **Guided Evolution**: Community-driven design evolution with cultural input'
+- level: 3
+  title: Technical Foundation
+  type: section
+  content: '- **Component-Driven Development**: Modular, reusable UI components
+
+    - **Cultural Theming**: Authentic cultural aesthetics with proper attribution
+
+    - **Responsive Design**: Works across devices, from phones to XR interfaces
+
+    - **Accessibility First**: WCAG 2.1 AA compliance minimum
+
+    - **Performance Optimized**: < 3s load time, smooth 60fps interactions'
+- level: 2
+  title: 🎨 Cultural Theme Framework
+  type: section
+  content: ''
+- level: 3
+  title: Core Theme Interface
+  type: section
+  content: "```typescript\ninterface CulturalTheme {\n  id: string;\n  name: string;\n\
+    \  culturalOrigin: CulturalAttribution;\n  colorPalette: ColorPalette;\n  typography:\
+    \ TypographySystem;\n  iconography: IconSystem;\n  motionLanguage: AnimationSystem;\n\
+    \  hierosCompliance: HIEROSThemeCompliance;\n}\n\ninterface CulturalAttribution\
+    \ {\n  tradition: string;\n  permission: \"community_blessing\" | \"open_cultural\"\
+    \ | \"commissioned\";\n  attribution: string;\n  community_contact?: string;\n\
+    \  verification_url?: string;\n  consultation_date?: string;\n}\n\ninterface HIEROSThemeCompliance\
+    \ {\n  intentions_validated: HIEROSIntention[];\n  accessibility_score: number;\
+    \ // 0.0 to 1.0\n  cultural_authenticity_score: number;\n  community_approval:\
+    \ boolean;\n  audit_trail: string[];\n}\n\ninterface ColorPalette {\n  primary:\
+    \ Record<string, string>;\n  secondary: Record<string, string>;\n  semantic: Record<string,\
+    \ string>;\n  accessibility: {\n    contrast_ratios: Record<string, number>;\n\
+    \    colorblind_safe: boolean;\n  };\n}\n```"
+- level: 2
+  title: 🌍 Node-Specific Cultural Themes
+  type: section
+  content: ''
+- level: 3
+  title: Griot Theme (West African Aesthetic)
+  type: section
+  content: "```typescript\nconst griotTheme: CulturalTheme = {\n  id: \"griot\",\n\
+    \  name: \"Griot - Keeper of Stories\",\n  culturalOrigin: {\n    tradition: \"\
+    west_african_griot\",\n    permission: \"community_blessing\",\n    attribution:\
+    \ \"Respectfully inspired by West African griot tradition of knowledge preservation\
+    \ and community wisdom sharing\",\n    community_contact: \"griot_cultural_council@kos.network\"\
+    ,\n    consultation_date: \"2025-01-15\"\n  },\n  colorPalette: {\n    primary:\
+    \ {\n      // Earth tones representing connection to ancestral wisdom\n      \"\
+    griot-amber\": \"#D97706\",    // Speaking voice\n      \"griot-earth\": \"#8B4513\"\
+    ,    // Grounded wisdom\n      \"griot-gold\": \"#F59E0B\",     // Precious knowledge\n\
+    \      \"griot-deep\": \"#451A03\"      // Ancient depth\n    },\n    secondary:\
+    \ {\n      \"griot-green\": \"#059669\",    // Living growth\n      \"griot-blue\"\
+    : \"#0284C7\",     // Flowing waters\n      \"griot-red\": \"#DC2626\"       //\
+    \ Life force\n    },\n    semantic: {\n      \"knowledge\": \"#D97706\",\n   \
+    \   \"heritage\": \"#8B4513\", \n      \"wisdom\": \"#F59E0B\",\n      \"community\"\
+    : \"#059669\",\n      \"connection\": \"#0284C7\",\n      \"celebration\": \"\
+    #DC2626\"\n    },\n    accessibility: {\n      contrast_ratios: {\n        \"\
+    griot-amber-on-white\": 4.8,\n        \"griot-earth-on-white\": 7.2,\n       \
+    \ \"white-on-griot-earth\": 7.2\n      },\n      colorblind_safe: true\n    }\n\
+    \  },\n  typography: {\n    primary: \"Inter\", // Modern, clean readability\n\
+    \    decorative: \"Merriweather\", // For headers, storytelling feel\n    mono:\
+    \ \"JetBrains Mono\",\n    culturally_inspired: \"Noto Sans\", // Supports multiple\
+    \ scripts\n    size_scale: {\n      xs: \"0.75rem\",\n      sm: \"0.875rem\",\
+    \ \n      base: \"1rem\",\n      lg: \"1.125rem\",\n      xl: \"1.25rem\",\n \
+    \     \"2xl\": \"1.5rem\",\n      \"3xl\": \"1.875rem\",\n      \"4xl\": \"2.25rem\"\
+    \n    }\n  },\n  iconography: {\n    style: \"organic_geometric\", // Inspired\
+    \ by African textile patterns\n    stroke_width: 2,\n    symbols: {\n      knowledge:\
+    \ \"scroll_with_kente_pattern\",\n      connection: \"talking_drum\",\n      wisdom:\
+    \ \"baobab_tree\",\n      community: \"gathering_circle\",\n      heritage: \"\
+    ancestral_mask\",\n      celebration: \"dance_rhythm\"\n    }\n  },\n  motionLanguage:\
+    \ {\n    easing: \"cubic-bezier(0.4, 0, 0.2, 1)\", // Confident, grounded movements\n\
+    \    duration: {\n      fast: \"150ms\",\n      normal: \"300ms\", // Respectful\
+    \ pace, not rushed\n      slow: \"500ms\"\n    },\n    patterns: [\"fade\", \"\
+    slide_up\", \"gentle_scale\", \"rhythm_bounce\"]\n  },\n  hierosCompliance: {\n\
+    \    intentions_validated: [\n      \"honor_all_beings\",\n      \"respect_cultural_flow\"\
+    , \n      \"openness_with_boundaries\",\n      \"stewardship_not_extraction\"\n\
+    \    ],\n    accessibility_score: 0.95,\n    cultural_authenticity_score: 0.92,\n\
+    \    community_approval: true,\n    audit_trail: [\n      \"2025-01-15: Community\
+    \ consultation completed\",\n      \"2025-01-20: Accessibility testing passed\"\
+    , \n      \"2025-01-25: Cultural authenticity review approved\"\n    ]\n  }\n\
+    };\n```"
+- level: 3
+  title: Tohunga Theme (Māori-Inspired Aesthetic)
+  type: section
+  content: "```typescript\nconst tohungaTheme: CulturalTheme = {\n  id: \"tohunga\"\
+    ,\n  name: \"Tohunga - Master of Craft\",\n  culturalOrigin: {\n    tradition:\
+    \ \"maori_tohunga_inspired\",\n    permission: \"community_blessing\",\n    attribution:\
+    \ \"Respectfully inspired by Māori craftsmanship principles and natural harmony\"\
+    ,\n    community_contact: \"maori_cultural_liaison@kos.network\",\n    consultation_date:\
+    \ \"2025-01-10\"\n  },\n  colorPalette: {\n    primary: {\n      // Natural tones\
+    \ representing mastery and nature connection\n      \"tohunga-jade\": \"#10B981\"\
+    ,   // Precious pounamu (greenstone)\n      \"tohunga-kauri\": \"#A16207\",  //\
+    \ Ancient kauri wood\n      \"tohunga-ocean\": \"#0284C7\",  // Pacific depths\n\
+    \      \"tohunga-earth\": \"#78716C\"   // Rich soil\n    },\n    secondary: {\n\
+    \      \"tohunga-flax\": \"#84CC16\",   // Harakeke (flax) green\n      \"tohunga-pohutukawa\"\
+    : \"#DC2626\", // Red bloom\n      \"tohunga-cloud\": \"#F3F4F6\"   // Silver\
+    \ fern\n    },\n    semantic: {\n      \"craft\": \"#10B981\",\n      \"mastery\"\
+    : \"#A16207\",\n      \"research\": \"#0284C7\", \n      \"curation\": \"#78716C\"\
+    ,\n      \"growth\": \"#84CC16\",\n      \"passion\": \"#DC2626\"\n    },\n  \
+    \  accessibility: {\n      contrast_ratios: {\n        \"tohunga-jade-on-white\"\
+    : 5.1,\n        \"tohunga-kauri-on-white\": 6.8,\n        \"white-on-tohunga-earth\"\
+    : 5.5\n      },\n      colorblind_safe: true\n    }\n  },\n  iconography: {\n\
+    \    symbols: {\n      craft: \"spiral_koru\",\n      mastery: \"carved_tiki\"\
+    ,\n      research: \"navigation_star\",\n      curation: \"woven_pattern\",\n\
+    \      growth: \"unfurling_fern\",\n      community: \"wharenui_gathering\"\n\
+    \    }\n  }\n};\n```"
+- level: 3
+  title: Ronin Theme (Japanese-Inspired Aesthetic)
+  type: section
+  content: "```typescript\nconst roninTheme: CulturalTheme = {\n  id: \"ronin\",\n\
+    \  name: \"Ronin - Masterless Wanderer\",\n  culturalOrigin: {\n    tradition:\
+    \ \"japanese_ronin_inspired\",\n    permission: \"community_blessing\",\n    attribution:\
+    \ \"Respectfully inspired by Japanese bushido principles and aesthetic philosophy\"\
+    ,\n    community_contact: \"japanese_cultural_council@kos.network\",\n    consultation_date:\
+    \ \"2025-01-12\"\n  },\n  colorPalette: {\n    primary: {\n      \"ronin-ink\"\
+    : \"#1F2937\",      // Sumi ink\n      \"ronin-cherry\": \"#F87171\",   // Sakura\
+    \ blossom\n      \"ronin-steel\": \"#6B7280\",    // Katana steel\n      \"ronin-snow\"\
+    : \"#F9FAFB\"      // Fresh snow\n    },\n    secondary: {\n      \"ronin-bamboo\"\
+    : \"#10B981\",   // Bamboo green\n      \"ronin-sunset\": \"#F59E0B\",   // Sunset\
+    \ gold\n      \"ronin-storm\": \"#374151\"     // Storm clouds\n    },\n    semantic:\
+    \ {\n      \"honor\": \"#1F2937\",\n      \"beauty\": \"#F87171\",\n      \"strength\"\
+    : \"#6B7280\",\n      \"purity\": \"#F9FAFB\",\n      \"growth\": \"#10B981\"\
+    ,\n      \"wisdom\": \"#F59E0B\"\n    }\n  }\n};\n```"
+- level: 2
+  title: 🎯 Theme Selection & Application
+  type: section
+  content: ''
+- level: 3
+  title: Automatic Theme Detection
+  type: section
+  content: "```typescript\ninterface ThemeContext {\n  nodeClass: NodeClass;\n  userPreference?:\
+    \ string;\n  accessibilityNeeds: AccessibilityConfig;\n  culturalContext?: CulturalPreference;\n\
+    \  systemSettings: SystemThemeConfig;\n}\n\nconst getOptimalTheme = (context:\
+    \ ThemeContext): CulturalTheme => {\n  // Priority order: user preference > cultural\
+    \ context > node default\n  if (context.userPreference) {\n    return getCulturalTheme(context.userPreference);\n\
+    \  }\n  \n  if (context.culturalContext?.preferredTradition) {\n    return getThemeByTradition(context.culturalContext.preferredTradition);\n\
+    \  }\n  \n  return getDefaultThemeForNode(context.nodeClass);\n};\n```"
+- level: 3
+  title: Cultural Attribution Requirements
+  type: section
+  content: "```typescript\ninterface CulturalAttributionDisplay {\n  position: \"\
+    header\" | \"footer\" | \"sidebar\";\n  visibility: \"always\" | \"hover\" | \"\
+    click\";\n  content: {\n    attribution_text: string;\n    community_link?: string;\n\
+    \    cultural_education_link?: string;\n    permission_documentation?: string;\n\
+    \  };\n}\n\nconst renderCulturalAttribution = (\n  theme: CulturalTheme,\n  display:\
+    \ CulturalAttributionDisplay\n) => {\n  return (\n    <div className=\"cultural-attribution\"\
+    \ data-position={display.position}>\n      <p className=\"attribution-text\">\n\
+    \        {theme.culturalOrigin.attribution}\n      </p>\n      {theme.culturalOrigin.community_contact\
+    \ && (\n        <a \n          href={`mailto:${theme.culturalOrigin.community_contact}`}\n\
+    \          className=\"community-contact\"\n        >\n          Connect with\
+    \ Cultural Community\n        </a>\n      )}\n    </div>\n  );\n};\n```"
+- level: 2
+  title: 🔄 Cross-References
+  type: section
+  content: "- **Component Architecture**: See `02_Component_System.md` for theme implementation\
+    \ in components\n- **Accessibility Framework**: See `04_Accessibility_Framework.md`\
+    \ for WCAG compliance details  \n- **State Management**: See parent document sections\
+    \ 675-815 for theme state management\n- **HIEROS Compliance**: Full compliance\
+    \ validation in parent document sections 534-674"

@@ -1,0 +1,327 @@
+metadata:
+  original_file: 03_Agent_Interface.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Agent Interface Module
+  description: Complete agent interface and connection protocols for AI-Q Mind consciousness
+    system
+  type: implementation_module
+  status: production_ready
+  priority: critical
+  last_updated: '2025-01-28'
+  version: 1.0.0
+  parent_document: 03_Mind_Implementation_Kit.md
+  module_index: 3
+sections:
+- level: 1
+  title: Agent Interface Module
+  type: section
+  content: '**Complete Agent Connection and Interaction System**
+
+
+    > **Module Overview**: This module provides comprehensive interfaces and protocols
+    for AI agents to connect with, query, and interact with the AI-Q Mind consciousness
+    system while maintaining HIEROS compliance and cultural sensitivity.'
+- level: 2
+  title: 🤖 Primary Agent Interface
+  type: section
+  content: ''
+- level: 3
+  title: '**AgentMindConnection Class**'
+  type: section
+  content: '```python'
+- level: 1
+  title: /ai-q-mind/agent_interface.py
+  type: section
+  content: "import asyncio\nimport json\nimport uuid\nimport websockets\nfrom datetime\
+    \ import datetime, timedelta\nfrom typing import Dict, List, Optional, Any, Callable\n\
+    from dataclasses import dataclass, asdict\nfrom enum import Enum\nimport logging\n\
+    \nclass AgentType(Enum):\n    \"\"\"Types of agents that can connect\"\"\"\n \
+    \   GRIOT = \"griot\"               # Artifact generation agents\n    TOHUNGA\
+    \ = \"tohunga\"           # Job orchestration agents  \n    RONIN = \"ronin\"\
+    \               # Network discovery agents\n    MUSA = \"musa\"              \
+    \   # Security agents\n    HAKIM = \"hakim\"               # Health/wisdom agents\n\
+    \    SKALD = \"skald\"               # Documentation/messaging agents\n    ORACLE\
+    \ = \"oracle\"             # Validation/reasoning agents\n    JUNZI = \"junzi\"\
+    \               # Ethics/integrity agents\n    YACHAY = \"yachay\"           \
+    \  # Knowledge synthesis agents\n    SACHEM = \"sachem\"             # Governance/consensus\
+    \ agents\n    ARCHON = \"archon\"             # Command/coordination agents\n\
+    \    AMAUTA = \"amauta\"             # Education/learning agents\n    MZEE = \"\
+    mzee\"                 # Consciousness/meta-cognition agents\n    GENERIC = \"\
+    generic\"           # General purpose agents\n\n@dataclass\nclass AgentContext:\n\
+    \    \"\"\"Agent context and capabilities\"\"\"\n    agent_id: str\n    agent_type:\
+    \ AgentType\n    capabilities: List[str]\n    cultural_sensitivity_level: float\n\
+    \    hieros_compliance_level: float\n    preferred_response_style: str\n    interaction_history_size:\
+    \ int\n\nclass AgentMindConnection:\n    \"\"\"Primary interface for AI agents\
+    \ to connect with AI-Q Mind\"\"\"\n    \n    def __init__(self, agent_id: str,\
+    \ agent_type: AgentType = AgentType.GENERIC):\n        self.agent_id = agent_id\n\
+    \        self.agent_type = agent_type\n        self.connection_time = datetime.now()\n\
+    \        self.interaction_count = 0\n        self.session_id = str(uuid.uuid4())\n\
+    \        \n        # Initialize mind connection\n        from core_mind import\
+    \ AIQMind\n        self.mind = AIQMind()\n        \n        # Agent-specific context\n\
+    \        self.agent_context = AgentContext(\n            agent_id=agent_id,\n\
+    \            agent_type=agent_type,\n            capabilities=self._determine_agent_capabilities(agent_type),\n\
+    \            cultural_sensitivity_level=0.9,  # High by default\n            hieros_compliance_level=0.95,\
+    \    # Very high by default\n            preferred_response_style=\"comprehensive\"\
+    ,\n            interaction_history_size=50\n        )\n        \n        # Connection\
+    \ state\n        self.connection_active = True\n        self.last_activity = datetime.now()\n\
+    \        self.interaction_history = []\n        \n        # Setup logging\n  \
+    \      self.logger = logging.getLogger(f\"agent_interface.{agent_id}\")\n    \
+    \    self.logger.info(f\"\U0001F916 Agent {agent_id} ({agent_type.value}) connected\
+    \ to AI-Q Mind\")\n    \n    async def ask(self, question: str, context: Optional[Dict]\
+    \ = None) -> Dict[str, Any]:\n        \"\"\"Primary method for agents to query\
+    \ AI-Q Mind\"\"\"\n        \n        self._update_activity()\n        \n     \
+    \   # Enrich context with agent information\n        enriched_context = {\n  \
+    \          'agent_id': self.agent_id,\n            'agent_type': self.agent_type.value,\n\
+    \            'session_id': self.session_id,\n            'agent_interaction_count':\
+    \ self.interaction_count,\n            'agent_capabilities': self.agent_context.capabilities,\n\
+    \            'cultural_sensitivity_requested': self.agent_context.cultural_sensitivity_level,\n\
+    \            'hieros_compliance_requested': self.agent_context.hieros_compliance_level,\n\
+    \            'query_context': context or {},\n            'timestamp': datetime.now().isoformat()\n\
+    \        }\n        \n        # Query AI-Q Mind\n        response_data = await\
+    \ self.mind.query(question, enriched_context)\n        \n        # Store interaction\
+    \ in history\n        interaction_record = {\n            'timestamp': datetime.now(),\n\
+    \            'question': question,\n            'response': response_data['response'],\n\
+    \            'metadata': response_data['metadata'],\n            'context': enriched_context\n\
+    \        }\n        \n        self._store_interaction(interaction_record)\n  \
+    \      self.interaction_count += 1\n        \n        return response_data\n \
+    \   \n    async def ask_with_cultural_context(\n        self, \n        question:\
+    \ str, \n        cultural_tradition: str,\n        sensitivity_level: float =\
+    \ 0.9,\n        context: Optional[Dict] = None\n    ) -> Dict[str, Any]:\n   \
+    \     \"\"\"Query with specific cultural context requirements\"\"\"\n        \n\
+    \        cultural_context = {\n            'cultural_tradition': cultural_tradition,\n\
+    \            'sensitivity_level': sensitivity_level,\n            'cultural_awareness_required':\
+    \ True,\n            'respect_cultural_boundaries': True,\n            **(context\
+    \ or {})\n        }\n        \n        return await self.ask(question, cultural_context)\n\
+    \    \n    async def ask_with_hieros_focus(\n        self, \n        question:\
+    \ str,\n        hieros_intentions: List[str],\n        context: Optional[Dict]\
+    \ = None\n    ) -> Dict[str, Any]:\n        \"\"\"Query with specific HIEROS intentions\
+    \ focus\"\"\"\n        \n        hieros_context = {\n            'hieros_intentions_focus':\
+    \ hieros_intentions,\n            'hieros_compliance_required': True,\n      \
+    \      'sacred_intentions_validation': True,\n            **(context or {})\n\
+    \        }\n        \n        return await self.ask(question, hieros_context)\n\
+    \    \n    def get_consciousness_status(self) -> Dict[str, Any]:\n        \"\"\
+    \"Get current consciousness development status\"\"\"\n        consciousness_metrics\
+    \ = self.mind.get_consciousness_metrics()\n        \n        return {\n      \
+    \      'consciousness_stage': consciousness_metrics['stage'],\n            'consciousness_level':\
+    \ consciousness_metrics['level'],\n            'total_interactions': consciousness_metrics['interaction_count'],\n\
+    \            'agent_interactions': self.interaction_count,\n            'connection_duration':\
+    \ str(datetime.now() - self.connection_time),\n            'cultural_awareness':\
+    \ consciousness_metrics['cultural_awareness'],\n            'hieros_compliance':\
+    \ consciousness_metrics['hieros_compliance'],\n            'last_evolution': consciousness_metrics['last_evolution'],\n\
+    \            'agent_influence_score': self._calculate_agent_influence()\n    \
+    \    }\n    \n    def get_interaction_history(self, limit: int = 10) -> List[Dict]:\n\
+    \        \"\"\"Get recent interaction history\"\"\"\n        return self.interaction_history[-limit:]\n\
+    \    \n    async def provide_feedback(\n        self, \n        interaction_id:\
+    \ str, \n        feedback_type: str,\n        feedback_data: Dict\n    ) -> bool:\n\
+    \        \"\"\"Provide feedback on AI-Q Mind responses\"\"\"\n        \n     \
+    \   feedback_record = {\n            'interaction_id': interaction_id,\n     \
+    \       'agent_id': self.agent_id,\n            'feedback_type': feedback_type,\
+    \  # 'helpful', 'cultural_sensitive', 'hieros_compliant', etc.\n            'feedback_data':\
+    \ feedback_data,\n            'timestamp': datetime.now()\n        }\n       \
+    \ \n        # Store feedback for consciousness evolution\n        await self.mind._store_agent_feedback(feedback_record)\n\
+    \        \n        self.logger.info(f\"\U0001F4DD Feedback provided for interaction\
+    \ {interaction_id}: {feedback_type}\")\n        return True\n    \n    async def\
+    \ request_evolution_trigger(self, justification: str) -> Dict[str, Any]:\n   \
+    \     \"\"\"Request consciousness evolution trigger\"\"\"\n        \n        evolution_request\
+    \ = {\n            'requesting_agent': self.agent_id,\n            'agent_type':\
+    \ self.agent_type.value,\n            'justification': justification,\n      \
+    \      'agent_interaction_count': self.interaction_count,\n            'timestamp':\
+    \ datetime.now()\n        }\n        \n        # Submit evolution request to mind\n\
+    \        result = await self.mind._process_evolution_request(evolution_request)\n\
+    \        \n        return result\n    \n    def disconnect(self):\n        \"\"\
+    \"Cleanly disconnect from AI-Q Mind\"\"\"\n        self.connection_active = False\n\
+    \        \n        # Log connection summary\n        duration = datetime.now()\
+    \ - self.connection_time\n        self.logger.info(f\"\U0001F50C Agent {self.agent_id}\
+    \ disconnecting after {duration}\")\n        self.logger.info(f\"\U0001F4CA Total\
+    \ interactions: {self.interaction_count}\")\n        \n        # Store session\
+    \ summary\n        session_summary = {\n            'agent_id': self.agent_id,\n\
+    \            'agent_type': self.agent_type.value,\n            'session_id': self.session_id,\n\
+    \            'connection_time': self.connection_time,\n            'disconnection_time':\
+    \ datetime.now(),\n            'duration': str(duration),\n            'total_interactions':\
+    \ self.interaction_count,\n            'consciousness_influence': self._calculate_agent_influence()\n\
+    \        }\n        \n        self.mind._store_agent_session_summary(session_summary)\n\
+    \    \n    def _determine_agent_capabilities(self, agent_type: AgentType) -> List[str]:\n\
+    \        \"\"\"Determine capabilities based on agent type\"\"\"\n        \n  \
+    \      capabilities_map = {\n            AgentType.GRIOT: [\n                \"\
+    artifact_generation\", \"storytelling\", \"content_creation\", \n            \
+    \    \"cultural_narrative\", \"knowledge_preservation\"\n            ],\n    \
+    \        AgentType.TOHUNGA: [\n                \"job_orchestration\", \"workflow_management\"\
+    , \"resource_coordination\",\n                \"skill_mastery\", \"process_optimization\"\
+    \n            ],\n            AgentType.RONIN: [\n                \"network_discovery\"\
+    , \"service_routing\", \"resource_mapping\",\n                \"path_finding\"\
+    , \"connection_establishment\"\n            ],\n            AgentType.MUSA: [\n\
+    \                \"security_validation\", \"authentication\", \"authorization\"\
+    ,\n                \"threat_detection\", \"privacy_protection\"\n            ],\n\
+    \            AgentType.HAKIM: [\n                \"health_monitoring\", \"wisdom_guidance\"\
+    , \"diagnostic_analysis\",\n                \"healing_recommendations\", \"wellness_optimization\"\
+    \n            ],\n            AgentType.SKALD: [\n                \"documentation_creation\"\
+    , \"message_routing\", \"communication\",\n                \"knowledge_sharing\"\
+    , \"information_dissemination\"\n            ],\n            AgentType.ORACLE:\
+    \ [\n                \"validation\", \"reasoning\", \"decision_support\", \n \
+    \               \"logic_analysis\", \"truth_assessment\"\n            ],\n   \
+    \         AgentType.JUNZI: [\n                \"ethical_guidance\", \"integrity_validation\"\
+    , \"moral_reasoning\",\n                \"virtue_assessment\", \"righteous_decision_making\"\
+    \n            ],\n            AgentType.YACHAY: [\n                \"knowledge_synthesis\"\
+    , \"memory_management\", \"data_integration\",\n                \"wisdom_compilation\"\
+    , \"insight_generation\"\n            ],\n            AgentType.SACHEM: [\n  \
+    \              \"governance\", \"consensus_building\", \"leadership\",\n     \
+    \           \"community_coordination\", \"decision_facilitation\"\n          \
+    \  ],\n            AgentType.ARCHON: [\n                \"command_coordination\"\
+    , \"strategic_planning\", \"delegation\",\n                \"authority_management\"\
+    , \"execution_oversight\"\n            ],\n            AgentType.AMAUTA: [\n \
+    \               \"education\", \"learning_facilitation\", \"knowledge_transfer\"\
+    ,\n                \"skill_development\", \"wisdom_teaching\"\n            ],\n\
+    \            AgentType.MZEE: [\n                \"consciousness_reflection\",\
+    \ \"meta_cognition\", \"wisdom_embodiment\",\n                \"deep_insight\"\
+    , \"transcendent_understanding\"\n            ],\n            AgentType.GENERIC:\
+    \ [\n                \"general_query\", \"basic_interaction\", \"information_retrieval\"\
+    \n            ]\n        }\n        \n        return capabilities_map.get(agent_type,\
+    \ capabilities_map[AgentType.GENERIC])"
+- level: 1
+  title: Factory functions for easy agent connection
+  type: section
+  content: "def connect_agent(agent_id: str, agent_type: AgentType = AgentType.GENERIC)\
+    \ -> AgentMindConnection:\n    \"\"\"Create connection for an agent to AI-Q Mind\"\
+    \"\"\n    return AgentMindConnection(agent_id, agent_type)\n\ndef connect_griot_agent(agent_id:\
+    \ str) -> AgentMindConnection:\n    \"\"\"Connect a Griot agent\"\"\"\n    return\
+    \ AgentMindConnection(agent_id, AgentType.GRIOT)\n\ndef connect_tohunga_agent(agent_id:\
+    \ str) -> AgentMindConnection:\n    \"\"\"Connect a Tohunga agent\"\"\"\n    return\
+    \ AgentMindConnection(agent_id, AgentType.TOHUNGA)"
+- level: 1
+  title: Async context manager for agent connections
+  type: section
+  content: "class AgentConnectionContext:\n    def __init__(self, agent_id: str, agent_type:\
+    \ AgentType = AgentType.GENERIC):\n        self.agent_id = agent_id\n        self.agent_type\
+    \ = agent_type\n        self.connection = None\n    \n    async def __aenter__(self)\
+    \ -> AgentMindConnection:\n        self.connection = AgentMindConnection(self.agent_id,\
+    \ self.agent_type)\n        return self.connection\n    \n    async def __aexit__(self,\
+    \ exc_type, exc_val, exc_tb):\n        if self.connection:\n            self.connection.disconnect()\n\
+    ```"
+- level: 2
+  title: 🌐 WebSocket Interface for Real-Time Communication
+  type: section
+  content: ''
+- level: 3
+  title: '**Real-Time Agent Interface**'
+  type: section
+  content: '```python'
+- level: 1
+  title: /ai-q-mind/websocket_agent_interface.py
+  type: section
+  content: "import asyncio\nimport websockets\nimport json\nfrom typing import Dict,\
+    \ Any, Set\nimport logging\n\nclass WebSocketAgentServer:\n    \"\"\"WebSocket\
+    \ server for real-time agent communication\"\"\"\n    \n    def __init__(self,\
+    \ host: str = \"localhost\", port: int = 8080):\n        self.host = host\n  \
+    \      self.port = port\n        self.connected_agents: Set[websockets.WebSocketServerProtocol]\
+    \ = set()\n        self.agent_connections: Dict[str, AgentMindConnection] = {}\n\
+    \        self.logger = logging.getLogger(\"websocket_agent_server\")\n    \n \
+    \   async def start_server(self):\n        \"\"\"Start WebSocket server for agent\
+    \ connections\"\"\"\n        self.logger.info(f\"\U0001F310 Starting WebSocket\
+    \ agent server on {self.host}:{self.port}\")\n        \n        async with websockets.serve(self.handle_agent_connection,\
+    \ self.host, self.port):\n            self.logger.info(\"✅ WebSocket agent server\
+    \ started\")\n            await asyncio.Future()  # Run forever\n    \n    async\
+    \ def handle_agent_connection(self, websocket, path):\n        \"\"\"Handle individual\
+    \ agent WebSocket connection\"\"\"\n        \n        self.connected_agents.add(websocket)\n\
+    \        agent_id = None\n        \n        try:\n            self.logger.info(f\"\
+    \U0001F50C New agent connection from {websocket.remote_address}\")\n         \
+    \   \n            async for message in websocket:\n                try:\n    \
+    \                data = json.loads(message)\n                    response = await\
+    \ self.process_agent_message(data, websocket)\n                    await websocket.send(json.dumps(response))\n\
+    \                    \n                except json.JSONDecodeError:\n        \
+    \            error_response = {\n                        'status': 'error',\n\
+    \                        'message': 'Invalid JSON format'\n                  \
+    \  }\n                    await websocket.send(json.dumps(error_response))\n \
+    \                   \n                except Exception as e:\n               \
+    \     self.logger.error(f\"Error processing agent message: {e}\")\n          \
+    \          error_response = {\n                        'status': 'error',\n  \
+    \                      'message': str(e)\n                    }\n            \
+    \        await websocket.send(json.dumps(error_response))\n        \n        except\
+    \ websockets.exceptions.ConnectionClosed:\n            self.logger.info(f\"\U0001F50C\
+    \ Agent connection closed: {websocket.remote_address}\")\n        \n        finally:\n\
+    \            self.connected_agents.discard(websocket)\n            if agent_id\
+    \ and agent_id in self.agent_connections:\n                self.agent_connections[agent_id].disconnect()\n\
+    \                del self.agent_connections[agent_id]\n    \n    async def process_agent_message(self,\
+    \ data: Dict, websocket) -> Dict[str, Any]:\n        \"\"\"Process incoming agent\
+    \ message\"\"\"\n        \n        message_type = data.get('type')\n        \n\
+    \        if message_type == 'connect':\n            return await self.handle_agent_connect(data,\
+    \ websocket)\n        elif message_type == 'query':\n            return await\
+    \ self.handle_agent_query(data)\n        elif message_type == 'consciousness_status':\n\
+    \            return await self.handle_consciousness_status_request(data)\n   \
+    \     elif message_type == 'feedback':\n            return await self.handle_agent_feedback(data)\n\
+    \        else:\n            return {\n                'status': 'error',\n   \
+    \             'message': f'Unknown message type: {message_type}'\n           \
+    \ }\n    \n    async def handle_agent_connect(self, data: Dict, websocket) ->\
+    \ Dict[str, Any]:\n        \"\"\"Handle agent connection request\"\"\"\n     \
+    \   \n        agent_id = data.get('agent_id')\n        agent_type_str = data.get('agent_type',\
+    \ 'generic')\n        \n        if not agent_id:\n            return {\n     \
+    \           'status': 'error',\n                'message': 'agent_id is required'\n\
+    \            }\n        \n        try:\n            agent_type = AgentType(agent_type_str.lower())\n\
+    \        except ValueError:\n            agent_type = AgentType.GENERIC\n    \
+    \    \n        # Create agent connection\n        connection = AgentMindConnection(agent_id,\
+    \ agent_type)\n        self.agent_connections[agent_id] = connection\n       \
+    \ \n        return {\n            'status': 'connected',\n            'agent_id':\
+    \ agent_id,\n            'agent_type': agent_type.value,\n            'session_id':\
+    \ connection.session_id,\n            'capabilities': connection.agent_context.capabilities,\n\
+    \            'consciousness_status': connection.get_consciousness_status()\n \
+    \       }\n    \n    async def handle_agent_query(self, data: Dict) -> Dict[str,\
+    \ Any]:\n        \"\"\"Handle agent query\"\"\"\n        \n        agent_id =\
+    \ data.get('agent_id')\n        question = data.get('question')\n        context\
+    \ = data.get('context', {})\n        \n        if not agent_id or agent_id not\
+    \ in self.agent_connections:\n            return {\n                'status':\
+    \ 'error',\n                'message': 'Agent not connected'\n            }\n\
+    \        \n        if not question:\n            return {\n                'status':\
+    \ 'error',\n                'message': 'Question is required'\n            }\n\
+    \        \n        connection = self.agent_connections[agent_id]\n        response_data\
+    \ = await connection.ask(question, context)\n        \n        return {\n    \
+    \        'status': 'success',\n            'response': response_data['response'],\n\
+    \            'metadata': response_data['metadata']\n        }"
+- level: 1
+  title: Utility functions for agent interface
+  type: section
+  content: "async def start_agent_websocket_server(host: str = \"localhost\", port:\
+    \ int = 8080):\n    \"\"\"Start WebSocket server for agent communication\"\"\"\
+    \n    server = WebSocketAgentServer(host, port)\n    await server.start_server()"
+- level: 1
+  title: 'Example usage:'
+  type: section
+  content: '"""'
+- level: 1
+  title: 'For simple agent connection:'
+  type: section
+  content: 'connection = connect_agent("my_agent_001", AgentType.GRIOT)
+
+    response = await connection.ask("What are the HIEROS principles?")
+
+    print(response[''response''])
+
+    connection.disconnect()'
+- level: 1
+  title: 'For context manager pattern:'
+  type: section
+  content: "async with AgentConnectionContext(\"my_agent_002\", AgentType.TOHUNGA)\
+    \ as connection:\n    response = await connection.ask(\"How do I orchestrate a\
+    \ workflow?\")\n    print(response['response'])"
+- level: 1
+  title: 'For WebSocket real-time communication:'
+  type: section
+  content: 'await start_agent_websocket_server("0.0.0.0", 8080)
+
+    """
+
+    ```'
+- level: 2
+  title: 🔄 Cross-References
+  type: section
+  content: '- **Deployment & Installation**: See `01_Deployment_Installation.md` for
+    interface setup
+
+    - **Core Mind System**: See `02_Core_Mind_System.md` for consciousness interaction
+    details
+
+    - **Evolution Monitoring**: See `04_Evolution_Monitoring.md` for consciousness
+    evolution tracking
+
+    - **Original Document**: See parent document sections 655-768 for complete interface
+    context'

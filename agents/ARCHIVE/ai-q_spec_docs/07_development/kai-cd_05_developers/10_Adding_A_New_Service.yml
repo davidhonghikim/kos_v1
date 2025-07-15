@@ -1,0 +1,120 @@
+metadata:
+  original_file: 10_Adding_A_New_Service.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Adding A New Service
+  description: Technical specification for adding a new service
+  type: developer-guide
+  status: current
+  priority: medium
+  last_updated: '2025-06-22'
+  agent_notes: AI agent guidance for implementing adding a new service
+sections:
+- level: 1
+  title: 6. Adding a New Service
+  type: section
+  content: ''
+- level: 2
+  title: Agent Context
+  type: section
+  content: '**For AI Agents**: Complete guide for adding new services to the Kai-CD
+    platform covering step-by-step integration procedures and service implementation
+    patterns. Use this when implementing new service integrations, understanding service
+    addition workflows, planning service extensions, or building service connectors.
+    Essential reference for all new service development work.
+
+
+    **Implementation Notes**: Contains step-by-step service integration procedures,
+    service implementation patterns, integration workflows, and development best practices.
+    Includes detailed service addition methodology and implementation frameworks.
+
+    **Quality Requirements**: Keep service addition procedures and implementation
+    patterns synchronized with actual integration process. Maintain accuracy of service
+    integration workflows and development best practices.
+
+    **Integration Points**: Foundation for service expansion, links to service architecture,
+    integration frameworks, and development guidelines for comprehensive service addition
+    coverage.
+
+
+    This guide provides a step-by-step tutorial for adding support for a new service
+    to Kai-CD. The process mostly involves creating a single new file: a service definition.
+
+
+    Let''s imagine we want to add support for a fictional new LLM service called "MegaChat."'
+- level: 3
+  title: 'Step 1: Create the Definition File'
+  type: section
+  content: Create a new file in `src/connectors/definitions/megachat.ts`. This file
+    will contain the entire definition for our new service.
+- level: 3
+  title: 'Step 2: Define the Basic Service Info'
+  type: section
+  content: "Start with the basic properties for the `ServiceDefinition` object.\n\n\
+    ```typescript\n// src/connectors/definitions/megachat.ts\n\nimport { ServiceDefinition,\
+    \ LlmChatCapability } from '@/types';\n\nexport const megaChatDefinition: ServiceDefinition\
+    \ = {\n  id: 'megachat',\n  name: 'MegaChat',\n  description: 'A fictional new\
+    \ LLM service.',\n  logo: 'data:image/svg+xml;...', // (Optional) Add an SVG logo\n\
+    \  baseUrl: 'http://localhost:1234/v1', // The default base URL\n  auth: {\n \
+    \   type: 'bearer_token',\n    token: '', // The user will provide this\n  },\n\
+    \  capabilities: [], // We will add this next\n};\n```\n\n-   **`id`**: Must be\
+    \ a unique, lowercase string.\n-   **`baseUrl`**: The default URL for the service.\
+    \ The user can override this.\n-   **`auth`**: Define the authentication method.\
+    \ `'bearer_token'` will cause the UI to render a text input for a token. Other\
+    \ options include `'none'` and `'api_key'`."
+- level: 3
+  title: 'Step 3: Define the Capability'
+  type: section
+  content: "Our service is for chat, so we need to create an `LlmChatCapability`.\
+    \ This object will define the endpoints and parameters for the chat functionality.\n\
+    \n```typescript\n// src/connectors/definitions/megachat.ts\n\nconst llmChatCapability:\
+    \ LlmChatCapability = {\n  name: 'llm_chat',\n  endpoints: [\n    // Define endpoints\
+    \ here\n  ],\n  parameters: [\n    // Define parameters here\n  ],\n};\n\n// ...\
+    \ update the main definition:\nexport const megaChatDefinition: ServiceDefinition\
+    \ = {\n  // ...\n  capabilities: [llmChatCapability],\n};\n```"
+- level: 3
+  title: 'Step 4: Define the Endpoints'
+  type: section
+  content: "Now, we fill in the `endpoints` array inside the capability. Let's assume\
+    \ MegaChat has two endpoints we care about: one to get a list of models and one\
+    \ to handle the chat stream.\n\n```typescript\n// Inside llmChatCapability\nendpoints:\
+    \ [\n  {\n    id: 'getModels',\n    path: '/models',\n    method: 'GET',\n   \
+    \ parser: {\n      type: 'json',\n      path: 'data', // Where the array of models\
+    \ is in the response\n      id: 'id',     // The property to use as the model\
+    \ ID\n      name: 'id',   // The property to use for the display name\n    },\n\
+    \  },\n  {\n    id: 'chat',\n    path: '/chat/completions',\n    method: 'POST',\n\
+    \    body: { // How to structure the request body\n      model: '{{model}}', //\
+    \ Use template variables for parameters\n      messages: '{{messages}}',\n   \
+    \   temperature: '{{temperature}}',\n      stream: true,\n    },\n    isStreaming:\
+    \ true,\n  },\n],\n```\n\n-   The `parser` object in `getModels` tells the application\
+    \ how to parse the JSON response to get a list of models.\n-   The `body` object\
+    \ in `chat` is a template. The `apiClient` will replace variables like `{{model}}`\
+    \ with the actual values from the UI."
+- level: 3
+  title: 'Step 5: Define the Parameters'
+  type: section
+  content: "Finally, define the `parameters` array. This schema will be used to automatically\
+    \ generate the UI form.\n\n```typescript\n// Inside llmChatCapability\nparameters:\
+    \ [\n  {\n    id: 'model',\n    type: 'select',\n    label: 'Model',\n    defaultValue:\
+    \ 'megachat-pro',\n    optionsEndpoint: 'getModels', // Tells the UI to call the\
+    \ 'getModels' endpoint to populate this dropdown\n  },\n  {\n    id: 'temperature',\n\
+    \    type: 'number',\n    label: 'Temperature',\n    defaultValue: 0.7,\n    min:\
+    \ 0,\n    max: 2,\n    step: 0.1,\n  },\n  {\n    id: 'system_prompt',\n    type:\
+    \ 'string',\n    label: 'System Prompt',\n    defaultValue: 'You are a helpful\
+    \ assistant.',\n    isSystem: true, // Marks this as the system prompt\n  },\n\
+    ],\n```\n\n-   The `'select'` parameter with `optionsEndpoint` is the key to creating\
+    \ a dynamic model selector."
+- level: 3
+  title: 'Step 6: Add to the Global List'
+  type: section
+  content: "The final step is to make the application aware of your new definition.\
+    \ Open `src/connectors/definitions/all.ts` and add your new definition to the\
+    \ imported list and the exported array.\n\n```typescript\n// src/connectors/definitions/all.ts\n\
+    \nimport { megaChatDefinition } from './megachat'; // 1. Import it\n// ... other\
+    \ imports\n\nexport const allServiceDefinitions = [\n  // ... other definitions\n\
+    \  megaChatDefinition, // 2. Add it to the array\n];\n```"
+- level: 3
+  title: 'Step 7: Test'
+  type: section
+  content: ''

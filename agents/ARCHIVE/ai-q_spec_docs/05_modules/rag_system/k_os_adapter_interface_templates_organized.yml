@@ -1,0 +1,208 @@
+title: K Os Adapter Interface Templates
+description: ''
+type: documentation
+status: current
+priority: medium
+version: '1.0'
+last_updated: '2025-06-28'
+organization_date: '2025-06-28T19:48:20.141943'
+authors: []
+tags: []
+content_type: documentation
+technical_level: advanced
+word_count: 530
+has_code_blocks: true
+has_api_specs: true
+has_architecture: true
+has_deployment: false
+has_testing: false
+has_security: false
+has_rag: true
+has_ethics: false
+original_filename: k_os_adapter_interface_templates.yml
+original_path: /Users/danger/CascadeProjects/griot-node/agents/reference/kos_chatgpt/k_os_adapter_interface_templates.yml
+category: rag_system
+
+---
+
+title: K Os Adapter Interface Templates
+description: ''
+type: documentation
+status: current
+priority: medium
+last_updated: '2025-06-28'
+conversion_date: '2025-06-28T19:30:47.125200'
+original_format: markdown
+content_type: api_specification
+word_count: 503
+line_count: 165
+
+---
+
+# kOS Adapter Interface Templates
+
+## Overview
+
+Adapters in kOS act as modular connectors between the kOS Orchestration Engine and external services, APIs, self-hosted tools, or local executables. They allow kOS recipes and skills to trigger specific actions in external systems in a standardized, maintainable, and extensible way.
+
+---
+
+## Core Design Principles
+
+| Principle                  | Description                                                                                              |
+| -------------------------- | -------------------------------------------------------------------------------------------------------- |
+| Standardized Interfaces    | All adapters follow a common interface contract to ensure predictable behavior.                          |
+| Pluggability               | New adapters can be added without modifying core system logic.                                           |
+| Error Handling             | Built-in error management, retries, and graceful degradation.                                            |
+| Input/Output Normalization | Each adapter translates external API/tool inputs and outputs into standardized kOS-compatible formats.   |
+| Service Abstraction        | Recipes and skills remain agnostic to specific APIs or tools—adapters handle the implementation details. |
+
+---
+
+## Standard Adapter Interface Schema
+
+**Required Methods:**
+
+| Method                     | Purpose                                                        |
+| -------------------------- | -------------------------------------------------------------- |
+| `connect()`                | Handles authentication and connection setup if needed.         |
+| `execute(action, params)`  | Main execution method for invoking specific actions.           |
+| `parse_response(response)` | Converts raw service responses into normalized output for kOS. |
+| `handle_error(error)`      | Standardized error catching and logging.                       |
+| `disconnect()`             | Cleanly closes connections if persistent sessions are used.    |
+
+---
+
+## Example Adapter Template (Python Style Pseudocode)
+
+```python
+class BaseAdapter:
+    def connect(self):
+        raise NotImplementedError
+
+    def execute(self, action, params):
+        raise NotImplementedError
+
+    def parse_response(self, response):
+        raise NotImplementedError
+
+    def handle_error(self, error):
+        raise NotImplementedError
+
+    def disconnect(self):
+        pass  # Optional for stateless adapters
+```
+
+---
+
+## Example: OpenAI Adapter
+
+```python
+class OpenAIAdapter(BaseAdapter):
+    def connect(self):
+        self.api_key = os.getenv("OPENAI_API_KEY")
+
+    def execute(self, action, params):
+        try:
+            if action == "chat_completion":
+                response = openai.ChatCompletion.create(**params)
+                return self.parse_response(response)
+        except Exception as e:
+            self.handle_error(e)
+
+    def parse_response(self, response):
+        return response["choices"][0]["message"]["content"]
+
+    def handle_error(self, error):
+        print(f"[OpenAIAdapter Error]: {error}")
+```
+
+---
+
+## Example: Ollama Adapter (Local LLM)
+
+```python
+class OllamaAdapter(BaseAdapter):
+    def connect(self):
+        self.base_url = "http://localhost:11434"
+
+    def execute(self, action, params):
+        if action == "generate":
+            response = requests.post(f"{self.base_url}/api/generate", json=params)
+            return self.parse_response(response.json())
+
+    def parse_response(self, response):
+        return response.get("response", "")
+
+    def handle_error(self, error):
+        print(f"[OllamaAdapter Error]: {error}")
+```
+
+---
+
+## Example: Slack Adapter
+
+```python
+class SlackAdapter(BaseAdapter):
+    def connect(self):
+        self.token = os.getenv("SLACK_API_TOKEN")
+
+    def execute(self, action, params):
+        if action == "send_message":
+            response = requests.post(
+                "https://slack.com/api/chat.postMessage",
+                headers={"Authorization": f"Bearer {self.token}"},
+                json=params
+            )
+            return self.parse_response(response.json())
+
+    def parse_response(self, response):
+        return response.get("ok", False)
+
+    def handle_error(self, error):
+        print(f"[SlackAdapter Error]: {error}")
+```
+
+---
+
+## Adapter Registration
+
+Each adapter should include:
+
+- **Adapter Name**
+- **Supported Actions (list of callable skills)**
+- **Required Configurations (API keys, URLs, etc.)**
+- **Error Logging Path**
+- **Metadata for Discovery Layer**
+
+---
+
+## Adapter Metadata Example (JSON)
+
+```json
+{
+  "adapter_name": "OpenAIAdapter",
+  "actions_supported": ["chat_completion", "embedding_creation"],
+  "requires_auth": true,
+  "config_fields": ["OPENAI_API_KEY"],
+  "description": "Adapter for OpenAI Chat and Embedding APIs."
+}
+```
+
+---
+
+## Next Steps for Agents
+
+- Implement Adapter Base Class
+- Develop adapters for all top-priority external services (OpenAI, Anthropic, Hugging Face, Slack, Ollama, VectorDBs)
+- Build Adapter Discovery and Registration Service
+- Implement Adapter Health Checks
+- Standardize Logging and Error Reporting
+- Allow user configuration of active/inactive adapters
+
+---
+
+**End of Document**
+
+
+

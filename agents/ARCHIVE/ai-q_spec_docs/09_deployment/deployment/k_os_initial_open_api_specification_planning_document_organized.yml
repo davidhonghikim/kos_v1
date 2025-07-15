@@ -1,0 +1,148 @@
+title: K Os Initial Open Api Specification Planning Document
+description: ''
+type: documentation
+status: current
+priority: medium
+version: '1.0'
+last_updated: '2025-06-28'
+organization_date: '2025-06-28T19:48:20.276371'
+authors: []
+tags: []
+content_type: documentation
+technical_level: intermediate
+word_count: 384
+has_code_blocks: true
+has_api_specs: true
+has_architecture: true
+has_deployment: true
+has_testing: true
+has_security: false
+has_rag: false
+has_ethics: false
+original_filename: k_os_initial_open_api_specification_planning_document.yml
+original_path: /Users/danger/CascadeProjects/griot-node/agents/reference/kos_chatgpt/k_os_initial_open_api_specification_planning_document.yml
+category: deployment
+
+---
+
+title: K Os Initial Open Api Specification Planning Document
+description: ''
+type: documentation
+status: current
+priority: medium
+last_updated: '2025-06-28'
+conversion_date: '2025-06-28T19:30:47.087203'
+original_format: markdown
+content_type: api_specification
+word_count: 354
+line_count: 105
+
+---
+
+# kOS Initial OpenAPI Specification Planning Document
+
+## Overview
+
+The **kOS Initial OpenAPI Specification Planning Document** outlines the recommended baseline API specification format for TOSE, OEC, and GEIG modules. This plan ensures consistent, documented, and version-controlled API schemas that support testing, client integration, and future API gateway deployments.
+
+---
+
+## 1. Specification Format
+
+- **Format:** OpenAPI 3.1 (JSON or YAML)
+- **Tooling:**
+  - VS Code OpenAPI plugins
+  - Swagger Editor
+  - Redocly (optional)
+
+---
+
+## 2. TOSE API Specification (`/api/tose_openapi.yaml`)
+
+**Core Endpoints:**
+
+- `/health` – GET – Health Check
+- `/tasks/submit` – POST – Submit new task
+- `/tasks/status/{task_id}` – GET – Check task status
+
+**Sample Endpoint Schema:**
+
+```yaml
+paths:
+  /tasks/submit:
+    post:
+      summary: Submit a new task for scheduling
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                task_type:
+                  type: string
+                payload:
+                  type: object
+      responses:
+        '200':
+          description: Task accepted
+```
+
+---
+
+## 3. OEC API Specification (`/api/oec_openapi.yaml`)
+
+**Core Endpoints:**
+
+- `/health` – GET
+- `/execution/submit` – POST – Submit execution plan
+- `/execution/status/{plan_id}` – GET – Execution status
+
+---
+
+## 4. GEIG API Specification (`/api/geig_openapi.yaml`)
+
+**Core Endpoints:**
+
+- `/health` – GET
+- `/validate` – POST – Ethical validation request
+- `/policies` – GET – List active ethical policies
+
+---
+
+## 5. OpenAPI Specification Metadata Template
+
+Each OpenAPI file will contain:
+
+- API title and version
+- Contact info (kOS Project)
+- License block (MIT or other)
+- External docs link (future URL)
+
+---
+
+## 6. Validation and CI Integration
+
+- Run OpenAPI linter in CI pipeline
+- Auto-generate HTML documentation from OpenAPI (using Swagger UI or Redoc)
+- Validate breaking changes against past OpenAPI versions
+
+---
+
+## 7. Next Steps for Developers
+
+- Write `/api/tose_openapi.yaml`, `/api/oec_openapi.yaml`, and `/api/geig_openapi.yaml`
+- Validate with OpenAPI tools
+- Embed auto-documentation step into CI/CD pipeline
+- Begin real endpoint schema population as source modules mature
+
+---
+
+## Conclusion
+
+The **kOS Initial OpenAPI Specification Planning Document** ensures all kOS modules start with formal, testable API definitions—laying the groundwork for stable client integration, API documentation, and endpoint consistency across the ecosystem.
+
+✅ Next: Ready to help **generate the actual OpenAPI YAML specs**, **set up Swagger UI**, or **create Redoc-based documentation portals.**
+
+
+

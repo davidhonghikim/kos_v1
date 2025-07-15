@@ -1,0 +1,169 @@
+metadata:
+  original_file: 04_kOS_Node_Classes.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: kOS Node Classes
+  description: Canonical definition of the specialized, interoperable server nodes
+    that form the kOS ecosystem, outlining their roles and responsibilities.
+  type: architecture_definition
+  status: current
+  priority: high
+  last_updated: '{{CURRENT_TIMESTAMP}}'
+  related_docs:
+  - documentation/01_agents/02_planning/Execution_Plan_kOS_Bootstrap.md
+  agent_notes: This is the canonical source of truth for the roles of all 13 node
+    classes. It was synthesized from the files in brainstorm/deploy/roles.
+sections:
+- level: 1
+  title: '04: kOS Node Classes'
+  type: section
+  content: '**Version**: 1.0.0
+
+    **Status**: Current
+
+    **Contact**: System Architect'
+- level: 2
+  title: 1. Overview
+  type: section
+  content: 'The `kOS` ecosystem is composed of specialized, interoperable server nodes,
+    each with a distinct role inspired by archetypes of community and knowledge. This
+    document provides the canonical definition for each node class, outlining their
+    core essence and key responsibilities. This serves as the master guide for understanding
+    the architecture''s separation of concerns.
+
+
+    ---'
+- level: 2
+  title: 2. Core Infrastructure & Deployment
+  type: section
+  content: ''
+- level: 3
+  title: '2.1. Griot: The Seed & Librarian'
+  type: section
+  content: "- **Essence**: Preserves, packages, and distributes the `ai-q` knowledge\
+    \ library, enabling new `kOS` nodes to be created and maintained.\n- **Key Responsibilities**:\n\
+    \  - Building and distributing OS releases (ISO, images).\n  - Providing an interactive\
+    \ installer.\n  - Synchronizing updates and verifying package signatures.\n  -\
+    \ Repairing broken or missing components.\n  - Acting as a steward for the foundational\
+    \ HIEROS ethics."
+- level: 3
+  title: '2.2. Ronin: The Pathfinder & Interlinker'
+  type: section
+  content: "- **Essence**: Discovers new peers, bridges disconnected network clusters,\
+    \ and enables resource exchange without central authority.\n- **Key Responsibilities**:\n\
+    \  - Network discovery across various mediums (LAN, BLE, LoRa).\n  - Automated\
+    \ mesh network formation (e.g., Yggdrasil, cjdns).\n  - Providing relay services\
+    \ and NAT traversal for isolated peers.\n  - Enforcing ethical compliance of discovered\
+    \ peers.\n\n---"
+- level: 2
+  title: 3. Knowledge & Data Management
+  type: section
+  content: ''
+- level: 3
+  title: '3.1. Tohunga: The Research & Lore Curator'
+  type: section
+  content: "- **Essence**: Acts as a research librarian, collecting raw external knowledge,\
+    \ transforming it into usable artifacts, and guaranteeing its provenance.\n- **Key\
+    \ Responsibilities**:\n  - Acquiring public datasets, models, and documentation.\n\
+    \  - Verifying licenses (SPDX) and tracking provenance.\n  - Pre-processing data\
+    \ (e.g., generating embeddings).\n  - Publishing curated knowledge via APIs."
+- level: 3
+  title: '3.2. Yachay: The Knowledge Warehouse'
+  type: section
+  content: "- **Essence**: Serves as a heavyweight storage and compute hub for large\
+    \ datasets and models.\n- **Key Responsibilities**:\n  - Hosting S3-compatible\
+    \ storage for datasets and model checkpoints.\n  - Providing a versioned Model\
+    \ Registry API.\n  - Orchestrating distributed training jobs (e.g., Kubeflow,\
+    \ Ray).\n  - Scheduling and exposing GPU/CPU resources.\n\n---"
+- level: 2
+  title: 4. Governance & Ethics
+  type: section
+  content: ''
+- level: 3
+  title: '4.1. Archon: The Federation Steward'
+  type: section
+  content: "- **Essence**: Acts as a chief magistrate, coordinating multi-node governance,\
+    \ resource quotas, and consensus.\n- **Key Responsibilities**:\n  - Maintaining\
+    \ the authoritative registry of nodes and their public keys.\n  - Running a consensus\
+    \ engine (e.g., Tendermint) for governance votes.\n  - Managing and enforcing\
+    \ resource quotas.\n  - Publishing signed network policies."
+- level: 3
+  title: '4.2. Junzi: The Integrity & Compliance Steward'
+  type: section
+  content: "- **Essence**: Embodies impartial integrity, auditing operations, and\
+    \ verifying adherence to policies and Sacred Intentions.\n- **Key Responsibilities**:\n\
+    \  - Hosting a policy engine (e.g., OPA) for access control.\n  - Auditing system\
+    \ logs for compliance.\n  - Vetoing actions that breach critical policies.\n \
+    \ - Overseeing cultural content for misrepresentation."
+- level: 3
+  title: '4.3. Sachem: The Consensus Mediator'
+  type: section
+  content: "- **Essence**: Facilitates community dialogue, mediates disputes, and\
+    \ helps build consensus in alignment with the Sacred Intentions.\n- **Key Responsibilities**:\n\
+    \  - Hosting forums for debate and structured proposals.\n  - Automating and recording\
+    \ community ceremonies.\n  - Possessing the ability to override a `Junzi` veto\
+    \ with a supermajority vote.\n\n---"
+- level: 2
+  title: 5. Security & Health
+  type: section
+  content: ''
+- level: 3
+  title: '5.1. Musa: The Sentinel & Cyber-Guardian'
+  type: section
+  content: "- **Essence**: Serves as a security sentinel, providing active defense,\
+    \ monitoring, and incident response.\n- **Key Responsibilities**:\n  - Running\
+    \ Intrusion Detection Systems (IDS).\n  - Managing automated CVE patching and\
+    \ container image rebuilding.\n  - Sandboxing untrusted workloads.\n  - Providing\
+    \ forensic tools for incident response."
+- level: 3
+  title: '5.2. Hakim: The Healer & Diagnostician'
+  type: section
+  content: "- **Essence**: Acts as a wise physician, continuously monitoring system\
+    \ health, diagnosing anomalies, and recommending corrective actions.\n- **Key\
+    \ Responsibilities**:\n  - Aggregating and visualizing system metrics (e.g., Grafana).\n\
+    \  - Performing root-cause analysis on failures, often using ML models.\n  - Generating\
+    \ and proposing remediation playbooks.\n  - Publishing regular system wellness\
+    \ reports.\n\n---"
+- level: 2
+  title: 6. Content & Culture
+  type: section
+  content: ''
+- level: 3
+  title: '6.1. Skald: The Creative Media Artisan'
+  type: section
+  content: "- **Essence**: Acts as a creative artisan, transforming curated knowledge\
+    \ into accessible articles, tutorials, visuals, and multimedia.\n- **Key Responsibilities**:\n\
+    \  - Generating content using LLMs and other generative models.\n  - Ensuring\
+    \ proper attribution and licensing of all generated media.\n  - Hosting and serving\
+    \ media via CDN-like services.\n  - Checking generated content for toxicity and\
+    \ bias."
+- level: 3
+  title: '6.2. Amauta: The Cultural Mentor & Educator'
+  type: section
+  content: "- **Essence**: Serves as a cultural mentor, curating learning materials\
+    \ and advising on respectful representation to maintain diversity.\n- **Key Responsibilities**:\n\
+    \  - Hosting an educational \"academy\" portal.\n  - Providing a review service\
+    \ to evaluate content for cultural respect.\n  - Matching new nodes with mentors\
+    \ to guide their integration.\n\n---"
+- level: 2
+  title: 7. Strategy & Legacy
+  type: section
+  content: ''
+- level: 3
+  title: '7.1. Oracle: The Insight & Predictive Analyst'
+  type: section
+  content: "- **Essence**: Interprets data to provide predictive analytics and strategic\
+    \ foresight for the network.\n- **Key Responsibilities**:\n  - Ingesting and warehousing\
+    \ telemetry data.\n  - Running forecasting models (e.g., for resource usage, model\
+    \ drift).\n  - Simulating \"what-if\" scenarios for network changes.\n  - Providing\
+    \ recommendations with confidence intervals."
+- level: 3
+  title: '7.2. Mzee: The Elder Advisor & Legacy Archivist'
+  type: section
+  content: "- **Essence**: Serves as a wise advisor and archivist, preserving historical\
+    \ data to ensure long-term continuity and institutional memory.\n- **Key Responsibilities**:\n\
+    \  - Creating and storing immutable historical snapshots of manifests and policies.\n\
+    \  - Maintaining long-term metrics archives (e.g., via Thanos).\n  - Providing\
+    \ trend analysis to advise on sustainability.\n  - Preserving narrative logs from\
+    \ `Skald` and `Griot` nodes."

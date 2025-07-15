@@ -1,0 +1,142 @@
+title: K Os Agent Bootstrap System Enhancement Plan
+description: ''
+type: documentation
+status: current
+priority: medium
+version: '1.0'
+last_updated: '2025-06-28'
+organization_date: '2025-06-28T19:48:19.946527'
+authors: []
+tags: []
+content_type: documentation
+technical_level: advanced
+word_count: 734
+has_code_blocks: false
+has_api_specs: false
+has_architecture: true
+has_deployment: false
+has_testing: true
+has_security: false
+has_rag: true
+has_ethics: false
+original_filename: k_os_agent_bootstrap_system_enhancement_plan.yml
+original_path: /Users/danger/CascadeProjects/griot-node/agents/reference/RAG/k_os_agent_bootstrap_system_enhancement_plan.yml
+category: rag_system
+
+---
+
+title: kOS Agent Bootstrap System Enhancement Plan
+description: Detailed implementation plan for improving the agent bootstrap, changelog,
+  handoff, implementation planning, archiving, and performance metrics systems in
+  alignment with existing agent workflow and directory architecture.
+type: implementation-plan
+status: active
+priority: critical
+last_updated: '2025-06-28'
+conversion_date: '2025-06-28T19:30:47.029135'
+original_format: markdown
+content_type: agent_specification
+word_count: 662
+line_count: 88
+created: '2025-06-28T00:00:00Z'
+version: 1.1.0
+tags:
+- kOS
+- multi-agent
+- bootstrap
+- changelog
+- handoff
+- metrics
+- archival
+
+---
+
+# ✅ Purpose
+To enhance the robustness, automation, and traceability of the **kOS Agent Bootstrap System**, with full integration into the existing **agent workflow**, **performance system**, **history/changelog**, **handoff**, and **implementation plan ecosystems**.
+
+---
+
+## ✅ Enhancement Scope
+
+| System Area | Enhancements |
+|---|---|
+| **Agent Bootstrap** | Automate context loading from system prompts, prior handoff, manifest, and performance logs. Validate that agents execute onboarding steps correctly using a pre-flight checklist. |
+| **Changelog System** | Ensure all agents use the quarterly changelog rollover system, strict event keyword tagging (`CHANGE`, `FIX`, `ERROR`, etc.), and follow the automation tools in `scripts/kos-log.js`. Implement changelog linting before commits. |
+| **Handoff System** | Require structured, machine-parseable frontmatter for all handoffs. Automate archiving of old handoffs into `handoff/archive/`. Add CLI tools for handoff creation and validation. |
+| **Implementation Plans** | Ensure all complex tasks have linked implementation plans, with phase/task tracking, metrics capture, and auto-reporting tools. Support CLI batch creation and validation via `npm run` scripts. |
+| **Archiving System** | Auto-archive metrics, execution plans, and changelogs quarterly. Implement `archive_snapshot.py` to compress and store full project state per milestone. |
+| **Metrics & Analytics** | Enforce use of performance tracking for each session (`collect-metrics.js`). Expand current metrics system to track bootstrap time, task planning time, agent error rates, and completion delta vs plan. |
+| **Search & Indexing** | Integrate Meilisearch for fast search across all agent docs (changelogs, handoffs, plans, performance logs). Use IndexedDB for local state tracking in browser contexts. |
+| **State Management** | Leverage Jotai for in-memory agent state management (where agents run in Node/TS runtime or browser extension contexts). |
+
+---
+
+## ✅ Required Script & Tool Deliverables
+
+| Tool | Purpose |
+|---|---|
+| `load_agent_context.py` | Automate bootstrap of system prompts, latest handoff, changelog tail, and active plans for agent context input. |
+| `validate_handoff.py` | Ensure new handoffs meet structure, required fields, and quality standards. |
+| `kos-log-lint.js` | Check changelog entry format before commit. |
+| `archive_snapshot.py` | Generate full project archive (state, logs, docs, code) for any milestone. |
+| `update_metrics.py` | Batch update and recalculate metrics (task success rate, plan adherence, etc.). |
+| `generate_diff_report.py` | Compare current vs prior code + state for review. |
+| `run_full_pipeline.sh` | End-to-end batch run: bootstrap → agent run → validate → archive → update metrics. |
+
+---
+
+## ✅ Directory Structure Alignment
+All tools, metrics, and outputs must align with the existing agent directory structure defined in `AGENTS_DIRECTORY_ORGANIZATION.md`.
+
+---
+
+## ✅ Documentation Deliverables
+
+| Doc | Purpose |
+|---|---|
+| `Agent_Bootstrap_User_Guide.md` | How agents should bootstrap properly using the new tools |
+| `Handoff_Creation_Guide.md` | Instructions for creating clean, structured handoffs |
+| `Changelog_Linting_Guide.md` | How to pass the changelog linter |
+| `Archive_System_Guide.md` | Manual and automated archive creation process |
+| `Metrics_System_Extension_Guide.md` | Explanation of new metrics fields and batch update process |
+| `Full_Pipeline_Run_Guide.md` | Instructions for running the full batch automation pipeline |
+
+---
+
+## ✅ Quality, Testing, and Validation
+
+| Activity | Requirement |
+|---|---|
+| Unit Tests | Each script must include unit tests covering major functions |
+| Integration Tests | Full pipeline tested with simulated multi-agent sessions |
+| CLI Usage Docs | Each script must have `--help` with usage examples |
+| JSON Schema Validation | All machine-readable outputs (handoffs, metrics, state dumps) must validate against defined JSON schemas |
+| CI Compatibility | Tools and scripts must support headless batch mode for CI/CD pipelines |
+
+---
+
+## ✅ Integration with Existing Systems
+- Must align with:
+  - `00_AGENT_WORKFLOW.md`
+  - `02_SYSTEM_PROMPT.md`
+  - `04_HISTORY_SYSTEM.md`
+  - `05_AGENT_PERFORMANCE_SYSTEM.md`
+  - `06_PERFORMANCE_SYSTEM_OVERVIEW.md`
+  - `07_SYSTEM_IMPLEMENTATION_SUMMARY.md`
+  - `AGENTS_DIRECTORY_ORGANIZATION.md`
+  - `BOOTSTRAP_GUIDE.md`
+
+---
+
+## ✅ Next Steps
+- Generate initial code and script templates for each deliverable
+- Create all user guides and documentation in `.md` format
+- Conduct full pipeline dry-run with dummy agent session data
+- Report test results and QA metrics
+
+---
+
+**Plan ID:** kos_2025_06_agent_bootstrap_enhancement  
+**Created by:** ChatGPT + User Collaboration  
+**Last Updated:** 2025-06-28T00:00:00Z
+

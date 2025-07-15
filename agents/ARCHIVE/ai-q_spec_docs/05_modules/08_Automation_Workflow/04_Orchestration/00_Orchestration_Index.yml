@@ -1,0 +1,98 @@
+metadata:
+  original_file: 00_Orchestration_Index.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Orchestration Subcategory Index
+  version: '1.0'
+sections:
+- level: 1
+  title: Orchestration
+  type: section
+  content: ''
+- level: 2
+  title: Overview
+  type: section
+  content: Orchestration modules coordinate the execution of complex workflows, integrating
+    multiple services, managing dependencies, and enabling adaptive, resilient workflow
+    execution across distributed systems.
+- level: 2
+  title: Core Principles
+  type: section
+  content: '- **Composability**: Enable dynamic composition of services and tasks
+
+    - **Resilience**: Recover from failures and adapt to changing conditions
+
+    - **Transparency**: Provide clear visibility into orchestration flows
+
+    - **Policy-Driven**: Support flexible orchestration policies and rules
+
+    - **Scalability**: Orchestrate workflows at any scale'
+- level: 2
+  title: Function Specifications
+  type: section
+  content: ''
+- level: 3
+  title: Base Functions
+  type: section
+  content: '1. **Service Orchestration** – Coordinate multiple services in a workflow
+
+    2. **Dependency Management** – Manage and resolve task/service dependencies
+
+    3. **Dynamic Routing** – Route tasks/services based on runtime conditions
+
+    4. **Failure Recovery** – Detect and recover from orchestration failures
+
+    5. **Orchestration Policies** – Define and enforce orchestration rules
+
+    6. **Adaptive Orchestration** – Adjust orchestration flows dynamically
+
+    7. **Cross-Node Coordination** – Orchestrate workflows across distributed nodes
+
+    8. **Orchestration Analytics** – Analyze orchestration performance and outcomes'
+- level: 2
+  title: Integration Patterns
+  type: section
+  content: ''
+- level: 3
+  title: Orchestration Flow
+  type: section
+  content: "```mermaid\ngraph TD\n    A[Orchestration Request] --> B[Service Discovery]\n\
+    \    B --> C[Dependency Management]\n    C --> D[Dynamic Routing]\n    D --> E[Service\
+    \ Invocation]\n    E --> F{Success?}\n    F -->|Yes| G[Next Service]\n    F -->|No|\
+    \ H[Failure Recovery]\n    G --> I{Workflow Complete?}\n    I -->|Yes| J[Orchestration\
+    \ Analytics]\n    I -->|No| D\n    H --> D\n```"
+- level: 2
+  title: Capabilities
+  type: section
+  content: '- **Multi-Service Coordination**: Orchestrate multiple services in a single
+    workflow
+
+    - **Dynamic Adaptation**: Adjust orchestration based on real-time data
+
+    - **Policy Enforcement**: Apply custom orchestration policies
+
+    - **Cross-Node Execution**: Coordinate workflows across distributed systems
+
+    - **Comprehensive Analytics**: Monitor and analyze orchestration outcomes'
+- level: 2
+  title: Configuration Example
+  type: section
+  content: "```yaml\norchestration:\n  service_discovery:\n    type: \"consul\"\n\
+    \    refresh_interval: 30s\n    health_check: true\n  policies:\n    - name: \"\
+    failover\"\n      enabled: true\n    - name: \"load_balancing\"\n      algorithm:\
+    \ \"round_robin\"\n      enabled: true\n  analytics:\n    enabled: true\n    metrics:\
+    \ [\"latency\", \"success_rate\", \"failures\"]\n  adaptive:\n    enabled: true\n\
+    \    triggers: [\"load\", \"latency\", \"error_rate\"]\n```"
+- level: 2
+  title: Error Handling
+  type: section
+  content: '- **Service Failures**: Retry or reroute failed service calls
+
+    - **Dependency Resolution Errors**: Block or reschedule dependent tasks
+
+    - **Policy Violations**: Log and revert to default orchestration policy
+
+    - **Analytics Gaps**: Fallback to basic monitoring and alert operators
+
+    - **Cross-Node Coordination Failures**: Attempt local recovery and escalate'

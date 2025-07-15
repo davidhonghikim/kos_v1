@@ -1,0 +1,73 @@
+metadata:
+  original_file: 04_Artifact_and_Job_Management.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: 04_Artifact_and_Job_Management
+  version: 1.0
+  status: PROPOSED
+sections:
+- level: 1
+  title: '**Spec: Artifact & Job Management**'
+  type: section
+  content: ''
+- level: 2
+  title: 1. Overview
+  type: section
+  content: This document specifies the UI components and logic for managing the outputs
+    of the `griot-kitchen` engine. This includes viewing individual artifacts, browsing
+    job history, and managing the artifact vault.
+- level: 2
+  title: 2. `ArtifactViewer`
+  type: section
+  content: "- **Purpose:** To provide a rich viewing experience for any artifact generated\
+    \ by the system.\n- **Component:** A modal or a dedicated full-page view that\
+    \ is displayed when a user clicks on a job result.\n- **Features:**\n  - **Image\
+    \ Rendering:** If the artifact `type` is `image`, it must be rendered directly\
+    \ in the view.\n  - **Metadata Display:** A collapsible side panel must display\
+    \ all metadata associated with the artifact, fetched from the `GET /v1/artifacts/{id}`\
+    \ endpoint. This includes:\n    - The full prompt and negative prompt.\n    -\
+    \ All generation parameters (sampler, steps, seed, etc.).\n    - A \"Copy Parameters\"\
+    \ button that copies the metadata to the clipboard, allowing the user to easily\
+    \ reuse the settings.\n  - **Action Buttons:**\n    - \"Download\": Downloads\
+    \ the raw artifact file.\n    - \"Set as ControlNet Image\": Sends the image to\
+    \ the `ControlNetPanel` in the `RecipeStudio`.\n    - \"Delete\": Removes the\
+    \ artifact from the vault (with a confirmation dialog)."
+- level: 2
+  title: 3. `JobHistory` View
+  type: section
+  content: "- **Purpose:** To provide a complete, searchable history of all jobs run\
+    \ by the user.\n- **Component:** A dedicated page accessible from the main navigation.\n\
+    - **Layout:** A gallery or table view of past jobs.\n- **Features:**\n  - Each\
+    \ item in the gallery represents a single job and should display:\n    - A primary\
+    \ thumbnail of the first image artifact.\n    - The job status (`completed`, `failed`).\n\
+    \    - The creation timestamp.\n    - The base prompt used.\n  - **Filtering and\
+    \ Searching:** The view must have controls to filter by date range and search\
+    \ by prompt keywords.\n  - **Interaction:** Clicking on a job item navigates the\
+    \ user to a detailed `ArtifactViewer` for that job's outputs."
+- level: 2
+  title: 4. Artifact Vault
+  type: section
+  content: "- **Purpose:** A centralized gallery for browsing all generated artifacts,\
+    \ decoupled from individual jobs.\n- **Component:** A dedicated page accessible\
+    \ from the main navigation.\n- **Features:**\n  - An infinite-scrolling gallery\
+    \ of all image artifacts.\n  - Advanced filtering options:\n    - Filter by LoRAs\
+    \ used.\n    - Filter by model checkpoint used.\n    - Filter by keyword.\n  -\
+    \ **Batch Actions:** Allows the user to select multiple artifacts to perform batch\
+    \ operations, such as \"Delete Selected\" or \"Add to Collection\" (a potential\
+    \ future feature)."
+- level: 2
+  title: 5. API Endpoints (Reference for Frontend Agent)
+  type: section
+  content: '- **`GET /v1/jobs`**: Fetches a paginated list of all historical jobs.
+
+    - **`GET /v1/jobs/{job_id}`**: Fetches the details of a single job, including
+    its artifacts.
+
+    - **`GET /v1/artifacts`**: Fetches a paginated list of all artifacts in the vault.
+
+    - **`GET /v1/artifacts/{artifact_id}`**: Fetches the metadata for a single artifact.
+
+    - **`GET /v1/artifacts/{artifact_id}/content`**: Fetches the raw artifact data.
+
+    - **`DELETE /v1/artifacts/{artifact_id}`**: Deletes an artifact.'

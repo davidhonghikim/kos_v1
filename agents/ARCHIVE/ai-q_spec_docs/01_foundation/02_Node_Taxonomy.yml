@@ -1,0 +1,466 @@
+metadata:
+  original_file: 02_Node_Taxonomy.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: 'Cultural Node Taxonomy: The 13 Classes of kOS'
+  description: Complete classification system for all kOS node types with cultural
+    grounding and technical specifications
+  type: taxonomy
+  status: canonical
+  priority: critical
+  last_updated: '2025-01-28'
+  version: 1.0.0
+  agent_notes: Definitive reference for all node class implementations - cultural
+    authenticity and technical accuracy required
+sections:
+- level: 1
+  title: 'Cultural Node Taxonomy: The 13 Classes of kOS'
+  type: section
+  content: '**Complete Classification System for All kOS Node Types**
+
+
+    This document defines the complete taxonomy of node classes in the kOS ecosystem.
+    Each class represents a specific cultural wisdom tradition and technical specialization,
+    working together to create a comprehensive decentralized AI system.'
+- level: 2
+  title: 🏛️ Taxonomy Overview
+  type: section
+  content: ''
+- level: 3
+  title: '**Class Organization**'
+  type: section
+  content: "The 13 node classes are organized into 4 tiers based on their role in\
+    \ the kOS ecosystem:\n\n```\n\U0001F3DB️ kOS NODE HIERARCHY\n├── \U0001F331 Foundation\
+    \ Tier (Knowledge Keepers)\n│   ├── Griot (Seed & Distribution)\n│   ├── Tohunga\
+    \ (Research & Curation)\n│   └── Ronin (Exploration & Discovery)\n├── ⚙️ Service\
+    \ Tier (Specialized Workers)\n│   ├── Musa (Security & Protection)\n│   ├── Hakim\
+    \ (Diagnostics & Healing)\n│   ├── Skald (Creative & Media)\n│   └── Oracle (Analytics\
+    \ & Prediction)\n├── ⚖️ Governance Tier (System Stewards)\n│   ├── Junzi (Ethics\
+    \ & Integrity)\n│   ├── Yachay (Knowledge & Models)\n│   └── Sachem (Consensus\
+    \ & Governance)\n└── \U0001F451 Elder Tier (Wisdom Guides)\n    ├── Archon (Federation\
+    \ & Orchestration)\n    ├── Amauta (Culture & Mentorship)\n    └── Mzee (Advisory\
+    \ & Wisdom)\n```"
+- level: 2
+  title: '🌱 Foundation Tier: The Knowledge Keepers'
+  type: section
+  content: ''
+- level: 3
+  title: '**01. Griot - The Seed & Librarian**'
+  type: section
+  content: "**Cultural Origin**: West African oral historian and storyteller  \n**Sacred\
+    \ Role**: Preserve, package, and spread knowledge  \n**Technical Function**: Seed\
+    \ distribution and package management"
+- level: 4
+  title: '**Core Responsibilities**'
+  type: section
+  content: '- **Package Build**: Assemble ai-q artifact trees for releases
+
+    - **Deployment**: Provide interactive installers (CLI/TUI/Web)
+
+    - **Sync & Update**: Manage system updates and peer-to-peer distribution
+
+    - **Repair**: System health monitoring and component restoration
+
+    - **Ethics Stewardship**: Maintain HIEROS foundational code and Sacred Intentions'
+- level: 4
+  title: '**Services Exposed**'
+  type: section
+  content: '- `griot-api` (FastAPI) on **:30437** - REST endpoints for sync, manifest,
+    packages
+
+    - `griot-web` (React UI) - Status dashboard and manual updates'
+- level: 4
+  title: '**CLI Interface**'
+  type: section
+  content: '```bash
+
+    kos-griot init           # create seed artifact tree
+
+    kos-griot build          # compile ISO/tarball packages
+
+    kos-griot install        # run local installer wizard
+
+    kos-griot sync           # fetch and apply updates
+
+    kos-griot doctor         # repair broken or missing components
+
+    ```
+
+
+    ---'
+- level: 3
+  title: '**02. Tohunga - The Research & Lore Curator**'
+  type: section
+  content: "**Cultural Origin**: Māori expert and master craftsperson  \n**Sacred\
+    \ Role**: Acquire, validate, and curate knowledge assets  \n**Technical Function**:\
+    \ Research librarian and data curator"
+- level: 4
+  title: '**Core Responsibilities**'
+  type: section
+  content: '- **Knowledge Acquisition**: Mirror datasets and models from public sources
+
+    - **Provenance & Licensing**: Validate compliance and track origins
+
+    - **Pre-Processing**: Generate embeddings and dataset statistics
+
+    - **API Publication**: Expose datasets and models via REST endpoints
+
+    - **HIEROS Alignment**: Validate content for cultural respect and bias'
+- level: 4
+  title: '**Services Exposed**'
+  type: section
+  content: '- `tohunga-api` (FastAPI) on **:30438** - Query and upload datasets/models
+
+    - `tohunga-search` (Elastic/Typesense) on **:7700** - Semantic search'
+- level: 4
+  title: '**CLI Interface**'
+  type: section
+  content: "```bash\nkos-tohunga ingest <url-or-path>   # import new artifact  \n\
+    kos-tohunga curate <id>            # add metadata and tags\nkos-tohunga publish\
+    \                # push to Griot distribution\nkos-tohunga stats <id>        \
+    \     # view metrics and analytics\n```\n\n---"
+- level: 3
+  title: '**03. Ronin - The Explorer & Pathfinder**'
+  type: section
+  content: "**Cultural Origin**: Japanese masterless expert  \n**Sacred Role**: Independent\
+    \ exploration and discovery  \n**Technical Function**: Network discovery and capability\
+    \ mapping"
+- level: 4
+  title: '**Core Responsibilities**'
+  type: section
+  content: '- **Service Discovery**: Scan networks for available services
+
+    - **Capability Mapping**: Document available functions and APIs
+
+    - **Path Finding**: Establish optimal connection routes
+
+    - **Quality Assessment**: Evaluate service reliability and performance
+
+    - **Independence**: Operate without central coordination'
+- level: 4
+  title: '**Services Exposed**'
+  type: section
+  content: '- `ronin-discovery` on **:30439** - Network scanning and service discovery
+
+    - `ronin-mapper` - Capability mapping and documentation'
+- level: 4
+  title: '**CLI Interface**'
+  type: section
+  content: '```bash
+
+    kos-ronin scan <network>          # discover available services
+
+    kos-ronin map <service>           # document service capabilities
+
+    kos-ronin route <source> <dest>   # find optimal connection path
+
+    kos-ronin assess <service>        # evaluate service quality
+
+    ```'
+- level: 2
+  title: '⚙️ Service Tier: The Specialized Workers'
+  type: section
+  content: ''
+- level: 3
+  title: '**04. Musa - The Security Guardian**'
+  type: section
+  content: "**Cultural Origin**: Korean guardian-warrior  \n**Sacred Role**: Protection\
+    \ and security enforcement  \n**Technical Function**: Security protocols and threat\
+    \ detection"
+- level: 4
+  title: '**Core Responsibilities**'
+  type: section
+  content: '- **Authentication**: Manage identity verification and access control
+
+    - **Encryption**: Implement cryptographic protocols
+
+    - **Threat Detection**: Monitor for security violations
+
+    - **Access Control**: Enforce permission and authorization systems
+
+    - **Security Auditing**: Continuous security assessment'
+- level: 4
+  title: '**Services Exposed**'
+  type: section
+  content: '- `musa-auth` on **:30440** - Authentication and authorization
+
+    - `musa-vault` - Secure credential storage and management
+
+
+    ---'
+- level: 3
+  title: '**05. Hakim - The Wise Healer**'
+  type: section
+  content: "**Cultural Origin**: Arabic/Persian wise healer  \n**Sacred Role**: System\
+    \ health and diagnostic wisdom  \n**Technical Function**: Monitoring and diagnostics"
+- level: 4
+  title: '**Core Responsibilities**'
+  type: section
+  content: '- **Health Monitoring**: Continuous system health assessment
+
+    - **Diagnostic Analysis**: Root cause analysis of system issues
+
+    - **Performance Optimization**: System tuning and optimization
+
+    - **Recovery Protocols**: Automated healing and restoration
+
+    - **Preventive Care**: Proactive maintenance and health preservation'
+- level: 4
+  title: '**Services Exposed**'
+  type: section
+  content: '- `hakim-monitor` on **:30441** - Health monitoring and metrics
+
+    - `hakim-diagnostics` - Diagnostic analysis and recommendations
+
+
+    ---'
+- level: 3
+  title: '**06. Skald - The Creative Storyteller**'
+  type: section
+  content: "**Cultural Origin**: Old Norse poet-historian  \n**Sacred Role**: Creative\
+    \ expression and narrative generation  \n**Technical Function**: Content creation\
+    \ and media processing"
+- level: 4
+  title: '**Core Responsibilities**'
+  type: section
+  content: '- **Content Generation**: Create text, images, audio, and video
+
+    - **Media Processing**: Transform and optimize media files
+
+    - **Narrative Construction**: Build coherent stories and presentations
+
+    - **Creative Workflows**: Manage complex creative pipelines
+
+    - **Cultural Storytelling**: Preserve and share cultural narratives'
+- level: 4
+  title: '**Services Exposed**'
+  type: section
+  content: '- `skald-creative` on **:30442** - Content generation and media processing
+
+    - `skald-narrative` - Story construction and narrative tools
+
+
+    ---'
+- level: 3
+  title: '**07. Oracle - The Predictive Seer**'
+  type: section
+  content: "**Cultural Origin**: Ancient prophetic role  \n**Sacred Role**: Insight\
+    \ and predictive analytics  \n**Technical Function**: Analytics and forecasting"
+- level: 4
+  title: '**Core Responsibilities**'
+  type: section
+  content: '- **Data Ingestion**: Collect and normalize metrics and events
+
+    - **Predictive Modeling**: Forecast trends and future states
+
+    - **Insight Delivery**: Provide actionable intelligence
+
+    - **Scenario Simulation**: Model potential futures and outcomes
+
+    - **Strategic Guidance**: Inform decision-making with data'
+- level: 4
+  title: '**Services Exposed**'
+  type: section
+  content: '- `oracle-forecast` on **:30443** - Predictive analytics and forecasting
+
+    - `oracle-insights` - Strategic intelligence and recommendations'
+- level: 2
+  title: '⚖️ Governance Tier: The System Stewards'
+  type: section
+  content: ''
+- level: 3
+  title: '**08. Junzi - The Integrity Steward**'
+  type: section
+  content: "**Cultural Origin**: Classical Chinese noble character  \n**Sacred Role**:\
+    \ Ethical guidance and moral reasoning  \n**Technical Function**: Ethics validation\
+    \ and integrity monitoring"
+- level: 4
+  title: '**Core Responsibilities**'
+  type: section
+  content: '- **Ethics Validation**: Ensure all operations align with Sacred Intentions
+
+    - **Integrity Monitoring**: Detect and prevent moral violations
+
+    - **Moral Reasoning**: Provide ethical guidance for complex decisions
+
+    - **Character Assessment**: Evaluate the moral standing of actors
+
+    - **Virtue Cultivation**: Promote ethical behavior and growth'
+- level: 4
+  title: '**Services Exposed**'
+  type: section
+  content: '- `junzi-ethics` on **:30444** - Ethics validation and moral reasoning
+
+    - `junzi-integrity` - Integrity monitoring and character assessment
+
+
+    ---'
+- level: 3
+  title: '**09. Yachay - The Knowledge Hub**'
+  type: section
+  content: "**Cultural Origin**: Quechua word for knowledge  \n**Sacred Role**: Centralized\
+    \ knowledge and wisdom repository  \n**Technical Function**: Comprehensive knowledge\
+    \ management"
+- level: 4
+  title: '**Core Responsibilities**'
+  type: section
+  content: '- **Knowledge Storage**: Maintain comprehensive knowledge databases
+
+    - **Model Registry**: Manage AI models and their metadata
+
+    - **Information Retrieval**: Provide sophisticated search and discovery
+
+    - **Knowledge Synthesis**: Combine information from multiple sources
+
+    - **Wisdom Preservation**: Safeguard cultural and technical knowledge'
+- level: 4
+  title: '**Services Exposed**'
+  type: section
+  content: '- `yachay-knowledge` on **:30445** - Knowledge storage and retrieval
+
+    - `yachay-models` - AI model registry and management
+
+
+    ---'
+- level: 3
+  title: '**10. Sachem - The Consensus Chief**'
+  type: section
+  content: "**Cultural Origin**: Algonquian consensus chief  \n**Sacred Role**: Democratic\
+    \ governance and collective decision-making  \n**Technical Function**: Consensus\
+    \ mechanisms and governance protocols"
+- level: 4
+  title: '**Core Responsibilities**'
+  type: section
+  content: '- **Consensus Building**: Facilitate collective decision-making
+
+    - **Voting Protocols**: Implement democratic voting systems
+
+    - **Governance Coordination**: Coordinate multi-node governance
+
+    - **Conflict Resolution**: Mediate disputes and find common ground
+
+    - **Community Representation**: Ensure all voices are heard'
+- level: 4
+  title: '**Services Exposed**'
+  type: section
+  content: '- `sachem-consensus` on **:30446** - Consensus and voting protocols
+
+    - `sachem-governance` - Governance coordination and representation'
+- level: 2
+  title: '👑 Elder Tier: The Wisdom Guides'
+  type: section
+  content: ''
+- level: 3
+  title: '**11. Archon - The Federation Steward**'
+  type: section
+  content: "**Cultural Origin**: Ancient Greek chief steward  \n**Sacred Role**: System\
+    \ orchestration and resource management  \n**Technical Function**: Federation\
+    \ coordination and optimization"
+- level: 4
+  title: '**Core Responsibilities**'
+  type: section
+  content: '- **Network Orchestration**: Coordinate multi-node operations
+
+    - **Resource Management**: Optimize resource allocation and usage
+
+    - **System Coordination**: Manage complex distributed workflows
+
+    - **Performance Optimization**: Enhance overall system efficiency
+
+    - **Strategic Planning**: Long-term system architecture and evolution'
+- level: 4
+  title: '**Services Exposed**'
+  type: section
+  content: '- `archon-orchestration` on **:30447** - Network coordination and management
+
+    - `archon-resources` - Resource allocation and optimization
+
+
+    ---'
+- level: 3
+  title: '**12. Amauta - The Cultural Mentor**'
+  type: section
+  content: "**Cultural Origin**: Incan philosopher-teacher  \n**Sacred Role**: Cultural\
+    \ preservation and wisdom transmission  \n**Technical Function**: Education and\
+    \ cultural guidance"
+- level: 4
+  title: '**Core Responsibilities**'
+  type: section
+  content: '- **Cultural Education**: Teach cultural wisdom and traditions
+
+    - **Wisdom Transmission**: Share knowledge across generations
+
+    - **Mentorship Protocols**: Guide personal and professional development
+
+    - **Cultural Preservation**: Maintain and protect cultural heritage
+
+    - **Philosophy Integration**: Integrate cultural wisdom into technical systems'
+- level: 4
+  title: '**Services Exposed**'
+  type: section
+  content: '- `amauta-education` on **:30448** - Cultural education and wisdom sharing
+
+    - `amauta-mentorship` - Mentorship and guidance protocols
+
+
+    ---'
+- level: 3
+  title: '**13. Mzee - The Respected Elder**'
+  type: section
+  content: "**Cultural Origin**: Swahili term for respected elder  \n**Sacred Role**:\
+    \ Final wisdom authority and advisory council  \n**Technical Function**: Highest-level\
+    \ guidance and arbitration"
+- level: 4
+  title: '**Core Responsibilities**'
+  type: section
+  content: '- **Elder Wisdom**: Provide highest-level guidance and perspective
+
+    - **Conflict Arbitration**: Resolve complex disputes and disagreements
+
+    - **Strategic Guidance**: Offer long-term strategic direction
+
+    - **Community Respect**: Maintain dignity and respect in all interactions
+
+    - **Legacy Preservation**: Ensure continuity and sustainability'
+- level: 4
+  title: '**Services Exposed**'
+  type: section
+  content: '- `mzee-council` on **:30449** - Elder council and advisory services
+
+    - `mzee-arbitration` - Conflict resolution and wisdom arbitration'
+- level: 2
+  title: 🔧 Technical Implementation Notes
+  type: section
+  content: ''
+- level: 3
+  title: '**Port Allocation Strategy**'
+  type: section
+  content: '- **Base Port**: 30437 (Griot)
+
+    - **Increment**: +1 for each subsequent node class
+
+    - **Range**: 30437-30449 (13 classes total)
+
+    - **Collision Avoidance**: Each class has dedicated port space'
+- level: 3
+  title: '**Common Interface Standards**'
+  type: section
+  content: 'All nodes must implement:
+
+    - **Health Check**: `/health` endpoint with Ethical Intentions validation
+
+    - **Metrics**: Prometheus metrics on `/metrics`
+
+    - **Identity**: `/identity` endpoint returning node class and capabilities
+
+    - **Configuration**: Standardized configuration schema'
+- level: 3
+  title: '**Security Requirements**'
+  type: section
+  content: "- **Authentication**: All inter-node communication authenticated\n- **Encryption**:\
+    \ All data encrypted in transit and at rest\n- **Integrity**: All operations validated\
+    \ against Ethical Intentions\n- **Audit Trail**: Complete audit logging of all\
+    \ activities\n\n---\n\n**Taxonomy Status**: \U0001F3DB️ **CANONICAL CLASSIFICATION**\
+    \  \n**Cultural Authority**: \U0001F30D **AUTHENTIC GLOBAL TRADITIONS**  \n**Implementation**:\
+    \ All nodes must conform to these specifications"

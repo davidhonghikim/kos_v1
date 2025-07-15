@@ -1,0 +1,128 @@
+title: K Os Scalable Process Framework Procurement Checklist
+description: ''
+type: documentation
+status: current
+priority: medium
+version: '1.0'
+last_updated: '2025-06-28'
+organization_date: '2025-06-28T19:48:19.929109'
+authors: []
+tags: []
+content_type: documentation
+technical_level: intermediate
+word_count: 490
+has_code_blocks: false
+has_api_specs: true
+has_architecture: false
+has_deployment: true
+has_testing: true
+has_security: true
+has_rag: true
+has_ethics: false
+original_filename: k_os_scalable_process_framework_procurement_checklist.yml
+original_path: /Users/danger/CascadeProjects/griot-node/agents/reference/RAG/k_os_scalable_process_framework_procurement_checklist.yml
+category: rag_system
+
+---
+
+title: kOS Scalable Process Framework Procurement Checklist
+description: Comprehensive procurement checklist for all hardware, software, services,
+  and subscriptions required across all phases of kOS deployment.
+type: checklist
+status: active
+priority: high
+last_updated: '2025-06-28'
+conversion_date: '2025-06-28T19:30:47.064208'
+original_format: markdown
+content_type: api_specification
+word_count: 431
+line_count: 77
+created: '2025-06-28T00:00:00Z'
+version: 1.0.0
+tags:
+- kOS
+- procurement
+- checklist
+- resources
+- infrastructure
+
+---
+
+# ✅ kOS Scalable Process Framework Procurement Checklist
+
+---
+
+## ✅ Phase 1: Solo Developer Deployment
+
+| Resource | Status |
+|---|---|
+| Developer Laptop/PC (8GB+ RAM, 100GB+ Disk) | [ ] |
+| Docker + Docker Compose | [ ] |
+| Python 3.11+ | [ ] |
+| Node.js LTS | [ ] |
+| MongoDB Community Edition | [ ] |
+| Neo4j Community Edition | [ ] |
+| Weaviate OSS (Docker image) | [ ] |
+| Local text/code editor (VS Code, etc.) | [ ] |
+
+---
+
+## ✅ Phase 2: Team Scale – CI/CD + Testing
+
+| Resource | Status |
+|---|---|
+| GitHub Teams / GitLab CI subscription (optional) | [ ] |
+| Small CI Runner VM (4 vCPU / 8GB RAM) | [ ] |
+| Private Docker Registry (or Docker Hub) | [ ] |
+| Additional Developer Laptops/Workstations | [ ] |
+| Centralized `.env` management or vault (optional) | [ ] |
+
+---
+
+## ✅ Phase 3: Enterprise Multi-Node + Observability
+
+| Resource | Status |
+|---|---|
+| Kubernetes Cluster (Cloud or On-Prem) | [ ] |
+| Prometheus | [ ] |
+| Grafana | [ ] |
+| ELK Stack or Loki | [ ] |
+| NGINX / Traefik | [ ] |
+| Istio or Linkerd Service Mesh | [ ] |
+| Neo4j Enterprise License (optional for HA) | [ ] |
+| Cloud Load Balancer | [ ] |
+| Object Storage (S3, MinIO) | [ ] |
+
+---
+
+## ✅ Phase 4: Federation and Global Mesh
+
+| Resource | Status |
+|---|---|
+| Multi-region Cloud Accounts | [ ] |
+| Cross-cluster Kubernetes federation tool (Karmada, Kubefed) | [ ] |
+| Secure VPN or SD-WAN solution | [ ] |
+| TLS Certificates for all nodes | [ ] |
+| Hardware Security Modules (Optional for encryption keys) | [ ] |
+| Prometheus Federation Configuration | [ ] |
+| Federated Neo4j or distributed graph alternative | [ ] |
+
+---
+
+## ✅ Optional / Cross-Phase Resources
+
+| Resource | Status |
+|---|---|
+| Backup/Disaster Recovery Service | [ ] |
+| Monitoring and Alerting SaaS (e.g., Grafana Cloud) | [ ] |
+| Logging SaaS (e.g., Logz.io, Datadog Logs) | [ ] |
+| Security Scanning Tools (Snyk, etc.) | [ ] |
+| AI API Credits (OpenAI, Hugging Face, etc.) | [ ] |
+| External Storage (NAS, external drives) | [ ] |
+
+---
+
+**Plan ID:** kos_2025_06_procurement_checklist  
+**Created by:** ChatGPT + User Collaboration  
+**Last Updated:** 2025-06-28T00:00:00Z
+

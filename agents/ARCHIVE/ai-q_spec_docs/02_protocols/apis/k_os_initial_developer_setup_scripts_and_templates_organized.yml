@@ -1,0 +1,164 @@
+title: K Os Initial Developer Setup Scripts And Templates
+description: ''
+type: documentation
+status: current
+priority: medium
+version: '1.0'
+last_updated: '2025-06-28'
+organization_date: '2025-06-28T19:48:19.987842'
+authors: []
+tags: []
+content_type: documentation
+technical_level: intermediate
+word_count: 371
+has_code_blocks: true
+has_api_specs: true
+has_architecture: false
+has_deployment: true
+has_testing: true
+has_security: false
+has_rag: false
+has_ethics: false
+original_filename: k_os_initial_developer_setup_scripts_and_templates.yml
+original_path: /Users/danger/CascadeProjects/griot-node/agents/reference/kos_chatgpt/k_os_initial_developer_setup_scripts_and_templates.yml
+category: apis
+
+---
+
+title: K Os Initial Developer Setup Scripts And Templates
+description: ''
+type: documentation
+status: current
+priority: medium
+last_updated: '2025-06-28'
+conversion_date: '2025-06-28T19:30:47.329452'
+original_format: markdown
+content_type: api_specification
+word_count: 341
+line_count: 121
+
+---
+
+# kOS Initial Developer Setup Scripts and Templates
+
+## Overview
+The **kOS Initial Developer Setup Scripts and Templates** provide concrete starter scripts, configuration files, and environment templates to automate and standardize local environment setup for all contributors.
+
+This bundle aligns with the **kOS Initial Developer Onboarding Automation Plan**.
+
+---
+
+## 1. Bash Setup Script (`setup_dev_env.sh`)
+
+```bash
+#!/bin/bash
+
+# kOS Developer Environment Setup Script (Unix/macOS)
+
+echo "[kOS] Starting developer environment setup..."
+
+# Create Python virtual environment
+python3 -m venv .venv
+source .venv/bin/activate
+
+# Upgrade pip and install dependencies
+pip install --upgrade pip
+pip install -r requirements.txt
+
+# Create necessary directories if missing
+mkdir -p logs data
+
+echo "[kOS] Developer environment setup complete. Activate with: source .venv/bin/activate"
+```
+
+---
+
+## 2. PowerShell Setup Script (`setup_dev_env.ps1`)
+
+```powershell
+# kOS Developer Environment Setup Script (Windows)
+
+Write-Output "[kOS] Starting developer environment setup..."
+
+# Create virtual environment
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+
+# Install dependencies
+pip install --upgrade pip
+pip install -r requirements.txt
+
+# Create necessary folders
+New-Item -ItemType Directory -Force -Path logs, data
+
+Write-Output "[kOS] Developer environment setup complete."
+```
+
+---
+
+## 3. Python Requirements File (`requirements.txt`)
+
+```
+fastapi
+uvicorn
+pytest
+flake8
+black
+pydantic
+```
+
+---
+
+## 4. Environment Template (`dev.env.sample`)
+
+```
+# kOS Developer Environment Variables
+KOS_ENV=development
+KOS_LOG_LEVEL=DEBUG
+KOS_DATABASE_URL=postgresql://user:password@localhost/kos_db
+KOS_MESSAGE_BUS_URL=nats://localhost:4222
+```
+
+---
+
+## 5. GEIG Pre-Merge Ethical Check Stub (`/ci/run_geig_check.py`)
+
+```python
+#!/usr/bin/env python3
+
+print("[GEIG Check] Running pre-merge ethical risk assessment...")
+
+# Placeholder for real GEIG logic
+# Currently always passes
+
+exit(0)
+```
+
+---
+
+## 6. Directory Creation Reminder
+
+During setup, ensure the following directories exist:
+- `/logs/`
+- `/data/`
+- `/core/`
+- `/tests/`
+
+---
+
+## 7. Next Steps for Developers
+
+- Run `setup_dev_env.sh` (or `.ps1` for Windows)
+- Activate virtual environment
+- Run `pytest ./tests`
+- Launch TOSE: `python ./core/tose/api.py` (after implementation)
+
+---
+
+## Conclusion
+The **kOS Initial Developer Setup Scripts and Templates** provide a working foundation for developers to quickly initialize, configure, and validate their local kOS environment, ensuring consistency across the contributor base.
+
+✅ Next: Ready to help **write actual module starter Python files**, **generate first FastAPI endpoints**, or **build initial CI jobs.**
+
+
+

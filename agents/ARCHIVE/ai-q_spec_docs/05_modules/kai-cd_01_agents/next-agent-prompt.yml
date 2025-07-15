@@ -1,0 +1,414 @@
+metadata:
+  original_file: next-agent-prompt.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Agent Prompt - Documentation System Standards Reconciliation
+  description: Agent prompt for continuing documentation migration with standards
+    reconciliation focus
+  type: prompt
+  status: current
+  priority: high
+  last_updated: '2025-01-27'
+  agent_notes: Updated with accurate system analysis - standards reconciliation needed
+    but no emergency
+sections:
+- level: 1
+  title: 'Agent Prompt: Documentation System Standards Reconciliation'
+  type: section
+  content: ''
+- level: 2
+  title: Agent Context
+  type: section
+  content: '**For AI Agents**: Comprehensive prompt for incoming agents to continue
+    documentation work. Contains critical protections, mission overview, accurate
+    system status, and detailed workflow protocols.
+
+
+    **Implementation Notes**: Includes mandatory exclusions for brainstorm directory
+    (605 files), naming standards reconciliation requirements, and migration workflow
+    for remaining source material.
+
+    **Quality Requirements**: Keep system status and file counts accurate. Verify
+    brainstorm directory protection protocols are followed. Maintain technical excellence
+    standards.
+
+    **Integration Points**: Links to all major documentation areas and serves as the
+    authoritative onboarding document for new agents working on documentation tasks.'
+- level: 2
+  title: '🚨 **CRITICAL: DO NOT MODIFY BRAINSTORM DIRECTORY**'
+  type: section
+  content: ''
+- level: 3
+  title: '**MANDATORY EXCLUSIONS**'
+  type: section
+  content: '- **NEVER modify, move, or reorganize** anything in `documentation/brainstorm/`
+
+    - **NEVER apply naming standards** to brainstorm directory
+
+    - **NEVER organize or rename** files in brainstorm
+
+    - **DO NOT COUNT** brainstorm files in documentation statistics
+
+    - **brainstorm/ is SOURCE MATERIAL ONLY** - read but never modify'
+- level: 3
+  title: '**Why This Matters**'
+  type: section
+  content: 'The brainstorm directory contains 605+ source specification files that
+    serve as the authoritative source material for migration. Any modification would
+    corrupt the source data and break the migration tracking system.
+
+
+    **When working with documentation:**
+
+    - ✅ **READ from** `documentation/brainstorm/` for content
+
+    - ✅ **MIGRATE content to** `documentation/06_future/` or other structured directories
+
+    - ❌ **NEVER modify** files in brainstorm directory
+
+    - ❌ **NEVER apply** naming conventions to brainstorm
+
+
+    ---'
+- level: 2
+  title: Mission Overview
+  type: section
+  content: You are taking over documentation system work for the Kai-CD project. Your
+    primary mission is to reconcile competing naming standards and continue systematic
+    migration of source material to the structured documentation system.
+- level: 2
+  title: 📋 ACCURATE SYSTEM STATUS
+  type: section
+  content: '**SYSTEM STATUS: FUNCTIONAL WITH STANDARDIZATION NEEDS**'
+- level: 3
+  title: '✅ **Current Reality Verified**:'
+  type: section
+  content: '- **370 documentation files** (excluding brainstorm source material)
+
+    - **Well-organized 4-tier structure** (current/future/bridge/reference)
+
+    - **High-quality content** with proper frontmatter and Agent Context blocks
+
+    - **37% migration complete** (223/605 files migrated from brainstorm/kOS/)
+
+    - **Functional cross-reference system** with working navigation'
+- level: 3
+  title: '⚠️ **Real Issues Identified**:'
+  type: section
+  content: '- **Standards Conflict**: Two competing naming conventions in use
+
+    - **Incomplete Migration**: 382 source files remaining to migrate
+
+    - **Placeholder Content**: 12 files need content development
+
+    - **Protocol Inconsistency**: Need single authoritative standard'
+- level: 2
+  title: Your Primary Tasks
+  type: section
+  content: ''
+- level: 3
+  title: '🎯 **PHASE 1: Standards Reconciliation (Priority: High)**'
+  type: section
+  content: ''
+- level: 4
+  title: '**Task 1: Choose Single Naming Standard**'
+  type: section
+  content: 'Choose between:
+
+    - **Option A**: `##_Title_Case_With_Underscores.md` (current system)
+
+    - **Option B**: `descriptive-names-with-hyphens.md` (naming protocol)
+
+
+    **Analysis Required**:
+
+    - Review both standards documents
+
+    - Assess implementation across directory structure (EXCLUDING brainstorm/)
+
+    - Consider impact on existing cross-references
+
+    - Choose most practical for long-term maintenance'
+- level: 4
+  title: '**Task 2: Systematic Standardization**'
+  type: section
+  content: '- Apply chosen standard systematically across documentation (EXCLUDING
+    brainstorm/)
+
+    - Update cross-references to match new naming
+
+    - Consolidate conflicting standards documents
+
+    - Test navigation system integrity'
+- level: 3
+  title: '🎯 **PHASE 2: Content Development (Priority: Medium)**'
+  type: section
+  content: ''
+- level: 4
+  title: '**Task 3: Complete Placeholder Files**'
+  type: section
+  content: "Address these 12 incomplete files:\n```\nagents/47_Modular_Agent_Loaders.md\n\
+    agents/53_Agent_Roles_And_Capabilities.md  \nagents/54_Agent_Lifecycle_And_Execution.md\n\
+    agents/56_Ai_Agent_Framework_And_Capabilities.md\nservices/66_Prompt_Vault_System.md\n\
+    services/70_User_Profile_System.md\nservices/72_Service_Orchestration_Hub.md\n\
+    services/82_Prompt_Storage_Engine.md\nsecurity/59_Data_Storage_And_Security.md\n\
+    deployment/02_Network_Topology_And_Deployment.md\ngovernance/15_Governance_Protocols_And_Interoperability.md\n\
+    protocols/60_Modular_Agent_Protocols.md\n```"
+- level: 4
+  title: '**Task 4: Continue Source Migration**'
+  type: section
+  content: '- **Source Material**: `documentation/brainstorm/kOS/` (605 files total)
+    - READ ONLY
+
+    - **Target Coverage**: Migrate remaining 382 files to structured documentation
+
+    - **Quality Standards**: Maintain comprehensive TypeScript examples and technical
+    depth
+
+    - **Batch Processing**: Work in manageable batches (50 files recommended)
+
+    - **Process**: READ from brainstorm, CREATE new files in appropriate documentation
+    directories'
+- level: 2
+  title: Critical User Requirements
+  type: section
+  content: ''
+- level: 3
+  title: '**Technical Excellence Standards**:'
+  type: section
+  content: '1. **ALL low-level implementation details must be preserved**
+
+    2. **Comprehensive TypeScript examples required in every technical document**
+
+    3. **Documentation serves as source of truth for multiple development teams**
+
+    4. **NO simplification allowed - maintain full technical complexity**
+
+    5. **Agent alignment critical for consistent development approach**'
+- level: 2
+  title: Documentation System Standards
+  type: section
+  content: ''
+- level: 3
+  title: '**Directory Structure** (Confirmed Working):'
+  type: section
+  content: "```\ndocumentation/\n├── 01_agents/      # Agent workflow documentation\
+    \ (28 files)\n├── 02_analysis/    # Analysis and audit documents\n├── 03_bridge/\
+    \      # Evolution strategy documents  \n├── 04_current/     # Kai-CD implementation\
+    \ docs (36 files)\n├── 05_developers/  # Developer guides (48 files)\n├── 06_future/\
+    \      # kOS vision docs (223 migrated files)\n├── 07_reference/   # Quick reference\
+    \ materials\n├── 08_users/       # User-facing documentation\n└── brainstorm/\
+    \     # SOURCE MATERIAL (605 files) - DO NOT MODIFY\n```"
+- level: 3
+  title: '**Standards Documents to Reconcile**:'
+  type: section
+  content: '1. `00_DOCUMENTATION_SYSTEM_MASTER.md` - Mandates numbered format
+
+    2. `01_agents/04_quality/naming-protocol.md` - Mandates descriptive format
+
+    3. Current implementation shows **both standards actively used**'
+- level: 3
+  title: '**Required Frontmatter Template** (Working):'
+  type: section
+  content: '```yaml
+
+    ---
+
+    title: "Document Title"
+
+    description: "Brief description"
+
+    type: "architecture|implementation|guide|reference"
+
+    status: "current|future|bridge"
+
+    priority: "high|medium|low"
+
+    last_updated: "YYYY-MM-DD"
+
+    related_docs: ["path/to/related.md"]
+
+    implementation_status: "implemented|planned|theoretical"
+
+    agent_notes: "AI-specific guidance"
+
+    ---
+
+    ```'
+- level: 2
+  title: Workflow Protocol
+  type: section
+  content: ''
+- level: 3
+  title: '**Two-Edit Rule** (Mandatory):'
+  type: section
+  content: 'After making 1-2 significant changes:
+
+    1. Read entire files you''ve modified
+
+    2. Trace logic flow and check for errors
+
+    3. Verify technical completeness
+
+    4. Fix any identified issues
+
+    5. Document findings in execution plan'
+- level: 3
+  title: '**Quality Verification**:'
+  type: section
+  content: 'After each logical unit of work:
+
+    1. Check frontmatter compliance and Agent Context blocks
+
+    2. Verify all asset links and references work correctly
+
+    3. Ensure TypeScript examples are complete and accurate
+
+    4. Confirm cross-references to related documentation
+
+    5. Ensure zero content regressions'
+- level: 3
+  title: '**Migration Workflow**:'
+  type: section
+  content: 'For systematic migration of remaining source files:
+
+    1. **Batch Processing**: Work in batches of 50 files
+
+    2. **Quality Gates**: Every document must include complete TypeScript examples
+
+    3. **Progress Documentation**: Update execution plan after each batch
+
+    4. **Standards Compliance**: Apply chosen naming standard consistently
+
+    5. **Continuous Operation**: Continue until all source files are migrated
+
+    6. **SOURCE PROTECTION**: Never modify brainstorm/ - only read and migrate content'
+- level: 2
+  title: Your Deliverables
+  type: section
+  content: ''
+- level: 3
+  title: '**Phase 1: Standards Resolution**'
+  type: section
+  content: '1. **Standards Analysis Report** comparing both naming conventions
+
+    2. **Recommendation** for single authoritative standard
+
+    3. **Implementation Plan** for systematic standardization (excluding brainstorm/)
+
+    4. **Cross-Reference Update Strategy**'
+- level: 3
+  title: '**Phase 2: Content Development**'
+  type: section
+  content: '1. **Placeholder File Completion** (12 files with full content)
+
+    2. **Source Material Migration Plan** for remaining 382 files
+
+    3. **Quality Assurance Framework** for ongoing work
+
+    4. **Progress Tracking System** for systematic migration'
+- level: 2
+  title: Success Criteria
+  type: section
+  content: ''
+- level: 3
+  title: '**Standards Reconciliation Success**:'
+  type: section
+  content: '- [ ] Single authoritative naming standard chosen and documented
+
+    - [ ] All competing standards documents consolidated or archived
+
+    - [ ] Cross-reference system updated and functional (excluding brainstorm/)
+
+    - [ ] Navigation system integrity verified'
+- level: 3
+  title: '**Content Development Success**:'
+  type: section
+  content: '- [ ] All 12 placeholder files completed with comprehensive content
+
+    - [ ] Source migration plan created for remaining 382 files
+
+    - [ ] Quality standards maintained throughout all work
+
+    - [ ] Technical depth preserved and enhanced
+
+    - [ ] Build stability maintained
+
+    - [ ] Brainstorm directory remains untouched'
+- level: 2
+  title: Critical Guidelines
+  type: section
+  content: ''
+- level: 3
+  title: '**ABSOLUTELY DO NOT**:'
+  type: section
+  content: '- ❌ **MODIFY ANYTHING in documentation/brainstorm/** - This is source
+    material
+
+    - ❌ Apply naming conventions to brainstorm directory
+
+    - ❌ Move or reorganize files in brainstorm
+
+    - ❌ Count brainstorm files in documentation statistics
+
+    - ❌ Create emergency procedures for non-emergency issues
+
+    - ❌ Make false claims about system status
+
+    - ❌ Simplify or remove technical details
+
+    - ❌ Skip frontmatter or Agent Context blocks
+
+    - ❌ Break existing cross-references'
+- level: 3
+  title: '**DO**:'
+  type: section
+  content: '- ✅ **READ from brainstorm/** for content migration
+
+    - ✅ **CREATE NEW FILES** in appropriate documentation directories
+
+    - ✅ Preserve ALL implementation details
+
+    - ✅ Maintain comprehensive TypeScript examples
+
+    - ✅ Update execution plan with detailed progress logs
+
+    - ✅ Follow established quality standards
+
+    - ✅ Continue systematic migration approach'
+- level: 2
+  title: Starting Point
+  type: section
+  content: 'Begin by reading:
+
+    1. `documentation/00_DOCUMENTATION_SYSTEM_MASTER.md` - Current master standards
+
+    2. `documentation/01_agents/04_quality/naming-protocol.md` - Alternative standard
+
+    3. `documentation/01_agents/03_handoffs/current-handoff.md` - Previous work context
+
+    4. `documentation/01_agents/02_planning/current-execution-plan.md` - Work log
+
+
+    Then conduct standards analysis and choose single authoritative approach.
+
+
+    **System Status**: Functional and well-organized, requiring standards reconciliation
+    and continued migration work rather than emergency intervention.
+
+
+    ---'
+- level: 2
+  title: 🎯 **MISSION FOCUS**
+  type: section
+  content: 'Your primary mission is **standards reconciliation** followed by **systematic
+    content development**. The documentation system is functional and well-maintained
+    - your job is to resolve the standards conflict and continue the excellent migration
+    work already in progress.
+
+
+    **REMEMBER: brainstorm/ is READ-ONLY source material. Never modify it.**
+
+
+    **The foundation is solid. Build upon it methodically.**'

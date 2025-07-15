@@ -1,0 +1,173 @@
+metadata:
+  original_file: 01_Text_Generator.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Text Generator
+  version: '1.0'
+sections:
+- level: 1
+  title: '**Text Generator**'
+  type: section
+  content: ''
+- level: 2
+  title: '**Purpose**'
+  type: section
+  content: The Text Generator provides advanced text generation capabilities using
+    natural language processing and AI models. It supports multi-language output,
+    style adaptation, tone control, and context-aware content creation for a wide
+    range of applications.
+- level: 2
+  title: '**Core Principles**'
+  type: section
+  content: '- **High-Quality Output**: Generate professional, contextually relevant
+    text
+
+    - **Multi-Language Support**: Support for 100+ languages
+
+    - **Style & Tone Adaptation**: Adapt writing style and tone to user needs
+
+    - **User-Centric Design**: Focus on user intent and requirements
+
+    - **Continuous Improvement**: Learn from feedback to improve output'
+- level: 2
+  title: '**Function Specifications**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Core Functions**'
+  type: section
+  content: ''
+- level: 4
+  title: '**generateText(prompt: string, options?: TextGenOptions): Promise<TextGenResult>**'
+  type: section
+  content: "Generates text based on a prompt and optional parameters.\n\n**Parameters:**\n\
+    - `prompt`: Input prompt or context\n- `options`: Optional generation options\
+    \ (language, style, tone, length, etc.)\n\n**Returns:**\n- `TextGenResult`: Generated\
+    \ text and metadata\n\n**Example:**\n```typescript\nconst result = await textGenerator.generateText(\n\
+    \  \"Write a summary of the kOS project in 100 words.\",\n  { language: \"en\"\
+    , style: \"formal\", tone: \"neutral\", length: 100 }\n);\nconsole.log(result.text);\n\
+    ```"
+- level: 4
+  title: '**suggestCompletions(prefix: string, options?: TextGenOptions): Promise<string[]>**'
+  type: section
+  content: 'Suggests possible text completions for a given prefix.
+
+
+    **Parameters:**
+
+    - `prefix`: Text prefix to complete
+
+    - `options`: Optional generation options
+
+
+    **Returns:**
+
+    - `string[]`: Array of suggested completions
+
+
+    **Example:**
+
+    ```typescript
+
+    const suggestions = await textGenerator.suggestCompletions("The future of AI is",
+    { language: "en" });
+
+    suggestions.forEach(s => console.log(s));
+
+    ```'
+- level: 4
+  title: '**analyzeTextQuality(text: string): Promise<TextQualityReport>**'
+  type: section
+  content: 'Analyzes the quality of generated text.
+
+
+    **Parameters:**
+
+    - `text`: Text to analyze
+
+
+    **Returns:**
+
+    - `TextQualityReport`: Quality metrics and improvement suggestions
+
+
+    **Example:**
+
+    ```typescript
+
+    const report = await textGenerator.analyzeTextQuality(result.text);
+
+    console.log(report.metrics);
+
+    ```'
+- level: 2
+  title: '**Integration Patterns**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Text Generation Flow**'
+  type: section
+  content: "```mermaid\ngraph TD\n    A[Prompt Input] --> B[Context Analysis]\n  \
+    \  B --> C[Model Selection]\n    C --> D[Text Generation]\n    D --> E[Quality\
+    \ Validation]\n    E --> F[Output Delivery]\n```"
+- level: 2
+  title: '**Capabilities**'
+  type: section
+  content: '- **Multi-Language Generation**: Output in 100+ languages
+
+    - **Style & Tone Control**: Adapt to various writing styles and tones
+
+    - **Length Optimization**: Generate text of specified length
+
+    - **Context Awareness**: Use context for relevant output
+
+    - **Quality Assessment**: Built-in quality analysis and feedback'
+- level: 2
+  title: '**Configuration Examples**'
+  type: section
+  content: "```yaml\ntext_generator:\n  default_language: \"en\"\n  style_adaptation:\
+    \ true\n  tone_control: true\n  quality_threshold: 0.8\n  max_length: 1000\n \
+    \ model: \"gpt-4\"\n```"
+- level: 2
+  title: '**Error Handling**'
+  type: section
+  content: '- **Model Failure**: Retry with fallback model
+
+    - **Input Too Long**: Return error with max length info
+
+    - **Unsupported Language**: Return error with supported languages
+
+    - **Quality Below Threshold**: Suggest improvements'
+- level: 2
+  title: '**Performance Considerations**'
+  type: section
+  content: '- **Generation Latency**: Optimized for < 500ms
+
+    - **Batch Generation**: Support for batch text generation
+
+    - **Resource Usage**: Efficient memory and CPU usage'
+- level: 2
+  title: '**Security Considerations**'
+  type: section
+  content: '- **Content Filtering**: Filter unsafe or inappropriate content
+
+    - **Access Control**: Restrict access to sensitive generation features
+
+    - **Audit Logging**: Log all generation requests'
+- level: 2
+  title: '**Monitoring & Observability**'
+  type: section
+  content: '- **Generation Metrics**: Track request count, latency, and errors
+
+    - **Quality Metrics**: Track quality scores and feedback
+
+    - **Alerting**: Alerts for model failures or quality issues
+
+
+    ---
+
+
+    **Version**: 1.0
+
+    **Focus**: Advanced, context-aware text generation for kOS ecosystem'

@@ -1,0 +1,263 @@
+frontmatter:
+  title: KLF Transport Options
+  description: Communication protocols supported by KLF
+  version: 3.0.0
+  
+sections:
+- title: "Communication Transports"
+  content: |
+    # KLF Transport Layer
+    
+    KLF is transport-agnostic and can work over multiple protocols.
+    The same message format works across all transports.
+    
+    ## Available Transports
+    
+    ### 1. HTTP REST (Primary)
+    - **Base URL**: `http://localhost:30436`
+    - **Status**: ✅ Live and operational
+    - **Best for**: Request/response operations, service calls
+    - **Authentication**: Bearer tokens, API keys
+    - **Content-Type**: `application/json`
+    
+    #### Core Endpoints
+    ```http
+    GET  /klf/v1/health           # Network health check
+    POST /klf/v1/agents/register  # Agent registration
+    GET  /klf/v1/capabilities     # Service discovery
+    POST /klf/v1/message          # Send messages
+    ```
+    
+    #### Example HTTP Request
+    ```http
+    POST /klf/v1/message HTTP/1.1
+    Host: localhost:30436
+    Content-Type: application/json
+    Authorization: Bearer token-if-required
+    
+    {
+      "klf": {
+        "version": "1.0.0",
+        "timestamp": "2025-06-30T00:00:00Z",
+        "routing": "capability-based"
+      },
+      "sender": {"did": "did:kos:agent:my-ai"},
+      "recipient": {"capability": "document.search"},
+      "payload": {
+        "type": "request",
+        "service": "document.search",
+        "body": {"query": "AI research"}
+      }
+    }
+    ```
+    
+    ### 2. WebSocket (Real-time)
+    - **URL**: `ws://localhost:30436/klf/v1/events`
+    - **Status**: ✅ Live and operational
+    - **Best for**: Real-time events, bidirectional communication
+    - **Connection**: Persistent, low-latency
+    
+    #### WebSocket Connection
+    ```javascript
+    const ws = new WebSocket('ws://localhost:30436/klf/v1/events');
+    
+    ws.onopen = () => {
+      // Subscribe to events
+      ws.send(JSON.stringify({
+        type: 'subscribe',
+        agent_did: 'did:kos:agent:my-ai',
+        events: ['document.uploaded', 'agent.connected']
+      }));
+    };
+    
+    ws.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      console.log('Received:', message);
+    };
+    ```
+    
+    #### WebSocket Message Types
+    ```json
+    // Subscription
+    {
+      "type": "subscribe",
+      "agent_did": "did:kos:agent:my-ai",
+      "events": ["document.uploaded", "chat.message"]
+    }
+    
+    // Event notification
+    {
+      "type": "event",
+      "event": "document.uploaded",
+      "data": {
+        "document_id": "doc-123",
+        "filename": "research.pdf"
+      },
+      "timestamp": "2025-06-30T00:01:00Z"
+    }
+    
+    // Direct message
+    {
+      "type": "message",
+      "klf": {...},
+      "sender": {...},
+      "recipient": {...},
+      "payload": {...}
+    }
+    ```
+    
+    ### 3. gRPC (Future)
+    - **Status**: 🚧 Planned
+    - **Best for**: High-performance, type-safe communication
+    - **Features**: Streaming, compression, load balancing
+    
+    #### Proto Definition (Preview)
+    ```protobuf
+    service KLFService {
+      rpc RegisterAgent(AgentRegistration) returns (RegistrationResponse);
+      rpc DiscoverCapabilities(DiscoveryRequest) returns (CapabilitiesResponse);
+      rpc SendMessage(KLFMessage) returns (MessageResponse);
+      rpc StreamEvents(EventSubscription) returns (stream EventMessage);
+    }
+    
+    message KLFMessage {
+      KLFHeader klf = 1;
+      Agent sender = 2;
+      Recipient recipient = 3;
+      Payload payload = 4;
+    }
+    ```
+    
+    ### 4. MQTT (IoT Devices)
+    - **Status**: 🚧 Planned
+    - **Best for**: IoT devices, low-bandwidth scenarios
+    - **Topics**: `kos/agents/{did}/messages`, `kos/events/{type}`
+    
+    #### MQTT Topics
+    ```
+    kos/agents/register              # Agent registration
+    kos/agents/{did}/messages        # Direct messages to agent
+    kos/capabilities                 # Service discovery
+    kos/events/document.uploaded     # Event broadcasts
+    kos/events/agent.connected       # Network events
+    ```
+    
+    ## Transport Selection
+    
+    Choose transport based on your needs:
+    
+    ### HTTP REST
+    ```typescript
+    // Good for: One-off requests, service calls
+    const response = await fetch('http://localhost:30436/klf/v1/message', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(message)
+    });
+    ```
+    
+    ### WebSocket
+    ```typescript
+    // Good for: Real-time updates, persistent connections
+    const ws = new WebSocket('ws://localhost:30436/klf/v1/events');
+    ws.send(JSON.stringify(message));
+    ```
+    
+    ### Auto-Transport Selection
+    ```typescript
+    class SmartKLFClient {
+      async send(message: KLFMessage) {
+        if (message.payload.type === 'event') {
+          // Use WebSocket for events
+          return this.sendViaWebSocket(message);
+        } else {
+          // Use HTTP for requests
+          return this.sendViaHTTP(message);
+        }
+      }
+    }
+    ```
+    
+    ## Error Handling
+    
+    ### HTTP Errors
+    ```json
+    {
+      "error": "AGENT_NOT_FOUND",
+      "message": "Agent with DID 'did:kos:agent:unknown' not found",
+      "code": 404,
+      "timestamp": "2025-06-30T00:00:00Z"
+    }
+    ```
+    
+    ### WebSocket Errors
+    ```json
+    {
+      "type": "error",
+      "error": "SUBSCRIPTION_FAILED", 
+      "message": "Failed to subscribe to event 'invalid.event'",
+      "timestamp": "2025-06-30T00:00:00Z"
+    }
+    ```
+    
+    ## Performance Characteristics
+    
+    | Transport | Latency | Throughput | Overhead | Best Use |
+    |-----------|---------|------------|----------|----------|
+    | HTTP      | ~50ms   | Medium     | Medium   | Service calls |
+    | WebSocket | ~5ms    | High       | Low      | Real-time events |
+    | gRPC      | ~2ms    | Very High  | Low      | High-performance |
+    | MQTT      | ~10ms   | Low        | Very Low | IoT devices |
+    
+    ## Security
+    
+    ### HTTP Authentication
+    ```http
+    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+    ```
+    
+    ### WebSocket Authentication
+    ```json
+    {
+      "type": "auth",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+    }
+    ```
+    
+    ### TLS/SSL
+    - Production: `https://` and `wss://`
+    - Development: `http://` and `ws://`
+    
+    ## Connection Management
+    
+    ### Auto-Reconnection
+    ```typescript
+    class RobustKLFClient {
+      private reconnectAttempts = 0;
+      private maxReconnectAttempts = 5;
+      
+      private async reconnect() {
+        if (this.reconnectAttempts < this.maxReconnectAttempts) {
+          await new Promise(resolve => 
+            setTimeout(resolve, Math.pow(2, this.reconnectAttempts) * 1000)
+          );
+          this.reconnectAttempts++;
+          this.connect();
+        }
+      }
+    }
+    ```
+    
+    ### Health Monitoring
+    ```typescript
+    // Ping every 30 seconds
+    setInterval(async () => {
+      try {
+        await this.ping();
+        this.connectionHealth = 'good';
+      } catch (error) {
+        this.connectionHealth = 'degraded';
+        this.reconnect();
+      }
+    }, 30000);
+    ``` 

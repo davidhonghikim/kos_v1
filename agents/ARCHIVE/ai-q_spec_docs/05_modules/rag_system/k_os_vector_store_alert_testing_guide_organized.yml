@@ -1,0 +1,121 @@
+title: K Os Vector Store Alert Testing Guide
+description: ''
+type: documentation
+status: current
+priority: medium
+version: '1.0'
+last_updated: '2025-06-28'
+organization_date: '2025-06-28T19:48:19.911966'
+authors: []
+tags: []
+content_type: documentation
+technical_level: intermediate
+word_count: 250
+has_code_blocks: true
+has_api_specs: true
+has_architecture: false
+has_deployment: false
+has_testing: true
+has_security: false
+has_rag: true
+has_ethics: false
+original_filename: k_os_vector_store_alert_testing_guide.yml
+original_path: /Users/danger/CascadeProjects/griot-node/agents/reference/RAG/k_os_vector_store_alert_testing_guide.yml
+category: rag_system
+
+---
+
+title: K Os Vector Store Alert Testing Guide
+description: ''
+type: documentation
+status: current
+priority: medium
+last_updated: '2025-06-28'
+conversion_date: '2025-06-28T19:38:19.193479'
+original_format: markdown
+content_type: api_specification
+word_count: 221
+line_count: 79
+
+---
+
+## ✅ Test 1: Vector API Downtime Simulation
+
+### Procedure:
+
+1. Stop the Vector API container:
+
+```bash
+docker stop vector_api
+```
+
+2. Wait 1–2 minutes for Prometheus scrape failures.
+
+3. Expected Result:
+
+- Prometheus triggers `VectorAPI_Down` alert
+- Email sent by Alertmanager (check inbox or SMTP relay logs)
+- Alert visible in Prometheus web UI under **Alerts** tab
+
+---
+
+## ✅ Test 2: Weaviate Unhealthy Simulation
+
+### Procedure:
+
+1. Stop the Weaviate container:
+
+```bash
+docker stop weaviate
+```
+
+2. Wait for Prometheus health check failures.
+
+3. Expected Result:
+
+- `Weaviate_Unhealthy` alert triggers
+- Alert notification sent via Alertmanager
+
+---
+
+## ✅ Test 3: High Latency Simulation
+
+### Procedure:
+
+1. Introduce artificial delay in Vector API (add `time.sleep(5)` in any endpoint handler temporarily).
+
+2. Restart the API container and make a few test queries.
+
+3. Expected Result:
+
+- `High_Query_Latency` alert triggers after 5+ minutes of sustained high latency
+
+---
+
+## ✅ Verification Steps (For All Tests)
+
+- Check **Prometheus Web UI → Alerts**
+- Confirm email or external notification (SMTP, Slack, etc)
+- Review Grafana dashboard for visible metric spikes
+
+---
+
+## ✅ Cleanup
+
+After testing:
+
+- Restart all containers:
+
+```bash
+docker-compose up -d
+```
+
+- Revert any artificial delays in API code
+- Clear Prometheus test state (optional)
+
+---
+
+**Plan ID:** kos\_2025\_06\_alert\_testing\_guide\
+**Created by:** ChatGPT + User Collaboration\
+**Last Updated:** 2025-06-28T00:00:00Z
+

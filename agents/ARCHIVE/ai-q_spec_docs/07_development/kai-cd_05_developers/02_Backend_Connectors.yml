@@ -1,0 +1,129 @@
+metadata:
+  original_file: 02_Backend_Connectors.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Backend Connectors
+  description: Technical specification for backend connectors
+  type: developer-guide
+  status: current
+  priority: medium
+  last_updated: '2025-06-22'
+  agent_notes: AI agent guidance for implementing backend connectors
+sections:
+- level: 1
+  title: 5. Backend Connectors
+  type: section
+  content: ''
+- level: 2
+  title: Agent Context
+  type: section
+  content: '**For AI Agents**: Technical specification for backend service connector
+    architecture. Use when implementing new service integrations or understanding
+    the connector framework. Contains comprehensive patterns for service definitions
+    and API integration.
+
+
+    **Implementation Notes**: Covers service definition structure, authentication
+    patterns, capability definitions, and API client integration. Includes examples
+    for different service types and connector implementations.
+
+    **Quality Requirements**: Keep connector patterns synchronized with actual src/connectors/definitions/
+    implementations. Verify service definitions match current API capabilities.
+
+    **Integration Points**: Links to src/connectors/definitions/, API client systems,
+    and service management UI. References authentication frameworks and capability
+    systems.
+
+
+    The backend connector system is the most powerful and innovative part of the Kai-CD
+    architecture. It''s what makes the application extensible and future-proof. The
+    entire system is built around the concept of the **"Rich Service Definition."**
+
+
+    A Rich Service Definition is a single TypeScript object that contains all the
+    information the application needs to:
+
+    1.  Render a dynamic UI for the service.
+
+    2.  Construct and send valid API requests to the service.
+
+    3.  Handle authentication and errors for the service.
+
+
+    All service definitions are located in `src/connectors/definitions/`.'
+- level: 2
+  title: The Anatomy of a Service Definition
+  type: section
+  content: "A `ServiceDefinition` object is composed of several key parts, defined\
+    \ in `src/types/index.ts`. Let's use a simplified version of `ollama.ts` as an\
+    \ example.\n\n```typescript\n// Simplified from src/connectors/definitions/ollama.ts\n\
+    export const ollamaDefinition: ServiceDefinition = {\n  id: 'ollama',\n  name:\
+    \ 'Ollama',\n  // ...\n  capabilities: [llmChatCapability],\n  // ...\n};\n\n\
+    const llmChatCapability: LlmChatCapability = {\n  name: 'llm_chat',\n  endpoints:\
+    \ [\n    {\n      id: 'getModels',\n      path: '/api/tags',\n      // ...\n \
+    \   },\n    {\n      id: 'chat',\n      path: '/api/chat',\n      // ...\n   \
+    \ },\n  ],\n  parameters: [\n    {\n      id: 'model',\n      type: 'select',\n\
+    \      optionsEndpoint: 'getModels', // <-- Dynamic Options!\n      // ...\n \
+    \   },\n    {\n      id: 'temperature',\n      type: 'number',\n      defaultValue:\
+    \ 0.8,\n      // ...\n    },\n    // ... more parameters\n  ],\n};\n```"
+- level: 3
+  title: 'Key Properties:'
+  type: section
+  content: "-   **`id`**: A unique machine-readable identifier (e.g., `'ollama'`).\n\
+    -   **`name`**: A human-readable name for display in the UI.\n-   **`capabilities`**:\
+    \ An array of `Capability` objects. A capability defines a specific function the\
+    \ service can perform (e.g., `llm_chat`, `image_generation`).\n    -   **`endpoints`**:\
+    \ An array of `Endpoint` objects within a capability. Each endpoint defines a\
+    \ single API call, including its `id`, HTTP `method`, and `path`.\n    -   **`parameters`**:\
+    \ An array of `ParameterDefinition` objects. This is the **schema** for the UI.\
+    \ It defines every user-configurable parameter, its `type` (for rendering the\
+    \ correct input), its `defaultValue`, and an optional `optionsEndpoint` to dynamically\
+    \ populate a `'select'` input."
+- level: 2
+  title: Data Flow Diagram
+  type: section
+  content: "This diagram shows how a single service definition file is the central\
+    \ source of truth for both the UI and the API client.\n\n```mermaid\ngraph TD\n\
+    \    subgraph \"Design Time\"\n        ServiceDefinition[Service Definition<br/>(e.g.,\
+    \ ollama.ts)]\n    end\n\n    subgraph \"UI Rendering\"\n        direction TB\n\
+    \        CapabilityUI[CapabilityUI.tsx]\n        ParameterControl[ParameterControl.tsx]\n\
+    \        ModelSelector[ModelSelector.tsx]\n    end\n\n    subgraph \"API Communication\"\
+    \n        direction TB\n        LlmChatView[LlmChatView.tsx]\n        ApiClient[apiClient.ts]\n\
+    \        OllamaAPI[Ollama API Server]\n    end\n\n    ServiceDefinition -- \"\
+    Provides Parameter Schema\" --> CapabilityUI\n    CapabilityUI -- \"Renders\"\
+    \ --> ParameterControl\n    \n    ServiceDefinition -- \"Provides `optionsEndpoint`\
+    \ ID\" --> ModelSelector\n    ModelSelector -- \"Triggers API Call\" --> ApiClient\n\
+    \n    LlmChatView -- \"Triggers API Call with parameters\" --> ApiClient\n   \
+    \ ServiceDefinition -- \"Provides Endpoint Path & Method\" --> ApiClient\n\n \
+    \   ApiClient -- \"Constructs & Sends Request\" --> OllamaAPI\n```"
+- level: 2
+  title: The Universal `apiClient.ts`
+  type: section
+  content: 'The `apiClient` is a singleton class that handles all outgoing `fetch`
+    requests. It is designed to be completely generic.
+
+
+    When a component needs to make an API call (e.g., `LlmChatView` submitting a prompt),
+    it calls a method on the `apiClient` like `apiClient.chat(service, parameters)`.
+
+
+    The `apiClient` then performs the following steps:
+
+    1.  Takes the `service` object.
+
+    2.  Finds the correct `Capability` (e.g., `llm_chat`) within the service''s definition.
+
+    3.  Finds the correct `Endpoint` (e.g., `chat`) within the capability.
+
+    4.  Uses the `path` from the endpoint definition to construct the final URL (e.g.,
+    `http://localhost:11434/api/chat`).
+
+    5.  Uses the `method` from the endpoint definition.
+
+    6.  Transforms the `parameters` from the UI into the correct request body format,
+    as specified by the endpoint''s `body` schema.
+
+    7.  Adds any required authentication headers based on the service''s `auth` definition.
+
+    8.  Executes the request, handling streaming responses and errors centrally.'

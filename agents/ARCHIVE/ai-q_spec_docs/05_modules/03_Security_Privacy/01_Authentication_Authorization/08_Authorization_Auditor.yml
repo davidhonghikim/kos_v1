@@ -1,0 +1,242 @@
+metadata:
+  original_file: 08_Authorization_Auditor.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Authorization Auditor
+  version: '1.0'
+sections:
+- level: 1
+  title: '**Authorization Auditor**'
+  type: section
+  content: ''
+- level: 2
+  title: '**Purpose**'
+  type: section
+  content: The Authorization Auditor provides comprehensive audit logging and compliance
+    reporting for all authentication and authorization events in the kOS ecosystem.
+    It ensures traceability, accountability, and regulatory compliance by capturing
+    detailed records of access decisions, policy evaluations, and permission changes.
+- level: 2
+  title: '**Core Principles**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Audit Logging**'
+  type: section
+  content: '- **Comprehensive Logging**: Capture all authentication and authorization
+    events
+
+    - **Immutable Records**: Ensure audit logs are tamper-proof and immutable
+
+    - **Real-Time Monitoring**: Support real-time monitoring and alerting
+
+    - **Granular Detail**: Log user, resource, action, context, and decision
+
+    - **Retention Policies**: Enforce configurable log retention and disposal'
+- level: 3
+  title: '**Compliance Reporting**'
+  type: section
+  content: '- **Regulatory Compliance**: Support for GDPR, HIPAA, SOX, and other standards
+
+    - **Automated Reporting**: Generate compliance reports on demand or schedule
+
+    - **Anomaly Detection**: Detect suspicious or non-compliant activity
+
+    - **Audit Trails**: Provide complete audit trails for investigations
+
+    - **Separation of Duties**: Ensure audit independence from access control'
+- level: 2
+  title: '**Function Specifications**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Core Functions**'
+  type: section
+  content: ''
+- level: 4
+  title: '**logEvent(event: AuthEvent): Promise<void>**'
+  type: section
+  content: "Logs an authentication or authorization event with full context.\n\n**Parameters:**\n\
+    - `event`: Authentication or authorization event object\n\n**Returns:**\n- `void`:\
+    \ Success confirmation\n\n**Example:**\n```typescript\nawait authorizationAuditor.logEvent({\n\
+    \  userId: \"user123\",\n  resource: \"database:users\",\n  action: \"read\",\n\
+    \  decision: \"allow\",\n  timestamp: new Date(),\n  context: { ipAddress: \"\
+    192.168.1.100\", deviceId: \"device456\" }\n});\n```"
+- level: 4
+  title: '**generateReport(criteria: AuditReportCriteria): Promise<AuditReport>**'
+  type: section
+  content: "Generates an audit report based on specified criteria.\n\n**Parameters:**\n\
+    - `criteria`: Criteria for the audit report (time range, user, resource, action,\
+    \ etc.)\n\n**Returns:**\n- `AuditReport`: Generated audit report\n\n**Example:**\n\
+    ```typescript\nconst report = await authorizationAuditor.generateReport({\n  startTime:\
+    \ new Date(Date.now() - 86400000),\n  endTime: new Date(),\n  userId: \"user123\"\
+    \n});\nconsole.log(`Report contains ${report.events.length} events`);\n```"
+- level: 4
+  title: '**listEvents(filter: EventFilter): Promise<AuthEvent[]>**'
+  type: section
+  content: "Lists all audit events matching the specified filter.\n\n**Parameters:**\n\
+    - `filter`: Filter criteria (user, resource, action, time range, etc.)\n\n**Returns:**\n\
+    - `AuthEvent[]`: Array of matching audit events\n\n**Example:**\n```typescript\n\
+    const events = await authorizationAuditor.listEvents({\n  resource: \"database:users\"\
+    ,\n  action: \"read\"\n});\nconsole.log(`Found ${events.length} read events on\
+    \ users database`);\n```"
+- level: 4
+  title: '**detectAnomalies(criteria: AnomalyCriteria): Promise<AnomalyReport>**'
+  type: section
+  content: "Detects anomalies or suspicious activity in the audit logs.\n\n**Parameters:**\n\
+    - `criteria`: Criteria for anomaly detection (user, resource, action, time range,\
+    \ etc.)\n\n**Returns:**\n- `AnomalyReport`: Report of detected anomalies\n\n**Example:**\n\
+    ```typescript\nconst anomalies = await authorizationAuditor.detectAnomalies({\n\
+    \  userId: \"user123\",\n  timeRange: { start: new Date(Date.now() - 3600000),\
+    \ end: new Date() }\n});\nconsole.log(`Detected ${anomalies.count} anomalies`);\n\
+    ```"
+- level: 3
+  title: '**Advanced Functions**'
+  type: section
+  content: ''
+- level: 4
+  title: '**exportLogs(format: ''json'' | ''csv'', criteria: ExportCriteria): Promise<string>**'
+  type: section
+  content: 'Exports audit logs in the specified format based on criteria.
+
+
+    **Parameters:**
+
+    - `format`: Export format (''json'' or ''csv'')
+
+    - `criteria`: Criteria for export (time range, user, resource, etc.)
+
+
+    **Returns:**
+
+    - `string`: Path or URL to exported file
+
+
+    **Example:**
+
+    ```typescript
+
+    const exportPath = await authorizationAuditor.exportLogs(''csv'', { userId: "user123"
+    });
+
+    console.log(`Logs exported to ${exportPath}`);
+
+    ```'
+- level: 4
+  title: '**purgeOldLogs(retentionPeriod: string): Promise<void>**'
+  type: section
+  content: 'Purges audit logs older than the specified retention period.
+
+
+    **Parameters:**
+
+    - `retentionPeriod`: Retention period (e.g., "90d", "1y")
+
+
+    **Returns:**
+
+    - `void`: Success confirmation
+
+
+    **Example:**
+
+    ```typescript
+
+    await authorizationAuditor.purgeOldLogs("90d");
+
+    console.log("Old logs purged successfully");
+
+    ```'
+- level: 2
+  title: '**Integration Patterns**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Audit Logging Flow**'
+  type: section
+  content: "```mermaid\ngraph TD\n    A[Access Event] --> B[Log Event]\n    B -->\
+    \ C[Store in Immutable Log]\n    C --> D[Real-Time Monitoring]\n    D --> E[Alerting\
+    \ & Reporting]\n    E --> F[Compliance Reporting]\n```"
+- level: 3
+  title: '**Audit Report Generation Flow**'
+  type: section
+  content: "```mermaid\ngraph TD\n    A[Report Request] --> B[Load Events]\n    B\
+    \ --> C[Filter Events]\n    C --> D[Aggregate Data]\n    D --> E[Generate Report]\n\
+    \    E --> F[Return Report]\n```"
+- level: 2
+  title: '**Authorization Auditor Capabilities**'
+  type: section
+  content: '- **Comprehensive Audit Logging**: Capture all authentication and authorization
+    events
+
+    - **Immutable Logs**: Tamper-proof, append-only log storage
+
+    - **Real-Time Monitoring**: Real-time event monitoring and alerting
+
+    - **Automated Compliance Reporting**: Generate reports for regulatory compliance
+
+    - **Anomaly Detection**: Detect suspicious or non-compliant activity
+
+    - **Audit Trails**: Complete audit trails for investigations
+
+    - **Separation of Duties**: Ensure audit independence from access control
+
+    - **Log Export & Purge**: Export logs and purge old records as needed'
+- level: 2
+  title: '**Configuration Examples**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Basic Audit Logging Configuration**'
+  type: section
+  content: "```yaml\nauthorization_auditor:\n  log_retention: \"90d\"\n  immutable_storage:\
+    \ true\n  real_time_monitoring: true\n  alerting_enabled: true\n  compliance_reporting:\
+    \ true\n```"
+- level: 3
+  title: '**Compliance Reporting Example**'
+  type: section
+  content: "```yaml\ncompliance_reporting:\n  standards:\n    - GDPR\n    - HIPAA\n\
+    \    - SOX\n  report_schedule: \"monthly\"\n  anomaly_detection: true\n  audit_trail_export:\
+    \ true\n```"
+- level: 2
+  title: '**Error Handling**'
+  type: section
+  content: '- **Log Write Failure**: Retry with exponential backoff
+
+    - **Report Generation Failure**: Return error with details
+
+    - **Export Failure**: Return error with export details
+
+    - **Anomaly Detection Failure**: Return error with detection details
+
+    - **Purge Failure**: Return error with purge details'
+- level: 2
+  title: '**Performance Considerations**'
+  type: section
+  content: '- **Write Latency**: Optimized for sub-50ms log writes
+
+    - **Batch Operations**: Support for batch log export and purge
+
+    - **Scalability**: Horizontal scaling for high-volume environments
+
+    - **Resource Usage**: Efficient storage and retrieval'
+- level: 2
+  title: '**Security Considerations**'
+  type: section
+  content: '- **Log Integrity**: Cryptographic integrity checks for all logs
+
+    - **Access Control**: Restrict access to audit logs and reports
+
+    - **Audit Logging**: Immutable, append-only log storage
+
+    - **Compliance**: Ensure all logs meet regulatory requirements'
+- level: 2
+  title: '**Monitoring & Observability**'
+  type: section
+  content: "- **Log Metrics**: Track log write, read, and export events\n- **Report\
+    \ Metrics**: Track report generation and compliance status\n- **Anomaly Metrics**:\
+    \ Track anomaly detection events\n- **Alerting**: Alerts for log failures, compliance\
+    \ violations, and suspicious activity\n\n---\n\n**Version**: 1.0  \n**Focus**:\
+    \ Comprehensive audit logging and compliance reporting for secure access control\
+    \ in kOS ecosystem"

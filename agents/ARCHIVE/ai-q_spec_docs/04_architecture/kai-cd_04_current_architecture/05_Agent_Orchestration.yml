@@ -1,0 +1,450 @@
+metadata:
+  original_file: 05_Agent_Orchestration.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Agent Orchestration Architecture
+  description: Complete orchestration system from current service management to future
+    kOS agent mesh
+  category: architecture
+  subcategory: orchestration
+  context: current_implementation
+  implementation_status: partial
+  decision_scope: high
+  complexity: very_high
+  last_updated: '2025-01-20'
+  code_references:
+  - src/store/serviceStore.ts
+  - src/core/config/
+  - src/connectors/definitions/
+  related_documents:
+  - ../services/01_service-architecture.md
+  - ../services/02_orchestration-architecture.md
+  - ../../future/agents/01_agent-hierarchy.md
+  - ../../bridge/05_service-migration.md
+  dependencies:
+  - Zustand
+  - Docker
+  - Kind Link Protocol
+  - Ed25519
+  breaking_changes: false
+  agent_notes: Agent orchestration system - foundation for multi-agent coordination
+    and lifecycle management
+sections:
+- level: 1
+  title: Agent Orchestration Architecture
+  type: section
+  content: ''
+- level: 2
+  title: Agent Context
+  type: section
+  content: '**For AI Agents**: Complete agent orchestration architecture covering
+    evolution from current service management to sophisticated agent mesh orchestration.
+    Use this when implementing agent lifecycle management, planning multi-agent coordination,
+    or understanding orchestration patterns. Critical foundation for all agent coordination
+    work.
+
+
+    **Implementation Notes**: Contains current service orchestration patterns and
+    future comprehensive agent mesh with lifecycle management, security framework,
+    and communication protocols. Includes working TypeScript interfaces and deployment
+    patterns.
+
+    **Quality Requirements**: Keep orchestration patterns and agent lifecycle management
+    concepts accurate. Maintain synchronization with actual service management implementation.
+
+    **Integration Points**: Foundation for agent coordination, links to service architecture,
+    workflow management, and future distributed agent systems.
+
+
+    ---'
+- level: 2
+  title: Quick Summary
+  type: section
+  content: Complete orchestration blueprint covering evolution from current service
+    coordination to sophisticated agent mesh orchestration with lifecycle management,
+    deployment patterns, and communication protocols.
+- level: 2
+  title: Overview
+  type: section
+  content: The Agent Orchestration Architecture defines how autonomous agents are
+    managed, coordinated, and executed across the Kai-CD to kOS evolution. This system
+    provides the foundation for multi-agent workflows, distributed computing, and
+    intelligent task delegation.
+- level: 2
+  title: 'Current Implementation: Service Orchestration'
+  type: section
+  content: ''
+- level: 3
+  title: Service Management Foundation
+  type: section
+  content: "The current system provides basic orchestration through the service management\
+    \ layer:\n\n```typescript\n// Current service orchestration in serviceStore.ts\n\
+    interface ServiceDefinition {\n  id: string;\n  name: string;\n  type: 'llm' |\
+    \ 'image' | 'vector' | 'utility';\n  status: 'active' | 'inactive' | 'error';\n\
+    \  capabilities: string[];\n  endpoints: ServiceEndpoint[];\n  auth: AuthConfig;\n\
+    }\n\n// Service lifecycle management\nconst serviceStore = create<ServiceStore>((set,\
+    \ get) => ({\n  services: new Map(),\n  \n  async addService(definition: ServiceDefinition)\
+    \ {\n    // Validate and register service\n    await this.validateService(definition);\n\
+    \    this.services.set(definition.id, definition);\n    await this.healthCheck(definition.id);\n\
+    \  },\n  \n  async executeServiceCall(serviceId: string, endpoint: string, params:\
+    \ any) {\n    // Route and execute service requests\n    const service = this.services.get(serviceId);\n\
+    \    return await apiClient.makeRequest(service, endpoint, params);\n  }\n}));\n\
+    ```"
+- level: 3
+  title: Current Orchestration Patterns
+  type: section
+  content: "1. **Static Service Registry**: Predefined service definitions\n2. **Capability-Based\
+    \ Routing**: Route requests based on service capabilities  \n3. **Health Monitoring**:\
+    \ Basic availability checks\n4. **Configuration Management**: Centralized service\
+    \ configuration\n5. **Error Handling**: Retry logic and fallback mechanisms"
+- level: 2
+  title: 'Future Vision: kOS Agent Mesh'
+  type: section
+  content: ''
+- level: 3
+  title: Agent Lifecycle Management
+  type: section
+  content: 'The future kOS system implements comprehensive agent lifecycle orchestration
+    with nine distinct stages:
+
+
+    1. **Definition**: Developer creates manifest and capability profile
+
+    2. **Registration**: Agent registered with system orchestrator
+
+    3. **Activation**: Agent loaded into runtime and sandboxed
+
+    4. **Handshake**: Agent advertises profile to registry
+
+    5. **Execution**: Agent responds to task contracts
+
+    6. **Upgrade**: Orchestrator triggers updates
+
+    7. **Quarantine**: Misbehaving agents isolated
+
+    8. **Termination**: Agent destroyed and memory cleared
+
+    9. **Audit**: Final logs stored in audit trail'
+- level: 3
+  title: Agent Runtime Environment
+  type: section
+  content: 'Every agent runs in a containerized environment with strict isolation:
+
+
+    ```dockerfile
+
+    FROM python:3.11-slim
+
+    WORKDIR /agent
+
+    COPY requirements.txt ./
+
+    RUN pip install --no-cache-dir -r requirements.txt
+
+    COPY . .
+
+    RUN useradd -m -u 1000 agent
+
+    USER agent
+
+    CMD ["python", "entrypoint.py"]
+
+    ```
+
+
+    Container policies enforce resource limits (CPU: 1 core, RAM: 512MB default) and
+    security constraints (read-only root filesystem, capability dropping).'
+- level: 2
+  title: Orchestration Components
+  type: section
+  content: ''
+- level: 3
+  title: Agent Registry
+  type: section
+  content: 'Central repository managing agent discovery and capability resolution:
+
+
+    - Maintains manifest of every known agent
+
+    - Stores version, persona, capabilities, and status
+
+    - Provides lookup for orchestrators and UI components
+
+    - Handles dynamic agent registration and deregistration'
+- level: 3
+  title: Agent Supervisor
+  type: section
+  content: 'Manages agent lifecycle with comprehensive monitoring:
+
+
+    - Loads and isolates agents into secure runtimes
+
+    - TTL monitoring and crash auto-restart
+
+    - Sandboxes agents based on security profiles
+
+    - Enforces resource quotas and policies'
+- level: 3
+  title: Task Orchestrator
+  type: section
+  content: 'Coordinates complex multi-agent workflows:
+
+
+    - Plans execution strategies for complex goals
+
+    - Delegates tasks to appropriate agents
+
+    - Monitors progress and handles failures
+
+    - Implements retry logic and escalation procedures'
+- level: 2
+  title: Communication Protocols
+  type: section
+  content: ''
+- level: 3
+  title: Kind Link Protocol (KLP)
+  type: section
+  content: 'The future system uses KLP for secure agent-to-agent communication with
+    multiple message types:
+
+
+    - `TASK_REQUEST`: Task delegation between agents
+
+    - `TASK_RESULT`: Task completion notifications
+
+    - `STATUS_UPDATE`: Health and status information
+
+    - `CAPABILITY_QUERY`: Capability discovery requests
+
+    - `SECURITY_ALERT`: Security event notifications'
+- level: 3
+  title: Message Structure
+  type: section
+  content: "```json\n{\n  \"type\": \"TASK_REQUEST\",\n  \"from\": \"kPlanner:research\"\
+    ,\n  \"to\": \"kExecutor:webscraper\",\n  \"task_id\": \"abc123\",\n  \"payload\"\
+    : {\n    \"action\": \"scrape\",\n    \"target\": \"https://example.com\",\n \
+    \   \"params\": {}\n  },\n  \"timestamp\": \"2025-06-20T22:04:00Z\",\n  \"auth\"\
+    : {\n    \"signature\": \"ed25519:...\",\n    \"token\": \"...\"\n  }\n}\n```"
+- level: 2
+  title: Security and Trust Framework
+  type: section
+  content: ''
+- level: 3
+  title: Agent Authentication
+  type: section
+  content: '- Mutual agent identity via Ed25519/RSA keys
+
+    - Role-based access control enforced by kSentinel
+
+    - Trust scoring and reputation management
+
+    - Capability-based authorization'
+- level: 3
+  title: Sandbox Security
+  type: section
+  content: '- Filesystem sandboxing with restricted write access
+
+    - Secrets injection via read-only vault mounts
+
+    - Network isolation with internal mesh communication
+
+    - Resource quotas and capability dropping'
+- level: 3
+  title: Audit and Compliance
+  type: section
+  content: '- Complete lifecycle event logging
+
+    - Message history capture with trace flags
+
+    - Security event monitoring and alerting
+
+    - Compliance reporting and forensic analysis'
+- level: 2
+  title: Deployment Architecture
+  type: section
+  content: ''
+- level: 3
+  title: Deployment Modes
+  type: section
+  content: '1. **Local Deployment**: Browser extension or localhost runtime
+
+    2. **Containerized Deployment**: Docker/Podman with volume mounts
+
+    3. **Distributed Mesh**: Reticulum mesh with peer discovery
+
+    4. **Cloud Deployment**: Kubernetes clusters with high availability'
+- level: 3
+  title: Orchestration Deployment
+  type: section
+  content: "```yaml\nversion: '3.8'\nservices:\n  orchestrator:\n    image: kos/agent-orchestrator:latest\n\
+    \    ports: [8080]\n    volumes:\n      - ./orchestrator/config:/config\n  my-agent:\n\
+    \    build: ./my-agent\n    restart: unless-stopped\n    environment:\n      -\
+    \ AGENT_CONFIG=/agent/config.yaml\n    networks:\n      - klp-mesh\n```"
+- level: 2
+  title: Monitoring and Observability
+  type: section
+  content: ''
+- level: 3
+  title: Health Monitoring
+  type: section
+  content: '- `/healthz` endpoints for liveness checks
+
+    - `/status` endpoints for detailed health information
+
+    - Periodic heartbeat monitoring with TTL enforcement
+
+    - Automated restart on failure with configurable thresholds'
+- level: 3
+  title: Performance Metrics
+  type: section
+  content: '- Resource utilization tracking (CPU, memory, network)
+
+    - Task execution timing and throughput
+
+    - Error rates and failure patterns
+
+    - Agent interaction and communication metrics'
+- level: 3
+  title: Logging and Audit
+  type: section
+  content: '- Structured logging with agent ID and timestamp tags
+
+    - Centralized log collection via Fluentbit + Loki
+
+    - Audit trail for all critical operations
+
+    - Forensic analysis capabilities'
+- level: 2
+  title: Evolution Strategy
+  type: section
+  content: ''
+- level: 3
+  title: 'Phase 1: Enhanced Service Orchestration (Current)'
+  type: section
+  content: '- Improve service health monitoring with detailed status
+
+    - Add advanced capability-based routing algorithms
+
+    - Implement sophisticated retry and fallback mechanisms
+
+    - Create comprehensive service dependency graphs'
+- level: 3
+  title: 'Phase 2: Agent-Aware Orchestration (Near Future)'
+  type: section
+  content: '- Introduce agent abstraction layer over services
+
+    - Implement basic agent lifecycle management
+
+    - Add agent-to-agent communication protocols
+
+    - Create simple workflow orchestration capabilities'
+- level: 3
+  title: 'Phase 3: Full Agent Mesh (Future kOS)'
+  type: section
+  content: '- Deploy containerized agent runtime environment
+
+    - Implement complete KLP communication protocol
+
+    - Add distributed agent discovery and registration
+
+    - Enable complex multi-agent workflow orchestration'
+- level: 3
+  title: 'Phase 4: Autonomous Orchestration (Advanced kOS)'
+  type: section
+  content: '- Self-organizing agent networks with dynamic topology
+
+    - Autonomous resource allocation and optimization
+
+    - Predictive scaling based on workload patterns
+
+    - Advanced trust and reputation management systems'
+- level: 2
+  title: Configuration Management
+  type: section
+  content: ''
+- level: 3
+  title: Orchestration Configuration
+  type: section
+  content: "```yaml\norchestrator:\n  retry:\n    max_attempts: 3\n    delay_strategy:\
+    \ exponential\n    base_delay_ms: 200\n    jitter: true\n  \n  policies:\n   \
+    \ fallback_on_error: true\n    allow_cross_agent: true\n    max_parallel_tasks:\
+    \ 5\n  \n  security:\n    sandbox_required: true\n    trust_threshold: 0.7\n \
+    \   audit_all_actions: true\n```"
+- level: 3
+  title: Agent Policies
+  type: section
+  content: "```yaml\ndefault_policy:\n  resource_limits:\n    cpu: 1.0\n    memory:\
+    \ 512MB\n    disk: 1GB\n  \n  lifecycle:\n    max_crashes: 3\n    auto_restart:\
+    \ true\n    quarantine_threshold: 5\n  \n  security:\n    sandbox_level: strict\n\
+    \    crypto_required: true\n```"
+- level: 2
+  title: Implementation Roadmap
+  type: section
+  content: ''
+- level: 3
+  title: Current Capabilities
+  type: section
+  content: '- ✅ Basic service management and registration
+
+    - ✅ Configuration-driven service definitions
+
+    - ✅ Health checking and status monitoring
+
+    - ✅ API client with retry logic and error handling
+
+    - ✅ Capability-based UI rendering and routing'
+- level: 3
+  title: Near-Term Enhancements
+  type: section
+  content: '- 🔄 Enhanced service orchestration with workflow support
+
+    - 🔄 Agent abstraction layer over existing services
+
+    - 🔄 Basic multi-step workflow coordination
+
+    - 🔄 Improved monitoring with metrics collection'
+- level: 3
+  title: Future Development
+  type: section
+  content: '- ⬜ Container-based agent runtime with full isolation
+
+    - ⬜ KLP communication protocol implementation
+
+    - ⬜ Distributed agent registry with consensus
+
+    - ⬜ Advanced security and trust management
+
+    - ⬜ Autonomous orchestration and self-healing'
+- level: 2
+  title: Best Practices
+  type: section
+  content: ''
+- level: 3
+  title: Agent Design Principles
+  type: section
+  content: '1. **Stateless Architecture**: External state storage for reliability
+
+    2. **Clear Capability Declaration**: Precise capability definitions
+
+    3. **Robust Error Handling**: Comprehensive failure recovery
+
+    4. **Resource Efficiency**: Optimal resource usage patterns
+
+    5. **Security First**: Minimal privileges and secure defaults'
+- level: 3
+  title: Orchestration Patterns
+  type: section
+  content: '1. **Circuit Breaker**: Prevent cascade failures
+
+    2. **Bulkhead Isolation**: Contain failures to prevent spread
+
+    3. **Timeout Management**: Prevent resource exhaustion
+
+    4. **Exponential Backoff**: Handle transient failures gracefully
+
+    5. **Health Check Monitoring**: Continuous agent health verification'
+- level: 2
+  title: Conclusion
+  type: section
+  content: ''

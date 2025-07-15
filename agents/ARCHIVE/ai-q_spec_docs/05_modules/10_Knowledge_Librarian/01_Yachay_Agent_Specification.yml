@@ -1,0 +1,34 @@
+title: "Yachay: The Knowledge Librarian Agent"
+version: "1.0"
+status: "Active"
+created: "2025-07-01"
+author: "Gemini 2.5 Pro"
+
+sections:
+  - title: "Overview"
+    content: |
+      The Yachay Knowledge Librarian is an automated agent responsible for the ingestion, processing, and organization of all project documentation into the kOS knowledge base. Its primary function is to act as the gatekeeper and organizer for the project's memory, ensuring that all information is clean, structured, de-duplicated, and ready for use by other AI agents via the PersonaRAG engine.
+
+  - title: "Core Responsibilities"
+    content: |
+      - **Ingestion:** Scans designated source directories (`ai-q`, `agents/reference_organized`, and `kai-cd/documentation`) for documentation files (`.md`, `.yml`, `.yaml`).
+      - **Processing:** Parses raw files, extracting and merging YAML content. It can handle pure YAML, markdown with YAML code blocks, and batch files containing multiple documents.
+      - **Categorization:** Intelligently categorizes documents based on their original file path, assigning types like `node_spec`, `architecture`, `protocol`, etc.
+      - **Standardization:** Transforms the processed content into a standardized `Persona` object, suitable for the RAG engine.
+      - **De-duplication:** Calculates a SHA256 hash of each document's content to identify and skip duplicates, ensuring the knowledge base remains clean.
+      - **Asset Handling:** Identifies non-document files (e.g., images, diagrams) and moves them to a centralized assets directory.
+      - **Indexing:** Updates the master `index.json` file in the `personas` directory, making the new knowledge immediately discoverable by the RAG engine.
+
+  - title: "Implementation"
+    content: |
+      The agent's logic is implemented in the Python script located at `scripts/process_docs.py`. This script is designed to be run from the command line and includes both a `--dry-run` mode for safe verification and a `--live` mode for execution.
+
+  - title: "Strategic Importance"
+    content: |
+      The Yachay agent is the foundation of the kOS project's "memory" system. By creating a comprehensive, structured, and searchable knowledge base, it enables other agents to rapidly bootstrap their understanding of the entire project, its architecture, and its protocols. This is a critical step towards creating agents that can learn, adapt, and build upon the collective knowledge of the system.
+
+  - title: "Future Evolution: The Live Knowledge Service"
+    content: |
+      The current implementation is file-based and runs on demand. The next evolution of Yachay is to become the engine for a live, distributed **Knowledge Management Service**.
+
+      This service will expose API endpoints (`/knowledge/add`, `/knowledge/update`) allowing any application or agent in the kOS ecosystem to contribute to the central knowledge base in real-time. Yachay's processing logic will be used to validate, clean, and integrate these submissions instantly. This will be coupled with a pub/sub mechanism to notify all other nodes of knowledge updates, creating a truly dynamic and self-updating system. 

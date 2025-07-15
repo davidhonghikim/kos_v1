@@ -1,0 +1,54 @@
+{
+  "name": "aiq-tools",
+  "version": "1.0.0",
+  "description": "AI-Q Knowledge Library Tools - Theme Manager and MCP Adaptors",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "theme": "node core/theme-manager.js",
+    "adaptor": "node adaptors/mcp-adaptor.js",
+    "test": "jest",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "keywords": [
+    "aiq",
+    "knowledge",
+    "library",
+    "theme",
+    "mcp",
+    "adaptor",
+    "mycelium",
+    "cultural"
+  ],
+  "author": "AI-Q Development Team",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "inquirer": "^9.2.12",
+    "fs-extra": "^11.2.0",
+    "glob": "^10.3.10",
+    "yaml": "^2.3.4",
+    "commander": "^11.1.0",
+    "ora": "^7.0.1",
+    "boxen": "^7.1.1",
+    "figlet": "^1.7.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "eslint": "^8.56.0",
+    "prettier": "^3.1.1",
+    "@types/node": "^20.10.5"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aiq-project/aiq-tools.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aiq-project/aiq-tools/issues"
+  },
+  "homepage": "https://github.com/aiq-project/aiq-tools#readme"
+} 

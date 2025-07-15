@@ -1,0 +1,389 @@
+---
+title: "kOS Full Technical Specification and Ecosystem Overview"
+description: "Complete low-level technical specification for kOS (Kind Operating System), including architecture, stack, agent classes, economic models, roadmaps, and supporting materials. This is the definitive specification for the entire kOS ecosystem."
+type: "core_specification"
+status: "current"
+priority: "critical"
+version: "3.0"
+last_updated: "2025-06-28"
+organization_date: "2025-06-28T20:00:00Z"
+authors:
+  - "ChatGPT (OpenAI)"
+  - "Stone Monk (Project Lead)"
+tags:
+  - "core_specification"
+  - "architecture"
+  - "ecosystem_overview"
+  - "technical_specification"
+  - "kos"
+  - "agent_system"
+  - "decentralized_ai"
+  - "ethical_ai"
+  - "regenerative_systems"
+content_type: "technical_specification"
+technical_level: "advanced"
+word_count: 1647
+has_architecture: true
+has_deployment: true
+has_api_specs: true
+has_rag: true
+has_ethics: true
+original_sources:
+  - "kos_full_technical_spec.yml"
+  - "kos_full_technical_spec_v_3.yml"
+---
+
+# kOS (Kind Operating System) - Complete Technical Specification
+
+## Overview
+
+kOS (Kind Operating System) is an open-source, decentralized, modular, agent-driven AI operating system built for ethical, privacy-first, and regenerative digital ecosystems. It allows individuals and collectives to deploy intelligent agents across personal devices, edge nodes, mesh networks, and cloud services.
+
+### Core Philosophy
+- Decentralization, sovereignty, regeneration, fun, ethical intelligence, natural system modeling
+- Sovereign AI ownership for all
+- Mesh-compatible, low-bandwidth operation
+- Modular, agentic, skill-based architecture
+- Ethical and regenerative design principles
+- Device-agnostic deployment (Pi, phones, desktops, servers)
+
+### Primary Objectives
+1. Sovereign AI ownership for all
+2. Mesh-compatible, low-bandwidth operation
+3. Modular, agentic, skill-based architecture
+4. Ethical and regenerative design principles
+5. Device-agnostic deployment (Pi, phones, desktops, servers)
+
+### Supported Networks
+- LoRa Mesh (via Reticulum)
+- WiFi
+- Ethernet
+- Cellular (LTE/5G)
+- Offline / Air-gapped Modes
+
+## Cultural and Technical Influences
+
+### Cultural Influences
+- The KLF / JAMs (The Justified Ancients of Mu Mu)
+- Taoism
+- Systema
+- Underground Resistance (UR)
+- Buddhism
+- Indigenous Governance Models
+- Decentralized Cooperatives
+
+### Technical Influences
+- UNIX Microkernel Philosophy
+- Reticulum Mesh Network Stack
+- LangChain / AutoGPT multi-agent architectures
+- Ethereum / Polkadot governance models
+- Vector Database Optimization
+- Containerization / Edge Deployment
+
+## Architecture
+
+### Core Layers
+
+#### 1. Agent Layer
+Responsibilities:
+- Run agent logic
+- Manage agent states and goals
+- Support inter-agent communication
+
+#### 2. Orchestrator Layer
+Responsibilities:
+- Task scheduling
+- Agent lifecycle management
+- Inter-agent routing
+- Load balancing
+
+#### 3. Data Layer
+Components:
+- Vector Memory Store (Chroma/Qdrant)
+- Knowledge Graph
+- User Data Vault (Encrypted)
+- Temporal Memory (Time-based event logs)
+
+#### 4. Network Layer
+Protocols:
+- Reticulum
+- HTTP/HTTPS
+- WebSocket
+- MQTT (optional)
+- LoRa Radio Stack
+
+#### 5. Frontend Layer
+Technologies:
+- Next.js
+- Tailwind CSS
+- React
+- Framer Motion
+
+## Technology Stack
+
+### Backend
+Languages:
+- Python 3.11+
+- Bash
+
+Frameworks:
+- FastAPI
+- LangChain
+
+AI Models:
+- GPT-4 (API)
+- Mixtral
+- Ollama LLMs
+- Llama.cpp local models
+
+### Frontend
+Stack:
+- TypeScript
+- React
+- Next.js
+- Tailwind CSS
+- Framer Motion
+
+### Databases
+Primary:
+- SQLite
+- MongoDB
+
+Vector:
+- Chroma
+- Qdrant
+
+### Storage
+- Local FS
+- S3-compatible object storage
+- NAS
+
+## Agent Classes
+
+The kOS system defines 13 primary agent classes, each with distinct responsibilities:
+
+### Core Agent Classes
+1. Griot: "Storytelling, Knowledge Delivery, Narrative Engines"
+2. Tohunga: "Healing, Regenerative Logic, Failure Recovery"
+3. Ronin: "Network Discovery, Topology Mapping, Reticulum Operations"
+4. Musa: "Creative Outputs: Music, Images, Video, Audio"
+5. Hakim: "Data Analysis, Research, Summarization"
+6. Skald: "Text Generation, Translation, Communication"
+7. Oracle: "Predictive Modeling, Simulation, Forecasting"
+8. Junzi: "Ethics Layer, Decision Filtering, Policy Enforcement"
+9. Yachay: "Learning Engine, Active Training, Vectorization"
+10. Sachem: "Governance, Consensus Management, Voting"
+11. Archon: "Meta-Control, Infrastructure Admin, Orchestration"
+12. Amauta: "Philosophical Reasoning, System-wide Synthesis"
+13. Mzee: "Long-Term Memory, Historical Logging, Elder Archive"
+
+## Core Modules
+
+### Essential System Modules
+- Contextual Memory Engine
+- Ethical Policy Decision Engine (GEPDE)
+- Orchestrator Scheduler
+- PromptKind Manager
+- Reticulum Network Adapter
+- Agent Lifecycle Manager
+- Node Installer and Updater
+- Privacy Data Broker
+- Vault Manager
+- Federated Sync Module
+- Agent Skill Ingestion Pipeline
+
+## Deployment Options
+
+### Supported Platforms
+- Raspberry Pi (1GB RAM+)
+- Android (termux-based)
+- Linux Servers (Debian/Ubuntu)
+- Windows (WSL)
+- Cloud VPS (DigitalOcean, Hetzner, etc.)
+
+### Installation Flow
+1. Hardware Detection
+2. Environment Setup (Python, Node.js, Reticulum)
+3. Dependency Auto-Installer
+4. Optional LLM Model Installer
+5. User Config Loader
+6. Orchestrator Bootstrap
+
+## User Interface Wireframes
+
+### Dashboard
+Components:
+- Agent Status Panel
+- Task Queue Viewer
+- Node Health Monitor
+
+### Chat Interface
+Features:
+- Real-time Chat
+- Agent Conversation History
+- Command Injection Field
+
+### Data Vault
+Features:
+- File Tree Viewer
+- Encrypted Search
+- User Metadata View
+
+### Skill Manager
+Features:
+- Skill Discovery
+- Installation Buttons
+- Permission Manager
+
+## System Architecture Diagrams
+
+### System Overview
+```mermaid
+graph TD
+  User --> Orchestrator
+  Orchestrator --> Agent_Layer
+  Agent_Layer --> Data_Layer
+  Agent_Layer --> Network_Layer
+  Agent_Layer --> Frontend_Layer
+```
+
+### Agent Communication Flow
+```mermaid
+graph TD
+  Griot --> Skald
+  Skald --> Musa
+  Musa --> Oracle
+  Oracle --> Junzi
+  Junzi --> Sachem
+  Sachem --> Archon
+  Archon --> All_Agents
+```
+
+## Development Roadmap
+
+### Q3 2025
+- Core agent framework complete
+- Local orchestrator operational
+
+### Q4 2025
+- Reticulum network stack integration
+- Data Vault rollout
+
+### Q1 2026
+- Federation Protocols (Multi-node orchestration)
+- Agent Skill Marketplace
+
+### Q2 2026
+- DAO Governance Layer (Sachem/Junzi full deployment)
+- Agent Collaboration API for third-party developers
+
+## Economic Model
+
+### Revenue Streams
+- Enterprise Support
+- Agent Skill Marketplace
+- Hardware Bundles
+- User Data Brokerage (Opt-in)
+- Training Services
+
+### Tokenomics
+Token: KindCoin (KND)
+Utilities:
+- Skill Purchases
+- Reputation Staking
+- Governance Voting
+- Data Exchange Credits
+
+### Sustainability
+- Open core FOSS model
+- Optional paid extensions
+- Community-funded development
+
+## Press Release
+
+Headline: "kOS: The Open Source Ethical Operating System for Decentralized AI"
+
+Body: Today, Kind AI officially launches kOS, a decentralized, agentic AI operating system that empowers users globally to deploy AI in ethical, privacy-respecting, and regenerative ways. From low-power IoT nodes to full-scale enterprise clusters, kOS offers a modular, flexible, and culturally embedded AI orchestration platform.
+
+## Pitch Deck Structure
+
+### Slide 1: The Problem
+- AI is centralized and inaccessible
+- User privacy and sovereignty are under threat
+- AI deployment is resource-intensive and complex
+
+### Slide 2: Our Solution - kOS
+- Decentralized agentic architecture
+- Modular skill-based intelligence
+- Runs on any hardware, anywhere
+
+### Slide 3: Architecture Overview
+- 5-layer system (Agent, Orchestrator, Data, Network, Frontend)
+- 13 primary agent classes
+- Modular microservices core
+
+### Slide 4: Revenue Streams
+- Support contracts
+- Marketplace sales
+- Enterprise deployments
+
+### Slide 5: Roadmap
+- Phase 1 - Q3 2025: Core Framework
+- Phase 2 - Q4 2025: Network Layer
+- Phase 3 - Q1 2026: Federation
+- Phase 4 - Q2 2026: DAO Governance
+
+## Recipes and Skills
+
+### Core Skills
+- Network discovery
+- Federated data sync
+- Ethical decision routing
+- Mesh peer coordination
+- Memory vectorization
+- Auto-prompting and chaining
+- Voice to text
+- Text to speech
+- BBS-style messaging over Reticulum
+- Personal knowledge base
+- Event-driven workflow automation
+- Contextual reasoning
+
+## Technology Sources
+
+### Core Technologies
+- Python
+- FastAPI
+- Next.js
+- Reticulum
+- MongoDB
+- Chroma
+- LangChain
+- OpenAI API
+- Ollama
+- Llama.cpp
+- LoRa Radio Stack
+- Bash
+- Linux Kernel
+- UNIX Philosophy
+- AutoGPT
+
+## Unique Features
+
+### System Capabilities
+- Multi-Source Input Distillation: Pulls data from multiple LLMs and services to reduce hallucinations and increase creativity
+- Ethical Reasoning Layer: Every critical decision is evaluated against system ethics filters
+- AI Self-Learning: kOS improves its own recipes, skills, and agent behaviors over time based on observed outcomes and feedback
+- User Sovereignty Modes: Users can toggle between "Cloud Hybrid Mode," "Privacy First Mode," and "Fully Local Mode"
+- Agent Classes & Node Types: kOS defines agent archetypes (Skald, Junzi, etc.) that specialize in certain system functions
+- Artifact-Centric Memory: All outputs, decisions, and processes are stored as retrievable, linkable knowledge artifacts
+
+## Summary
+
+kOS is not just an AI framework or a toolset. It's an evolving, ethical, and agentic digital ecosystem designed for human-machine co-evolution, decentralized infrastructure control, and sovereign knowledge growth.
+
+It blends automation, creativity, governance, and distributed intelligence into a single universal operating environment where humans and agents build the future—together.
+
+---
+
+**End of Document** 

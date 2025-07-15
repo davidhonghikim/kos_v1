@@ -1,0 +1,368 @@
+metadata:
+  original_file: 01_Architecture_Overview.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Architecture Overview
+  description: Technical specification for architecture overview
+  type: developer-guide
+  status: current
+  priority: medium
+  last_updated: '2025-06-22'
+  agent_notes: AI agent guidance for implementing architecture overview
+sections:
+- level: 1
+  title: 1. Architecture Overview
+  type: section
+  content: ''
+- level: 2
+  title: Agent Context
+  type: section
+  content: '**For AI Agents**: Complete architecture overview covering system design,
+    component relationships, and architectural patterns. Use this when understanding
+    system architecture, implementing architectural patterns, planning system components,
+    or building architectural awareness. Essential foundation for all architectural
+    work.
+
+
+    **Implementation Notes**: Contains comprehensive system architecture documentation,
+    component relationship mapping, architectural pattern explanations, and design
+    principle guidelines. Includes detailed architectural diagrams and system design
+    patterns.
+
+    **Quality Requirements**: Keep architectural documentation and system design patterns
+    synchronized with actual implementation. Maintain accuracy of component relationships
+    and architectural pattern descriptions.
+
+    **Integration Points**: Foundation for system architecture, links to component
+    design, system patterns, and development guidelines for comprehensive architectural
+    understanding.'
+- level: 2
+  title: 🏗️ **System Architecture**
+  type: section
+  content: Kai-CD follows a **feature-based modular architecture** designed for scalability,
+    maintainability, and developer productivity. The system is organized around discrete
+    features with shared infrastructure and clear separation of concerns.
+- level: 2
+  title: 📂 **Directory Structure**
+  type: section
+  content: "```\nsrc/\n├── core/                          # Core application infrastructure\n\
+    │   ├── config/                    # Centralized configuration management\n│ \
+    \  │   ├── index.ts              # ConfigManager singleton with full API\n│  \
+    \ │   ├── system.ts             # System default configuration\n│   │   ├── types.ts\
+    \              # Configuration type definitions\n│   │   └── user.ts         \
+    \      # User override handling\n│   ├── constants/                 # Application-wide\
+    \ constants\n│   ├── types/                     # Core type definitions\n│   └──\
+    \ utils/                     # Core utilities and helpers\n├── features/     \
+    \                 # Feature-based organization\n│   ├── ai-services/         \
+    \     # AI service management\n│   │   ├── components/           # Service-specific\
+    \ UI components\n│   │   ├── hooks/                # Service management hooks\n\
+    │   │   ├── store/                # Service state management\n│   │   ├── types/\
+    \                # Service type definitions\n│   │   └── utils/              \
+    \  # Service utilities\n│   ├── security/                 # Security & cryptography\n\
+    │   │   ├── components/           # Security UI components\n│   │   ├── crypto/\
+    \               # Cryptographic utilities\n│   │   ├── vault/                #\
+    \ Vault management logic\n│   │   └── utils/                # Security utilities\n\
+    │   ├── themes/                   # Theme management system\n│   │   ├── components/\
+    \           # Theme UI components\n│   │   │   ├── ThemeCustomizer.tsx\n│   │\
+    \   │   ├── ThemeCard.tsx\n│   │   │   └── ThemeCreationForm.tsx\n│   │   ├──\
+    \ manager/              # Theme business logic\n│   │   │   └── themeManager.ts\n\
+    │   │   ├── presets/              # Theme collections\n│   │   │   ├── lightThemes.ts\n\
+    │   │   │   ├── darkThemes.ts\n│   │   │   └── developerThemes.ts\n│   │   └──\
+    \ types/                # Theme type definitions\n│   └── ui-shell/          \
+    \       # Main UI framework\n│       ├── layout/               # Layout components\n\
+    │       ├── navigation/           # Navigation components\n│       └── views/\
+    \                # Main view components\n├── shared/                       # Shared/reusable\
+    \ code\n│   ├── components/               # Reusable UI component library\n│ \
+    \  │   ├── forms/                # Form components (Input, Button)\n│   │   ├──\
+    \ layout/               # Layout components\n│   │   ├── feedback/           \
+    \  # Notifications, alerts\n│   │   └── data-display/         # Tables, cards,\
+    \ lists\n│   ├── hooks/                    # Reusable React hooks\n│   ├── utils/\
+    \                    # Shared utility functions\n│   └── constants/          \
+    \      # Shared constants\n├── platforms/                    # Platform-specific\
+    \ code\n│   ├── chrome-extension/         # Chrome extension implementation\n\
+    │   │   ├── background/           # Background service scripts\n│   │   ├── popup/\
+    \                # Browser action popup\n│   │   ├── sidepanel/            # Chrome\
+    \ side panel\n│   │   └── tab/                  # Main tab interface\n│   └──\
+    \ web/                      # Future web platform support\n└── assets/       \
+    \                # Static assets\n    ├── styles/                   # Global CSS\
+    \ and themes\n    ├── icons/                    # Icon assets\n    └── docs/ \
+    \                    # Documentation assets\n```\n\n---"
+- level: 2
+  title: 🎯 **Architectural Principles**
+  type: section
+  content: ''
+- level: 3
+  title: '**1. Feature-First Organization**'
+  type: section
+  content: "Each major feature is self-contained with its own:\n- UI components\n\
+    - Business logic\n- Type definitions  \n- State management\n- Utilities\n\n**Benefits:**\n\
+    - **Team scalability** - Multiple developers can work on different features\n\
+    - **Code isolation** - Changes in one feature don't affect others\n- **Clear ownership**\
+    \ - Each feature has defined boundaries"
+- level: 3
+  title: '**2. Shared Infrastructure**'
+  type: section
+  content: 'Common functionality is centralized in `shared/` and `core/`:
+
+    - **Reusable UI components** prevent duplication
+
+    - **Core utilities** provide consistent behavior
+
+    - **Configuration management** centralizes settings'
+- level: 3
+  title: '**3. Platform Abstraction**'
+  type: section
+  content: 'Platform-specific code is isolated in `platforms/`:
+
+    - **Chrome extension** implementation
+
+    - **Future web platform** support
+
+    - **Clean separation** between platform and business logic
+
+
+    ---'
+- level: 2
+  title: ⚙️ **Core Infrastructure**
+  type: section
+  content: ''
+- level: 3
+  title: '**Configuration Management**'
+  type: section
+  content: "**Location:** `src/core/config/`\n\nThe centralized configuration system\
+    \ provides:\n\n```typescript\ninterface ConfigManager {\n  // Initialize configuration\
+    \ system\n  initialize(): Promise<void>;\n  \n  // Get complete configuration\n\
+    \  getConfig(): AppConfig;\n  \n  // Get specific value by path\n  get<T>(path:\
+    \ string): T;\n  \n  // Set configuration value\n  set(path: string, value: any):\
+    \ Promise<void>;\n  \n  // Update multiple values\n  update(updates: DeepPartial<AppConfig>):\
+    \ Promise<void>;\n  \n  // Subscribe to changes\n  subscribe(listener: (event:\
+    \ ConfigUpdateEvent) => void): () => void;\n  \n  // Import/export for backup\n\
+    \  export(): ConfigWithMetadata;\n  import(config: Partial<AppConfig>): Promise<void>;\n\
+    }\n```\n\n**Features:**\n- **Hierarchical loading** (system defaults → user overrides\
+    \ → merged config)\n- **Type-safe access** with full TypeScript support\n- **Validation**\
+    \ with error and warning reporting\n- **Change notifications** for reactive updates\n\
+    - **Persistent storage** with Chrome storage API"
+- level: 3
+  title: '**State Management**'
+  type: section
+  content: '**Pattern:** Zustand with persistent middleware
+
+
+    **Core Stores:**
+
+    - `serviceStore` - AI service management and health monitoring
+
+    - `viewStateStore` - UI state and active selections
+
+    - `settingsStore` - User preferences and configuration
+
+    - `vaultStore` - Secure credential storage
+
+    - `logStore` - Application logging and diagnostics
+
+
+    **Storage Strategy:**
+
+    - **Chrome Storage API** for extension persistence
+
+    - **Automatic rehydration** with loading states
+
+    - **Optimistic updates** for responsive UI
+
+
+    ---'
+- level: 2
+  title: 🧩 **Component Architecture**
+  type: section
+  content: ''
+- level: 3
+  title: '**Component Hierarchy**'
+  type: section
+  content: "```mermaid\ngraph TD\n    A[App Root] --> B[ThemeProvider]\n    B -->\
+    \ C[Main Navigation]\n    B --> D[Feature Views]\n    \n    C --> E[Sidebar Navigation]\n\
+    \    C --> F[Service Selector]\n    C --> G[Status Indicators]\n    \n    D -->\
+    \ H[AI Chat Interface]\n    D --> I[Service Management]\n    D --> J[Security\
+    \ Hub]\n    D --> K[Settings Panel]\n    \n    H --> L[Chat Components]\n    I\
+    \ --> M[Service Components]\n    J --> N[Security Components]\n    K --> O[Theme\
+    \ Components]\n```"
+- level: 3
+  title: '**Shared Component Library**'
+  type: section
+  content: "**Location:** `src/shared/components/`\n\n**Form Components:**\n```typescript\n\
+    // Reusable input with validation\n<Input\n  label=\"API Key\"\n  type=\"password\"\
+    \n  error={validationError}\n  hint=\"Enter your service API key\"\n  leftIcon={<KeyIcon\
+    \ />}\n/>\n\n// Multi-variant button\n<Button\n  variant=\"primary\"\n  size=\"\
+    lg\"\n  loading={isSubmitting}\n  leftIcon={<SaveIcon />}\n>\n  Save Configuration\n\
+    </Button>\n```\n\n**Feedback Components:**\n```typescript\n// Notification system\n\
+    <Alert\n  type=\"success\"\n  title=\"Configuration Saved\"\n  message=\"Your\
+    \ settings have been updated successfully\"\n  dismissible\n  onDismiss={() =>\
+    \ setShowAlert(false)}\n/>\n```\n\n---"
+- level: 2
+  title: 🔄 **Data Flow Architecture**
+  type: section
+  content: ''
+- level: 3
+  title: '**Configuration Flow**'
+  type: section
+  content: "```mermaid\nsequenceDiagram\n    participant UI as UI Component\n    participant\
+    \ CM as ConfigManager\n    participant S as Storage\n    participant L as Listeners\n\
+    \    \n    UI->>CM: get('theme.defaultScheme')\n    CM->>CM: Resolve from merged\
+    \ config\n    CM-->>UI: Return value\n    \n    UI->>CM: set('theme.defaultScheme',\
+    \ 'dark')\n    CM->>CM: Update user config\n    CM->>S: Persist to storage\n \
+    \   CM->>L: Notify subscribers\n    L-->>UI: React to change\n```"
+- level: 3
+  title: '**Service Management Flow**'
+  type: section
+  content: "```mermaid\nsequenceDiagram\n    participant UI as Service UI\n    participant\
+    \ SS as ServiceStore\n    participant API as Service API\n    participant HS as\
+    \ Health Check\n    \n    UI->>SS: Add new service\n    SS->>SS: Validate configuration\n\
+    \    SS->>API: Test connection\n    API-->>SS: Connection result\n    SS->>HS:\
+    \ Start health monitoring\n    SS-->>UI: Update service list\n```\n\n---"
+- level: 2
+  title: 🚀 **Performance Architecture**
+  type: section
+  content: ''
+- level: 3
+  title: '**Code Splitting Strategy**'
+  type: section
+  content: '- **Feature-based chunks** for lazy loading
+
+    - **Shared vendor bundles** for common dependencies
+
+    - **Dynamic imports** for heavy features'
+- level: 3
+  title: '**Bundle Optimization**'
+  type: section
+  content: '```typescript
+
+    // Lazy loading example
+
+    const SecurityHub = lazy(() => import(''@features/security/components/SecurityHub''));
+
+    const ThemeCustomizer = lazy(() => import(''@features/themes/components/ThemeCustomizer''));
+
+    ```'
+- level: 3
+  title: '**Caching Strategy**'
+  type: section
+  content: '- **Configuration caching** in memory with persistence
+
+    - **Service status caching** with TTL
+
+    - **Theme asset caching** for fast switching
+
+
+    ---'
+- level: 2
+  title: 🔒 **Security Architecture**
+  type: section
+  content: ''
+- level: 3
+  title: '**Data Protection**'
+  type: section
+  content: '- **AES-256 encryption** for sensitive data
+
+    - **Secure storage** using Chrome storage API
+
+    - **Key derivation** with PBKDF2 and high iteration counts'
+- level: 3
+  title: '**API Security**'
+  type: section
+  content: '- **Credential isolation** in secure vault
+
+    - **Request validation** and sanitization
+
+    - **Error handling** without information leakage'
+- level: 3
+  title: '**Privacy Protection**'
+  type: section
+  content: '- **Local data storage** (no external servers)
+
+    - **Encrypted backups** for data export
+
+    - **Secure communication** with TLS verification
+
+
+    ---'
+- level: 2
+  title: 🛠️ **Development Architecture**
+  type: section
+  content: ''
+- level: 3
+  title: '**Build System**'
+  type: section
+  content: '- **Vite** for fast development and optimized builds
+
+    - **TypeScript** for type safety and developer experience
+
+    - **ESLint/Prettier** for code quality and consistency'
+- level: 3
+  title: '**Testing Strategy**'
+  type: section
+  content: '- **Unit tests** for utilities and business logic
+
+    - **Component tests** for UI behavior
+
+    - **Integration tests** for feature workflows'
+- level: 3
+  title: '**Type Safety**'
+  type: section
+  content: '- **Strict TypeScript** configuration
+
+    - **Comprehensive type definitions** for all APIs
+
+    - **Runtime validation** for external data
+
+
+    ---'
+- level: 2
+  title: 📊 **Metrics & Monitoring**
+  type: section
+  content: ''
+- level: 3
+  title: '**Performance Metrics**'
+  type: section
+  content: '- **Bundle size tracking** with build reports
+
+    - **Component render performance** monitoring
+
+    - **API response time** measurement'
+- level: 3
+  title: '**Usage Analytics**'
+  type: section
+  content: '- **Feature usage** tracking (privacy-preserving)
+
+    - **Error reporting** with stack traces
+
+    - **User journey** analysis for UX optimization
+
+
+    ---'
+- level: 2
+  title: 🔮 **Future Architecture**
+  type: section
+  content: ''
+- level: 3
+  title: '**Planned Enhancements**'
+  type: section
+  content: '- **Plugin system** for third-party extensions
+
+    - **Multi-platform support** (web, desktop)
+
+    - **Real-time collaboration** features
+
+    - **Advanced AI integrations**'
+- level: 3
+  title: '**Scalability Roadmap**'
+  type: section
+  content: '- **Micro-frontend architecture** for large teams
+
+    - **Event-driven communication** between features
+
+    - **Service worker** optimization for offline support
+
+    - **Progressive Web App** capabilities
+
+
+    ---'

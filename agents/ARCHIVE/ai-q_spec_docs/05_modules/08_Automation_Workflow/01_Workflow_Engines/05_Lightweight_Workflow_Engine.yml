@@ -1,0 +1,122 @@
+metadata:
+  original_file: 05_Lightweight_Workflow_Engine.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Lightweight Workflow Engine
+  version: '1.0'
+  module: Lightweight Workflow Engine
+  subcategory: Workflow Engines
+  category: Automation & Workflow
+  description: Minimal, fast workflow engine for simple, resource-constrained environments
+    and edge computing scenarios.
+sections:
+- level: 1
+  title: '**Lightweight Workflow Engine**'
+  type: section
+  content: ''
+- level: 2
+  title: '**Overview**'
+  type: section
+  content: The Lightweight Workflow Engine module provides a minimal, fast, and resource-efficient
+    workflow execution environment designed for simple workflows, resource-constrained
+    environments, edge computing scenarios, and rapid prototyping. It prioritizes
+    speed, low memory footprint, and simplicity over advanced features.
+- level: 2
+  title: '**Core Principles**'
+  type: section
+  content: '- **Minimal Resource Usage**: Optimize for low memory, CPU, and storage
+    requirements.
+
+    - **Fast Execution**: Prioritize speed and low latency over complex features.
+
+    - **Simplicity**: Focus on essential workflow capabilities without complexity.
+
+    - **Portability**: Run in diverse, resource-constrained environments.'
+- level: 2
+  title: '**Function Specifications**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Core Functions**'
+  type: section
+  content: '- **Simple Workflow Parsing**: Parse basic workflow definitions with minimal
+    overhead.
+
+    - **Sequential Execution**: Execute workflows in simple sequential order.
+
+    - **Basic State Management**: Maintain minimal workflow state in memory.
+
+    - **Simple Error Handling**: Provide basic error handling and recovery.
+
+    - **Resource Monitoring**: Monitor and limit resource usage.
+
+    - **Fast Startup**: Initialize and start execution quickly.'
+- level: 3
+  title: '**TypeScript Interfaces**'
+  type: section
+  content: "```typescript\ninterface LightweightEngineConfig {\n  maxMemoryUsage:\
+    \ number;\n  maxExecutionTime: number;\n  simpleParsing: boolean;\n  resourceLimits:\
+    \ ResourceLimits;\n}\n\ninterface SimpleWorkflow {\n  id: string;\n  steps: SimpleStep[];\n\
+    \  timeout: number;\n}\n\nfunction parseSimpleWorkflow(definition: string): Promise<SimpleWorkflow>\n\
+    function executeSequentially(workflow: SimpleWorkflow): Promise<ExecutionResult>\n\
+    function monitorResources(): Promise<ResourceUsage>\nfunction handleSimpleError(error:\
+    \ Error): Promise<ErrorHandlingResult>\n```"
+- level: 2
+  title: '**Integration Patterns**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Lightweight Execution Flow**'
+  type: section
+  content: "```mermaid\ngraph TD\n    A[Simple Definition] --> B[Fast Parsing]\n \
+    \   B --> C[Sequential Execution]\n    C --> D[Step 1]\n    D --> E[Step 2]\n\
+    \    E --> F[Step 3]\n    F --> G[Completion]\n    H[Resource Check] --> C\n \
+    \   I[Error Check] --> C\n```"
+- level: 2
+  title: '**Capabilities**'
+  type: section
+  content: '- **Fast Startup**: Initialize in < 100ms
+
+    - **Low Memory**: Use < 50MB for typical workflows
+
+    - **Simple Execution**: Support basic sequential workflows
+
+    - **Resource Limits**: Enforce memory and time limits
+
+    - **Portable**: Run on edge devices and embedded systems'
+- level: 2
+  title: '**Configuration Examples**'
+  type: section
+  content: "```yaml\nlightweight_workflow_engine:\n  max_memory_usage: \"50MB\"\n\
+    \  max_execution_time: \"30s\"\n  simple_parsing: true\n  resource_limits:\n \
+    \   cpu: \"25%\"\n    memory: \"50MB\"\n    storage: \"10MB\"\n```"
+- level: 2
+  title: '**Performance Considerations**'
+  type: section
+  content: '- **Startup Time**: < 100ms for engine initialization
+
+    - **Memory Usage**: < 50MB for typical workflows
+
+    - **Execution Speed**: < 10ms per simple step
+
+    - **Resource Efficiency**: 90%+ resource utilization efficiency'
+- level: 2
+  title: '**Security Considerations**'
+  type: section
+  content: '- **Resource Limits**: Enforce strict resource limits
+
+    - **Input Validation**: Validate all inputs for safety
+
+    - **Sandboxing**: Isolate execution in constrained environment
+
+    - **Error Isolation**: Prevent errors from affecting host system'
+- level: 2
+  title: '**Monitoring & Observability**'
+  type: section
+  content: "- **Resource Metrics**: Monitor memory, CPU, and storage usage\n- **Execution\
+    \ Metrics**: Track execution time and success rates\n- **Error Metrics**: Monitor\
+    \ error rates and types\n- **Performance Metrics**: Track startup time and throughput\n\
+    \n---\n\n**Version**: 1.0  \n**Module**: Lightweight Workflow Engine  \n**Status**:\
+    \ ✅ **COMPLETE** - Comprehensive module specification ready for implementation\
+    \  \n**Focus**: Minimal, fast, resource-efficient workflow execution."

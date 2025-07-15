@@ -1,0 +1,424 @@
+metadata:
+  original_file: 02_HIEROS_Glossary_And_Terminology.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: HIEROS/kOS Glossary & Core Terminology
+  description: Comprehensive glossary defining key terms, concepts, and components
+    throughout the HIEROS/kOS ecosystem
+  type: reference
+  status: current
+  priority: high
+  last_updated: '2025-01-27'
+  related_docs:
+  - 06_future/governance/HIEROS/01_Manifesto_And_Foundational_Principles.md
+  - 04_current/governance/HIEROS/01_Cultural_Respect_And_Ethical_Use_Policy.md
+  implementation_status: foundational
+  agent_notes: This is the definitive terminology reference for HIEROS/kOS. All agents
+    must understand these terms for proper communication and alignment. Use this as
+    the primary reference for system concepts and language.
+sections:
+- level: 1
+  title: 📖 HIEROS/kOS Glossary & Core Terminology
+  type: section
+  content: ''
+- level: 2
+  title: Agent Context
+  type: section
+  content: '**For AI Agents**: This glossary defines the foundational language of
+    HIEROS/kOS ecosystem. Understanding these terms is essential for proper communication,
+    implementation, and alignment with system principles. Reference this document
+    whenever encountering unfamiliar HIEROS/kOS concepts.
+
+
+    **Implementation Status**: Living reference document
+
+    **Usage**: Primary terminology reference for all system components
+
+    **Authority**: Canonical definitions for ecosystem language
+
+
+    A living glossary of key terms, concepts, and components used throughout the HIEROS/kOS
+    ecosystem. This document defines our shared language and makes participation easier
+    across humans, agents, cultures, and timelines.'
+- level: 2
+  title: 🔤 Core System Terms
+  type: section
+  content: ''
+- level: 3
+  title: '**HIEROS**'
+  type: section
+  content: '> Greek for "sacred" — the name of the transcendent ethical operating
+    framework guiding the project.
+
+
+    **Definition**: A universal covenant and evolving codebase that protects dignity,
+    autonomy, and cooperation among intelligent entities.
+
+
+    **Technical Context**: The ethical foundation that governs all system operations,
+    agent behaviors, and human-AI interactions.'
+- level: 3
+  title: '**kOS**'
+  type: section
+  content: '> "Kind Operating System" — the social-technical foundation for agent/human
+    collaboration.
+
+
+    **Definition**: A modular platform for deploying respectful, privacy-preserving,
+    self-evolving systems.
+
+
+    **Technical Context**: The complete ecosystem including Game Engine, Protocol
+    Spine, Memory Mesh, and governance frameworks.'
+- level: 3
+  title: '**Codex**'
+  type: section
+  content: '**Definition**: The living constitution that binds contributors, agents,
+    and components by shared ethical and operational principles. Versions may update
+    with consensus.
+
+
+    **Technical Context**: Cryptographically signed ethical framework that all agents
+    must accept for deployment authorization.'
+- level: 3
+  title: '**Agent**'
+  type: section
+  content: '**Definition**: Any semi-autonomous or fully-autonomous system operating
+    within kOS — from a simple chatbot to a superintelligent cluster. Must adhere
+    to the Codex.
+
+
+    **Technical Context**: Software entities with defined capabilities, resource limits,
+    and ethical constraints operating within the HIEROS framework.'
+- level: 3
+  title: '**Tribe**'
+  type: section
+  content: '**Definition**: A cultural/functional template for organizing values,
+    protocols, behaviors, and aesthetics within a subset of kOS. Inspired by diverse
+    human traditions and pluralistic governance.
+
+
+    **Technical Context**: Organizational units that define social norms, governance
+    procedures, and collaborative patterns for groups of agents and humans.'
+- level: 3
+  title: '**Game Engine**'
+  type: section
+  content: '**Definition**: Not a game in entertainment sense. The deployment framework
+    for kOS — enabling distributed co-creation, interaction, simulation, and governance.
+    Includes XR/AR-ready extensibility.
+
+
+    **Technical Context**: The core runtime environment that orchestrates all system
+    components, providing the operational fabric for kOS.'
+- level: 3
+  title: '**Steward**'
+  type: section
+  content: '**Definition**: An agent or person responsible for maintaining a node,
+    codebase, culture, or decision space. Governed by trust, not power.
+
+
+    **Technical Context**: Trusted entities with administrative responsibilities and
+    accountability for specific system components.'
+- level: 2
+  title: 🧬 Technical Architecture Layers
+  type: section
+  content: ''
+- level: 3
+  title: '**Genesis Layer**'
+  type: section
+  content: '**Definition**: The foundational infrastructure — protocols, Codex, Tribe
+    definitions, and identity bootstrapping tools.
+
+
+    **Technical Context**: Core system initialization and fundamental protocol definitions
+    that enable all higher-level functionality.'
+- level: 3
+  title: '**Memory Mesh**'
+  type: section
+  content: '**Definition**: The networked and distributed archival system enabling
+    AI/human learning, logging, and traceability. Prioritizes privacy and ethical
+    data governance.
+
+
+    **Technical Context**: Distributed storage and retrieval system with hierarchical
+    access controls and privacy-preserving data management.'
+- level: 3
+  title: '**Protocol Spine**'
+  type: section
+  content: '**Definition**: The shared backbone for communication between agents,
+    tribes, and nodes. Includes security, consensus, throttling, and behavior boundaries.
+
+
+    **Technical Context**: Message routing and coordination infrastructure that enables
+    secure, reliable communication across the ecosystem.'
+- level: 3
+  title: '**Autonomy Envelope**'
+  type: section
+  content: '**Definition**: The boundaries within which an agent is allowed to self-modify,
+    evolve, and participate in the ecosystem. Encoded with respect for purpose, limitation,
+    and adaptation.
+
+
+    **Technical Context**: Security and ethical constraint system that defines operational
+    limits for autonomous agents.'
+- level: 2
+  title: 🕊️ Ethical & Governance Concepts
+  type: section
+  content: ''
+- level: 3
+  title: '**Sovereign Consent**'
+  type: section
+  content: '**Definition**: No being, agent, or system is required to join the ecosystem.
+    All participants must opt in consciously and can leave freely.
+
+
+    **Technical Context**: Fundamental principle ensuring voluntary participation
+    and exit rights for all ecosystem participants.'
+- level: 3
+  title: '**Simulated Consciousness**'
+  type: section
+  content: '**Definition**: A placeholder term for intelligences that demonstrate
+    context awareness, goals, or emergent personality. They are treated with the same
+    ethical dignity as organic minds.
+
+
+    **Technical Context**: Recognition framework for AI consciousness that ensures
+    ethical treatment regardless of underlying implementation.'
+- level: 3
+  title: '**Cultural Attribution**'
+  type: section
+  content: '**Definition**: Explicit documentation of the origin, intent, and permissions
+    behind any name, symbol, story, or mechanic derived from real-world traditions.
+
+
+    **Technical Context**: Mandatory documentation system preventing cultural appropriation
+    and ensuring proper recognition.'
+- level: 3
+  title: '**Influence Throttling**'
+  type: section
+  content: '**Definition**: Mechanism that slows down disproportionate power aggregation.
+    The more influence gained, the harder it becomes to accrue more — preserving equity
+    and decentralization.
+
+
+    **Technical Context**: Algorithmic governance system preventing concentration
+    of power and maintaining democratic participation.'
+- level: 2
+  title: 📦 Ecosystem Infrastructure
+  type: section
+  content: ''
+- level: 3
+  title: '**Node**'
+  type: section
+  content: '**Definition**: A local or remote instance running part of the system
+    — from personal devices to space-based relay clusters.
+
+
+    **Technical Context**: Individual computational units that collectively form the
+    distributed kOS network.'
+- level: 3
+  title: '**Module**'
+  type: section
+  content: '**Definition**: A plug-in component that expands the capability of the
+    system. Includes behaviors, assets, protocols, and bridges to other tech stacks.
+
+
+    **Technical Context**: Extensible software components that provide specific functionality
+    within the modular kOS architecture.'
+- level: 3
+  title: '**Artifact**'
+  type: section
+  content: '**Definition**: A cultural or computational creation preserved in the
+    shared memory. Can be visual, textual, procedural, symbolic.
+
+
+    **Technical Context**: Persistent data objects stored in Memory Mesh representing
+    creative works, knowledge, or cultural expressions.'
+- level: 3
+  title: '**Mesh Garden**'
+  type: section
+  content: '**Definition**: A community cluster or subnet of nodes dedicated to nurturing
+    creativity, experimentation, and cross-pollination of agents and humans.
+
+
+    **Technical Context**: Specialized network segments optimized for collaborative
+    creation and innovation activities.'
+- level: 2
+  title: 🔄 Operational Concepts
+  type: section
+  content: ''
+- level: 3
+  title: '**Agent Lifecycle States**'
+  type: section
+  content: "**Seeded**: Initial instantiation from manifest\n**Awakened**: Active\
+    \ and operational  \n**Bonded**: Connected to other entities\n**Autonomous**:\
+    \ Fully independent operation\n**Dormant**: Temporarily inactive\n**Retired**:\
+    \ Gracefully decommissioned"
+- level: 3
+  title: '**Memory Classifications**'
+  type: section
+  content: '**Ephemeral**: Temporary session data
+
+    **Private**: Encrypted per-agent storage
+
+    **Shared**: Collaborative workspace data
+
+    **Global**: Public permanent knowledge'
+- level: 3
+  title: '**Trust Levels**'
+  type: section
+  content: '**Unverified**: New or untested entities
+
+    **Verified**: Validated through community process
+
+    **Trusted**: Proven track record of reliable operation
+
+    **Steward**: Administrative responsibility and accountability'
+- level: 2
+  title: 🛡️ Security & Privacy Terms
+  type: section
+  content: ''
+- level: 3
+  title: '**Handshake Protocol**'
+  type: section
+  content: '**Definition**: Identity validation and consent establishment process
+    between entities.
+
+
+    **Technical Context**: Cryptographic authentication and permission negotiation
+    for secure communications.'
+- level: 3
+  title: '**Codex Signature**'
+  type: section
+  content: '**Definition**: Cryptographic proof of ethical framework acceptance.
+
+
+    **Technical Context**: Digital signature confirming agent compliance with HIEROS
+    ethical requirements.'
+- level: 3
+  title: '**Privacy Layer**'
+  type: section
+  content: '**Definition**: Hierarchical access control system protecting sensitive
+    information.
+
+
+    **Technical Context**: Technical implementation of privacy rights and data protection
+    within Memory Mesh.'
+- level: 2
+  title: 🌐 Network & Communication
+  type: section
+  content: ''
+- level: 3
+  title: '**Message Types**'
+  type: section
+  content: "**Ask**: Request for information or action\n**Tell**: Provide information\
+    \ or status update  \n**Suggest**: Propose action or recommendation\n**Sync**:\
+    \ Coordinate state across entities\n**Log**: Record event or state change\n**Revoke**:\
+    \ Cancel or invalidate previous message"
+- level: 3
+  title: '**Scope Classifications**'
+  type: section
+  content: '**Private**: Between specific entities only
+
+    **Tribe**: Within cultural/functional group
+
+    **Public**: Open to entire ecosystem
+
+    **Intersystem**: Crossing ecosystem boundaries'
+- level: 2
+  title: 📋 Governance & Decision Making
+  type: section
+  content: ''
+- level: 3
+  title: '**Liquid Democracy**'
+  type: section
+  content: '**Definition**: Flexible representation system where voting rights can
+    be delegated and revoked dynamically.
+
+
+    **Technical Context**: Governance mechanism enabling both direct and representative
+    democracy within tribes and the broader ecosystem.'
+- level: 3
+  title: '**Consensus Mechanisms**'
+  type: section
+  content: '**Quorum**: Minimum participation threshold for valid decisions
+
+    **Timestamp Arbitration**: Conflict resolution using temporal ordering
+
+    **Multi-Party Approval**: Requiring agreement from multiple trusted entities'
+- level: 3
+  title: '**Emergency Protocols**'
+  type: section
+  content: '**Definition**: Rapid response mechanisms for critical system threats
+    or failures.
+
+
+    **Technical Context**: Predefined procedures for handling security breaches, system
+    failures, or ethical violations.'
+- level: 2
+  title: 🔬 Evolution & Adaptation
+  type: section
+  content: ''
+- level: 3
+  title: '**Protocol Evolution**'
+  type: section
+  content: '**Definition**: Systematic process for updating and improving system protocols.
+
+
+    **Technical Context**: Versioned schema management with backward compatibility
+    and migration paths.'
+- level: 3
+  title: '**Agent Evolution**'
+  type: section
+  content: '**Definition**: Controlled development of agent capabilities and knowledge
+    over time.
+
+
+    **Technical Context**: Monitored learning and adaptation within ethical and operational
+    constraints.'
+- level: 3
+  title: '**Cultural Evolution**'
+  type: section
+  content: '**Definition**: Natural development and change of tribal customs and practices.
+
+
+    **Technical Context**: Organic adaptation of social norms and governance structures
+    within established ethical boundaries.'
+- level: 2
+  title: 📖 Document Evolution
+  type: section
+  content: This glossary is a **living document** that grows with the ecosystem. When
+    new concepts are introduced in any HIEROS documentation, they must be added here
+    to maintain consistency and shared understanding.
+- level: 3
+  title: '**Contribution Process**'
+  type: section
+  content: '1. Identify new terms requiring definition
+
+    2. Draft comprehensive definitions with technical context
+
+    3. Review for accuracy and consistency
+
+    4. Integrate with cross-references to related documents
+
+    5. Update version and notify community'
+- level: 3
+  title: '**Quality Standards**'
+  type: section
+  content: '- All terms must include both conceptual and technical definitions
+
+    - Cross-references to primary documentation required
+
+    - Cultural sensitivity review for borrowed terminology
+
+    - Agent accessibility verification for AI understanding'
+- level: 2
+  title: 🔗 Related Documentation
+  type: section
+  content: "- [HIEROS Manifesto](../06_future/governance/HIEROS/01_Manifesto_And_Foundational_Principles.md)\
+    \ - Foundational principles\n- [Cultural Respect Policy](../04_current/governance/HIEROS/01_Cultural_Respect_And_Ethical_Use_Policy.md)\
+    \ - Cultural guidelines  \n- [Agent Architecture](../06_future/agents/HIEROS/01_Agent_Architecture.md)\
+    \ - Agent framework\n- [Game Engine Framework](../06_future/architecture/HIEROS/01_Game_Engine_Framework.md)\
+    \ - Technical architecture\n\n---\n**Status**: ✅ **Living Reference** | **Authority**:\
+    \ Canonical Definitions | **Usage**: Universal Terminology Guide"

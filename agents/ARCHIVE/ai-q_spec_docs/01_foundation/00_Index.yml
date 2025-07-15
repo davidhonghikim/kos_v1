@@ -1,0 +1,39 @@
+title: 01_foundation Index
+version: '1.0'
+category: 01_foundation
+description: Index of all documentation in 01_foundation
+files:
+- name: 02_Node_Taxonomy
+  path: 02_Node_Taxonomy.yml
+  type: documentation
+- name: 00_kOS_Vision
+  path: 00_kOS_Vision.yml
+  type: documentation
+- name: 01_Architecture_Principles
+  path: 01_Architecture_Principles.yml
+  type: documentation
+- name: kos_full_technical_spec_organized
+  path: core_specifications/kos_full_technical_spec_organized.yml
+  type: documentation
+- name: kos_full_technical_specification
+  path: core_specifications/kos_full_technical_specification.yml
+  type: documentation
+- name: 01_kOS_Master_Index
+  path: kai-cd_07_reference/01_kOS_Master_Index.yml
+  type: documentation
+- name: 02_HIEROS_Glossary_And_Terminology
+  path: kai-cd_07_reference/02_HIEROS_Glossary_And_Terminology.yml
+  type: documentation
+- name: 04_kOS_Master_Index
+  path: kai-cd_07_reference/04_kOS_Master_Index.yml
+  type: documentation
+- name: 01_Asset_Inventory
+  path: kai-cd_07_reference/01_Asset_Inventory.yml
+  type: documentation
+- name: 03_Terminology
+  path: kai-cd_07_reference/03_Terminology.yml
+  type: documentation
+- name: 02_Execution_Plan
+  path: kai-cd_07_reference/02_Execution_Plan.yml
+  type: documentation
+last_updated: '2025-06-30T03:49:23.092182'

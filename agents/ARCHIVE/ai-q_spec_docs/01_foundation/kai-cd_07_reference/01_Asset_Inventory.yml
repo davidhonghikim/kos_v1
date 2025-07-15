@@ -1,0 +1,297 @@
+metadata:
+  original_file: 01_Asset_Inventory.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Complete Asset Inventory - kOS Documentation System
+  description: Comprehensive mapping of all 541 assets requiring migration including
+    visual diagrams, code examples, and cross-references
+  type: reference
+  status: current
+  priority: high
+  last_updated: '2025-01-27'
+  complexity: high
+  decision_scope: high
+  implementation_status: complete
+  agent_notes: Use this inventory to ensure complete asset migration with proper cross-referencing
+  related_documents:
+  - ../00_DOCUMENTATION_SYSTEM.md
+  - ../03_MASTER_INDEX.md
+  - ../agents/03_Execution_Plan.md
+sections:
+- level: 1
+  title: Complete Asset Inventory - kOS Documentation System
+  type: section
+  content: ''
+- level: 2
+  title: Agent Context
+  type: section
+  content: '**For AI Agents**: Complete asset inventory for kOS documentation system
+    covering comprehensive asset tracking and resource management. Use this when tracking
+    documentation assets, understanding resource inventory, managing documentation
+    resources, or auditing system assets. Essential reference for all asset inventory
+    work.
+
+
+    **Implementation Notes**: Contains asset inventory methodology, resource tracking
+    systems, documentation asset management, and comprehensive inventory frameworks.
+    Includes detailed asset cataloging and resource management patterns.
+
+    **Quality Requirements**: Keep asset inventory and resource tracking synchronized
+    with actual documentation assets. Maintain accuracy of asset cataloging and resource
+    management systems.
+
+    **Integration Points**: Foundation for asset management, links to documentation
+    organization, resource tracking, and system inventory for comprehensive asset
+    coverage.'
+- level: 2
+  title: Quick Summary
+  type: section
+  content: Comprehensive inventory of all documentation assets including 476 markdown
+    files, 59 visual assets, 3 code implementations, and related archives requiring
+    systematic migration to the structured documentation system.
+- level: 2
+  title: Implementation Status
+  type: section
+  content: '- ✅ **Asset Discovery**: Complete inventory of 541 total assets
+
+    - 🔄 **Migration Planning**: Cross-reference mapping in progress
+
+    - 📋 **Integration Framework**: Asset embedding standards established
+
+    - 🔬 **Quality Standards**: Enhanced requirements with visual integration'
+- level: 2
+  title: Total Asset Breakdown
+  type: section
+  content: ''
+- level: 3
+  title: '**Core Documentation Assets (476 files)**'
+  type: section
+  content: '```yaml
+
+    numbered_source_files: 254  # Files 00-99 + 100-255
+
+    subdirectory_files: 222     # governance, economics, creative ecology
+
+    total_markdown: 476
+
+    migration_status: "28% complete (152/476 migrated)"
+
+    ```'
+- level: 3
+  title: '**Visual Assets (59 files)**'
+  type: section
+  content: '```yaml
+
+    architectural_diagrams: 12   # 6 PNG + 6 SVG mermaid diagrams
+
+    interface_screenshots: 24    # Service integration references
+
+    concept_illustrations: 22    # Vision/pitch deck images
+
+    system_overviews: 2         # High-level architecture diagrams
+
+    total_images: 59
+
+    formats: ["PNG", "JPG", "SVG"]
+
+    ```'
+- level: 3
+  title: '**Code Implementation Examples (3 files)**'
+  type: section
+  content: '```yaml
+
+    api_implementations: 1      # Express.js mock server
+
+    ui_specifications: 2        # React/JSX components
+
+    total_code_files: 3
+
+    languages: ["JavaScript", "JSX"]
+
+    conversion_target: "TypeScript"
+
+    ```'
+- level: 3
+  title: '**Archive Collections (2 files)**'
+  type: section
+  content: '```yaml
+
+    mermaid_diagrams_png_zip: 1
+
+    mermaid_diagrams_svg_zip: 1
+
+    total_archives: 2
+
+    extraction_required: true
+
+    ```'
+- level: 2
+  title: Detailed Asset Mapping
+  type: section
+  content: ''
+- level: 3
+  title: '**1. Architectural Diagrams (Priority: CRITICAL)**'
+  type: section
+  content: ''
+- level: 4
+  title: '**Core System Visualizations**'
+  type: section
+  content: "```yaml\n001_system_architecture:\n  formats: [\"PNG\", \"SVG\"]\n  size:\
+    \ \"186KB PNG, 16KB SVG\"  \n  content: \"Complete kOS system overview\"\n  integration_target:\
+    \ \"future/architecture/kos-system-blueprint.md\"\n  \n002_agent_trust_system:\n\
+    \  formats: [\"PNG\", \"SVG\"]\n  size: \"96KB PNG, 9.7KB SVG\"\n  content: \"\
+    Trust verification protocols\"\n  integration_target: \"future/security/agent-trust-framework.md\"\
+    \n  \n003_swarm_lifecycle:\n  formats: [\"PNG\", \"SVG\"] \n  size: \"106KB PNG,\
+    \ 9.8KB SVG\"\n  content: \"Agent coordination lifecycle\"\n  integration_target:\
+    \ \"future/agents/agent-swarm-coordination.md\"\n  \n004_personalized_ui:\n  formats:\
+    \ [\"PNG\", \"SVG\"]\n  size: \"78KB PNG, 7.4KB SVG\"\n  content: \"UI customization\
+    \ framework\"\n  integration_target: \"current/components/ui-architecture.md\"\
+    \n  \n005_hardware_sensor_stack:\n  formats: [\"PNG\", \"SVG\"]\n  size: \"83KB\
+    \ PNG, 8.6KB SVG\"\n  content: \"Hardware integration architecture\"\n  integration_target:\
+    \ \"future/deployment/hardware-integration.md\"\n  \n006_knowledge_consensus:\n\
+    \  formats: [\"PNG\", \"SVG\"]\n  size: \"73KB PNG, 6.7KB SVG\"\n  content: \"\
+    Collective intelligence model\"\n  integration_target: \"future/agents/knowledge-consensus-system.md\"\
+    \n```"
+- level: 3
+  title: '**2. Interface Documentation Screenshots (Priority: HIGH)**'
+  type: section
+  content: ''
+- level: 4
+  title: '**Service Integration References**'
+  type: section
+  content: "```yaml\na1111_interfaces: 8         # Stable Diffusion service screenshots\n\
+    comfyui_interfaces: 2       # ComfyUI workflow screenshots  \nollama_interfaces:\
+    \ 1        # Ollama deployment screenshots\nopen_webui_interfaces: 13   # Open-WebUI\
+    \ implementation screenshots\ntotal_service_screenshots: 24\nintegration_target:\
+    \ \"current/services/service-architecture.md\"\n```"
+- level: 3
+  title: '**3. Code Implementation Examples (Priority: CRITICAL)**'
+  type: section
+  content: ''
+- level: 4
+  title: '**API Server Implementation**'
+  type: section
+  content: "```yaml\nfile: \"creator_api_mock_server.js\"\nlines: 47\ntype: \"Express.js\
+    \ API server\"\nfeatures:\n  - \"Wallet management (ACT tokens)\"\n  - \"RESTful\
+    \ endpoints\"\n  - \"Origin system management\"\n  - \"Reward/stashing logic\"\
+    \nconversion_target: \"TypeScript service definition\"\nintegration_location:\
+    \ \"future/services/creator-economy-api.md\"\n```"
+- level: 4
+  title: '**UI Component Specifications**'
+  type: section
+  content: "```yaml\ncreator_rpg_alpha_ui_spec:\n  file: \"creator_rpg_alpha_ui_spec.jsx\"\
+    \n  lines: 73\n  type: \"React UI specification\"\n  components: [\"Avatar panel\"\
+    , \"ACT wallet\", \"Quest feed\", \"Agent deck\"]\n  libraries: [\"shadcn/ui\"\
+    , \"Tailwind CSS\"]\n  \ncreator_rpg_alpha_ui_full:\n  file: \"creator_rpg_alpha_ui_full.jsx\"\
+    \n  type: \"Complete UI implementation\"\n  \nconversion_target: \"TypeScript\
+    \ React components\"\nintegration_location: \"future/components/creator-interface-system.md\"\
+    \n```"
+- level: 3
+  title: '**4. Concept Illustrations (Priority: MEDIUM)**'
+  type: section
+  content: ''
+- level: 4
+  title: '**Vision/Pitch Deck Images**'
+  type: section
+  content: '```yaml
+
+    chatgpt_generated_concepts: 22
+
+    date_range: "June 21, 2025"
+
+    content_type: "System concept visualizations"
+
+    integration_target: "future/vision/system-concepts.md"
+
+    ```'
+- level: 2
+  title: Asset Integration Framework
+  type: section
+  content: ''
+- level: 3
+  title: '**Visual Asset Embedding Standards**'
+  type: section
+  content: "```markdown\n<!-- Standard diagram embedding format -->\n![Diagram Title](../../assets/diagrams/001_system_architecture.svg)\n\
+    *Figure 1: Complete kOS System Architecture showing agent mesh, service layers,\
+    \ and governance protocols*\n\n<!-- Code example embedding format -->\n```typescript\n\
+    // TypeScript conversion of creator_api_mock_server.js\ninterface WalletState\
+    \ {\n  act: number;\n  rep: number; \n  cards: number;\n}\n```\n```"
+- level: 3
+  title: '**Cross-Reference Mapping Protocol**'
+  type: section
+  content: "```yaml\nasset_linking_format:\n  visual: \"../../assets/diagrams/[filename]\"\
+    \n  code: \"```typescript\\n// Converted from [original_file]\\n```\"\n  screenshots:\
+    \ \"../../assets/interfaces/[service]/[filename]\"\n  \ncross_reference_system:\n\
+    \  every_asset_must_have:\n    - source_location\n    - integration_target  \n\
+    \    - related_documentation\n    - conversion_status\n```"
+- level: 2
+  title: Migration Priority Matrix
+  type: section
+  content: ''
+- level: 3
+  title: '**Phase 1: Critical System Documentation (IMMEDIATE)**'
+  type: section
+  content: "1. **Architectural Diagrams** (12 files) → Embed in system architecture\
+    \ docs\n2. **API Code Examples** (1 file) → Convert to TypeScript service definitions\
+    \  \n3. **Core Interface Screenshots** (8 files) → Integrate with service documentation"
+- level: 3
+  title: '**Phase 2: Service Integration Documentation (HIGH)**'
+  type: section
+  content: '1. **Interface Screenshots** (24 files) → Service connector documentation
+
+    2. **UI Component Code** (2 files) → Component system documentation
+
+    3. **System Overview Diagrams** (2 files) → Architecture overview embedding'
+- level: 3
+  title: '**Phase 3: Vision Documentation (MEDIUM)**'
+  type: section
+  content: '1. **Concept Illustrations** (22 files) → Future vision documentation
+
+    2. **Archive Extraction** (2 files) → Diagram accessibility
+
+    3. **Pitch Deck Integration** (1 file) → Vision and roadmap documentation'
+- level: 2
+  title: For AI Agents
+  type: section
+  content: ''
+- level: 3
+  title: When to Use This Inventory
+  type: section
+  content: "- ✅ Planning any documentation migration work\n- ✅ Integrating visual\
+    \ assets into markdown documents  \n- ✅ Converting code examples to TypeScript\n\
+    - ✅ Establishing cross-references between assets and documentation\n- ❌ Don't\
+    \ ignore visual assets when migrating related documentation"
+- level: 3
+  title: Key Implementation Points
+  type: section
+  content: '- **Every migrated document** must check this inventory for related assets
+
+    - **Visual assets** must be properly embedded using standard markdown syntax
+
+    - **Code examples** must be converted to TypeScript with complete type definitions
+
+    - **Cross-references** must be established between all related assets'
+- level: 3
+  title: Asset Integration Workflow
+  type: section
+  content: "```typescript\n// Standard asset integration process\ninterface AssetIntegrationProcess\
+    \ {\n  1: \"Check inventory for related visual assets\";\n  2: \"Embed diagrams\
+    \ using standard markdown syntax\";\n  3: \"Convert code examples to TypeScript\"\
+    ;\n  4: \"Establish cross-references to related documentation\";\n  5: \"Verify\
+    \ all links and references work correctly\";\n}\n```"
+- level: 2
+  title: Related Documentation
+  type: section
+  content: "- **System Standards**: `../00_DOCUMENTATION_SYSTEM.md`\n- **Master Index**:\
+    \ `../03_MASTER_INDEX.md`  \n- **Migration Progress**: `../agents/03_Execution_Plan.md`\n\
+    - **Bridge Strategy**: `../bridge/decision-framework.md`"
+- level: 2
+  title: External References
+  type: section
+  content: '- **Source Location**: `documentation/brainstorm/kOS/`
+
+    - **Asset Directories**: `mermaid_diagrams_png/`, `mermaid_diagrams_svg/`, `more
+    - gov, pitchdeck, token/`
+
+    - **Agent Screenshots**: `documentation/agents/assets/`'

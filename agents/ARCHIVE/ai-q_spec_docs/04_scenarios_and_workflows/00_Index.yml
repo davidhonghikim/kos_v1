@@ -1,0 +1,27 @@
+title: 04_scenarios_and_workflows Index
+version: '1.0'
+category: 04_scenarios_and_workflows
+description: Index of all documentation in 04_scenarios_and_workflows
+files:
+- name: 00_Architecture_Mapping_Analysis
+  path: 00_Architecture_Mapping_Analysis.yml
+  type: documentation
+- name: 00_Comprehensive_Analysis_Index
+  path: 00_Comprehensive_Analysis_Index.yml
+  type: documentation
+- name: 01_Marketing_Campaign_Creation
+  path: 01_Marketing_Campaign_Creation.yml
+  type: documentation
+- name: 00_Modular_Architecture_Plan
+  path: 00_Modular_Architecture_Plan.yml
+  type: documentation
+- name: 00_Scenarios_Index
+  path: 00_Scenarios_Index.yml
+  type: documentation
+- name: 00_Personas_Index
+  path: personas/00_Personas_Index.yml
+  type: documentation
+- name: 01_Market_Research
+  path: use_cases/01_Research_Analysis/01_Market_Research.yml
+  type: documentation
+last_updated: '2025-06-30T03:49:23.049694'

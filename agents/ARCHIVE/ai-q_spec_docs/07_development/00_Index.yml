@@ -1,0 +1,63 @@
+title: 07_development Index
+version: '1.0'
+category: 07_development
+description: Index of all documentation in 07_development
+files:
+- name: 02_Agent_Documentation_System_Implementation
+  path: 02_Agent_Documentation_System_Implementation.yml
+  type: documentation
+- name: 01_Testing_Strategy
+  path: 01_Testing_Strategy.yml
+  type: documentation
+- name: 00_Development_Workflow
+  path: 00_Development_Workflow.yml
+  type: documentation
+- name: 03_Modular_Codebase_Architecture
+  path: 03_Modular_Codebase_Architecture.yml
+  type: documentation
+- name: 03_Agent_Documentation_System_Quick_Start
+  path: 03_Agent_Documentation_System_Quick_Start.yml
+  type: documentation
+- name: 02_File_Size_and_Modularization_Guide
+  path: 02_File_Size_and_Modularization_Guide.yml
+  type: documentation
+- name: implementation_achievements
+  path: implementation_achievements.yml
+  type: documentation
+- name: 01_Agent_Documentation_System_Proposal
+  path: 01_Agent_Documentation_System_Proposal.yml
+  type: documentation
+- name: 03_Information_Architecture_Blueprint
+  path: 03_Information_Architecture_Blueprint.yml
+  type: documentation
+- name: 08_State_Management
+  path: kai-cd_05_developers/08_State_Management.yml
+  type: documentation
+- name: 10_Adding_A_New_Service
+  path: kai-cd_05_developers/10_Adding_A_New_Service.yml
+  type: documentation
+- name: developer-guide
+  path: kai-cd_05_developers/developer-guide.yml
+  type: documentation
+- name: 04_Credential_And_Vault_Management
+  path: kai-cd_05_developers/04_Credential_And_Vault_Management.yml
+  type: documentation
+- name: 01_Architecture_Overview
+  path: kai-cd_05_developers/01_Architecture_Overview.yml
+  type: documentation
+- name: 07_Service_Integration_Master_Plan
+  path: kai-cd_05_developers/07_Service_Integration_Master_Plan.yml
+  type: documentation
+- name: 09_UI_Component_Library
+  path: kai-cd_05_developers/09_UI_Component_Library.yml
+  type: documentation
+- name: 03_Build_And_Deployment
+  path: kai-cd_05_developers/03_Build_And_Deployment.yml
+  type: documentation
+- name: 02_Backend_Connectors
+  path: kai-cd_05_developers/02_Backend_Connectors.yml
+  type: documentation
+- name: 06_Project_Structure
+  path: kai-cd_05_developers/06_Project_Structure.yml
+  type: documentation
+last_updated: '2025-06-30T03:49:23.031603'

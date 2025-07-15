@@ -1,0 +1,149 @@
+#!/usr/bin/env python3
+"""
+KOS v1 Dynamic Environment Loader
+Loads and combines all modular .env files into a unified configuration.
+"""
+
+import os
+import sys
+from pathlib import Path
+import re
+from collections import defaultdict
+from datetime import datetime
+
+# --- Constants ---
+LOG_DIR = 'logs'
+LOG_FILE = os.path.join(LOG_DIR, 'env_loader.log')
+# Defines the loading order. Files loaded later will override earlier ones.
+ENV_FILE_LOAD_ORDER = [
+    "ports.env",
+    "settings.env",
+    "local.env",
+    "cloud.env",
+    "api-keys.env"
+]
+
+def elog(msg, level='INFO'):
+    now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    entry = f"{now} - env_loader - {level} - {msg}"
+    if not os.path.exists(LOG_DIR):
+        os.makedirs(LOG_DIR, exist_ok=True)
+    with open(LOG_FILE, 'a', encoding='utf-8') as f:
+        f.write(entry + '\n')
+    if level in ('ERROR', 'WARNING', 'SUCCESS'):
+        print(entry)
+
+class KOSEnvLoader:
+    def __init__(self, env_dir="env"):
+        self.env_dir = Path(env_dir)
+        self.env_vars = {}
+        self.defined_in = {} # To track where each final variable came from
+
+    def load_env_file(self, file_path):
+        """Loads a single .env file and returns its key-value pairs."""
+        file_vars = {}
+        if not file_path.exists():
+            elog(f"Env file not found, skipping: {file_path}", 'INFO')
+            return file_vars
+        
+        elog(f"Loading env file: {file_path}", 'INFO')
+        with open(file_path, 'r', encoding='utf-8') as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith('#'):
+                    continue
+                if '=' in line:
+                    key, value = line.split('=', 1)
+                    key = key.strip()
+                    value = value.strip()
+                    # Strip quotes
+                    if (value.startswith('"') and value.endswith('"')) or \
+                       (value.startswith("'") and value.endswith("'")):
+                        value = value[1:-1]
+                    file_vars[key] = value
+        return file_vars
+
+    def load_all_env_files(self):
+        """
+        Loads all .env files based on ENV_FILE_LOAD_ORDER.
+        Variables in later files override those in earlier files.
+        """
+        all_vars = {}
+        for filename in ENV_FILE_LOAD_ORDER:
+            file_path = self.env_dir / filename
+            file_vars = self.load_env_file(file_path)
+            for key, value in file_vars.items():
+                # If the key already exists, it's being overridden. Log it.
+                if key in all_vars and all_vars[key] != value:
+                    elog(f"'{key}' overridden by {filename}. Old value from {self.defined_in.get(key, 'unknown')}, New value: '{value}'", "INFO")
+                all_vars[key] = value
+                self.defined_in[key] = filename # Track the source
+        return all_vars
+
+    def resolve_variables(self, env_vars):
+        """Resolves ${VAR_NAME} style variables recursively."""
+        resolved = {}
+        pattern = re.compile(r'\$\{([^}]+)\}')
+        
+        # Iteratively resolve variables to handle nested dependencies
+        unresolved_vars = env_vars.copy()
+        for _ in range(10): # Max 10 passes to prevent infinite loops
+            fully_resolved_this_pass = True
+            for key, value in unresolved_vars.items():
+                if pattern.search(value):
+                    fully_resolved_this_pass = False
+                    matches = pattern.findall(value)
+                    can_resolve = True
+                    for placeholder in matches:
+                        if placeholder not in resolved:
+                            can_resolve = False
+                            break
+                    if can_resolve:
+                        for placeholder in matches:
+                            value = value.replace(f'${{{placeholder}}}', resolved.get(placeholder, ''))
+                        resolved[key] = value
+                else:
+                    resolved[key] = value
+
+            # Remove resolved keys from the next pass
+            for key in resolved:
+                if key in unresolved_vars:
+                    del unresolved_vars[key]
+
+            if not unresolved_vars or fully_resolved_this_pass:
+                break
+        
+        if unresolved_vars:
+            for key, value in unresolved_vars.items():
+                 elog(f"Could not fully resolve variable '{key}={value}'. Check for circular dependencies or missing definitions.", "WARNING")
+                 resolved[key] = value # Keep it unresolved to spot the error
+
+        return resolved
+
+    def save_unified_env(self, env_vars, output_path=".env"):
+        """Saves the final, resolved variables to the root .env file."""
+        with open(output_path, 'w', encoding='utf-8') as f:
+            f.write("# This file is auto-generated by installer/env_loader.py. DO NOT EDIT MANUALLY.\n")
+            f.write(f"# Generated at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
+            for key, value in sorted(env_vars.items()):
+                f.write(f"{key}={value}\n")
+        elog(f"Unified environment file generated at: {output_path}", 'SUCCESS')
+
+    def run(self):
+        elog("Starting environment loading process...", 'INFO')
+        
+        # 1. Load all modular .env files
+        env_vars = self.load_all_env_files()
+        
+        # 2. Resolve all variable placeholders (e.g., ${KOS_ADMIN_USER})
+        resolved_vars = self.resolve_variables(env_vars)
+        
+        # 3. Save the final unified .env file
+        self.save_unified_env(resolved_vars)
+        
+        print("\nEnvironment loading process completed.")
+        print(f"Unified .env file has been generated with {len(resolved_vars)} variables.")
+
+if __name__ == "__main__":
+    loader = KOSEnvLoader()
+    loader.run()

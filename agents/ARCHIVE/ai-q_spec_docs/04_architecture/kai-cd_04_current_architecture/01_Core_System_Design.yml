@@ -1,0 +1,374 @@
+metadata:
+  original_file: 01_Core_System_Design.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Core System Design & Architecture
+  description: Complete architectural design bridging current Kai-CD implementation
+    with kOS vision
+  category: current
+  subcategory: architecture
+  context: implementation_ready
+  implementation_status: bridge_design
+  decision_scope: major
+  complexity: very_high
+  last_updated: '2025-01-20'
+  code_references:
+  - src/core/
+  - src/store/
+  - src/components/
+  - src/connectors/
+  related_documents:
+  - 01_system-architecture.md
+  - 02_state-management.md
+  - ../services/01_service-architecture.md
+  - ../../future/architecture/01_kos-system-overview.md
+  - ../../bridge/03_decision-framework.md
+  agent_notes: Foundational architecture document - critical for understanding system
+    evolution path
+sections:
+- level: 1
+  title: Core System Design & Architecture
+  type: section
+  content: ''
+- level: 2
+  title: Agent Context
+  type: section
+  content: '**For AI Agents**: Complete architectural blueprint and foundational design
+    document bridging current Kai-CD implementation with future kOS vision. Use this
+    when understanding system architecture, planning evolution strategies, or implementing
+    foundational components. Critical reference for all architectural decisions and
+    system design work.
+
+
+    **Implementation Notes**: Contains complete architectural layers, component interactions,
+    and evolution pathway from Chrome extension to distributed platform. Includes
+    working code examples and architectural patterns.
+
+    **Quality Requirements**: Maintain technical accuracy of all architectural concepts
+    and evolution pathways. Keep implementation details synchronized with actual system
+    structure.
+
+    **Integration Points**: Foundation for all system architecture, links to state
+    management, service architecture, and future distributed systems design.
+
+
+    ---'
+- level: 2
+  title: Executive Summary
+  type: section
+  content: This document defines the complete architectural design of the Kind AI
+    (kAI) ecosystem, spanning the current Kai-CD Chrome extension implementation through
+    the future kOS distributed platform. It establishes the foundational layers, component
+    interactions, and evolution pathway for the entire system.
+- level: 2
+  title: System Overview
+  type: section
+  content: ''
+- level: 3
+  title: 'Current State: Kai-CD Chrome Extension'
+  type: section
+  content: '- **Browser-based personal AI assistant**
+
+    - **Service connector architecture** for LLMs, image generation, vector databases
+
+    - **Local state management** with Chrome storage persistence
+
+    - **Modular UI components** with dynamic capability rendering'
+- level: 3
+  title: 'Future Vision: kOS Distributed Platform'
+  type: section
+  content: '- **Distributed coordination layer** with mesh networking
+
+    - **Agent-to-agent communication** via Kind Link Protocol (KLP)
+
+    - **Federated identity and trust** management
+
+    - **Cross-platform deployment** (browser, desktop, mobile, edge)'
+- level: 2
+  title: Architectural Layers
+  type: section
+  content: ''
+- level: 3
+  title: 'Layer 0: Identity & Cryptographic Foundation'
+  type: section
+  content: "**Current Implementation:**\n```typescript\n// src/utils/crypto.ts - Basic\
+    \ cryptographic utilities\ninterface CryptoConfig {\n  algorithm: 'AES-256-GCM';\n\
+    \  keyDerivation: 'PBKDF2';\n  iterations: 100000;\n}\n```\n\n**Future Evolution:**\n\
+    - **Ed25519 identity keys** for all agents and users\n- **Decentralized Identifiers\
+    \ (DIDs)** for global identity\n- **Signature-based audit trails** for all critical\
+    \ operations\n- **Public-key infrastructure** for agent mesh communication"
+- level: 3
+  title: 'Layer 1: System Runtime'
+  type: section
+  content: '| Component | Current (Kai-CD) | Future (kOS) |
+
+    |-----------|------------------|--------------|
+
+    | **Runtime** | Chrome Extension APIs | Multi-platform runtime (Browser/Node/Mobile)
+    |
+
+    | **Agent Engine** | Service connectors | Python FastAPI + Celery worker pools
+    |
+
+    | **Event System** | Zustand state changes | Redis pub/sub + WebSocket mesh |
+
+    | **Config Management** | `src/config/env.ts` | Hierarchical config with live
+    reload |
+
+    | **Security Vault** | Chrome storage encryption | AES-256 vault with biometric
+    unlock |'
+- level: 3
+  title: 'Layer 2: Application Architecture'
+  type: section
+  content: ''
+- level: 4
+  title: 'Current: Kai-CD Components'
+  type: section
+  content: "```typescript\n// Component hierarchy\nsrc/\n├── components/\n│   ├──\
+    \ CapabilityUI.tsx          // Dynamic service UI rendering\n│   ├── ServiceManagement.tsx\
+    \     // Service CRUD operations\n│   ├── ThemeCustomizer.tsx       // Theme management\n\
+    │   └── capabilities/\n│       ├── LlmChatView.tsx       // Chat interface\n│\
+    \       └── ImageGenerationView.tsx // Image generation UI\n├── store/\n│   ├──\
+    \ serviceStore.ts           // Service definitions & state\n│   ├── viewStateStore.ts\
+    \         // UI state management\n│   └── settingsStore.ts          // User preferences\n\
+    └── connectors/\n    └── definitions/              // Service integration specs\n\
+    ```"
+- level: 4
+  title: 'Future: kOS Agent Mesh'
+  type: section
+  content: "```typescript\n// Agent-based architecture\nkAI/\n├── agents/\n│   ├──\
+    \ kCore/                    // Orchestrator agent\n│   ├── kPlanner/         \
+    \        // Task decomposition\n│   ├── kExecutor/                // Action execution\n\
+    │   ├── kReviewer/                // Quality assurance\n│   └── kMemory/     \
+    \             // Memory management\n├── protocols/\n│   ├── klp/             \
+    \         // Kind Link Protocol\n│   └── mesh/                     // P2P networking\n\
+    └── services/\n    ├── orchestration/            // Service coordination\n   \
+    \ └── vault/                    // Secure storage\n```"
+- level: 2
+  title: Core Subsystems
+  type: section
+  content: ''
+- level: 3
+  title: 'Current: Kai-CD Subsystems'
+  type: section
+  content: ''
+- level: 4
+  title: Service Architecture
+  type: section
+  content: "```typescript\n// src/connectors/definitions/\ninterface ServiceDefinition\
+    \ {\n  id: string;\n  name: string;\n  baseUrl: string;\n  capabilities: ('llm_chat'\
+    \ | 'image_generation' | 'embeddings')[];\n  auth: AuthConfig;\n  endpoints: ServiceEndpoint[];\n\
+    }\n```\n\n**Key Features:**\n- **Universal API client** (`src/utils/apiClient.ts`)\n\
+    - **Dynamic capability rendering** (`src/components/CapabilityUI.tsx`)\n- **Credential\
+    \ management** via secure vault\n- **Health monitoring** and status tracking"
+- level: 4
+  title: State Management
+  type: section
+  content: "```typescript\n// src/store/ - Zustand stores with Chrome storage persistence\n\
+    interface ServiceStore {\n  services: ServiceDefinition[];\n  activeService: string\
+    \ | null;\n  addService: (service: ServiceDefinition) => Promise<void>;\n  updateService:\
+    \ (id: string, updates: Partial<ServiceDefinition>) => Promise<void>;\n}\n```"
+- level: 3
+  title: 'Future: kOS Agent Subsystems'
+  type: section
+  content: ''
+- level: 4
+  title: Agent Layer
+  type: section
+  content: '| Agent Type | Responsibility | Communication |
+
+    |------------|---------------|---------------|
+
+    | `kCore` | System orchestration | KLP coordinator |
+
+    | `kPlanner` | Task decomposition | Goal → subtasks |
+
+    | `kExecutor` | Action execution | Tool invocation |
+
+    | `kReviewer` | Quality assurance | Result validation |
+
+    | `kMemory` | Knowledge management | Vector + graph storage |'
+- level: 4
+  title: Protocol Stack
+  type: section
+  content: '| Protocol | Function | Implementation |
+
+    |----------|----------|----------------|
+
+    | **KLP** | Agent communication | Ed25519 signed messages |
+
+    | **Proof Mesh** | Identity verification | zkProof-based validation |
+
+    | **Service Contracts** | Dynamic service binding | YAML schema validation |
+
+    | **Mesh Routing** | P2P communication | Multi-hop with fallback |'
+- level: 2
+  title: Communication Pathways
+  type: section
+  content: ''
+- level: 3
+  title: 'Current: Internal Communication'
+  type: section
+  content: "```typescript\n// Zustand store updates trigger UI re-renders\nconst useServiceStore\
+    \ = create<ServiceStore>()(\n  persist(\n    (set, get) => ({\n      // Store\
+    \ implementation with Chrome storage\n    }),\n    {\n      name: 'service-store',\n\
+    \      storage: chromeStorage, // Custom Chrome storage adapter\n    }\n  )\n\
+    );\n```"
+- level: 3
+  title: 'Future: Agent Mesh Communication'
+  type: section
+  content: "```typescript\n// KLP message format\ninterface KLPMessage {\n  id: string;\n\
+    \  protocol: 'klp/1.0';\n  from: DID;\n  to: DID;\n  type: MessageType;\n  payload:\
+    \ any;\n  signature: string;\n}\n```"
+- level: 2
+  title: Security Architecture
+  type: section
+  content: ''
+- level: 3
+  title: 'Current: Chrome Extension Security'
+  type: section
+  content: '- **Manifest V3** content security policy
+
+    - **Sandboxed iframes** for external services
+
+    - **Encrypted storage** via Chrome storage APIs
+
+    - **CORS handling** for cross-origin requests'
+- level: 3
+  title: 'Future: Zero-Trust Security'
+  type: section
+  content: '- **Agent identity verification** via Ed25519 signatures
+
+    - **Sandboxed execution** environments (WASM, containers)
+
+    - **Capability-based permissions** with fine-grained access control
+
+    - **Audit trails** for all sensitive operations'
+- level: 2
+  title: Evolution Strategy
+  type: section
+  content: ''
+- level: 3
+  title: 'Phase 1: Enhanced Current System'
+  type: section
+  content: '- **Improve service architecture** with better error handling
+
+    - **Add agent-like abstractions** to existing components
+
+    - **Implement basic identity** management
+
+    - **Enhance security** with better encryption'
+- level: 3
+  title: 'Phase 2: Hybrid Architecture'
+  type: section
+  content: '- **Bridge current services** to agent-based patterns
+
+    - **Implement KLP** for future compatibility
+
+    - **Add mesh networking** capabilities
+
+    - **Introduce federated identity**'
+- level: 3
+  title: 'Phase 3: Full kOS Implementation'
+  type: section
+  content: '- **Complete agent mesh** deployment
+
+    - **Distributed coordination** across devices
+
+    - **Advanced governance** and consensus mechanisms
+
+    - **Production security** features'
+- level: 2
+  title: Implementation Guidelines
+  type: section
+  content: ''
+- level: 3
+  title: For Current Development
+  type: section
+  content: '1. **Maintain backward compatibility** with existing service definitions
+
+    2. **Use existing patterns** (Zustand stores, React components)
+
+    3. **Enhance gradually** without breaking changes
+
+    4. **Document evolution path** for each component'
+- level: 3
+  title: For Future Development
+  type: section
+  content: '1. **Design agent-first** architectures
+
+    2. **Implement KLP compatibility** early
+
+    3. **Build security** into every component
+
+    4. **Plan for distribution** from day one'
+- level: 2
+  title: Directory Structure Evolution
+  type: section
+  content: ''
+- level: 3
+  title: Current Structure
+  type: section
+  content: '```
+
+    src/
+
+    ├── components/        # React UI components
+
+    ├── store/            # Zustand state management
+
+    ├── connectors/       # Service definitions
+
+    ├── utils/            # Utilities and helpers
+
+    └── config/           # Configuration management
+
+    ```'
+- level: 3
+  title: Target Structure
+  type: section
+  content: '```
+
+    src/
+
+    ├── agents/           # Agent implementations
+
+    ├── protocols/        # KLP and mesh protocols
+
+    ├── services/         # Service orchestration
+
+    ├── security/         # Identity and security
+
+    ├── ui/              # User interface layer
+
+    └── config/          # System configuration
+
+    ```'
+- level: 2
+  title: For AI Agents
+  type: section
+  content: ''
+- level: 3
+  title: Current System Navigation
+  type: section
+  content: '- **Service definitions** in `src/connectors/definitions/`
+
+    - **State management** via Zustand stores in `src/store/`
+
+    - **UI components** follow capability-based rendering
+
+    - **Configuration** uses hierarchical override system'
+- level: 3
+  title: Future System Preparation
+  type: section
+  content: '- **Study KLP protocol** for agent communication patterns
+
+    - **Understand agent roles** and responsibility separation
+
+    - **Plan security model** with identity and trust management
+
+    - **Design for distribution** across multiple deployment targets
+
+
+    ---'

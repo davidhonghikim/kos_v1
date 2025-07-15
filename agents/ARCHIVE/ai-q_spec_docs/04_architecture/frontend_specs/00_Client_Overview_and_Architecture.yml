@@ -1,0 +1,476 @@
+metadata:
+  original_file: 00_Client_Overview_and_Architecture.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+  last_updated: '2025-06-30T05:00:00Z'
+frontmatter:
+  title: kOS Frontend Application Specifications
+  version: 2.0
+  status: ACTIVE
+  priority: high
+sections:
+- level: 1
+  title: '**kOS Frontend Applications: Implementation Specification**'
+  type: section
+  content: ''
+- level: 2
+  title: 1. Overview & Mission
+  type: section
+  content: 'This document provides the complete technical specification for Frontend Engineers to build **kOS Frontend Applications** that communicate with backend services through the **Kind Link Framework (KLF)**. 
+
+
+    The KLF acts as the "telephone operator" - a universal protocol that enables frontend and backend to be developed in parallel. As long as both sides conform to the KLF contract, they will connect and work properly.
+
+
+    **Current kOS Applications to Build:**
+
+    - **PersonaRAG Bridge**: Chrome extension for AI-enhanced web browsing with secure vault, service management, and intelligent document retrieval
+
+    - **Griot Kitchen**: Generative AI workflow orchestration with recipe management and artifact generation
+
+    - **Starseed Node**: Network discovery and node management interface
+
+    - **Web App**: Universal web interface for all kOS services
+
+    - **Docs Viewer**: Documentation and knowledge base browser
+
+
+    **Primary Goals:**
+
+    - Create feature-rich, responsive interfaces for each kOS application
+
+    - Implement KLF-compliant communication for backend independence  
+
+    - Provide consistent UX across all applications using shared design system
+
+    - Enable secure, encrypted communication with vault integration
+
+    - Support real-time updates and service discovery'
+- level: 2
+  title: 2. Core Architecture & Technology Stack
+  type: section
+  content: '**Frontend Framework:**
+
+    - **Framework:** React 18+ with TypeScript
+
+    - **Build Tool:** Vite for fast development and optimized builds
+
+    - **State Management:** Jotai (atomic state management) - NO Redux
+
+    - **Styling:** Tailwind CSS with Shadcn/UI component library
+
+    - **Icons:** Lucide React for consistent iconography
+
+
+    **Communication Protocol:**
+
+    - **Primary:** KLF (Kind Link Framework) over HTTP/HTTPS and WebSockets
+
+    - **Fallback:** Direct REST API calls for non-KLF services
+
+    - **Security:** Ed25519 signatures, TLS 1.3, AES-256-CBC vault encryption
+
+
+    **Extension-Specific (PersonaRAG Bridge):**
+
+    - **Platform:** Chrome Extension Manifest V3
+
+    - **Architecture:** Popup, Tab, Sidepanel, Background script, Content script
+
+    - **Storage:** Chrome storage API + encrypted vault system'
+- level: 2
+  title: 3. Kind Link Framework (KLF) Integration
+  type: section
+  content: 'The KLF is the **universal communication protocol** that enables frontend/backend separation. All applications must implement KLF client capabilities.
+
+
+    **KLF Message Format:**
+
+    ```json
+
+    {
+      "klf": {
+        "version": "1.0.0",
+        "timestamp": "2025-06-30T05:00:00Z"
+      },
+      "sender": {
+        "did": "did:kos:frontend:client123",
+        "signature": "ed25519_signature_here"
+      },
+      "recipient": {
+        "did": "did:kos:griot:backend456"
+      },
+      "payload": {
+        "type": "service_request",
+        "service": "persona.rag.query",
+        "body": {
+          "query": "Find documents about AI ethics",
+          "context": "research"
+        }
+      }
+    }
+
+    ```
+
+
+    **Required KLF Client Methods:**
+
+    - `klf_ping()` - Health check with backend services
+
+    - `klf_getIdentity()` - Retrieve node identity and capabilities
+
+    - `klf_getCapabilities()` - Discover available services
+
+    - `klf_request(service, params)` - Execute service requests
+
+    - `klf_subscribe(events)` - Real-time event subscriptions
+
+
+    **KLF HTTP Endpoints (Backend Contract):**
+
+    ```
+
+    GET  /klf/v1/identity          # Node identity information
+
+    GET  /klf/v1/capabilities      # Available services
+
+    POST /klf/v1/request           # Service requests
+
+    GET  /klf/v1/health            # Health check
+
+    WS   /klf/v1/events            # Real-time event stream
+
+    ```'
+- level: 2
+  title: 4. Application-Specific Specifications
+  type: section
+  content: ''
+- level: 3
+  title: '4.1. PersonaRAG Bridge (Chrome Extension)'
+  type: section
+  content: "**Purpose:** AI-enhanced web browsing with secure credential management and intelligent document retrieval.
+
+
+    **Core Components:**
+
+    - **Popup Interface:** Quick access to chat, services, and settings
+
+    - **Tab View:** Full-featured interface with 10 functional tabs
+
+    - **Sidepanel:** Contextual AI assistance while browsing
+
+    - **Background Script:** Service orchestration and vault management
+
+    - **Content Script:** Web page integration and data extraction
+
+
+    **Tab Navigation Structure:**
+
+    ```typescript
+
+    type TabView = 'chat' | 'image' | 'services' | 'artefacts' | 
+
+                   'recipes' | 'agents' | 'settings' | 'vault' | 
+
+                   'docs' | 'console';
+
+    ```
+
+
+    **Required KLF Service Integrations:**
+
+    - `persona.rag.query` - Document retrieval and analysis
+
+    - `persona.rag.vectorize` - Document vectorization
+
+    - `openwebui.chat` - LLM conversation interface
+
+    - `vault.store` / `vault.retrieve` - Secure credential storage
+
+    - `service.discover` - Network service discovery
+
+
+    **Vault Security Requirements:**
+
+    - AES-256-CBC encryption for all stored credentials
+
+    - Ed25519 key pairs for KLF authentication
+
+    - Secure key derivation from user passphrase
+
+    - Auto-lock after inactivity timeout"
+- level: 3
+  title: '4.2. Griot Kitchen (Workflow Orchestration)'
+  type: section
+  content: "**Purpose:** Generative AI workflow orchestration with recipe management and artifact generation.
+
+
+    **Core Components:**
+
+    - **Recipe Studio:** Dynamic form builder for workflow configuration
+
+    - **Service Manager:** Configure and monitor external AI services (A1111, ComfyUI)
+
+    - **Artifact Viewer:** Display and manage generated content
+
+    - **Job Monitor:** Real-time workflow execution tracking
+
+
+    **Required KLF Service Integrations:**
+
+    - `griot.recipe.list` - Available workflow templates
+
+    - `griot.recipe.execute` - Run workflow with parameters
+
+    - `griot.job.status` - Monitor execution progress
+
+    - `griot.artifact.retrieve` - Access generated content
+
+    - `griot.service.configure` - Manage external services
+
+
+    **Dynamic Form System:**
+
+    - TextField (string): Prompts, descriptions
+
+    - TextArea (long string): Negative prompts, detailed instructions  
+
+    - Slider (integer ranges): Steps, CFG scale, dimensions
+
+    - Dropdown (enum): Samplers, models, LoRAs, embeddings
+
+    - BooleanField (switch): Feature toggles
+
+    - FileUpload: Reference images, custom models"
+- level: 3
+  title: '4.3. Universal Web Interface'
+  type: section
+  content: "**Purpose:** Unified web interface providing access to all kOS services.
+
+
+    **Core Components:**
+
+    - **Node Dashboard:** Network topology and service discovery
+
+    - **Service Router:** Dynamic interface generation based on KLF capabilities
+
+    - **Cultural Center:** HIEROS-compliant cultural themes and attribution
+
+    - **Settings Manager:** Global configuration and preferences
+
+
+    **Required KLF Service Integrations:**
+
+    - `node.discover` - Network node discovery
+
+    - `node.capabilities` - Service enumeration
+
+    - `service.*` - Dynamic service routing
+
+    - `hieros.validate` - Cultural compliance checking"
+- level: 2
+  title: 5. Shared Component Library
+  type: section
+  content: "**All applications must use consistent, reusable components:**
+
+
+    **Core UI Components:**
+
+    - `<KLFServiceConnector />` - Manages KLF connections with status indicators
+
+    - `<ServiceStatusIndicator />` - Visual service health (green/red dots)
+
+    - `<VaultUnlock />` - Secure credential access interface
+
+    - `<DynamicForm />` - Auto-generates forms from KLF service schemas
+
+    - `<ArtifactViewer />` - Displays generated content (images, text, JSON)
+
+    - `<NavigationSidebar />` - Consistent navigation across applications
+
+
+    **State Management Atoms (Jotai):**
+
+    ```typescript
+
+    // Global state atoms
+
+    export const klfConnectionAtom = atom<KLFConnection | null>(null);
+
+    export const servicesStateAtom = atom<ServicesState>({
+
+      services: [],
+
+      activeService: null,
+
+      connectionStatus: 'disconnected'
+
+    });
+
+    export const vaultStateAtom = atom<VaultState>({
+
+      isUnlocked: false,
+
+      credentials: {},
+
+      autoLockTimer: null
+
+    });
+
+    export const activeViewAtom = atom<string>('chat');
+
+    ```
+
+
+    **KLF Client Implementation:**
+
+    ```typescript
+
+    export class KLFClient {
+
+      private did: string;
+
+      private privateKey: Ed25519PrivateKey;
+
+      private baseUrl: string;
+
+
+      async request(service: string, params: any): Promise<any> {
+
+        const message = this.buildKLFMessage(service, params);
+
+        const response = await fetch(`${this.baseUrl}/klf/v1/request`, {
+
+          method: 'POST',
+
+          headers: {
+
+            'Content-Type': 'application/json',
+
+            'X-KOS-Node-ID': this.did,
+
+            'X-KOS-Signature': this.signMessage(message)
+
+          },
+
+          body: JSON.stringify(message)
+
+        });
+
+        return this.verifyAndParseResponse(response);
+
+      }
+
+    }
+
+    ```"
+- level: 2
+  title: 6. Development Guidelines
+  type: section
+  content: "**KLF-First Development:**
+
+    - Always implement KLF client before direct API calls
+
+    - Use KLF service discovery instead of hardcoded endpoints
+
+    - Implement graceful fallback for non-KLF services
+
+    - Add comprehensive error handling for KLF failures
+
+
+    **Security Requirements:**
+
+    - All KLF messages must be signed with Ed25519
+
+    - Implement proper signature verification
+
+    - Use TLS 1.3 for all network communication
+
+    - Store sensitive data only in encrypted vault
+
+
+    **Performance Standards:**
+
+    - < 3s initial load time for all applications
+
+    - 60fps smooth interactions and animations
+
+    - Efficient state updates with Jotai atoms
+
+    - Lazy loading for non-critical components
+
+
+    **Testing Requirements:**
+
+    - Unit tests for all KLF client methods
+
+    - Integration tests for service communication
+
+    - End-to-end tests for complete user workflows
+
+    - Mock KLF backends for development testing
+
+
+    **Code Quality:**
+
+    - TypeScript strict mode enabled
+
+    - ESLint + Prettier for consistent formatting
+
+    - Comprehensive JSDoc comments for public APIs
+
+    - Component prop validation with TypeScript interfaces"
+- level: 2
+  title: 7. Deployment & Distribution
+  type: section
+  content: "**Build Configuration:**
+
+    - Vite build optimization for production
+
+    - Environment-specific configuration files
+
+    - Asset optimization and code splitting
+
+    - Source map generation for debugging
+
+
+    **Chrome Extension (PersonaRAG Bridge):**
+
+    - Manifest V3 compliance
+
+    - Content Security Policy configuration
+
+    - Permission declarations for required APIs
+
+    - Store-ready package with proper icons and descriptions
+
+
+    **Web Applications:**
+
+    - Static site generation for docs-viewer
+
+    - Progressive Web App (PWA) capabilities
+
+    - Docker containerization for deployment
+
+    - Kubernetes manifests for orchestration
+
+
+    **Configuration Management:**
+
+    - Multi-source configuration with priority:
+
+      1. Default (testing) configuration
+
+      2. User config file (deployment)
+
+      3. Network RAG (dynamic discovery)
+
+      4. Runtime (UI overrides)
+
+    - Environment variable injection
+
+    - Secure credential management
+
+
+    This specification provides a comprehensive foundation for frontend engineers to build kOS applications that seamlessly integrate with backend services through the KLF protocol, ensuring maintainable, secure, and performant user interfaces across the entire kOS ecosystem."

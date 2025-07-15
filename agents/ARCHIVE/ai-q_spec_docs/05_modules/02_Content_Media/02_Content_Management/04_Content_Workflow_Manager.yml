@@ -1,0 +1,190 @@
+metadata:
+  original_file: 04_Content_Workflow_Manager.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Content Workflow Manager
+  version: '1.0'
+sections:
+- level: 1
+  title: '**Content Workflow Manager**'
+  type: section
+  content: ''
+- level: 2
+  title: '**Purpose**'
+  type: section
+  content: The Content Workflow Manager provides workflow automation and approval
+    process management for content. It supports workflow automation, approval routing,
+    status tracking, and integration with business processes for efficient content
+    lifecycle management.
+- level: 2
+  title: '**Core Principles**'
+  type: section
+  content: '- **Process Automation**: Automate content workflow processes
+
+    - **Approval Routing**: Route content through approval workflows
+
+    - **Status Tracking**: Track content status throughout workflows
+
+    - **Notification System**: Notify stakeholders of workflow events
+
+    - **Integration**: Integrate with external workflow systems'
+- level: 2
+  title: '**Function Specifications**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Core Functions**'
+  type: section
+  content: ''
+- level: 4
+  title: '**initiateWorkflow(contentId: string, workflowType: string): Promise<WorkflowResult>**'
+  type: section
+  content: 'Initiates a workflow for a content item.
+
+
+    **Parameters:**
+
+    - `contentId`: Content identifier
+
+    - `workflowType`: Type of workflow to initiate
+
+
+    **Returns:**
+
+    - `WorkflowResult`: Workflow initiation result and metadata
+
+
+    **Example:**
+
+    ```typescript
+
+    const workflow = await contentWorkflowManager.initiateWorkflow("content123", "approval");
+
+    console.log(workflow.status);
+
+    ```'
+- level: 4
+  title: '**routeForApproval(contentId: string, approvers: string[]): Promise<ApprovalResult>**'
+  type: section
+  content: 'Routes content for approval to specified approvers.
+
+
+    **Parameters:**
+
+    - `contentId`: Content identifier
+
+    - `approvers`: List of approver user IDs
+
+
+    **Returns:**
+
+    - `ApprovalResult`: Approval routing result and metadata
+
+
+    **Example:**
+
+    ```typescript
+
+    const approval = await contentWorkflowManager.routeForApproval("content123", ["userA",
+    "userB"]);
+
+    console.log(approval.status);
+
+    ```'
+- level: 4
+  title: '**trackStatus(contentId: string): Promise<StatusResult>**'
+  type: section
+  content: 'Tracks the status of a content item in the workflow.
+
+
+    **Parameters:**
+
+    - `contentId`: Content identifier
+
+
+    **Returns:**
+
+    - `StatusResult`: Current status and metadata
+
+
+    **Example:**
+
+    ```typescript
+
+    const status = await contentWorkflowManager.trackStatus("content123");
+
+    console.log(status.currentStatus);
+
+    ```'
+- level: 2
+  title: '**Integration Patterns**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Workflow Management Flow**'
+  type: section
+  content: "```mermaid\ngraph TD\n    A[Content Submission] --> B[Workflow Initiation]\n\
+    \    B --> C[Review Assignment]\n    C --> D[Review Process]\n    D --> E{Approved?}\n\
+    \    E -->|Yes| F[Content Publication]\n    E -->|No| G[Revision Request]\n  \
+    \  G --> H[Content Update]\n    H --> B\n```"
+- level: 2
+  title: '**Capabilities**'
+  type: section
+  content: '- **Process Automation**: Automate content workflows
+
+    - **Approval Routing**: Route content for approval
+
+    - **Status Tracking**: Track workflow status
+
+    - **Notification System**: Notify stakeholders
+
+    - **Integration**: Integrate with external workflow systems'
+- level: 2
+  title: '**Configuration Examples**'
+  type: section
+  content: "```yaml\ncontent_workflow_manager:\n  process_automation: true\n  approval_routing:\
+    \ true\n  status_tracking: true\n  notification_system: true\n  integration: true\n\
+    ```"
+- level: 2
+  title: '**Error Handling**'
+  type: section
+  content: '- **Workflow Initiation Failure**: Return error with details
+
+    - **Approval Routing Failure**: Return error with details
+
+    - **Status Tracking Failure**: Return error with details
+
+    - **Integration Failure**: Return error with details'
+- level: 2
+  title: '**Performance Considerations**'
+  type: section
+  content: '- **Workflow Latency**: Optimized for < 2s
+
+    - **Batch Workflow**: Support for batch workflow initiation
+
+    - **Resource Usage**: Efficient CPU and memory usage'
+- level: 2
+  title: '**Security Considerations**'
+  type: section
+  content: '- **Access Control**: Restrict access to workflow management features
+
+    - **Audit Logging**: Log all workflow actions
+
+    - **Workflow Privacy**: Protect sensitive workflow data'
+- level: 2
+  title: '**Monitoring & Observability**'
+  type: section
+  content: '- **Workflow Metrics**: Track request count, latency, and errors
+
+    - **Approval Metrics**: Track approval routing and status
+
+    - **Alerting**: Alerts for workflow or approval failures
+
+
+    ---
+
+
+    **Version**: 1.0
+
+    **Focus**: Automated, integrated content workflow management for kOS ecosystem'

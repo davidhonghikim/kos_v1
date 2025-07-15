@@ -1,0 +1,506 @@
+metadata:
+  original_file: 02_Base_Decryptor.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Base Decryptor
+  version: '1.0'
+  category: Security
+  subcategory: Encryption & Protection
+  dependencies:
+  - Base Encryptor
+  - Base Hash Generator
+  tags:
+  - decryption
+  - security
+  - cryptography
+  - base-class
+  priority: high
+sections:
+- level: 1
+  title: Base Decryptor
+  type: section
+  content: ''
+- level: 2
+  title: Purpose
+  type: section
+  content: Provides the core decryption interface and common functionality for all
+    decryption operations in the kOS ecosystem. This base class defines the standard
+    interface that all specific decryption implementations must follow, ensuring consistent
+    behavior, error handling, and security practices across all decryption modules.
+    The Base Decryptor works in conjunction with the Base Encryptor to provide complete
+    cryptographic data protection.
+- level: 2
+  title: Capabilities
+  type: section
+  content: '- **Standardized Decryption Interface**: Provides consistent interface
+    for all decryption operations
+
+    - **Key Management**: Handles decryption key retrieval, validation, and lifecycle
+    management
+
+    - **Algorithm Compatibility**: Supports decryption of data encrypted with various
+    algorithms
+
+    - **Error Handling**: Comprehensive error handling for decryption failures and
+    data corruption
+
+    - **Performance Optimization**: Optimized decryption performance with configurable
+    settings
+
+    - **Security Validation**: Validates decryption parameters and security requirements
+
+    - **Audit Logging**: Logs all decryption operations for security auditing
+
+    - **Data Integrity**: Ensures data integrity and authenticity during decryption
+
+    - **Compliance Support**: Supports various decryption compliance requirements'
+- level: 2
+  title: Integration Points
+  type: section
+  content: '- **Input**: Encrypted data, decryption parameters, and key information
+
+    - **Output**: Decrypted data, decryption metadata, and operation status
+
+    - **Dependencies**: Base Encryptor for algorithm compatibility and Base Hash Generator
+    for key validation'
+- level: 2
+  title: Configuration
+  type: section
+  content: "```yaml\nbase_decryptor:\n  default_algorithm: \"AES-256-GCM\"\n  key_management:\n\
+    \    key_retrieval_timeout: 5000  # 5 seconds\n    key_validation: true\n    key_rotation_check:\
+    \ true\n  performance:\n    chunk_size: 1048576  # 1MB chunks\n    parallel_processing:\
+    \ true\n    max_concurrent_operations: 10\n    streaming_enabled: true\n  security:\n\
+    \    validate_encrypted_data: true\n    check_data_integrity: true\n    verify_authenticity:\
+    \ true\n    require_secure_channel: false\n  audit:\n    log_all_operations: true\n\
+    \    include_metadata: true\n    log_failed_attempts: true\n    retention_period:\
+    \ \"7y\"\n  error_handling:\n    max_retry_attempts: 3\n    retry_delay: 1000\
+    \  # 1 second\n    fail_fast_on_corruption: true\n```"
+- level: 2
+  title: Example Workflow
+  type: section
+  content: "```mermaid\ngraph TD\n  A[Encrypted Data Input] --> B[Input Validation]\n\
+    \  B --> C[Key Retrieval]\n  C --> D[Algorithm Detection]\n  D --> E[Data Integrity\
+    \ Check]\n  E --> F[Decryption Process]\n  F --> G[Output Validation]\n  G -->\
+    \ H[Audit Logging]\n  H --> I[Decrypted Output]\n  \n  B --> J{Key Found?}\n \
+    \ J -->|No| K[Key Error Handling]\n  J -->|Yes| D\n  \n  E --> L{Integrity Valid?}\n\
+    \  L -->|No| M[Integrity Error]\n  L -->|Yes| F\n  \n  F --> N{Decryption Success?}\n\
+    \  N -->|No| O[Decryption Error Recovery]\n  N -->|Yes| G\n```"
+- level: 2
+  title: Core Capabilities
+  type: section
+  content: ''
+- level: 3
+  title: '**1. Standardized Decryption Interface**'
+  type: section
+  content: '- **Description**: Provides consistent interface for all decryption operations
+
+    - **Input**: Encrypted data and decryption parameters
+
+    - **Output**: Decrypted data and metadata
+
+    - **Dependencies**: None (base interface)'
+- level: 3
+  title: '**2. Key Management**'
+  type: section
+  content: '- **Description**: Handles decryption key retrieval, validation, and lifecycle
+    management
+
+    - **Input**: Key identifiers and security requirements
+
+    - **Output**: Validated keys and key metadata
+
+    - **Dependencies**: Key management system and Base Hash Generator'
+- level: 3
+  title: '**3. Algorithm Compatibility**'
+  type: section
+  content: '- **Description**: Supports decryption of data encrypted with various
+    algorithms
+
+    - **Input**: Encrypted data with algorithm metadata
+
+    - **Output**: Algorithm identification and compatibility verification
+
+    - **Dependencies**: Algorithm registry and Base Encryptor'
+- level: 3
+  title: '**4. Data Integrity Verification**'
+  type: section
+  content: '- **Description**: Ensures data integrity and authenticity during decryption
+
+    - **Input**: Encrypted data and integrity checksums
+
+    - **Output**: Integrity verification results and data validation
+
+    - **Dependencies**: Hash functions and integrity checking algorithms'
+- level: 2
+  title: Module Interface
+  type: section
+  content: ''
+- level: 3
+  title: '**Input Interface**'
+  type: section
+  content: "```typescript\ninterface BaseDecryptorInput {\n  encryptedData: Buffer;\n\
+    \  algorithm?: string;\n  key?: string | Buffer;\n  keyId?: string;\n  parameters?:\
+    \ DecryptionParameters;\n  metadata?: Record<string, any>;\n}\n\ninterface DecryptionParameters\
+    \ {\n  mode?: string;\n  padding?: string;\n  iv?: Buffer;\n  aad?: Buffer;\n\
+    \  tag?: Buffer;\n  tagLength?: number;\n}\n```"
+- level: 3
+  title: '**Output Interface**'
+  type: section
+  content: "```typescript\ninterface BaseDecryptorOutput {\n  decryptedData: Buffer;\n\
+    \  algorithm: string;\n  keyId: string;\n  metadata: DecryptionMetadata;\n  status:\
+    \ DecryptionStatus;\n  integrity: IntegrityResult;\n}\n\ninterface DecryptionMetadata\
+    \ {\n  timestamp: Date;\n  operationId: string;\n  performanceMetrics: PerformanceMetrics;\n\
+    \  securityLevel: string;\n  originalSize: number;\n  decryptedSize: number;\n\
+    }\n\ninterface DecryptionStatus {\n  success: boolean;\n  error?: string;\n  warnings?:\
+    \ string[];\n  retryCount?: number;\n}\n\ninterface IntegrityResult {\n  isValid:\
+    \ boolean;\n  checksum?: string;\n  verificationMethod: string;\n  timestamp:\
+    \ Date;\n}\n```"
+- level: 3
+  title: '**Configuration Interface**'
+  type: section
+  content: "```typescript\ninterface BaseDecryptorConfig {\n  defaultAlgorithm: string;\n\
+    \  keyManagement: KeyManagementConfig;\n  performance: PerformanceConfig;\n  security:\
+    \ SecurityConfig;\n  audit: AuditConfig;\n  errorHandling: ErrorHandlingConfig;\n\
+    }\n\ninterface KeyManagementConfig {\n  keyRetrievalTimeout: number;\n  keyValidation:\
+    \ boolean;\n  keyRotationCheck: boolean;\n}\n\ninterface PerformanceConfig {\n\
+    \  chunkSize: number;\n  parallelProcessing: boolean;\n  maxConcurrentOperations:\
+    \ number;\n  streamingEnabled: boolean;\n}\n\ninterface SecurityConfig {\n  validateEncryptedData:\
+    \ boolean;\n  checkDataIntegrity: boolean;\n  verifyAuthenticity: boolean;\n \
+    \ requireSecureChannel: boolean;\n}\n\ninterface AuditConfig {\n  logAllOperations:\
+    \ boolean;\n  includeMetadata: boolean;\n  logFailedAttempts: boolean;\n  retentionPeriod:\
+    \ string;\n}\n\ninterface ErrorHandlingConfig {\n  maxRetryAttempts: number;\n\
+    \  retryDelay: number;\n  failFastOnCorruption: boolean;\n}\n```"
+- level: 2
+  title: Module Dependencies
+  type: section
+  content: ''
+- level: 3
+  title: '**Required Dependencies**'
+  type: section
+  content: '- **Base Encryptor**: For algorithm compatibility and encryption metadata
+
+    - **Base Hash Generator**: For key validation and data integrity verification
+
+    - **Key Management Service**: For secure key retrieval and validation
+
+    - **Configuration Manager**: For managing decryption configuration settings'
+- level: 3
+  title: '**Optional Dependencies**'
+  type: section
+  content: '- **Hardware Security Module (HSM)**: For enhanced key security when available
+
+    - **Audit Logger**: For comprehensive audit logging when available
+
+    - **Performance Monitor**: For detailed performance monitoring when available'
+- level: 2
+  title: Module Implementation
+  type: section
+  content: ''
+- level: 3
+  title: '**Core Components**'
+  type: section
+  content: ''
+- level: 4
+  title: '**1. Decryption Engine**'
+  type: section
+  content: "```typescript\nclass DecryptionEngine {\n  private config: BaseDecryptorConfig;\n\
+    \  private keyManager: KeyManager;\n  private algorithmRegistry: AlgorithmRegistry;\n\
+    \  private integrityChecker: IntegrityChecker;\n  \n  constructor(config: BaseDecryptorConfig)\
+    \ {\n    this.config = config;\n    this.keyManager = new KeyManager(config.keyManagement);\n\
+    \    this.algorithmRegistry = new AlgorithmRegistry();\n    this.integrityChecker\
+    \ = new IntegrityChecker();\n  }\n  \n  async decrypt(input: BaseDecryptorInput):\
+    \ Promise<BaseDecryptorOutput> {\n    // Validate input parameters\n    this.validateInput(input);\n\
+    \    \n    // Retrieve and validate decryption key\n    const key = await this.keyManager.getKey(input.keyId,\
+    \ input.key);\n    \n    // Detect or verify encryption algorithm\n    const algorithm\
+    \ = await this.detectAlgorithm(input.encryptedData, input.algorithm);\n    \n\
+    \    // Check data integrity if enabled\n    if (this.config.security.checkDataIntegrity)\
+    \ {\n      await this.verifyDataIntegrity(input.encryptedData, algorithm);\n \
+    \   }\n    \n    // Perform decryption with retry logic\n    const result = await\
+    \ this.performDecryptionWithRetry(input.encryptedData, key, algorithm);\n    \n\
+    \    // Log operation for audit\n    await this.logOperation(input, result);\n\
+    \    \n    return result;\n  }\n  \n  private validateInput(input: BaseDecryptorInput):\
+    \ void {\n    if (!input.encryptedData || input.encryptedData.length === 0) {\n\
+    \      throw new DecryptionError('Encrypted data input is required');\n    }\n\
+    \    \n    if (this.config.security.validateEncryptedData) {\n      this.validateEncryptedDataFormat(input.encryptedData);\n\
+    \    }\n  }\n  \n  private async performDecryptionWithRetry(\n    encryptedData:\
+    \ Buffer,\n    key: Buffer,\n    algorithm: DecryptionAlgorithm\n  ): Promise<BaseDecryptorOutput>\
+    \ {\n    let lastError: Error;\n    \n    for (let attempt = 1; attempt <= this.config.errorHandling.maxRetryAttempts;\
+    \ attempt++) {\n      try {\n        return await this.performDecryption(encryptedData,\
+    \ key, algorithm);\n      } catch (error) {\n        lastError = error as Error;\n\
+    \        \n        if (this.config.errorHandling.failFastOnCorruption && \n  \
+    \          error instanceof DataCorruptionError) {\n          throw error;\n \
+    \       }\n        \n        if (attempt < this.config.errorHandling.maxRetryAttempts)\
+    \ {\n          await this.delay(this.config.errorHandling.retryDelay);\n     \
+    \   }\n      }\n    }\n    \n    throw new DecryptionError(`Decryption failed\
+    \ after ${this.config.errorHandling.maxRetryAttempts} attempts`, lastError);\n\
+    \  }\n}\n```"
+- level: 4
+  title: '**2. Integrity Checker**'
+  type: section
+  content: "```typescript\nclass IntegrityChecker {\n  private hashGenerator: BaseHashGenerator;\n\
+    \  \n  constructor() {\n    this.hashGenerator = new BaseHashGenerator();\n  }\n\
+    \  \n  async verifyDataIntegrity(\n    encryptedData: Buffer,\n    algorithm:\
+    \ DecryptionAlgorithm\n  ): Promise<IntegrityResult> {\n    // Extract integrity\
+    \ checksum from encrypted data\n    const checksum = this.extractChecksum(encryptedData);\n\
+    \    \n    // Calculate expected checksum\n    const expectedChecksum = await\
+    \ this.hashGenerator.generateHash(\n      encryptedData.slice(0, -checksum.length)\n\
+    \    );\n    \n    // Compare checksums\n    const isValid = checksum.equals(expectedChecksum);\n\
+    \    \n    return {\n      isValid,\n      checksum: checksum.toString('hex'),\n\
+    \      verificationMethod: 'SHA256',\n      timestamp: new Date()\n    };\n  }\n\
+    \  \n  private extractChecksum(encryptedData: Buffer): Buffer {\n    // Extract\
+    \ checksum from the end of encrypted data\n    // Implementation depends on the\
+    \ specific format used\n    return encryptedData.slice(-32); // Assuming 32-byte\
+    \ SHA256 checksum\n  }\n}\n```"
+- level: 3
+  title: '**Integration Points**'
+  type: section
+  content: ''
+- level: 4
+  title: '**1. Key Management Integration**'
+  type: section
+  content: '- **Description**: Manages decryption keys and key lifecycle
+
+    - **Protocol**: Secure key retrieval and validation protocols
+
+    - **Authentication**: Key access control and authorization
+
+    - **Rate Limiting**: Key operation rate limiting for security'
+- level: 4
+  title: '**2. Algorithm Registry Integration**'
+  type: section
+  content: '- **Description**: Provides access to available decryption algorithms
+
+    - **Protocol**: Registry pattern with algorithm detection and lookup
+
+    - **Authentication**: Algorithm validation and security verification
+
+    - **Rate Limiting**: Algorithm-specific performance constraints'
+- level: 2
+  title: Performance Characteristics
+  type: section
+  content: ''
+- level: 3
+  title: '**Throughput**'
+  type: section
+  content: '- **Decryption Speed**: 100MB/s for AES-256-GCM on standard hardware
+
+    - **Key Retrieval**: < 10ms for cached keys, < 5s for remote keys
+
+    - **Parallel Processing**: Support for up to 10 concurrent decryption operations
+
+    - **Streaming**: Real-time streaming decryption for large files'
+- level: 3
+  title: '**Reliability**'
+  type: section
+  content: '- **Error Rate**: < 0.001% decryption failures
+
+    - **Recovery Time**: < 100ms for recoverable errors
+
+    - **Availability**: 99.99% uptime for decryption services
+
+    - **Data Recovery**: Automatic recovery from minor data corruption'
+- level: 3
+  title: '**Scalability**'
+  type: section
+  content: '- **Horizontal Scaling**: Support for distributed decryption across multiple
+    nodes
+
+    - **Vertical Scaling**: Linear performance improvement with additional CPU cores
+
+    - **Memory Usage**: < 100MB memory footprint for standard operations
+
+    - **Streaming Support**: Memory-efficient streaming for large data sets'
+- level: 2
+  title: Security Considerations
+  type: section
+  content: ''
+- level: 3
+  title: '**Cryptographic Security**'
+  type: section
+  content: '- **Algorithm Strength**: Only approved cryptographic algorithms are supported
+
+    - **Key Security**: Keys are protected using industry-standard security measures
+
+    - **Data Integrity**: Comprehensive data integrity verification
+
+    - **Authenticity**: Verification of data authenticity and origin'
+- level: 3
+  title: '**Access Control**'
+  type: section
+  content: '- **Key Access**: Strict access control for decryption keys
+
+    - **Operation Authorization**: Authorization required for decryption operations
+
+    - **Audit Trail**: Complete audit trail for all decryption operations
+
+    - **Compliance**: Support for various security compliance requirements'
+- level: 3
+  title: '**Data Protection**'
+  type: section
+  content: '- **Secure Key Retrieval**: Secure retrieval of decryption keys
+
+    - **Data Validation**: Validation of encrypted data format and integrity
+
+    - **Error Handling**: Secure error handling without information leakage
+
+    - **Secure Deletion**: Secure deletion of temporary decryption data'
+- level: 2
+  title: Error Handling
+  type: section
+  content: ''
+- level: 3
+  title: '**Error Types**'
+  type: section
+  content: '- **Invalid Input**: Invalid encrypted data or parameters provided
+
+    - **Key Errors**: Key retrieval, validation, or authorization failures
+
+    - **Algorithm Errors**: Unsupported or incompatible encryption algorithms
+
+    - **Data Corruption**: Data corruption or integrity verification failures
+
+    - **Performance Errors**: Timeout or resource exhaustion errors
+
+    - **Security Errors**: Security validation or compliance failures'
+- level: 3
+  title: '**Error Recovery**'
+  type: section
+  content: '- **Automatic Retry**: Automatic retry for transient errors
+
+    - **Fallback Algorithms**: Fallback to alternative decryption algorithms
+
+    - **Key Rotation**: Automatic key rotation on key failures
+
+    - **Graceful Degradation**: Graceful degradation for performance issues
+
+    - **Data Recovery**: Attempts to recover from minor data corruption'
+- level: 2
+  title: Testing Strategy
+  type: section
+  content: ''
+- level: 3
+  title: '**Unit Testing**'
+  type: section
+  content: '- **Input Validation**: Test all input validation scenarios
+
+    - **Key Management**: Test key retrieval, validation, and authorization
+
+    - **Algorithm Detection**: Test algorithm detection and compatibility
+
+    - **Error Handling**: Test all error conditions and recovery mechanisms'
+- level: 3
+  title: '**Integration Testing**'
+  type: section
+  content: '- **End-to-End Decryption**: Test complete decryption workflows
+
+    - **Key Management Integration**: Test integration with key management systems
+
+    - **Performance Testing**: Test performance under various load conditions
+
+    - **Security Testing**: Test security measures and compliance'
+- level: 3
+  title: '**Load Testing**'
+  type: section
+  content: '- **Concurrent Operations**: Test multiple concurrent decryption operations
+
+    - **Large Data Sets**: Test decryption of large data sets
+
+    - **Memory Usage**: Test memory usage under high load
+
+    - **Performance Degradation**: Test performance under resource constraints'
+- level: 2
+  title: Deployment Considerations
+  type: section
+  content: ''
+- level: 3
+  title: '**Resource Requirements**'
+  type: section
+  content: '- **CPU**: Minimum 2 cores, recommended 4+ cores for high-performance
+    operations
+
+    - **Memory**: Minimum 512MB, recommended 2GB+ for large operations
+
+    - **Storage**: Minimum 1GB for temporary decryption data and audit logs
+
+    - **Network**: High-speed network for distributed operations and key retrieval'
+- level: 3
+  title: '**Configuration**'
+  type: section
+  content: '- **Environment Variables**: Configuration through environment variables
+
+    - **Configuration Files**: Support for configuration file-based setup
+
+    - **Runtime Configuration**: Dynamic configuration updates
+
+    - **Validation**: Configuration validation on startup'
+- level: 3
+  title: '**Monitoring**'
+  type: section
+  content: '- **Performance Metrics**: Monitor decryption performance and throughput
+
+    - **Error Rates**: Monitor decryption error rates and types
+
+    - **Security Events**: Monitor security-related events and alerts
+
+    - **Resource Usage**: Monitor CPU, memory, and storage usage'
+- level: 2
+  title: Usage Examples
+  type: section
+  content: ''
+- level: 3
+  title: '**Basic Usage**'
+  type: section
+  content: "```typescript\nimport { BaseDecryptor } from './BaseDecryptor';\n\nconst\
+    \ decryptor = new BaseDecryptor(config);\n\nconst input: BaseDecryptorInput =\
+    \ {\n  encryptedData: Buffer.from('encrypted_data_base64', 'base64'),\n  keyId:\
+    \ 'key_123'\n};\n\nconst result = await decryptor.decrypt(input);\nconsole.log('Decrypted\
+    \ data:', result.decryptedData.toString());\n```"
+- level: 3
+  title: '**Advanced Usage**'
+  type: section
+  content: "```typescript\nimport { BaseDecryptor } from './BaseDecryptor';\n\nconst\
+    \ decryptor = new BaseDecryptor(config);\n\nconst input: BaseDecryptorInput =\
+    \ {\n  encryptedData: Buffer.from('large_encrypted_data'),\n  algorithm: 'AES-256-GCM',\n\
+    \  parameters: {\n    mode: 'GCM',\n    iv: Buffer.from('initialization_vector'),\n\
+    \    tag: Buffer.from('authentication_tag'),\n    aad: Buffer.from('additional_authenticated_data')\n\
+    \  },\n  metadata: {\n    userId: 'user123',\n    dataType: 'personal',\n    compliance:\
+    \ 'GDPR'\n  }\n};\n\nconst result = await decryptor.decrypt(input);\nconsole.log('Decryption\
+    \ successful:', result.status.success);\nconsole.log('Data integrity valid:',\
+    \ result.integrity.isValid);\nconsole.log('Operation ID:', result.metadata.operationId);\n\
+    ```"
+- level: 3
+  title: '**Streaming Decryption**'
+  type: section
+  content: "```typescript\nimport { BaseDecryptor } from './BaseDecryptor';\nimport\
+    \ { createReadStream, createWriteStream } from 'fs';\n\nconst decryptor = new\
+    \ BaseDecryptor(config);\n\nconst inputStream = createReadStream('encrypted_file.dat');\n\
+    const outputStream = createWriteStream('decrypted_file.txt');\n\nconst input:\
+    \ BaseDecryptorInput = {\n  encryptedData: inputStream,\n  keyId: 'streaming_key_456',\n\
+    \  parameters: {\n    streaming: true,\n    chunkSize: 1024 * 1024 // 1MB chunks\n\
+    \  }\n};\n\nconst result = await decryptor.decryptStream(input, outputStream);\n\
+    console.log('Streaming decryption completed:', result.status.success);\n```"
+- level: 2
+  title: Future Enhancements
+  type: section
+  content: ''
+- level: 3
+  title: '**Planned Features**'
+  type: section
+  content: '- **Quantum-Resistant Algorithms**: Support for post-quantum cryptography
+    decryption
+
+    - **Hardware Acceleration**: Integration with hardware security modules for decryption
+
+    - **Advanced Key Management**: Enhanced key management with key escrow and recovery
+
+    - **Compliance Automation**: Automated compliance checking and reporting for decryption'
+- level: 3
+  title: '**Performance Improvements**'
+  type: section
+  content: "- **GPU Acceleration**: GPU-accelerated decryption for large data sets\n\
+    - **Advanced Streaming**: Enhanced streaming decryption with progress tracking\n\
+    - **Batch Processing**: Optimized batch decryption operations\n- **Caching**:\
+    \ Intelligent caching for frequently used keys and algorithms\n\n---\n\n**Version**:\
+    \ 1.0  \n**Focus**: Core decryption interface and common functionality for all\
+    \ decryption operations"

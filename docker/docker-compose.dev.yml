@@ -1,0 +1,164 @@
+name: kos-v1
+services:
+  browseruse:
+    image: browseruse/browseruse:latest
+    container_name: kos-browseruse
+    ports:
+    - 3004:3000
+    environment:
+    - BROWSERUSE_API_KEY=kos-30437
+    - BROWSERUSE_CATEGORY=dev
+    - BROWSERUSE_COMPOSE_GROUP=dev
+    - BROWSERUSE_CONTAINER_NAME=kos-browseruse
+    - BROWSERUSE_DEPENDS_ON=
+    - BROWSERUSE_ENABLE=true
+    - BROWSERUSE_EXTERNAL_PORT=3004
+    - BROWSERUSE_HEALTH_CHECK_COMMAND=curl -f http://kos-browseruse:3000 || exit 1
+    - BROWSERUSE_HEALTH_CHECK_INTERVAL=30s
+    - BROWSERUSE_HEALTH_CHECK_RETRIES=3
+    - BROWSERUSE_HEALTH_CHECK_TIMEOUT=10s
+    - BROWSERUSE_IMAGE=browseruse/browseruse:latest
+    - BROWSERUSE_INTERNAL_PORT=3000
+    - BROWSERUSE_NETWORK=kos-network
+    - BROWSERUSE_PROFILE=dev
+    - BROWSERUSE_RESTART_POLICY=unless-stopped
+    - ADMIN_USER=kos-admin
+    - ADMIN_PASSWORD=kos-30437
+    networks:
+    - kos-network
+    restart: unless-stopped
+  codium:
+    image: codercom/code-server:latest
+    container_name: kos-codium
+    ports:
+    - 3006:8080
+    environment:
+    - CODIUM_CATEGORY=dev
+    - CODIUM_COMPOSE_GROUP=dev
+    - CODIUM_CONTAINER_NAME=kos-codium
+    - CODIUM_DEPENDS_ON=
+    - CODIUM_ENABLE=true
+    - CODIUM_EXTERNAL_PORT=3006
+    - CODIUM_HEALTH_CHECK_COMMAND=curl -f http://kos-codium:8080 || exit 1
+    - CODIUM_HEALTH_CHECK_INTERVAL=30s
+    - CODIUM_HEALTH_CHECK_RETRIES=3
+    - CODIUM_HEALTH_CHECK_TIMEOUT=10s
+    - CODIUM_IMAGE=codercom/code-server:latest
+    - CODIUM_INTERNAL_PORT=8080
+    - CODIUM_NETWORK=kos-network
+    - CODIUM_PROFILE=dev
+    - CODIUM_RESTART_POLICY=unless-stopped
+    - ADMIN_USER=kos-admin
+    - ADMIN_PASSWORD=kos-30437
+    networks:
+    - kos-network
+    restart: unless-stopped
+  context7:
+    build:
+      context: ..
+      dockerfile: docker/context7.Dockerfile
+    container_name: kos-context7
+    ports:
+    - 3005:3000
+    environment:
+    - CONTEXT7_API_KEY=kos-30437
+    - CONTEXT7_CATEGORY=dev
+    - CONTEXT7_COMPOSE_GROUP=dev
+    - CONTEXT7_CONTAINER_NAME=kos-context7
+    - CONTEXT7_DATABASE_URL=postgresql://kos-admin:kos-30437@kos-postgres:5432/context7
+    - CONTEXT7_DEPENDS_ON=
+    - CONTEXT7_ENABLE=true
+    - CONTEXT7_EXTERNAL_PORT=3005
+    - CONTEXT7_HEALTH_CHECK_COMMAND=curl -f http://kos-context7:3000 || exit 1
+    - CONTEXT7_HEALTH_CHECK_INTERVAL=30s
+    - CONTEXT7_HEALTH_CHECK_RETRIES=3
+    - CONTEXT7_HEALTH_CHECK_TIMEOUT=10s
+    - CONTEXT7_IMAGE=context7-mcp:latest
+    - CONTEXT7_INTERNAL_PORT=3000
+    - CONTEXT7_NETWORK=kos-network
+    - CONTEXT7_PROFILE=dev
+    - CONTEXT7_RESTART_POLICY=unless-stopped
+    - ADMIN_USER=kos-admin
+    - ADMIN_PASSWORD=kos-30437
+    networks:
+    - kos-network
+    restart: unless-stopped
+  gitea:
+    image: gitea/gitea:latest
+    container_name: kos-gitea
+    ports:
+    - 3002:3000
+    - 22:2222
+    environment:
+    - GITEA_CATEGORY=dev
+    - GITEA_COMPOSE_GROUP=dev
+    - GITEA_CONTAINER_NAME=kos-gitea
+    - GITEA_DEPENDS_ON=postgres
+    - GITEA_ENABLE=true
+    - GITEA_EXTERNAL_PORT=3002
+    - GITEA_HEALTH_CHECK_COMMAND=curl -f http://kos-gitea:3000 || exit 1
+    - GITEA_HEALTH_CHECK_INTERVAL=30s
+    - GITEA_HEALTH_CHECK_RETRIES=3
+    - GITEA_HEALTH_CHECK_TIMEOUT=10s
+    - GITEA_IMAGE=gitea/gitea:latest
+    - GITEA_INTERNAL_PORT=3000
+    - GITEA_NETWORK=kos-network
+    - GITEA_PROFILE=dev
+    - GITEA_RESTART_POLICY=unless-stopped
+    - GITEA_SSH_EXTERNAL_PORT=22
+    - GITEA_SSH_INTERNAL_PORT=2222
+    - ADMIN_USER=kos-admin
+    - ADMIN_PASSWORD=kos-30437
+    networks:
+    - kos-network
+    restart: unless-stopped
+  supabase:
+    image: supabase/postgres:15.1.0.117
+    container_name: kos-supabase
+    ports:
+    - 54321:5432
+    - 3003:3000
+    environment:
+    - SUPABASE_CATEGORY=dev
+    - SUPABASE_CLOUD_ANON_KEY=
+    - SUPABASE_CLOUD_ENABLE=false
+    - SUPABASE_CLOUD_SERVICE_ROLE_KEY=
+    - SUPABASE_CLOUD_URL=
+    - SUPABASE_COMPOSE_GROUP=dev
+    - SUPABASE_CONTAINER_NAME=kos-supabase
+    - SUPABASE_DEPENDS_ON=postgres
+    - SUPABASE_ENABLE=true
+    - SUPABASE_EXTERNAL_PORT=54321
+    - SUPABASE_HEALTH_CHECK_COMMAND=curl -f http://kos-supabase:3000 || exit 1
+    - SUPABASE_HEALTH_CHECK_INTERVAL=30s
+    - SUPABASE_HEALTH_CHECK_RETRIES=3
+    - SUPABASE_HEALTH_CHECK_TIMEOUT=10s
+    - SUPABASE_IMAGE=supabase/postgres:15.1.0.117
+    - SUPABASE_INTERNAL_PORT=5432
+    - SUPABASE_NETWORK=kos-network
+    - SUPABASE_PROFILE=core
+    - SUPABASE_RESTART_POLICY=unless-stopped
+    - SUPABASE_STUDIO_CONTAINER_NAME=kos-supabase-studio
+    - SUPABASE_STUDIO_ENABLE=true
+    - SUPABASE_STUDIO_EXTERNAL_PORT=3003
+    - SUPABASE_STUDIO_HEALTH_CHECK_COMMAND=curl --fail http://localhost:3000/ || exit
+      1
+    - SUPABASE_STUDIO_HEALTH_CHECK_INTERVAL=30s
+    - SUPABASE_STUDIO_HEALTH_CHECK_RETRIES=3
+    - SUPABASE_STUDIO_HEALTH_CHECK_TIMEOUT=10s
+    - SUPABASE_STUDIO_IMAGE=supabase/studio:latest
+    - SUPABASE_STUDIO_INTERNAL_PORT=3000
+    - SUPABASE_STUDIO_NETWORK=kos-network
+    - SUPABASE_STUDIO_RESTART_POLICY=unless-stopped
+    - ADMIN_USER=kos-admin
+    - ADMIN_PASSWORD=kos-30437
+    networks:
+    - kos-network
+    restart: unless-stopped
+networks:
+  kos-network:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 172.20.0.0/16
+volumes: {}

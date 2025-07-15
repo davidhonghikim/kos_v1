@@ -1,0 +1,843 @@
+metadata:
+  original_file: 02_Frontend_Architecture.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Frontend Architecture Specification
+  description: Complete UI/UX architecture for KLF-compliant kOS applications
+  type: implementation
+  status: canonical
+  priority: high
+  last_updated: '2025-06-30T05:00:00Z'
+  version: 2.0.0
+  agent_notes: Updated to emphasize KLF as the universal protocol enabling frontend/backend separation
+sections:
+- level: 1
+  title: Frontend Architecture Specification
+  type: section
+  content: '**Complete UI/UX Architecture for KLF-Compliant kOS Applications**'
+- level: 2
+  title: 🎯 Overview
+  type: section
+  content: 'The kOS frontend architecture provides a **KLF-first, protocol-driven interface** for all kOS applications. The Kind Link Framework (KLF) acts as the "telephone operator" - enabling frontend and backend teams to develop in parallel while maintaining perfect interoperability.
+
+
+    This architecture emphasizes **protocol compliance, cultural sensitivity, and universal accessibility** through the HIEROS Covenant while enabling rapid, independent development across the entire kOS ecosystem.
+
+
+    **Key Applications:**
+
+    - **PersonaRAG Bridge**: Chrome extension for AI-enhanced browsing
+
+    - **Griot Kitchen**: Generative AI workflow orchestration
+
+    - **Universal Web App**: Unified interface for all kOS services
+
+    - **Starseed Node**: Network discovery and management
+
+    - **Docs Viewer**: Knowledge base and documentation browser'
+- level: 2
+  title: 📚 Architecture Principles
+  type: section
+  content: ''
+- level: 3
+  title: 'Principle 1: KLF-First Communication'
+  type: section
+  content: '**All frontend applications must communicate through KLF protocol.**
+
+
+    The KLF serves as the universal communication layer, enabling:
+
+    - **Backend Independence**: Frontend can be developed without backend implementation
+
+    - **Service Discovery**: Dynamic discovery of available backend services
+
+    - **Protocol Standardization**: Consistent message format across all services
+
+    - **Future-Proofing**: Transport-agnostic design (HTTP, WebSockets, etc.)
+
+
+    **Implementation Pattern:**
+
+    ```typescript
+
+    // Always use KLF client instead of direct API calls
+
+    const result = await klfClient.request("persona.rag.query", {
+
+      query: "Find AI ethics documents",
+
+      context: "research"
+
+    });
+
+    ```'
+- level: 3
+  title: 'Principle 2: HIEROS-Compliant Design'
+  type: section
+  content: '**Every interface must embody the Seven Sacred Intentions.**
+
+
+    Design decisions must align with:
+
+    1. **Honor All Beings**: Accessible interfaces for diverse abilities
+
+    2. **Interoperability Over Control**: Open, standards-based components
+
+    3. **Equity of Voice**: Equal representation across cultural perspectives
+
+    4. **Respect Cultural Flow**: Authentic cultural design elements
+
+    5. **Openness With Boundaries**: Transparent operations with privacy
+
+    6. **Stewardship Not Extraction**: Sustainable, resource-conscious UI
+
+    7. **Guided Evolution**: Community-driven design improvements'
+- level: 3
+  title: 'Principle 3: Component Modularity'
+  type: section
+  content: '**Shared component library ensures consistency across applications.**
+
+
+    All applications use the same:
+
+    - UI component library (Shadcn/UI + Tailwind)
+
+    - State management patterns (Jotai atoms)
+
+    - KLF client implementation
+
+    - Security and vault integration
+
+    - Cultural theming system'
+- level: 2
+  title: 🏗️ Technical Stack
+  type: section
+  content: ''
+- level: 3
+  title: Core Technologies
+  type: section
+  content: '- **Frontend Framework**: React 18+ with TypeScript
+
+    - **Build System**: Vite for fast development and optimized builds
+
+    - **State Management**: Jotai (atomic, reactive state)
+
+    - **Styling**: Tailwind CSS + Shadcn/UI component library
+
+    - **Icons**: Lucide React for consistent iconography
+
+    - **Communication**: KLF protocol over HTTP/HTTPS and WebSockets
+
+    - **Security**: Ed25519 signatures, TLS 1.3, AES-256-CBC encryption'
+- level: 3
+  title: KLF Integration Layer
+  type: section
+  content: '**Universal KLF client providing backend communication:**
+
+
+    ```typescript
+
+    interface KLFClient {
+
+      // Core protocol methods
+
+      ping(): Promise<KLFPongResponse>;
+
+      getIdentity(): Promise<KLFIdentityResponse>;
+
+      getCapabilities(): Promise<KLFCapabilitiesResponse>;
+
+      request(service: string, params: any): Promise<any>;
+
+      subscribe(events: string[]): Promise<EventStream>;
+
+
+      // Application-specific services
+
+      personaRAG: {
+
+        query(query: string, context?: string): Promise<RAGResult>;
+
+        vectorize(content: string): Promise<VectorResult>;
+
+      };
+
+      
+
+      griotKitchen: {
+
+        listRecipes(): Promise<Recipe[]>;
+
+        executeRecipe(id: string, params: any): Promise<JobResult>;
+
+        getJobStatus(jobId: string): Promise<JobStatus>;
+
+      };
+
+      
+
+      vault: {
+
+        store(key: string, value: any): Promise<void>;
+
+        retrieve(key: string): Promise<any>;
+
+        unlock(passphrase: string): Promise<boolean>;
+
+      };
+
+    }
+
+    ```'
+- level: 2
+  title: 🎪 Application Architecture
+  type: section
+  content: ''
+- level: 3
+  title: PersonaRAG Bridge (Chrome Extension)
+  type: section
+  content: '**Multi-context Chrome extension with secure vault integration.**
+
+
+    **Architecture Components:**
+
+    ```
+
+    📱 Extension Architecture
+
+    ├── 🎛️ Popup (Quick Actions)
+
+    ├── 📋 Tab View (Full Interface)
+
+    ├── 🔧 Sidepanel (Contextual AI)
+
+    ├── ⚙️ Background Script (Orchestration)
+
+    └── 🌐 Content Script (Page Integration)
+
+    ```
+
+
+    **Tab Navigation System:**
+
+    - **Chat**: LLM conversation interface
+
+    - **Image**: AI image generation tools
+
+    - **Services**: External service management
+
+    - **Artifacts**: Generated content storage
+
+    - **Recipes**: Workflow templates
+
+    - **Agents**: AI agent configuration
+
+    - **Vault**: Secure credential storage
+
+    - **Settings**: Application preferences
+
+    - **Docs**: Help and documentation
+
+    - **Console**: Debug and diagnostics'
+- level: 3
+  title: Griot Kitchen (Workflow Orchestration)
+  type: section
+  content: '**Dynamic workflow orchestration with real-time monitoring.**
+
+
+    **Core Components:**
+
+    - **Recipe Studio**: Dynamic form generation from KLF service schemas
+
+    - **Service Manager**: External AI service configuration (A1111, ComfyUI)
+
+    - **Artifact Gallery**: Generated content display and management
+
+    - **Job Monitor**: Real-time workflow execution tracking
+
+    - **Template Library**: Shareable workflow templates
+
+
+    **KLF Service Integration:**
+
+    ```typescript
+
+    // Dynamic form generation from KLF capabilities
+
+    const capabilities = await klfClient.getCapabilities();
+
+    const recipeForm = generateFormFromSchema(capabilities.services["griot.recipe.execute"]);
+
+    ```'
+- level: 3
+  title: Universal Web Interface
+  type: section
+  content: '**Unified web interface providing access to all kOS services.**
+
+
+    **Adaptive Interface Pattern:**
+
+    ```typescript
+
+    const UniversalInterface: React.FC = () => {
+
+      const [availableServices] = useKLFServices();
+
+      
+
+      return (
+
+        <Router>
+
+          <ServiceDiscoveryProvider>
+
+            <CulturalThemeProvider>
+
+              <Routes>
+
+                {availableServices.map(service => (
+
+                  <Route 
+
+                    key={service.id}
+
+                    path={`/${service.path}`} 
+
+                    element={<DynamicServiceInterface service={service} />} 
+
+                  />
+
+                ))}
+
+              </Routes>
+
+            </CulturalThemeProvider>
+
+          </ServiceDiscoveryProvider>
+
+        </Router>
+
+      );
+
+    };
+
+    ```'
+- level: 2
+  title: 🧩 Shared Component System
+  type: section
+  content: ''
+- level: 3
+  title: Core Components
+  type: section
+  content: '**Reusable components ensuring consistency across applications:**
+
+
+    **Communication Components:**
+
+    - `<KLFServiceConnector />` - Manages KLF connections with status
+
+    - `<ServiceStatusIndicator />` - Visual service health indicators
+
+    - `<DynamicForm />` - Auto-generated forms from KLF schemas
+
+    - `<EventSubscriber />` - Real-time KLF event handling
+
+
+    **Security Components:**
+
+    - `<VaultUnlock />` - Secure credential access interface
+
+    - `<SignatureVerifier />` - KLF message signature validation
+
+    - `<EncryptedStorage />` - Client-side encrypted data storage
+
+
+    **Content Components:**
+
+    - `<ArtifactViewer />` - Multi-format content display
+
+    - `<MarkdownRenderer />` - Rich text and documentation
+
+    - `<CodeHighlighter />` - Syntax-highlighted code blocks
+
+    - `<ImageGallery />` - Generated image management'
+- level: 3
+  title: State Management (Jotai)
+  type: section
+  content: '**Atomic state management with KLF integration:**
+
+
+    ```typescript
+
+    // Core application atoms
+
+    export const klfConnectionAtom = atom<KLFConnection | null>(null);
+
+    export const klfCapabilitiesAtom = atom<KLFCapabilities | null>(null);
+
+    export const activeServiceAtom = atom<string | null>(null);
+
+
+    // Vault and security atoms
+
+    export const vaultStateAtom = atom<VaultState>({
+
+      isUnlocked: false,
+
+      credentials: {},
+
+      autoLockTimer: null
+
+    });
+
+
+    // Service-specific atoms
+
+    export const personaRAGStateAtom = atom<PersonaRAGState>({
+
+      activeQuery: null,
+
+      searchResults: [],
+
+      vectorStore: null
+
+    });
+
+
+    export const griotKitchenStateAtom = atom<GriotKitchenState>({
+
+      activeRecipe: null,
+
+      runningJobs: [],
+
+      artifacts: []
+
+    });
+
+
+    // Derived atoms for computed state
+
+    export const availableServicesAtom = atom((get) => {
+
+      const capabilities = get(klfCapabilitiesAtom);
+
+      return capabilities?.services || [];
+
+    });
+
+    ```'
+- level: 2
+  title: 🔐 Security Architecture
+  type: section
+  content: ''
+- level: 3
+  title: KLF Security Implementation
+  type: section
+  content: '**All communication secured through KLF protocol:**
+
+
+    ```typescript
+
+    class SecureKLFClient {
+
+      private did: string;
+
+      private keyPair: Ed25519KeyPair;
+
+
+      async request(service: string, params: any): Promise<any> {
+
+        // Build KLF message
+
+        const message = {
+
+          klf: { version: "1.0.0", timestamp: new Date().toISOString() },
+
+          sender: { did: this.did, signature: "" },
+
+          recipient: { did: await this.resolveServiceDID(service) },
+
+          payload: { type: "service_request", service, body: params }
+
+        };
+
+
+        // Sign message
+
+        message.sender.signature = await this.signMessage(message);
+
+
+        // Send with proper headers
+
+        return fetch("/klf/v1/request", {
+
+          method: "POST",
+
+          headers: {
+
+            "Content-Type": "application/json",
+
+            "X-KOS-Node-ID": this.did,
+
+            "X-KOS-Signature": message.sender.signature
+
+          },
+
+          body: JSON.stringify(message)
+
+        });
+
+      }
+
+    }
+
+    ```'
+- level: 3
+  title: Vault Integration
+  type: section
+  content: '**Secure credential storage with AES-256-CBC encryption:**
+
+
+    - **Key Derivation**: PBKDF2 from user passphrase
+
+    - **Encryption**: AES-256-CBC with random IV per entry
+
+    - **Storage**: Chrome storage API (extension) or IndexedDB (web)
+
+    - **Auto-lock**: Configurable timeout for security
+
+    - **Backup**: Encrypted export/import functionality'
+- level: 2
+  title: 🌍 Cultural & Accessibility Framework
+  type: section
+  content: ''
+- level: 3
+  title: HIEROS Cultural Themes
+  type: section
+  content: '**Authentic cultural design with proper attribution:**
+
+
+    ```typescript
+
+    interface CulturalTheme {
+
+      id: string;
+
+      name: string;
+
+      attribution: {
+
+        culture: string;
+
+        source: string;
+
+        permission: string;
+
+        respectfulUsage: string[];
+
+      };
+
+      design: {
+
+        colors: ColorPalette;
+
+        typography: TypographyScale;
+
+        spacing: SpacingScale;
+
+        iconography: IconSet;
+
+      };
+
+    }
+
+
+    // Example themes
+
+    const griotTheme: CulturalTheme = {
+
+      id: "griot",
+
+      name: "West African Griot Tradition",
+
+      attribution: {
+
+        culture: "West African",
+
+        source: "Traditional Griot storytelling aesthetics",
+
+        permission: "Community-approved usage",
+
+        respectfulUsage: ["storytelling", "knowledge-sharing", "cultural-education"]
+
+      },
+
+      // ... design properties
+
+    };
+
+    ```'
+- level: 3
+  title: Accessibility Standards
+  type: section
+  content: '**WCAG 2.1 AA+ compliance with cultural considerations:**
+
+
+    - **Keyboard Navigation**: Full functionality without mouse
+
+    - **Screen Reader Support**: Semantic HTML and ARIA labels
+
+    - **Color Contrast**: 4.5:1 minimum, 7:1 preferred
+
+    - **Text Scaling**: Support up to 200% zoom
+
+    - **Motion Preferences**: Respect reduced motion settings
+
+    - **Cultural Patterns**: Support for RTL languages, cultural color meanings'
+- level: 2
+  title: 🚀 Development Workflow
+  type: section
+  content: ''
+- level: 3
+  title: KLF-First Development
+  type: section
+  content: '**Development process prioritizing KLF integration:**
+
+
+    1. **Protocol Definition**: Define KLF service contracts first
+
+    2. **Mock Implementation**: Create KLF mock servers for frontend development
+
+    3. **Frontend Development**: Build UI using KLF client
+
+    4. **Backend Integration**: Connect to real KLF-compliant backends
+
+    5. **Testing**: Comprehensive testing with mock and real services'
+- level: 3
+  title: Quality Standards
+  type: section
+  content: '**Comprehensive quality requirements:**
+
+
+    **Performance:**
+
+    - < 3s initial load time
+
+    - 60fps smooth interactions
+
+    - Efficient bundle sizes with code splitting
+
+    - Progressive loading for large datasets
+
+
+    **Testing:**
+
+    - Unit tests for all components and utilities
+
+    - Integration tests for KLF communication
+
+    - End-to-end tests for complete user workflows
+
+    - Accessibility testing with automated tools
+
+
+    **Code Quality:**
+
+    - TypeScript strict mode
+
+    - ESLint + Prettier formatting
+
+    - Comprehensive JSDoc documentation
+
+    - Component prop validation'
+- level: 2
+  title: 📦 Deployment Architecture
+  type: section
+  content: ''
+- level: 3
+  title: Build Configuration
+  type: section
+  content: '**Optimized builds for different deployment targets:**
+
+
+    **Chrome Extension (PersonaRAG Bridge):**
+
+    ```javascript
+
+    // vite.config.ts for extension
+
+    export default defineConfig({
+
+      build: {
+
+        rollupOptions: {
+
+          input: {
+
+            popup: "popup.html",
+
+            tab: "tab.html", 
+
+            sidepanel: "sidepanel.html",
+
+            background: "src/background.ts",
+
+            content: "src/content.ts"
+
+          }
+
+        }
+
+      },
+
+      define: {
+
+        __KLF_ENDPOINT__: JSON.stringify(process.env.KLF_ENDPOINT)
+
+      }
+
+    });
+
+    ```
+
+
+    **Web Applications:**
+
+    - Static site generation for docs-viewer
+
+    - Progressive Web App capabilities
+
+    - Docker containerization
+
+    - Kubernetes deployment manifests'
+- level: 3
+  title: Configuration Management
+  type: section
+  content: '**Multi-source configuration with priority hierarchy:**
+
+
+    1. **Default Configuration**: Built-in testing defaults
+
+    2. **User Config File**: Deployment-specific settings
+
+    3. **Network RAG**: Dynamic service discovery
+
+    4. **Runtime Settings**: User preferences and overrides
+
+
+    ```typescript
+
+    interface AppConfig {
+
+      klf: {
+
+        endpoint: string;
+
+        timeout: number;
+
+        retries: number;
+
+      };
+
+      vault: {
+
+        autoLockTimeout: number;
+
+        encryptionAlgorithm: string;
+
+      };
+
+      ui: {
+
+        theme: string;
+
+        language: string;
+
+        accessibility: AccessibilityPreferences;
+
+      };
+
+    }
+
+    ```'
+- level: 2
+  title: 🔄 Implementation Roadmap
+  type: section
+  content: ''
+- level: 3
+  title: Phase 1 - Foundation
+  type: section
+  content: '**Core infrastructure and shared components:**
+
+
+    - [ ] KLF client library implementation
+
+    - [ ] Shared component library (Shadcn/UI + custom components)
+
+    - [ ] Jotai state management setup
+
+    - [ ] Security and vault integration
+
+    - [ ] Cultural theming system
+
+    - [ ] Build and deployment pipeline'
+- level: 3
+  title: Phase 2 - Applications
+  type: section
+  content: '**Individual application development:**
+
+
+    - [ ] PersonaRAG Bridge Chrome extension
+
+    - [ ] Griot Kitchen workflow orchestration
+
+    - [ ] Universal Web Interface
+
+    - [ ] Starseed Node management
+
+    - [ ] Documentation viewer'
+- level: 3
+  title: Phase 3 - Integration
+  type: section
+  content: '**Cross-application integration and polish:**
+
+
+    - [ ] Service discovery and routing
+
+    - [ ] Cross-application data sharing
+
+    - [ ] Advanced cultural themes
+
+    - [ ] Accessibility enhancements
+
+    - [ ] Performance optimization'
+- level: 2
+  title: 📋 Success Metrics
+  type: section
+  content: '**Measurable outcomes for architecture success:**
+
+
+    **Technical Metrics:**
+
+    - 100% KLF protocol compliance across all applications
+
+    - < 3s load time for all interfaces
+
+    - WCAG 2.1 AA+ accessibility compliance
+
+    - 95%+ test coverage for core functionality
+
+
+    **User Experience Metrics:**
+
+    - Consistent UX patterns across applications
+
+    - Successful cultural theme validation by communities
+
+    - Positive accessibility testing with diverse users
+
+    - Smooth frontend/backend development parallelization
+
+
+    This architecture provides a comprehensive foundation for building the complete kOS frontend ecosystem, emphasizing KLF protocol compliance, cultural sensitivity, and universal accessibility while enabling rapid, independent development across frontend and backend teams.'

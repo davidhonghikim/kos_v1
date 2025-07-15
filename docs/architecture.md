@@ -1,8 +1,10 @@
-# Amauta Wearable AI Node - Architecture (KOS v1)
+# KOS v1 - System Architecture
+
+**last_updated: 2025-07-12**
 
 ## Overview
 
-The Amauta Wearable AI Node is a production-grade wearable AI system designed for medical and personal assistance applications. It features a modular architecture with multi-agent support, plugin system, and medical-grade security. This project is part of the KOS (Knowledge Operating System) development initiative.
+KOS v1 (Knowledge Operating System) is a modular, environment-driven AI platform designed for a wide range of deployments—including wearable, server, cloud, and edge environments. The architecture supports multi-agent systems, plugin extensibility, and robust security, forming the foundation for all KOS v1 applications. This document reflects the unified architecture and principles described in the KOS v1 PRD manual.
 
 ## Development Status
 
@@ -47,19 +49,19 @@ The Amauta Wearable AI Node is a production-grade wearable AI system designed fo
 
 The agent system consists of five specialized AI agents:
 
-- **Skald**: Multilingual assistant and translator
-- **Ronin**: RAG (Retrieval-Augmented Generation) specialist
-- **Musa**: Audio processing and music generation
 - **Gallery**: Media management and image processing
 - **Hakim**: Medical AI and health monitoring
+- **Musa**: Audio processing and music generation
+- **Ronin**: RAG (Retrieval-Augmented Generation) specialist
+- **Skald**: Multilingual assistant and translator
 
 ### 2. Plugin Architecture
 
 The plugin system allows dynamic loading of functionality:
 
-- **Plugin Registry**: Centralized plugin management
 - **Dynamic Loading**: Runtime plugin loading based on KLF manifests
 - **Permission System**: Role-based plugin access
+- **Plugin Registry**: Centralized plugin management
 - **Plugin Store**: Repository for community plugins
 
 ### 3. Security System
@@ -67,19 +69,19 @@ The plugin system allows dynamic loading of functionality:
 Multi-layered security implementation:
 
 - **OAuth2**: Standard authentication
-- **WebAuthN**: Biometric authentication
+- **Plugin Guard**: Secure plugin execution
 - **RBAC**: Role-based access control
 - **Vault**: Encrypted storage with AES256 + Argon2
-- **Plugin Guard**: Secure plugin execution
+- **WebAuthN**: Biometric authentication
 
 ### 4. Medical Integration
 
 Medical-grade features for healthcare applications:
 
 - **DICOM Support**: Medical image processing
-- **PACS Integration**: Picture Archiving and Communication System
 - **Health Monitoring**: Real-time vitals tracking
 - **HIPAA Compliance**: Privacy and security standards
+- **PACS Integration**: Picture Archiving and Communication System
 
 ## Data Flow
 
@@ -107,30 +109,30 @@ DICOM File → Validation → Processing → Storage → Analysis → Results
 
 ### Frontend
 - **React 18**: UI framework
+- **Socket.io**: Real-time communication
+- **Tailwind CSS**: Styling
 - **TypeScript**: Type safety
 - **Vite**: Build tool
-- **Tailwind CSS**: Styling
-- **Socket.io**: Real-time communication
 
 ### Backend
 - **FastAPI**: API framework
+- **Pydantic**: Data validation
 - **Python 3.8+**: Runtime
 - **SQLAlchemy**: ORM
-- **Pydantic**: Data validation
 - **Uvicorn**: ASGI server
 
 ### Database & Storage
 - **PostgreSQL**: Primary database
 - **Redis**: Caching and sessions
-- **Weaviate**: Vector database
 - **SQLite**: Local development
+- **Weaviate**: Vector database
 
 ### Infrastructure
 - **Docker**: Containerization
 - **Docker Compose**: Orchestration
+- **Grafana**: Monitoring
 - **Nginx**: Reverse proxy
 - **Prometheus**: Metrics
-- **Grafana**: Monitoring
 
 ## Security Architecture
 
@@ -234,3 +236,54 @@ Load Balancer
 - **Event Sourcing**: Event-driven architecture
 - **CQRS**: Command Query Responsibility Segregation
 - **Kubernetes**: Container orchestration 
+
+## Service Port Mapping (Sequential, Unique)
+
+All *_EXTERNAL_PORT values are unique and sequential except for standard ports (80, 443, 5432, etc.).
+
+| Service            | External Port |
+|--------------------|--------------|
+| Frontend           | 3000         |
+| OpenWebUI          | 3001         |
+| Gitea              | 3002         |
+| Supabase Studio    | 3003         |
+| Browseruse         | 3004         |
+| Context7           | 3005         |
+| Codium             | 3006         |
+| Grafana            | 3007         |
+| Prompt Manager     | 3008         |
+| Artifact Manager   | 3009         |
+| Redis Commander    | 3010         |
+| PgAdmin            | 3011         |
+| Mongo Express      | 3012         |
+| Weaviate           | 3013         |
+| Nextcloud          | 3014         |
+| Huggingface        | 3015         |
+| Automatic1111      | 3016         |
+| ComfyUI            | 3017         |
+| InvokeAI           | 3018         |
+| N8N                | 3019         |
+| Penpot             | 3020         |
+| Admin Panel        | 3021         |
+| Ollama             | 3022         |
+| CAdvisor           | 3023         |
+| API                | 8000         |
+| Registry           | 5000         |
+| Elasticsearch      | 9200         |
+| MinIO              | 9000         |
+| MinIO Console      | 9001         |
+| Prometheus         | 9090         |
+| Vault              | 8200         |
+| Supabase           | 54321        |
+| Postgres           | 5432         |
+| Redis              | 6379         |
+| MongoDB            | 27017        |
+| Neo4j (Bolt)       | 7687         |
+| Neo4j (Browser)    | 7474         |
+| Gitea SSH          | 2222         |
+| NGINX (HTTP)       | 80           |
+| NGINX (HTTPS)      | 443          |
+
+**Rationale:**
+- Sequential port assignment eliminates conflicts and makes the system predictable and easy to maintain.
+- Standard ports are preserved for compatibility. 

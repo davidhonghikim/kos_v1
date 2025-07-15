@@ -1,0 +1,498 @@
+metadata:
+  original_file: 03_Terminology.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: kOS Terminology Reference
+  description: Comprehensive glossary of kOS terms, concepts, and architectural elements
+  category: reference
+  context: bridge_strategy
+  implementation_status: complete
+  decision_scope: medium
+  complexity: low
+  last_updated: '2025-01-20'
+  related_documents:
+  - ../current/services/01_service-architecture.md
+  - ../future/architecture/01_system-overview.md
+  - ../bridge/03_decision-framework.md
+  agent_notes: Essential terminology for understanding kOS architecture and implementation
+    - refer to this when encountering unfamiliar terms
+sections:
+- level: 1
+  title: kOS Terminology Reference
+  type: section
+  content: ''
+- level: 2
+  title: Agent Context
+  type: section
+  content: '**For AI Agents**: Complete kOS terminology reference covering system
+    vocabulary, concept definitions, and technical terminology. Use this when understanding
+    kOS terminology, clarifying system concepts, learning technical vocabulary, or
+    ensuring consistent terminology usage. Essential reference for all kOS communication
+    work.
+
+
+    **Implementation Notes**: Contains terminology definitions, concept explanations,
+    vocabulary standards, and technical term clarifications. Includes detailed terminology
+    mapping and concept relationship documentation.
+
+    **Quality Requirements**: Keep terminology definitions and concept explanations
+    synchronized with actual system implementation. Maintain accuracy of vocabulary
+    standards and technical term usage.
+
+    **Integration Points**: Foundation for system communication, links to all kOS
+    documentation, concept explanations, and terminology standards for comprehensive
+    vocabulary coverage.'
+- level: 2
+  title: Core System Terms
+  type: section
+  content: ''
+- level: 3
+  title: '**kOS (Kind Operating System)**'
+  type: section
+  content: 'The envisioned distributed AI operating system that enables seamless collaboration
+    between AI agents, services, and users across multiple platforms and devices.
+
+
+    **Related**: [kOS Architecture](../future/architecture/01_system-overview.md)'
+- level: 3
+  title: '**Kai-CD (Current Implementation)**'
+  type: section
+  content: 'The existing Chrome extension that serves as the foundation for kOS development.
+    Features service connector architecture, credential management, and multi-service
+    AI integration.
+
+
+    **Related**: [Current Architecture](../current/architecture/01_system-architecture.md)'
+- level: 3
+  title: '**Kind Link Protocol (KLP)**'
+  type: section
+  content: 'The core communication protocol for kOS that enables secure, decentralized
+    messaging between agents, services, and users. Supports message routing, authentication,
+    and capability negotiation.
+
+
+    **Related**: [KLP Core Protocol](../future/protocols/01_klp-core-protocol.md)'
+- level: 2
+  title: Architecture Terms
+  type: section
+  content: ''
+- level: 3
+  title: '**Service Definition**'
+  type: section
+  content: "A structured configuration object that describes an external AI service's\
+    \ capabilities, authentication, API endpoints, and integration patterns. The foundation\
+    \ of Kai-CD's service connector system.\n\n```typescript\ninterface ServiceDefinition\
+    \ {\n  id: string;\n  name: string;\n  capabilities: Capability[];\n  authentication:\
+    \ AuthenticationConfig;\n  endpoints: Record<string, EndpointDefinition>;\n}\n\
+    ```\n\n**Related**: [Service Architecture](../current/services/01_service-architecture.md)"
+- level: 3
+  title: '**Capability**'
+  type: section
+  content: 'A functional ability that a service can provide, such as `llm_chat`, `image_generation`,
+    or `embedding`. Capabilities determine which UI components are rendered and how
+    services are utilized.
+
+
+    **Available Capabilities**:
+
+    - `llm_chat` - Large language model chat interface
+
+    - `image_generation` - Image creation and manipulation
+
+    - `model_management` - Model download and configuration
+
+    - `embedding` - Text embedding and vector operations
+
+    - `transcription` - Speech-to-text conversion
+
+    - `voice_synthesis` - Text-to-speech generation
+
+    - `file_upload` - File handling and processing'
+- level: 3
+  title: '**Agent**'
+  type: section
+  content: 'In the kOS context, an autonomous software entity that can perform tasks,
+    communicate with other agents, and interact with services. Agents have identities,
+    capabilities, and can form collaborative networks.
+
+
+    **Agent Types**:
+
+    - **User Agents** - Represent human users in the system
+
+    - **Service Agents** - Manage and interface with external services
+
+    - **Task Agents** - Execute specific workflows or processes
+
+    - **Coordination Agents** - Orchestrate multi-agent collaborations
+
+
+    **Related**: [Agent Framework](../future/agents/01_agent-framework.md)'
+- level: 3
+  title: '**Bridge Strategy**'
+  type: section
+  content: 'The evolutionary approach to migrating from the current Kai-CD implementation
+    to the full kOS vision. Includes compatibility patterns, migration paths, and
+    decision frameworks.
+
+
+    **Related**: [Evolution Strategy](../bridge/01_evolution-strategy.md)'
+- level: 2
+  title: Service Integration Terms
+  type: section
+  content: ''
+- level: 3
+  title: '**apiClient**'
+  type: section
+  content: 'The universal HTTP client in Kai-CD that dynamically constructs API requests
+    based on ServiceDefinition configurations. Handles authentication, error handling,
+    and response standardization.
+
+
+    **Location**: `src/utils/apiClient.ts`'
+- level: 3
+  title: '**Service Store**'
+  type: section
+  content: 'The Zustand store that manages service state, including registration,
+    configuration, health monitoring, and capability tracking.
+
+
+    **Location**: `src/store/serviceStore.ts`'
+- level: 3
+  title: '**CapabilityUI**'
+  type: section
+  content: 'A dynamic React component that renders appropriate user interfaces based
+    on a service''s declared capabilities. Automatically switches between chat, image
+    generation, and other specialized interfaces.
+
+
+    **Location**: `src/components/CapabilityUI.tsx`'
+- level: 3
+  title: '**Service Instance**'
+  type: section
+  content: "A configured and registered service with its definition, runtime configuration,\
+    \ health status, and credential information.\n\n```typescript\ninterface ServiceInstance\
+    \ {\n  definition: ServiceDefinition;\n  config: ServiceConfig;\n  status: 'healthy'\
+    \ | 'unhealthy' | 'unknown';\n  credentials?: Record<string, string>;\n}\n```"
+- level: 2
+  title: Security and Identity Terms
+  type: section
+  content: ''
+- level: 3
+  title: '**Vault System**'
+  type: section
+  content: 'The secure credential management system in Kai-CD that handles encryption,
+    storage, and access control for service authentication credentials and sensitive
+    data.
+
+
+    **Related**: [Vault System](../current/security/01_vault-system.md)'
+- level: 3
+  title: '**Decentralized Identity (DID)**'
+  type: section
+  content: 'A self-sovereign identity system planned for kOS that allows agents, services,
+    and users to establish trust relationships without centralized authorities.
+
+
+    **Related**: [Identity Management](../future/governance/04_identity-management.md)'
+- level: 3
+  title: '**Trust Network**'
+  type: section
+  content: 'A web of cryptographically verified relationships between agents that
+    enables secure delegation, resource sharing, and collaborative decision-making
+    in kOS.
+
+
+    **Related**: [Trust Networks](../future/governance/02_trust-networks.md)'
+- level: 2
+  title: Protocol and Communication Terms
+  type: section
+  content: ''
+- level: 3
+  title: '**Message Schema**'
+  type: section
+  content: The structured format for messages passed between agents in the KLP system.
+    Includes routing, authentication, payload, and metadata fields.
+- level: 3
+  title: '**Service Discovery**'
+  type: section
+  content: The mechanism by which agents and services find and connect to each other
+    in the distributed kOS environment. Supports both local and network-based discovery.
+- level: 3
+  title: '**Capability Negotiation**'
+  type: section
+  content: The process by which agents determine what services and capabilities are
+    available and compatible for a given task or collaboration.
+- level: 2
+  title: Development Terms
+  type: section
+  content: ''
+- level: 3
+  title: '**Frontmatter**'
+  type: section
+  content: 'YAML metadata at the top of markdown documentation files that provides
+    structured information about the document''s context, status, and relationships.
+
+
+    ```yaml
+
+    ---
+
+    title: "Document Title"
+
+    context: "current_implementation"
+
+    implementation_status: "complete"
+
+    decision_scope: "high"
+
+    ---
+
+    ```'
+- level: 3
+  title: '**Agent Context Block**'
+  type: section
+  content: 'A special markdown block in documentation that provides specific guidance
+    for AI agents about when and how to use the documented information.
+
+
+    ```markdown
+
+    > **Agent Context**: Build new services using ServiceDefinition pattern
+
+    > **Implementation**: ✅ Complete - 18 services working
+
+    > **Use When**: Adding any external service integration
+
+    ```'
+- level: 3
+  title: '**Implementation Status**'
+  type: section
+  content: 'A classification system for documentation that indicates the current state
+    of features or concepts:
+
+    - **Complete** (✅) - Fully implemented and working
+
+    - **In Progress** (🔄) - Currently being developed
+
+    - **Planned** (📋) - Scheduled for implementation
+
+    - **Research** (🔬) - Theoretical or experimental'
+- level: 3
+  title: '**Decision Scope**'
+  type: section
+  content: 'A classification of the architectural impact of changes or decisions:
+
+    - **High** (🔴) - Affects overall architecture
+
+    - **Medium** (🟡) - Affects multiple components
+
+    - **Low** (🟢) - Isolated impact'
+- level: 2
+  title: State Management Terms
+  type: section
+  content: ''
+- level: 3
+  title: '**Store**'
+  type: section
+  content: 'A Zustand-based state management container that handles a specific domain
+    of application state with persistence to Chrome storage.
+
+
+    **Core Stores**:
+
+    - `serviceStore` - Service management and configuration
+
+    - `viewStateStore` - UI state and navigation
+
+    - `settingsStore` - User preferences and configuration
+
+    - `vaultStore` - Secure credential management
+
+    - `logStore` - Application logging and debugging'
+- level: 3
+  title: '**Rehydration**'
+  type: section
+  content: The process of loading persisted state from Chrome storage when the application
+    starts. Managed through the `_hasHydrated` flag pattern.
+- level: 3
+  title: '**Chrome Storage Adapter**'
+  type: section
+  content: 'A custom persistence adapter that connects Zustand stores to Chrome''s
+    storage APIs for data persistence across browser sessions.
+
+
+    **Location**: `src/store/chromeStorage.ts`'
+- level: 2
+  title: UI and Component Terms
+  type: section
+  content: ''
+- level: 3
+  title: '**Theme System**'
+  type: section
+  content: 'The comprehensive theming framework that supports multiple color schemes,
+    custom themes, and dynamic theme switching.
+
+
+    **Related**: [Theme System](../current/components/04_theme-system.md)'
+- level: 3
+  title: '**Service Selector**'
+  type: section
+  content: A UI component that allows users to choose which service to interact with,
+    automatically populated from the service store.
+- level: 3
+  title: '**Status Indicator**'
+  type: section
+  content: A visual component that shows the health and availability status of services,
+    with real-time updates.
+- level: 3
+  title: '**Multi-Panel Interface**'
+  type: section
+  content: The tabbed interface design that allows users to work with multiple services
+    and capabilities simultaneously.
+- level: 2
+  title: Build and Deployment Terms
+  type: section
+  content: ''
+- level: 3
+  title: '**Vite Configuration**'
+  type: section
+  content: 'The build system configuration that handles TypeScript compilation, asset
+    bundling, and Chrome extension packaging.
+
+
+    **Location**: `vite.config.ts`'
+- level: 3
+  title: '**Extension Manifest**'
+  type: section
+  content: 'The Chrome extension configuration file that defines permissions, entry
+    points, and extension metadata.
+
+
+    **Location**: `public/manifest.json`'
+- level: 3
+  title: '**Development Server**'
+  type: section
+  content: The local development environment that provides hot reloading, source maps,
+    and debugging capabilities.
+- level: 2
+  title: Future Architecture Terms
+  type: section
+  content: ''
+- level: 3
+  title: '**Agent Mesh**'
+  type: section
+  content: The distributed network of interconnected agents that can collaborate,
+    share resources, and coordinate tasks across the kOS ecosystem.
+- level: 3
+  title: '**Service Orchestration**'
+  type: section
+  content: The coordination of multiple services to accomplish complex tasks, including
+    workflow management, error handling, and result aggregation.
+- level: 3
+  title: '**Consensus Protocol**'
+  type: section
+  content: The mechanism by which distributed agents reach agreement on decisions,
+    resource allocation, and task execution.
+- level: 3
+  title: '**Privacy Framework**'
+  type: section
+  content: The comprehensive system for protecting user data, controlling information
+    flow, and ensuring privacy in distributed agent interactions.
+- level: 2
+  title: Integration Terms
+  type: section
+  content: ''
+- level: 3
+  title: '**Plugin Architecture**'
+  type: section
+  content: The extensibility system that allows third-party developers to add new
+    capabilities, services, and integrations to kOS.
+- level: 3
+  title: '**Legacy Integration**'
+  type: section
+  content: The compatibility layer that allows kOS to interact with existing systems
+    and services that don't natively support KLP.
+- level: 3
+  title: '**External API**'
+  type: section
+  content: Any third-party service or system that kOS integrates with, such as AI
+    model providers, cloud services, or web APIs.
+- level: 2
+  title: Operational Terms
+  type: section
+  content: ''
+- level: 3
+  title: '**Health Check**'
+  type: section
+  content: A monitoring mechanism that verifies service availability and functionality,
+    used for automatic failover and user feedback.
+- level: 3
+  title: '**Service Registry**'
+  type: section
+  content: A directory of available services, their capabilities, and their current
+    status within the kOS ecosystem.
+- level: 3
+  title: '**Load Balancing**'
+  type: section
+  content: The distribution of requests across multiple service instances to optimize
+    performance and reliability.
+- level: 3
+  title: '**Auto-Recovery**'
+  type: section
+  content: The automatic detection and resolution of service failures, including retry
+    logic and fallback mechanisms.
+- level: 2
+  title: Cross-Reference Map
+  type: section
+  content: '| Term | Current Implementation | Future Vision | Bridge Strategy |
+
+    |------|----------------------|---------------|-----------------|
+
+    | Service Definition | ✅ [Service Architecture](../current/services/01_service-architecture.md)
+    | 🔬 [Service Evolution](../future/services/01_service-architecture.md) | 🌉 [Service
+    Migration](../bridge/05_service-migration.md) |
+
+    | Agent | ❌ Not implemented | 🔬 [Agent Framework](../future/agents/01_agent-framework.md)
+    | 🌉 [Agent Compatibility](../bridge/12_agent-compatibility.md) |
+
+    | KLP | ❌ Not implemented | 🔬 [KLP Core](../future/protocols/01_klp-core-protocol.md)
+    | 🌉 [Protocol Compatibility](../bridge/11_protocol-compatibility.md) |
+
+    | Vault System | ✅ [Vault System](../current/security/01_vault-system.md) | 🔬
+    [Security Architecture](../future/security/01_security-architecture.md) | 🌉 [Security
+    Migration](../bridge/07_security-migration.md) |'
+- level: 2
+  title: Acronyms and Abbreviations
+  type: section
+  content: '- **API** - Application Programming Interface
+
+    - **DID** - Decentralized Identity
+
+    - **KLP** - Kind Link Protocol
+
+    - **kOS** - Kind Operating System
+
+    - **LLM** - Large Language Model
+
+    - **RAG** - Retrieval-Augmented Generation
+
+    - **TTS** - Text-to-Speech
+
+    - **STT** - Speech-to-Text
+
+    - **UI** - User Interface
+
+    - **UX** - User Experience
+
+    - **ADR** - Architectural Decision Record'
+- level: 2
+  title: Version History
+  type: section
+  content: '- **v1.0** (2025-01-20) - Initial comprehensive glossary
+
+    - **Future** - Will be updated as kOS architecture evolves
+
+
+    ---'

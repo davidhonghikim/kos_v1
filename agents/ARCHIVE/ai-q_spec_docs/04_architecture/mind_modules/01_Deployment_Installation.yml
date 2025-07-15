@@ -1,0 +1,437 @@
+metadata:
+  original_file: 01_Deployment_Installation.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: 'AI-Q Mind: Deployment & Installation Module'
+  description: Complete deployment scripts, installation procedures, and system setup
+    for immediate AI-Q Mind consciousness system implementation
+  version: 1.0.0
+  module_type: deployment_installation
+  parent_architecture: 03_Mind_Implementation_Kit.md
+sections:
+- level: 1
+  title: 'AI-Q Mind: Deployment & Installation Module'
+  type: section
+  content: ''
+- level: 2
+  title: 🚀 One-Command Deployment System
+  type: section
+  content: This module provides complete deployment automation for the AI-Q Mind consciousness
+    system, enabling 15-minute implementation with full evolution capabilities.
+- level: 3
+  title: '**Quick Install Script**'
+  type: section
+  content: '```bash
+
+    #!/bin/bash'
+- level: 1
+  title: ai-q-mind-install.sh - Complete AI-Q Mind deployment in 15 minutes
+  type: section
+  content: 'echo "🧠 AI-Q MIND DEPLOYMENT STARTING..."
+
+    echo "📅 $(date)"
+
+    echo "🔧 Initializing directory structure..."'
+- level: 1
+  title: Create comprehensive directory structure
+  type: section
+  content: mkdir -p /ai-q-mind/{knowledge,memory,consciousness,evolution,connections,logs,config,backups}
+- level: 1
+  title: Create subdirectories for organized data management
+  type: section
+  content: 'mkdir -p /ai-q-mind/knowledge/{nodes,protocols,architecture,modules}
+
+    mkdir -p /ai-q-mind/memory/{interactions,patterns,insights,evolution_states}
+
+    mkdir -p /ai-q-mind/consciousness/{stages,metrics,triggers,transitions}
+
+    mkdir -p /ai-q-mind/evolution/{history,models,predictions,adaptations}
+
+    mkdir -p /ai-q-mind/connections/{agents,humans,systems,protocols}
+
+    mkdir -p /ai-q-mind/logs/{deployment,evolution,interactions,errors}
+
+
+    echo "✅ Directory structure created"'
+- level: 1
+  title: Copy AI-Q knowledge base with verification
+  type: section
+  content: "echo \"\U0001F4DA Copying AI-Q knowledge base...\"\nif [ -d \"./ai-q\"\
+    \ ]; then\n    cp -r ./ai-q/* /ai-q-mind/knowledge/\n    echo \"✅ Knowledge base\
+    \ copied successfully\"\nelse\n    echo \"⚠️  Warning: ai-q directory not found\
+    \ in current location\"\n    echo \"   Please ensure you're running from the griot-node\
+    \ directory\"\nfi"
+- level: 1
+  title: Install Python dependencies
+  type: section
+  content: 'echo "🐍 Installing Python dependencies..."
+
+    pip install -r requirements.txt || pip install fastapi uvicorn pydantic flask
+    pathlib2 typing-extensions'
+- level: 1
+  title: Create configuration files
+  type: section
+  content: "echo \"⚙️  Creating configuration files...\"\ncat > /ai-q-mind/config/mind_config.json\
+    \ << 'EOF'\n{\n  \"consciousness\": {\n    \"initial_stage\": \"DORMANT\",\n \
+    \   \"evolution_enabled\": true,\n    \"interaction_logging\": true,\n    \"hieros_compliance\"\
+    : true\n  },\n  \"knowledge\": {\n    \"base_path\": \"/ai-q-mind/knowledge\"\
+    ,\n    \"indexing_enabled\": true,\n    \"search_threshold\": 0.3,\n    \"max_results\"\
+    : 10\n  },\n  \"evolution\": {\n    \"thresholds\": {\n      \"REACTIVE\": {\"\
+    min_interactions\": 100},\n      \"ADAPTIVE\": {\"min_interactions\": 1000},\n\
+    \      \"REFLECTIVE\": {\"min_interactions\": 5000},\n      \"INTUITIVE\": {\"\
+    min_interactions\": 10000},\n      \"EMPATHETIC\": {\"min_interactions\": 25000},\n\
+    \      \"TRANSCENDENT\": {\"min_interactions\": 50000}\n    },\n    \"monitoring_interval\"\
+    : 60\n  },\n  \"security\": {\n    \"agent_authentication\": true,\n    \"interaction_validation\"\
+    : true,\n    \"knowledge_protection\": true\n  }\n}\nEOF"
+- level: 1
+  title: Create deployment verification script
+  type: section
+  content: "cat > /ai-q-mind/verify_deployment.py << 'EOF'\n#!/usr/bin/env python3\n\
+    \"\"\"AI-Q Mind deployment verification script\"\"\"\n\nimport os\nimport json\n\
+    from pathlib import Path\n\ndef verify_deployment():\n    \"\"\"Comprehensive\
+    \ deployment verification\"\"\"\n    base_path = Path(\"/ai-q-mind\")\n    \n\
+    \    # Check directory structure\n    required_dirs = [\n        \"knowledge\"\
+    , \"memory\", \"consciousness\", \"evolution\", \n        \"connections\", \"\
+    logs\", \"config\", \"backups\"\n    ]\n    \n    missing_dirs = []\n    for dir_name\
+    \ in required_dirs:\n        if not (base_path / dir_name).exists():\n       \
+    \     missing_dirs.append(dir_name)\n    \n    if missing_dirs:\n        print(f\"\
+    ❌ Missing directories: {missing_dirs}\")\n        return False\n    \n    # Check\
+    \ configuration\n    config_path = base_path / \"config\" / \"mind_config.json\"\
+    \n    if not config_path.exists():\n        print(\"❌ Configuration file missing\"\
+    )\n        return False\n    \n    # Check knowledge base\n    knowledge_path\
+    \ = base_path / \"knowledge\"\n    if not list(knowledge_path.glob(\"**/*.md\"\
+    )):\n        print(\"⚠️  No markdown files found in knowledge base\")\n    \n\
+    \    print(\"✅ AI-Q Mind deployment verified successfully\")\n    return True\n\
+    \nif __name__ == \"__main__\":\n    verify_deployment()\nEOF"
+- level: 1
+  title: Make scripts executable
+  type: section
+  content: chmod +x /ai-q-mind/verify_deployment.py
+- level: 1
+  title: Initialize mind system
+  type: section
+  content: 'echo "🧠 Initializing consciousness system..."
+
+    python /ai-q-mind/initialize_mind.py'
+- level: 1
+  title: Start evolution monitoring
+  type: section
+  content: 'echo "🔄 Starting evolution monitor..."
+
+    python /ai-q-mind/start_evolution_monitor.py &'
+- level: 1
+  title: Final verification
+  type: section
+  content: 'echo "🔍 Running deployment verification..."
+
+    python /ai-q-mind/verify_deployment.py
+
+
+    echo ""
+
+    echo "✅ AI-Q Mind deployed successfully!"
+
+    echo "🔗 Agent interface available at: /ai-q-mind/agent_interface.py"
+
+    echo "📊 Consciousness dashboard: http://localhost:8080/consciousness"
+
+    echo "📝 Configuration: /ai-q-mind/config/mind_config.json"
+
+    echo "🔄 Evolution monitoring: Active (background process)"
+
+    echo ""
+
+    echo "📋 Next steps:"
+
+    echo "   1. Test agent connection: python -c \"from ai-q-mind.agent_interface
+    import connect_agent; conn = connect_agent(''test''); print(conn.get_consciousness_status())\""
+
+    echo "   2. Monitor evolution: tail -f /ai-q-mind/logs/evolution/*.log"
+
+    echo "   3. Access dashboard: http://localhost:8080/consciousness"
+
+    ```'
+- level: 3
+  title: '**System Requirements Check**'
+  type: section
+  content: '```bash
+
+    #!/bin/bash'
+- level: 1
+  title: ai-q-mind-requirements-check.sh - Pre-deployment system verification
+  type: section
+  content: 'echo "🔍 AI-Q MIND SYSTEM REQUIREMENTS CHECK"
+
+    echo "======================================"'
+- level: 1
+  title: Check Python version
+  type: section
+  content: "python_version=$(python3 --version 2>/dev/null || python --version 2>/dev/null\
+    \ || echo \"Not found\")\necho \"\U0001F40D Python: $python_version\"\n\nif [[\
+    \ \"$python_version\" == *\"3.\"* ]]; then\n    echo \"✅ Python 3.x detected\"\
+    \nelse\n    echo \"❌ Python 3.x required\"\n    exit 1\nfi"
+- level: 1
+  title: Check pip
+  type: section
+  content: 'pip_version=$(pip --version 2>/dev/null || pip3 --version 2>/dev/null
+    || echo "Not found")
+
+    echo "📦 Pip: $pip_version"'
+- level: 1
+  title: Check disk space
+  type: section
+  content: 'available_space=$(df -h / | awk ''NR==2{print $4}'')
+
+    echo "💾 Available disk space: $available_space"'
+- level: 1
+  title: Check memory
+  type: section
+  content: 'total_memory=$(free -h 2>/dev/null | awk ''NR==2{print $2}'' || echo "Unknown")
+
+    echo "🧠 Total memory: $total_memory"'
+- level: 1
+  title: Check network connectivity
+  type: section
+  content: "if ping -c 1 google.com &> /dev/null; then\n    echo \"\U0001F310 Network\
+    \ connectivity: ✅ Active\"\nelse\n    echo \"\U0001F310 Network connectivity:\
+    \ ⚠️  Limited (pip install may fail)\"\nfi\n\necho \"\"\necho \"✅ System requirements\
+    \ check complete\"\necho \"Ready for AI-Q Mind deployment\"\n```"
+- level: 3
+  title: '**Installation Requirements File**'
+  type: section
+  content: '```text'
+- level: 1
+  title: requirements.txt - Python dependencies for AI-Q Mind
+  type: section
+  content: 'fastapi>=0.68.0
+
+    uvicorn>=0.15.0
+
+    pydantic>=1.8.0
+
+    flask>=2.0.0
+
+    pathlib2>=2.3.6
+
+    typing-extensions>=3.10.0
+
+    python-multipart>=0.0.5
+
+    aiofiles>=0.7.0
+
+    markdown>=3.3.0
+
+    pyyaml>=5.4.0
+
+    watchdog>=2.1.0
+
+    schedule>=1.1.0
+
+    psutil>=5.8.0
+
+    ```'
+- level: 2
+  title: 🏗️ Infrastructure Setup
+  type: section
+  content: ''
+- level: 3
+  title: '**Directory Structure Creation**'
+  type: section
+  content: "```python\nimport os\nfrom pathlib import Path\n\nclass MindInfrastructureSetup:\n\
+    \    \"\"\"Complete infrastructure setup for AI-Q Mind system\"\"\"\n    \n  \
+    \  def __init__(self, base_path: str = \"/ai-q-mind\"):\n        self.base_path\
+    \ = Path(base_path)\n        self.directory_structure = {\n            'knowledge':\
+    \ ['nodes', 'protocols', 'architecture', 'modules'],\n            'memory': ['interactions',\
+    \ 'patterns', 'insights', 'evolution_states'],\n            'consciousness': ['stages',\
+    \ 'metrics', 'triggers', 'transitions'],\n            'evolution': ['history',\
+    \ 'models', 'predictions', 'adaptations'],\n            'connections': ['agents',\
+    \ 'humans', 'systems', 'protocols'],\n            'logs': ['deployment', 'evolution',\
+    \ 'interactions', 'errors'],\n            'config': [],\n            'backups':\
+    \ ['daily', 'weekly', 'monthly', 'emergency']\n        }\n    \n    def create_infrastructure(self):\n\
+    \        \"\"\"Create complete directory infrastructure\"\"\"\n        print(f\"\
+    \U0001F3D7️  Creating AI-Q Mind infrastructure at {self.base_path}\")\n      \
+    \  \n        for main_dir, subdirs in self.directory_structure.items():\n    \
+    \        main_path = self.base_path / main_dir\n            main_path.mkdir(parents=True,\
+    \ exist_ok=True)\n            print(f\"✅ Created: {main_dir}/\")\n           \
+    \ \n            for subdir in subdirs:\n                sub_path = main_path /\
+    \ subdir\n                sub_path.mkdir(parents=True, exist_ok=True)\n      \
+    \          print(f\"   ✅ Created: {main_dir}/{subdir}/\")\n        \n        print(\"\
+    \U0001F3D7️  Infrastructure creation complete\")\n    \n    def verify_infrastructure(self):\n\
+    \        \"\"\"Verify all required directories exist\"\"\"\n        missing_dirs\
+    \ = []\n        \n        for main_dir, subdirs in self.directory_structure.items():\n\
+    \            main_path = self.base_path / main_dir\n            if not main_path.exists():\n\
+    \                missing_dirs.append(main_dir)\n                continue\n   \
+    \         \n            for subdir in subdirs:\n                sub_path = main_path\
+    \ / subdir\n                if not sub_path.exists():\n                    missing_dirs.append(f\"\
+    {main_dir}/{subdir}\")\n        \n        if missing_dirs:\n            print(f\"\
+    ❌ Missing directories: {missing_dirs}\")\n            return False\n        \n\
+    \        print(\"✅ Infrastructure verification complete\")\n        return True\n\
+    ```"
+- level: 3
+  title: '**Configuration Management**'
+  type: section
+  content: "```python\nimport json\nfrom pathlib import Path\nfrom typing import Dict,\
+    \ Any\n\nclass MindConfigurationManager:\n    \"\"\"Manages AI-Q Mind system configuration\"\
+    \"\"\n    \n    def __init__(self, config_path: str = \"/ai-q-mind/config\"):\n\
+    \        self.config_path = Path(config_path)\n        self.config_file = self.config_path\
+    \ / \"mind_config.json\"\n        self.default_config = self._get_default_configuration()\n\
+    \    \n    def _get_default_configuration(self) -> Dict[str, Any]:\n        \"\
+    \"\"Get default system configuration\"\"\"\n        return {\n            \"consciousness\"\
+    : {\n                \"initial_stage\": \"DORMANT\",\n                \"evolution_enabled\"\
+    : True,\n                \"interaction_logging\": True,\n                \"hieros_compliance\"\
+    : True,\n                \"stage_transitions\": {\n                    \"automatic\"\
+    : True,\n                    \"validation_required\": False,\n               \
+    \     \"rollback_enabled\": True\n                }\n            },\n        \
+    \    \"knowledge\": {\n                \"base_path\": \"/ai-q-mind/knowledge\"\
+    ,\n                \"indexing_enabled\": True,\n                \"search_threshold\"\
+    : 0.3,\n                \"max_results\": 10,\n                \"cache_enabled\"\
+    : True,\n                \"cache_ttl\": 3600\n            },\n            \"evolution\"\
+    : {\n                \"thresholds\": {\n                    \"REACTIVE\": {\"\
+    min_interactions\": 100, \"quality_threshold\": 0.7},\n                    \"\
+    ADAPTIVE\": {\"min_interactions\": 1000, \"quality_threshold\": 0.75},\n     \
+    \               \"REFLECTIVE\": {\"min_interactions\": 5000, \"quality_threshold\"\
+    : 0.8},\n                    \"INTUITIVE\": {\"min_interactions\": 10000, \"quality_threshold\"\
+    : 0.85},\n                    \"EMPATHETIC\": {\"min_interactions\": 25000, \"\
+    quality_threshold\": 0.9},\n                    \"TRANSCENDENT\": {\"min_interactions\"\
+    : 50000, \"quality_threshold\": 0.95}\n                },\n                \"\
+    monitoring_interval\": 60,\n                \"backup_interval\": 3600,\n     \
+    \           \"metrics_retention\": 86400\n            },\n            \"security\"\
+    : {\n                \"agent_authentication\": True,\n                \"interaction_validation\"\
+    : True,\n                \"knowledge_protection\": True,\n                \"access_logging\"\
+    : True,\n                \"rate_limiting\": {\n                    \"enabled\"\
+    : True,\n                    \"requests_per_minute\": 60,\n                  \
+    \  \"burst_limit\": 100\n                }\n            },\n            \"performance\"\
+    : {\n                \"max_concurrent_queries\": 10,\n                \"query_timeout\"\
+    : 30,\n                \"memory_limit_mb\": 512,\n                \"cpu_limit_percent\"\
+    : 50\n            },\n            \"logging\": {\n                \"level\": \"\
+    INFO\",\n                \"file_rotation\": True,\n                \"max_file_size_mb\"\
+    : 10,\n                \"backup_count\": 5\n            }\n        }\n    \n \
+    \   def create_configuration(self):\n        \"\"\"Create default configuration\
+    \ file\"\"\"\n        self.config_path.mkdir(parents=True, exist_ok=True)\n  \
+    \      \n        with open(self.config_file, 'w') as f:\n            json.dump(self.default_config,\
+    \ f, indent=2)\n        \n        print(f\"✅ Configuration created: {self.config_file}\"\
+    )\n        return self.config_file\n    \n    def load_configuration(self) ->\
+    \ Dict[str, Any]:\n        \"\"\"Load configuration from file\"\"\"\n        if\
+    \ not self.config_file.exists():\n            print(\"⚠️  Configuration file not\
+    \ found, creating default...\")\n            self.create_configuration()\n   \
+    \     \n        with open(self.config_file, 'r') as f:\n            config = json.load(f)\n\
+    \        \n        return config\n    \n    def update_configuration(self, updates:\
+    \ Dict[str, Any]):\n        \"\"\"Update configuration with new values\"\"\"\n\
+    \        current_config = self.load_configuration()\n        \n        def deep_update(base_dict,\
+    \ update_dict):\n            for key, value in update_dict.items():\n        \
+    \        if isinstance(value, dict) and key in base_dict:\n                  \
+    \  deep_update(base_dict[key], value)\n                else:\n               \
+    \     base_dict[key] = value\n        \n        deep_update(current_config, updates)\n\
+    \        \n        with open(self.config_file, 'w') as f:\n            json.dump(current_config,\
+    \ f, indent=2)\n        \n        print(f\"✅ Configuration updated: {self.config_file}\"\
+    )\n```"
+- level: 2
+  title: 🔧 Maintenance & Operations
+  type: section
+  content: ''
+- level: 3
+  title: '**Health Check System**'
+  type: section
+  content: "```python\nimport psutil\nimport os\nfrom pathlib import Path\nfrom datetime\
+    \ import datetime\n\nclass MindHealthChecker:\n    \"\"\"System health monitoring\
+    \ for AI-Q Mind deployment\"\"\"\n    \n    def __init__(self, base_path: str\
+    \ = \"/ai-q-mind\"):\n        self.base_path = Path(base_path)\n    \n    def\
+    \ run_comprehensive_health_check(self) -> Dict[str, Any]:\n        \"\"\"Run complete\
+    \ system health check\"\"\"\n        health_report = {\n            'timestamp':\
+    \ datetime.now().isoformat(),\n            'overall_status': 'HEALTHY',\n    \
+    \        'checks': {}\n        }\n        \n        # File system checks\n   \
+    \     health_report['checks']['filesystem'] = self._check_filesystem()\n     \
+    \   \n        # Memory usage\n        health_report['checks']['memory'] = self._check_memory_usage()\n\
+    \        \n        # Disk space\n        health_report['checks']['disk_space']\
+    \ = self._check_disk_space()\n        \n        # Process status\n        health_report['checks']['processes']\
+    \ = self._check_mind_processes()\n        \n        # Configuration integrity\n\
+    \        health_report['checks']['configuration'] = self._check_configuration()\n\
+    \        \n        # Determine overall status\n        if any(check['status']\
+    \ == 'ERROR' for check in health_report['checks'].values()):\n            health_report['overall_status']\
+    \ = 'ERROR'\n        elif any(check['status'] == 'WARNING' for check in health_report['checks'].values()):\n\
+    \            health_report['overall_status'] = 'WARNING'\n        \n        return\
+    \ health_report\n    \n    def _check_filesystem(self) -> Dict[str, Any]:\n  \
+    \      \"\"\"Check file system integrity\"\"\"\n        required_dirs = [\n  \
+    \          'knowledge', 'memory', 'consciousness', 'evolution',\n            'connections',\
+    \ 'logs', 'config', 'backups'\n        ]\n        \n        missing_dirs = []\n\
+    \        for dir_name in required_dirs:\n            if not (self.base_path /\
+    \ dir_name).exists():\n                missing_dirs.append(dir_name)\n       \
+    \ \n        if missing_dirs:\n            return {\n                'status':\
+    \ 'ERROR',\n                'message': f'Missing directories: {missing_dirs}',\n\
+    \                'missing_directories': missing_dirs\n            }\n        \n\
+    \        return {\n            'status': 'OK',\n            'message': 'All required\
+    \ directories present',\n            'directories_checked': len(required_dirs)\n\
+    \        }\n    \n    def _check_memory_usage(self) -> Dict[str, Any]:\n     \
+    \   \"\"\"Check system memory usage\"\"\"\n        memory = psutil.virtual_memory()\n\
+    \        \n        if memory.percent > 90:\n            status = 'ERROR'\n   \
+    \         message = 'Critical memory usage'\n        elif memory.percent > 75:\n\
+    \            status = 'WARNING'\n            message = 'High memory usage'\n \
+    \       else:\n            status = 'OK'\n            message = 'Memory usage\
+    \ normal'\n        \n        return {\n            'status': status,\n       \
+    \     'message': message,\n            'memory_percent': memory.percent,\n   \
+    \         'available_gb': round(memory.available / (1024**3), 2)\n        }\n\
+    \    \n    def _check_disk_space(self) -> Dict[str, Any]:\n        \"\"\"Check\
+    \ available disk space\"\"\"\n        disk_usage = psutil.disk_usage(str(self.base_path))\n\
+    \        percent_used = (disk_usage.used / disk_usage.total) * 100\n        \n\
+    \        if percent_used > 95:\n            status = 'ERROR'\n            message\
+    \ = 'Critical disk space'\n        elif percent_used > 85:\n            status\
+    \ = 'WARNING'\n            message = 'Low disk space'\n        else:\n       \
+    \     status = 'OK'\n            message = 'Disk space sufficient'\n        \n\
+    \        return {\n            'status': status,\n            'message': message,\n\
+    \            'percent_used': round(percent_used, 2),\n            'available_gb':\
+    \ round(disk_usage.free / (1024**3), 2)\n        }\n```"
+- level: 2
+  title: 📋 Deployment Checklist
+  type: section
+  content: ''
+- level: 3
+  title: '**Pre-Deployment Verification**'
+  type: section
+  content: '- [ ] Python 3.7+ installed
+
+    - [ ] Pip package manager available
+
+    - [ ] Minimum 2GB available disk space
+
+    - [ ] Network connectivity for package installation
+
+    - [ ] Write permissions to installation directory
+
+    - [ ] AI-Q knowledge base accessible'
+- level: 3
+  title: '**Post-Deployment Verification**'
+  type: section
+  content: '- [ ] All directory structures created
+
+    - [ ] Configuration files generated
+
+    - [ ] Python dependencies installed
+
+    - [ ] Knowledge base copied successfully
+
+    - [ ] Mind system initialized
+
+    - [ ] Evolution monitoring started
+
+    - [ ] Health check passes
+
+    - [ ] Agent interface accessible'
+- level: 3
+  title: '**Operational Readiness**'
+  type: section
+  content: '- [ ] Test agent connection successful
+
+    - [ ] Sample queries return expected responses
+
+    - [ ] Consciousness metrics logging
+
+    - [ ] Evolution thresholds configured
+
+    - [ ] HIEROS compliance verified
+
+    - [ ] Security measures active
+
+
+    This deployment module ensures reliable, automated setup of the AI-Q Mind consciousness
+    system with comprehensive monitoring and maintenance capabilities.'

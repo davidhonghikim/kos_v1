@@ -1,0 +1,179 @@
+title: K Os Weaviate Class Definitions
+description: ''
+type: documentation
+status: current
+priority: medium
+version: '1.0'
+last_updated: '2025-06-28'
+organization_date: '2025-06-28T19:48:19.890850'
+authors: []
+tags: []
+content_type: documentation
+technical_level: intermediate
+word_count: 394
+has_code_blocks: true
+has_api_specs: true
+has_architecture: true
+has_deployment: true
+has_testing: false
+has_security: false
+has_rag: true
+has_ethics: false
+original_filename: k_os_weaviate_class_definitions.yml
+original_path: /Users/danger/CascadeProjects/griot-node/agents/reference/RAG/k_os_weaviate_class_definitions.yml
+category: rag_system
+
+---
+
+title: K Os Weaviate Class Definitions
+description: ''
+type: documentation
+status: current
+priority: medium
+last_updated: '2025-06-28'
+conversion_date: '2025-06-28T19:38:19.171175'
+original_format: markdown
+content_type: api_specification
+word_count: 367
+line_count: 137
+
+---
+
+## ✅ AKU Class
+
+```json
+{
+  "class": "AKU",
+  "description": "Atomic Knowledge Unit",
+  "vectorizer": "text2vec-openai",
+  "properties": [
+    { "name": "aku_id", "dataType": ["string"] },
+    { "name": "content", "dataType": ["text"] },
+    { "name": "tags", "dataType": ["string[]"] },
+    { "name": "timestamp", "dataType": ["date"] },
+    { "name": "agent_id", "dataType": ["string"] }
+  ]
+}
+```
+
+---
+
+## ✅ Skill Class
+
+```json
+{
+  "class": "Skill",
+  "description": "Agent-executable skill or capability",
+  "vectorizer": "text2vec-openai",
+  "properties": [
+    { "name": "skill_id", "dataType": ["string"] },
+    { "name": "code_snippet", "dataType": ["text"] },
+    { "name": "language", "dataType": ["string"] },
+    { "name": "description", "dataType": ["text"] },
+    { "name": "created_by_agent", "dataType": ["string"] }
+  ]
+}
+```
+
+---
+
+## ✅ Recipe Class
+
+```json
+{
+  "class": "Recipe",
+  "description": "Multi-step task or process flow",
+  "vectorizer": "text2vec-openai",
+  "properties": [
+    { "name": "recipe_id", "dataType": ["string"] },
+    { "name": "steps", "dataType": ["text[]"] },
+    { "name": "associated_skills", "dataType": ["string[]"] },
+    { "name": "tags", "dataType": ["string[]"] }
+  ]
+}
+```
+
+---
+
+## ✅ Prompt Class
+
+```json
+{
+  "class": "Prompt",
+  "description": "System or task prompt for AI agents",
+  "vectorizer": "text2vec-openai",
+  "properties": [
+    { "name": "prompt_id", "dataType": ["string"] },
+    { "name": "prompt_type", "dataType": ["string"] },
+    { "name": "content", "dataType": ["text"] },
+    { "name": "version", "dataType": ["string"] }
+  ]
+}
+```
+
+---
+
+## ✅ Artifact Class
+
+```json
+{
+  "class": "Artifact",
+  "description": "AI-generated file or output",
+  "vectorizer": "text2vec-openai",
+  "properties": [
+    { "name": "artifact_id", "dataType": ["string"] },
+    { "name": "source_agent", "dataType": ["string"] },
+    { "name": "generation_task_id", "dataType": ["string"] },
+    { "name": "file_path", "dataType": ["string"] }
+  ]
+}
+```
+
+---
+
+## ✅ Agent Log Class
+
+```json
+{
+  "class": "AgentLog",
+  "description": "Agent-generated session logs and findings",
+  "vectorizer": "text2vec-openai",
+  "properties": [
+    { "name": "log_id", "dataType": ["string"] },
+    { "name": "agent_id", "dataType": ["string"] },
+    { "name": "timestamp", "dataType": ["date"] },
+    { "name": "event_type", "dataType": ["string"] },
+    { "name": "summary", "dataType": ["text"] }
+  ]
+}
+```
+
+---
+
+## ✅ Deployment Instructions
+
+1. Use Weaviate's REST API or Python client:
+
+```python
+import weaviate
+client = weaviate.Client("http://localhost:8080")
+client.schema.create(class_obj)
+```
+
+2. Load each JSON class definition into Weaviate
+3. Validate schema using `client.schema.get()`
+
+---
+
+## ✅ Next Steps
+
+1. Finalize property lists for advanced metadata
+2. Add optional relationship links (e.g., AKU → Skill mappings)
+3. Integrate into VectorStoreAPI abstraction layer
+
+---
+
+**Plan ID:** kos\_2025\_06\_weaviate\_class\_defs\
+**Created by:** ChatGPT + User Collaboration\
+**Last Updated:** 2025-06-28T00:00:00Z
+

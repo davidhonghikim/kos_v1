@@ -1,0 +1,48 @@
+title: 02_protocols Index
+version: '1.0'
+category: 02_protocols
+description: Index of all documentation in 02_protocols
+files:
+- name: 02_Kind_Link_Framework_Spec
+  path: 02_Kind_Link_Framework_Spec.yml
+  type: documentation
+- name: 01_Kind_Link_Framework
+  path: 01_Kind_Link_Framework.yml
+  type: documentation
+- name: 03_KLF_Service_Discovery
+  path: klf-spec/03_KLF_Service_Discovery.yml
+  type: documentation
+- name: 00_KLF_Protocol_Overview
+  path: klf-spec/00_KLF_Protocol_Overview.yml
+  type: documentation
+- name: 01_KLF_Message_Format
+  path: klf-spec/01_KLF_Message_Format.yml
+  type: documentation
+- name: 04_KLF_Transport_Options
+  path: klf-spec/04_KLF_Transport_Options.yml
+  type: documentation
+- name: 02_KLF_Agent_Registration
+  path: klf-spec/02_KLF_Agent_Registration.yml
+  type: documentation
+- name: 05_KLF_Implementation_Examples
+  path: klf-spec/05_KLF_Implementation_Examples.yml
+  type: documentation
+- name: k_os_initial_source_code_starter_package_plan_organized
+  path: apis/k_os_initial_source_code_starter_package_plan_organized.yml
+  type: documentation
+- name: k_os_engine_spec_organized
+  path: apis/k_os_engine_spec_organized.yml
+  type: documentation
+- name: k_os_initial_developer_setup_scripts_and_templates_organized
+  path: apis/k_os_initial_developer_setup_scripts_and_templates_organized.yml
+  type: documentation
+- name: k_os_agentic_misalignment_defense_organized
+  path: apis/k_os_agentic_misalignment_defense_organized.yml
+  type: documentation
+- name: k_os_initial_developer_onboarding_automation_plan_organized
+  path: apis/k_os_initial_developer_onboarding_automation_plan_organized.yml
+  type: documentation
+- name: k_os_oec_module_sprint_backlog_sprint_4_organized
+  path: apis/k_os_oec_module_sprint_backlog_sprint_4_organized.yml
+  type: documentation
+last_updated: '2025-06-30T03:49:22.724953'

@@ -1,0 +1,551 @@
+metadata:
+  original_file: 14_Intrusion_Detector.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Intrusion Detector
+  version: '1.0'
+  category: Security
+  subcategory: Security Monitoring
+  dependencies:
+  - Base Audit Logger
+  tags:
+  - intrusion
+  - detection
+  - security
+  - threat
+  priority: high
+sections:
+- level: 1
+  title: Intrusion Detector
+  type: section
+  content: ''
+- level: 2
+  title: Purpose
+  type: section
+  content: Provides comprehensive intrusion detection and prevention for the kOS ecosystem.
+    This module monitors system activities, network traffic, and user behavior to
+    identify and respond to potential security intrusions and threats. The Intrusion
+    Detector ensures proactive threat detection and automated response to maintain
+    system security and integrity.
+- level: 2
+  title: Capabilities
+  type: section
+  content: '- **Multi-Source Monitoring**: Monitor system logs, network traffic, and
+    user activities
+
+    - **Signature-Based Detection**: Detect known attack patterns and signatures
+
+    - **Behavior-Based Detection**: Identify anomalous behavior and patterns
+
+    - **Real-Time Analysis**: Real-time threat detection and response
+
+    - **Automated Response**: Automated incident response and mitigation
+
+    - **Threat Intelligence**: Integration with threat intelligence feeds
+
+    - **Forensic Analysis**: Detailed forensic analysis and evidence collection
+
+    - **Alert Management**: Comprehensive alert generation and management
+
+    - **Compliance Reporting**: Compliance reporting and audit trails'
+- level: 2
+  title: Integration Points
+  type: section
+  content: '- **Input**: System logs, network traffic, user activities, and threat
+    intelligence
+
+    - **Output**: Threat alerts, incident reports, and response actions
+
+    - **Dependencies**: Base Audit Logger for logging, Security Policy Manager for
+    response actions'
+- level: 2
+  title: Configuration
+  type: section
+  content: "```yaml\nintrusion_detector:\n  detection_modes:\n    signature: true\n\
+    \    behavior: true\n    anomaly: true\n    machine_learning: true\n  monitoring_sources:\n\
+    \    - \"system_logs\"\n    - \"network_traffic\"\n    - \"user_activities\"\n\
+    \    - \"application_logs\"\n  real_time_analysis:\n    enabled: true\n    alert_threshold:\
+    \ \"medium\"\n    response_time: 30  # seconds\n  threat_intelligence:\n    enabled:\
+    \ true\n    feeds: [\"alienvault\", \"abuseipdb\", \"virustotal\"]\n    update_frequency:\
+    \ \"hourly\"\n  automated_response:\n    enabled: true\n    actions: [\"block_ip\"\
+    , \"isolate_host\", \"disable_user\"]\n  performance:\n    max_events_per_second:\
+    \ 10000\n    analysis_timeout: 60  # seconds\n    concurrent_analyses: 10\n  reporting:\n\
+    \    enabled: true\n    retention_period: \"1y\"\n    detailed_forensics: true\n\
+    ```"
+- level: 2
+  title: Example Workflow
+  type: section
+  content: "```mermaid\ngraph TD\n  A[Event Sources] --> B[Event Collection]\n  B\
+    \ --> C[Multi-Mode Analysis]\n  C --> D[Threat Detection]\n  D --> E{Threat Detected?}\n\
+    \  E -->|Yes| F[Threat Classification]\n  E -->|No| G[Continue Monitoring]\n \
+    \ F --> H[Automated Response]\n  H --> I[Alert Generation]\n  I --> J[Forensic\
+    \ Analysis]\n  J --> K[Incident Report]\n  \n  C --> L{Analysis Mode?}\n  L -->|Signature|\
+    \ M[Signature Match]\n  L -->|Behavior| N[Behavior Analysis]\n  L -->|Anomaly|\
+    \ O[Anomaly Detection]\n  L -->|ML| P[Machine Learning]\n```"
+- level: 2
+  title: Core Capabilities
+  type: section
+  content: ''
+- level: 3
+  title: '**1. Multi-Source Monitoring**'
+  type: section
+  content: '- **Description**: Monitor multiple sources for security events and threats
+
+    - **Input**: System logs, network traffic, user activities
+
+    - **Output**: Normalized security events and alerts
+
+    - **Dependencies**: Event collectors and data normalization'
+- level: 3
+  title: '**2. Signature-Based Detection**'
+  type: section
+  content: '- **Description**: Detect known attack patterns and signatures
+
+    - **Input**: Security events and signature database
+
+    - **Output**: Signature matches and threat alerts
+
+    - **Dependencies**: Signature database and pattern matching engine'
+- level: 3
+  title: '**3. Behavior-Based Detection**'
+  type: section
+  content: '- **Description**: Identify anomalous behavior and patterns
+
+    - **Input**: User and system behavior data
+
+    - **Output**: Behavior anomalies and threat indicators
+
+    - **Dependencies**: Behavior analysis engine and baseline data'
+- level: 3
+  title: '**4. Automated Response**'
+  type: section
+  content: '- **Description**: Automated incident response and mitigation
+
+    - **Input**: Threat alerts and response policies
+
+    - **Output**: Response actions and mitigation results
+
+    - **Dependencies**: Response engine and action executors'
+- level: 2
+  title: Module Interface
+  type: section
+  content: ''
+- level: 3
+  title: '**Input Interface**'
+  type: section
+  content: "```typescript\ninterface IntrusionDetectorInput {\n  action: 'start_monitoring'\
+    \ | 'analyze_events' | 'check_threats' | 'generate_report';\n  events?: SecurityEvent[];\n\
+    \  threatIntelligence?: ThreatIntelligenceData;\n  responsePolicy?: ResponsePolicy;\n\
+    \  analysisMode?: DetectionMode[];\n}\n\ninterface SecurityEvent {\n  id: string;\n\
+    \  timestamp: Date;\n  source: string;\n  type: 'system' | 'network' | 'user'\
+    \ | 'application';\n  severity: 'low' | 'medium' | 'high' | 'critical';\n  data:\
+    \ Record<string, any>;\n  metadata: EventMetadata;\n}\n\ninterface EventMetadata\
+    \ {\n  sourceIp?: string;\n  destinationIp?: string;\n  userId?: string;\n  processId?:\
+    \ number;\n  sessionId?: string;\n  additionalInfo?: Record<string, any>;\n}\n\
+    \ninterface ThreatIntelligenceData {\n  source: string;\n  timestamp: Date;\n\
+    \  threats: ThreatIndicator[];\n  confidence: number;\n}\n\ninterface ThreatIndicator\
+    \ {\n  type: 'ip' | 'domain' | 'hash' | 'url';\n  value: string;\n  threatType:\
+    \ string;\n  confidence: number;\n}\n\ninterface ResponsePolicy {\n  id: string;\n\
+    \  name: string;\n  actions: ResponseAction[];\n  conditions: ResponseCondition[];\n\
+    \  priority: 'low' | 'medium' | 'high' | 'critical';\n}\n\ninterface ResponseAction\
+    \ {\n  type: 'block_ip' | 'isolate_host' | 'disable_user' | 'alert';\n  parameters:\
+    \ Record<string, any>;\n  timeout?: number;\n}\n\ninterface ResponseCondition\
+    \ {\n  field: string;\n  operator: 'equals' | 'contains' | 'greater_than' | 'less_than';\n\
+    \  value: any;\n}\n\ntype DetectionMode = 'signature' | 'behavior' | 'anomaly'\
+    \ | 'machine_learning';\n```"
+- level: 3
+  title: '**Output Interface**'
+  type: section
+  content: "```typescript\ninterface IntrusionDetectorOutput {\n  operationId: string;\n\
+    \  timestamp: Date;\n  action: string;\n  success: boolean;\n  threats?: Threat[];\n\
+    \  alerts?: SecurityAlert[];\n  responseActions?: ResponseActionResult[];\n  analysisReport?:\
+    \ AnalysisReport;\n  metadata: IntrusionDetectionMetadata;\n}\n\ninterface Threat\
+    \ {\n  id: string;\n  name: string;\n  type: 'intrusion' | 'malware' | 'data_exfiltration'\
+    \ | 'privilege_escalation';\n  severity: 'low' | 'medium' | 'high' | 'critical';\n\
+    \  confidence: number;\n  detectionMode: DetectionMode;\n  indicators: ThreatIndicator[];\n\
+    \  affectedSystems: string[];\n  timeline: ThreatTimeline;\n  remediation: string;\n\
+    }\n\ninterface ThreatTimeline {\n  firstSeen: Date;\n  lastSeen: Date;\n  duration:\
+    \ number;\n  events: SecurityEvent[];\n}\n\ninterface SecurityAlert {\n  id: string;\n\
+    \  threatId: string;\n  severity: 'low' | 'medium' | 'high' | 'critical';\n  title:\
+    \ string;\n  description: string;\n  timestamp: Date;\n  acknowledged: boolean;\n\
+    \  assignedTo?: string;\n}\n\ninterface ResponseActionResult {\n  actionId: string;\n\
+    \  actionType: string;\n  success: boolean;\n  timestamp: Date;\n  details: string;\n\
+    \  error?: string;\n}\n\ninterface AnalysisReport {\n  summary: string;\n  threats:\
+    \ Threat[];\n  alerts: SecurityAlert[];\n  responseActions: ResponseActionResult[];\n\
+    \  recommendations: string[];\n  forensicData: Record<string, any>;\n}\n```"
+- level: 3
+  title: '**Configuration Interface**'
+  type: section
+  content: "```typescript\ninterface IntrusionDetectorConfig {\n  detectionModes:\
+    \ DetectionModesConfig;\n  monitoringSources: string[];\n  realTimeAnalysis: RealTimeAnalysisConfig;\n\
+    \  threatIntelligence: ThreatIntelligenceConfig;\n  automatedResponse: AutomatedResponseConfig;\n\
+    \  performance: PerformanceConfig;\n  reporting: ReportingConfig;\n}\n\ninterface\
+    \ DetectionModesConfig {\n  signature: boolean;\n  behavior: boolean;\n  anomaly:\
+    \ boolean;\n  machineLearning: boolean;\n}\n\ninterface RealTimeAnalysisConfig\
+    \ {\n  enabled: boolean;\n  alertThreshold: string;\n  responseTime: number;\n\
+    }\n\ninterface ThreatIntelligenceConfig {\n  enabled: boolean;\n  feeds: string[];\n\
+    \  updateFrequency: string;\n}\n\ninterface AutomatedResponseConfig {\n  enabled:\
+    \ boolean;\n  actions: string[];\n}\n\ninterface PerformanceConfig {\n  maxEventsPerSecond:\
+    \ number;\n  analysisTimeout: number;\n  concurrentAnalyses: number;\n}\n\ninterface\
+    \ ReportingConfig {\n  enabled: boolean;\n  retentionPeriod: string;\n  detailedForensics:\
+    \ boolean;\n}\n```"
+- level: 2
+  title: Module Dependencies
+  type: section
+  content: ''
+- level: 3
+  title: '**Required Dependencies**'
+  type: section
+  content: '- **Base Audit Logger**: For logging detection activities and results
+
+    - **Event Collectors**: For collecting security events from various sources
+
+    - **Signature Database**: For signature-based detection'
+- level: 3
+  title: '**Optional Dependencies**'
+  type: section
+  content: '- **Threat Intelligence Feeds**: For enhanced threat detection
+
+    - **Response Engine**: For automated incident response'
+- level: 2
+  title: Module Implementation
+  type: section
+  content: ''
+- level: 3
+  title: '**Core Components**'
+  type: section
+  content: ''
+- level: 4
+  title: '**1. Intrusion Detection Engine**'
+  type: section
+  content: "```typescript\nclass IntrusionDetectionEngine {\n  private config: IntrusionDetectorConfig;\n\
+    \  private signatureEngine: SignatureDetectionEngine;\n  private behaviorEngine:\
+    \ BehaviorDetectionEngine;\n  private anomalyEngine: AnomalyDetectionEngine;\n\
+    \  private mlEngine: MachineLearningEngine;\n  private responseEngine: ResponseEngine;\n\
+    \  private auditLogger: BaseAuditLogger;\n  \n  constructor(config: IntrusionDetectorConfig)\
+    \ {\n    this.config = config;\n    this.signatureEngine = new SignatureDetectionEngine();\n\
+    \    this.behaviorEngine = new BehaviorDetectionEngine();\n    this.anomalyEngine\
+    \ = new AnomalyDetectionEngine();\n    this.mlEngine = new MachineLearningEngine();\n\
+    \    this.responseEngine = new ResponseEngine();\n    this.auditLogger = new BaseAuditLogger();\n\
+    \  }\n  \n  async executeAction(input: IntrusionDetectorInput): Promise<IntrusionDetectorOutput>\
+    \ {\n    const operationId = this.generateOperationId();\n    \n    // Log operation\
+    \ start\n    await this.auditLogger.logEvent({\n      eventType: 'intrusion_detection_start',\n\
+    \      operationId,\n      action: input.action\n    });\n    \n    let result:\
+    \ IntrusionDetectorOutput;\n    \n    switch (input.action) {\n      case 'start_monitoring':\n\
+    \        result = await this.startMonitoring(operationId);\n        break;\n \
+    \     case 'analyze_events':\n        result = await this.analyzeEvents(input.events!,\
+    \ operationId);\n        break;\n      case 'check_threats':\n        result =\
+    \ await this.checkThreats(input.threatIntelligence!, operationId);\n        break;\n\
+    \      case 'generate_report':\n        result = await this.generateReport(operationId);\n\
+    \        break;\n      default:\n        throw new Error(`Unsupported action:\
+    \ ${input.action}`);\n    }\n    \n    // Log operation completion\n    await\
+    \ this.auditLogger.logEvent({\n      eventType: 'intrusion_detection_complete',\n\
+    \      operationId,\n      success: result.success\n    });\n    \n    return\
+    \ result;\n  }\n  \n  private async startMonitoring(operationId: string): Promise<IntrusionDetectorOutput>\
+    \ {\n    // Start monitoring all configured sources\n    const monitoringResults\
+    \ = await Promise.all(\n      this.config.monitoringSources.map(source => this.startSourceMonitoring(source))\n\
+    \    );\n    \n    return {\n      operationId,\n      timestamp: new Date(),\n\
+    \      action: 'start_monitoring',\n      success: monitoringResults.every(r =>\
+    \ r.success),\n      metadata: {\n        sources: this.config.monitoringSources,\n\
+    \        startTime: Date.now() - operationId.timestamp\n      }\n    };\n  }\n\
+    \  \n  private async analyzeEvents(events: SecurityEvent[], operationId: string):\
+    \ Promise<IntrusionDetectorOutput> {\n    const threats: Threat[] = [];\n    const\
+    \ alerts: SecurityAlert[] = [];\n    const responseActions: ResponseActionResult[]\
+    \ = [];\n    \n    // Analyze events using multiple detection modes\n    for (const\
+    \ event of events) {\n      const eventThreats = await this.analyzeEvent(event);\n\
+    \      threats.push(...eventThreats);\n      \n      // Generate alerts for detected\
+    \ threats\n      for (const threat of eventThreats) {\n        const alert = this.generateAlert(threat,\
+    \ event);\n        alerts.push(alert);\n        \n        // Execute automated\
+    \ response if enabled\n        if (this.config.automatedResponse.enabled) {\n\
+    \          const responseAction = await this.executeResponse(threat);\n      \
+    \    responseActions.push(responseAction);\n        }\n      }\n    }\n    \n\
+    \    return {\n      operationId,\n      timestamp: new Date(),\n      action:\
+    \ 'analyze_events',\n      success: true,\n      threats,\n      alerts,\n   \
+    \   responseActions,\n      metadata: {\n        eventsAnalyzed: events.length,\n\
+    \        threatsDetected: threats.length,\n        alertsGenerated: alerts.length,\n\
+    \        analysisTime: Date.now() - operationId.timestamp\n      }\n    };\n \
+    \ }\n  \n  private async analyzeEvent(event: SecurityEvent): Promise<Threat[]>\
+    \ {\n    const threats: Threat[] = [];\n    \n    // Signature-based detection\n\
+    \    if (this.config.detectionModes.signature) {\n      const signatureThreats\
+    \ = await this.signatureEngine.detect(event);\n      threats.push(...signatureThreats);\n\
+    \    }\n    \n    // Behavior-based detection\n    if (this.config.detectionModes.behavior)\
+    \ {\n      const behaviorThreats = await this.behaviorEngine.detect(event);\n\
+    \      threats.push(...behaviorThreats);\n    }\n    \n    // Anomaly detection\n\
+    \    if (this.config.detectionModes.anomaly) {\n      const anomalyThreats = await\
+    \ this.anomalyEngine.detect(event);\n      threats.push(...anomalyThreats);\n\
+    \    }\n    \n    // Machine learning detection\n    if (this.config.detectionModes.machineLearning)\
+    \ {\n      const mlThreats = await this.mlEngine.detect(event);\n      threats.push(...mlThreats);\n\
+    \    }\n    \n    return this.deduplicateThreats(threats);\n  }\n  \n  private\
+    \ async checkThreats(intelligence: ThreatIntelligenceData, operationId: string):\
+    \ Promise<IntrusionDetectorOutput> {\n    // Check threats against intelligence\
+    \ data\n    const threats = await this.correlateThreats(intelligence);\n    \n\
+    \    return {\n      operationId,\n      timestamp: new Date(),\n      action:\
+    \ 'check_threats',\n      success: true,\n      threats,\n      metadata: {\n\
+    \        intelligenceSource: intelligence.source,\n        threatsChecked: intelligence.threats.length,\n\
+    \        threatsFound: threats.length,\n        checkTime: Date.now() - operationId.timestamp\n\
+    \      }\n    };\n  }\n  \n  private async generateReport(operationId: string):\
+    \ Promise<IntrusionDetectorOutput> {\n    // Generate comprehensive analysis report\n\
+    \    const analysisReport = await this.generateAnalysisReport();\n    \n    return\
+    \ {\n      operationId,\n      timestamp: new Date(),\n      action: 'generate_report',\n\
+    \      success: true,\n      analysisReport,\n      metadata: {\n        reportGenerated:\
+    \ true,\n        reportTime: Date.now() - operationId.timestamp\n      }\n   \
+    \ };\n  }\n  \n  private async startSourceMonitoring(source: string): Promise<MonitoringResult>\
+    \ {\n    try {\n      // Start monitoring specific source\n      await this.startMonitoringSource(source);\n\
+    \      \n      return {\n        source,\n        success: true,\n        timestamp:\
+    \ new Date()\n      };\n    } catch (error) {\n      return {\n        source,\n\
+    \        success: false,\n        error: error.message,\n        timestamp: new\
+    \ Date()\n      };\n    }\n  }\n  \n  private generateAlert(threat: Threat, event:\
+    \ SecurityEvent): SecurityAlert {\n    return {\n      id: this.generateAlertId(),\n\
+    \      threatId: threat.id,\n      severity: threat.severity,\n      title: `Threat\
+    \ Detected: ${threat.name}`,\n      description: threat.remediation,\n      timestamp:\
+    \ new Date(),\n      acknowledged: false\n    };\n  }\n  \n  private async executeResponse(threat:\
+    \ Threat): Promise<ResponseActionResult> {\n    try {\n      // Execute automated\
+    \ response action\n      const result = await this.responseEngine.execute(threat);\n\
+    \      \n      return {\n        actionId: this.generateActionId(),\n        actionType:\
+    \ result.type,\n        success: result.success,\n        timestamp: new Date(),\n\
+    \        details: result.details\n      };\n    } catch (error) {\n      return\
+    \ {\n        actionId: this.generateActionId(),\n        actionType: 'unknown',\n\
+    \        success: false,\n        timestamp: new Date(),\n        details: 'Response\
+    \ execution failed',\n        error: error.message\n      };\n    }\n  }\n  \n\
+    \  private async correlateThreats(intelligence: ThreatIntelligenceData): Promise<Threat[]>\
+    \ {\n    // Correlate threats with intelligence data\n    return [];\n  }\n  \n\
+    \  private async generateAnalysisReport(): Promise<AnalysisReport> {\n    // Generate\
+    \ comprehensive analysis report\n    return {\n      summary: 'Intrusion detection\
+    \ analysis report',\n      threats: [],\n      alerts: [],\n      responseActions:\
+    \ [],\n      recommendations: ['Update signatures', 'Review policies'],\n    \
+    \  forensicData: {}\n    };\n  }\n  \n  private deduplicateThreats(threats: Threat[]):\
+    \ Threat[] {\n    // Remove duplicate threats based on threat ID\n    return threats.filter((threat,\
+    \ index, self) => \n      index === self.findIndex(t => t.id === threat.id)\n\
+    \    );\n  }\n  \n  private generateOperationId(): string {\n    return `intrusion_detection_${Date.now()}_${Math.random().toString(36).substr(2,\
+    \ 9)}`;\n  }\n  \n  private generateAlertId(): string {\n    return `alert_${Date.now()}_${Math.random().toString(36).substr(2,\
+    \ 9)}`;\n  }\n  \n  private generateActionId(): string {\n    return `action_${Date.now()}_${Math.random().toString(36).substr(2,\
+    \ 9)}`;\n  }\n}\n\ninterface MonitoringResult {\n  source: string;\n  success:\
+    \ boolean;\n  error?: string;\n  timestamp: Date;\n}\n```"
+- level: 3
+  title: '**Integration Points**'
+  type: section
+  content: ''
+- level: 4
+  title: '**1. Event Source Integration**'
+  type: section
+  content: '- **Description**: Integrates with various event sources for data collection
+
+    - **Protocol**: Event collection and data exchange protocols
+
+    - **Authentication**: Source access credentials and permissions
+
+    - **Rate Limiting**: Event collection rate limiting for performance'
+- level: 4
+  title: '**2. Threat Intelligence Integration**'
+  type: section
+  content: '- **Description**: Integrates with threat intelligence feeds for enhanced
+    detection
+
+    - **Protocol**: Feed subscription and data exchange protocols
+
+    - **Authentication**: Feed access credentials and API keys
+
+    - **Rate Limiting**: Feed update rate limiting to avoid overload'
+- level: 2
+  title: Performance Characteristics
+  type: section
+  content: ''
+- level: 3
+  title: '**Throughput**'
+  type: section
+  content: '- **Event Processing**: 10,000 events/second
+
+    - **Threat Detection**: 1,000 threats/minute
+
+    - **Alert Generation**: 100 alerts/minute
+
+    - **Response Execution**: 50 responses/minute'
+- level: 3
+  title: '**Reliability**'
+  type: section
+  content: '- **Detection Accuracy**: 99.5% detection rate
+
+    - **False Positive Rate**: < 3% false positive rate
+
+    - **Recovery Time**: < 1 minute for detection failures
+
+    - **Availability**: 99.9% uptime for detection services'
+- level: 3
+  title: '**Scalability**'
+  type: section
+  content: '- **Horizontal Scaling**: Support for distributed detection across multiple
+    nodes
+
+    - **Vertical Scaling**: Linear performance improvement with additional resources
+
+    - **Concurrent Analysis**: Support for up to 10 concurrent analyses
+
+    - **Memory Usage**: < 1GB memory footprint for standard operations'
+- level: 2
+  title: Security Considerations
+  type: section
+  content: ''
+- level: 3
+  title: '**Detection Security**'
+  type: section
+  content: '- **Access Control**: Strict access control for detection results and
+    alerts
+
+    - **Data Protection**: Encrypted storage of detection data and reports
+
+    - **Audit Trail**: Complete audit trail for all detection activities
+
+    - **Threat Isolation**: Secure isolation of detected threats'
+- level: 3
+  title: '**System Security**'
+  type: section
+  content: '- **Resource Protection**: Protect against resource exhaustion attacks
+
+    - **Detection Impact**: Minimize system impact during detection
+
+    - **Error Handling**: Graceful handling of detection failures and timeouts
+
+    - **Response Security**: Secure execution of automated responses'
+- level: 2
+  title: Error Handling
+  type: section
+  content: ''
+- level: 3
+  title: '**Error Types**'
+  type: section
+  content: '- **Detection Failures**: Detection engine failures or errors
+
+    - **Event Collection Errors**: Event source connectivity or data errors
+
+    - **Response Errors**: Automated response execution failures
+
+    - **Intelligence Errors**: Threat intelligence feed access failures
+
+    - **Performance Errors**: Resource exhaustion or timeout errors'
+- level: 3
+  title: '**Error Recovery**'
+  type: section
+  content: '- **Automatic Retry**: Retry failed detections with exponential backoff
+
+    - **Fallback Detection**: Fallback to alternative detection modes on failure
+
+    - **Resource Management**: Dynamic resource allocation and cleanup
+
+    - **Error Reporting**: Comprehensive error reporting and alerting'
+- level: 2
+  title: Testing Strategy
+  type: section
+  content: ''
+- level: 3
+  title: '**Unit Testing**'
+  type: section
+  content: '- **Detection Engines**: Test each detection engine independently
+
+    - **Event Processing**: Test event processing and normalization
+
+    - **Alert Generation**: Test alert generation and management
+
+    - **Error Handling**: Test all error conditions and recovery'
+- level: 3
+  title: '**Integration Testing**'
+  type: section
+  content: '- **End-to-End Detection**: Test complete intrusion detection workflows
+
+    - **Source Integration**: Test integration with various event sources
+
+    - **Performance Testing**: Test performance under various load conditions
+
+    - **Security Testing**: Test detection security and access control'
+- level: 3
+  title: '**Load Testing**'
+  type: section
+  content: '- **Concurrent Analysis**: Test multiple concurrent threat analyses
+
+    - **High Event Volume**: Test detection under high event volumes
+
+    - **Resource Utilization**: Test resource usage under load
+
+    - **Performance Degradation**: Test performance under resource constraints'
+- level: 2
+  title: Deployment Considerations
+  type: section
+  content: ''
+- level: 3
+  title: '**Resource Requirements**'
+  type: section
+  content: '- **CPU**: Minimum 4 cores, recommended 8+ cores for high-performance
+    detection
+
+    - **Memory**: Minimum 4GB, recommended 16GB+ for large deployments
+
+    - **Storage**: Minimum 10GB for logs and forensic data
+
+    - **Network**: High-speed network for event collection and intelligence feeds'
+- level: 3
+  title: '**Configuration**'
+  type: section
+  content: '- **Environment Variables**: Configuration through environment variables
+
+    - **Configuration Files**: Support for configuration file-based setup
+
+    - **Runtime Configuration**: Dynamic configuration updates
+
+    - **Validation**: Configuration validation on startup'
+- level: 3
+  title: '**Monitoring**'
+  type: section
+  content: '- **Performance Metrics**: Monitor detection performance and throughput
+
+    - **Resource Utilization**: Monitor CPU, memory, and storage usage
+
+    - **Error Rates**: Monitor detection failure rates and types
+
+    - **Security Events**: Monitor detection access and alert management'
+- level: 2
+  title: Usage Examples
+  type: section
+  content: ''
+- level: 3
+  title: '**Basic Usage**'
+  type: section
+  content: "```typescript\nimport { IntrusionDetector } from './IntrusionDetector';\n\
+    \nconst detector = new IntrusionDetector(config);\n\nconst input: IntrusionDetectorInput\
+    \ = {\n  action: 'start_monitoring'\n};\n\nconst result = await detector.executeAction(input);\n\
+    console.log('Monitoring started:', result.success);\nconsole.log('Sources monitored:',\
+    \ result.metadata.sources);\n```"
+- level: 3
+  title: '**Advanced Usage with Event Analysis**'
+  type: section
+  content: "```typescript\nimport { IntrusionDetector } from './IntrusionDetector';\n\
+    \nconst detector = new IntrusionDetector(config);\n\nconst events: SecurityEvent[]\
+    \ = [\n  {\n    id: 'event001',\n    timestamp: new Date(),\n    source: 'system_logs',\n\
+    \    type: 'system',\n    severity: 'high',\n    data: { process: 'suspicious.exe',\
+    \ action: 'file_access' },\n    metadata: { sourceIp: '192.168.1.100', userId:\
+    \ 'admin' }\n  }\n];\n\nconst input: IntrusionDetectorInput = {\n  action: 'analyze_events',\n\
+    \  events,\n  analysisMode: ['signature', 'behavior', 'anomaly']\n};\n\nconst\
+    \ result = await detector.executeAction(input);\nconsole.log('Analysis completed:',\
+    \ result.success);\nconsole.log('Threats detected:', result.threats?.length);\n\
+    console.log('Alerts generated:', result.alerts?.length);\n```"
+- level: 2
+  title: Future Enhancements
+  type: section
+  content: ''
+- level: 3
+  title: '**Planned Features**'
+  type: section
+  content: '- **Advanced Machine Learning**: Enhanced ML-based threat detection
+
+    - **Cloud Integration**: Native cloud platform intrusion detection
+
+    - **Automated Response**: Enhanced automated response capabilities
+
+    - **Threat Hunting**: Proactive threat hunting capabilities'
+- level: 3
+  title: '**Performance Improvements**'
+  type: section
+  content: "- **GPU Acceleration**: GPU-accelerated threat detection\n- **Advanced\
+    \ Caching**: Intelligent caching for detection results\n- **Distributed Detection**:\
+    \ Enhanced distributed detection capabilities\n- **Real-Time Analytics**: Real-time\
+    \ threat analytics and alerting\n\n---\n\n**Version**: 1.0  \n**Focus**: Comprehensive\
+    \ intrusion detection and prevention with automated response"

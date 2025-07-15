@@ -1,243 +1,266 @@
-# Amauta Wearable AI Node System (KOS v1)
+# KOS v1 - Knowledge Operating System
 
-A production-grade wearable AI node system with complete 13-class node hierarchy, medical-grade features, and comprehensive security. This project is part of the KOS (Knowledge Operating System) development initiative.
+A comprehensive, self-hosted knowledge management and AI platform with automated deployment and validation.
 
-## 🚀 Features
-
-### Complete 13-Class Node System
-- **Foundation Tier (4 nodes)**: Musa, Hakim, Skald, Oracle
-- **Governance Tier (3 nodes)**: Junzi, Yachay, Sachem  
-- **Elder Tier (3 nodes)**: Archon, Amauta, Mzee
-- **Core Nodes (3 nodes)**: Griot, Ronin, Tohunga
-
-### Core Capabilities
-- 🔐 **Security**: OAuth2, WebAuthN, RBAC, encrypted vault
-- 🏥 **Medical**: DICOM support, health monitoring, vitals tracking
-- 🤖 **AI Integration**: Multi-agent system with LLM integration
-- 🔌 **Plugin System**: Extensible plugin architecture
-- 🌐 **Multilingual**: Internationalization support
-- 📊 **Monitoring**: Real-time health and performance monitoring
-- 🐳 **Containerized**: Full Docker Compose deployment
-
-## 🛠️ Development Status
-
-**Current Phase**: Active Development  
-**AI Assistant**: Various AI models providing development support  
-**KOS Agent Status**: Not yet implemented - This project is building the foundation for future KOS agent development
-
-### What This Project Is
-- A comprehensive wearable AI node system
-- Foundation for future KOS agent implementation
-- Production-ready medical and personal assistance platform
-- Multi-cultural, wisdom-grounded AI architecture
-
-### What This Project Is NOT
-- A KOS agent (not yet implemented)
-- A fully autonomous AI system
-- A replacement for human decision-making
-
-### AI Agent Guidelines
-- Each AI agent should properly introduce themselves (see `AGENT_INTRO_TEMPLATE.md`)
-- Various AI models collaborate on different aspects of development
-- All agents require human oversight and approval
-
-## 🏗️ Architecture
-
-```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Frontend      │    │   Backend       │    │   Database      │
-│   (React)       │◄──►│   (FastAPI)     │◄──►│   (PostgreSQL)  │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         │                       │                       │
-         │              ┌─────────────────┐              │
-         └──────────────►│   Vector DB     │◄─────────────┘
-                        │   (Weaviate)    │
-                        └─────────────────┘
-```
-
-## 🛠️ Quick Start
+## 🚀 Quick Start
 
 ### Prerequisites
 - Docker and Docker Compose
-- Node.js 18+ (for development)
-- Python 3.11+ (for development)
+- Python 3.8+
+- Git
 
-### Production Deployment
+### Installation
 ```bash
 # Clone the repository
 git clone <repository-url>
 cd kos_v1
 
-# Start all services
-docker-compose up -d
-
-# Access the application
-# Frontend: http://localhost:3000
-# Backend API: http://localhost:8000
-# API Docs: http://localhost:8000/docs
+# Run the automated installer
+./kos-install.sh
 ```
 
-### Development Setup
-```bash
-# Backend setup
-cd backend
-pip install -r requirements.txt
-uvicorn main:app --reload
+The installer will:
+1. Detect your system capabilities
+2. Install dependencies
+3. Generate environment configuration
+4. Start all services with health checks
+5. Display access information
 
-# Frontend setup
-cd frontend
-npm install
-npm run dev
-```
+## 📋 Service Validation
 
-## 📁 Project Structure
+The system now includes comprehensive validation to ensure all services start correctly:
 
-```
-kos_v1/
-├── backend/                 # FastAPI backend
-│   ├── nodes/              # 13-class node system
-│   ├── routes/             # API endpoints
-│   ├── middleware/         # Authentication & security
-│   ├── llm/               # Language model engine
-│   └── vault/             # Encrypted storage
-├── frontend/              # React frontend
-│   ├── src/               # Source code
-│   ├── public/            # Static assets
-│   └── package.json       # Dependencies
-├── docker/                # Docker configurations
-├── nginx/                 # Reverse proxy config
-├── monitoring/            # Prometheus & Grafana
-├── docker-compose.yml     # Service orchestration
-└── requirements.txt       # Python dependencies
-```
+### Environment Validation
+- **Service Configuration**: Validates that all enabled services have required variables (ports, images, credentials)
+- **API Keys**: Checks for required API keys and secrets for enabled cloud services
+- **Security Keys**: Validates JWT secrets, encryption keys, and other security requirements
+
+### Health Checks
+- **Dynamic Health Monitoring**: Automatically checks health for all enabled services
+- **Endpoint Validation**: Verifies UI, health endpoints, and addon exposure
+- **Container Status**: Monitors container status for headless services
+
+### Service Exposure
+- **UI Endpoints**: Web interfaces for user interaction
+- **Health Endpoints**: Service health monitoring endpoints
+- **Addon Endpoints**: Additional service interfaces
 
 ## 🔧 Configuration
 
-### Environment Variables
+### Environment Files
+The system uses modular environment configuration:
+
+- `env/ports.env` - Port assignments and container names
+- `env/local.env` - Service enablement and local configuration
+- `env/settings.env` - System settings and feature flags
+- `env/api-keys.env` - External API keys and authentication
+- `env/cloud.env` - Cloud service configuration
+
+### Adding New Services
+To add a new service:
+
+1. **Add Service Configuration** in `env/local.env`:
 ```bash
-# Application
-AMAUTA_HOST=0.0.0.0
-AMAUTA_PORT=8000
-DEBUG=false
-
-# Security
-SECRET_KEY=your-secret-key
-OPENAI_API_KEY=your-openai-key
-
-# Database
-DATABASE_URL=postgresql://user:pass@host:port/db
-REDIS_URL=redis://localhost:6379
-
-# Vector Database
-VECTOR_DB_URL=http://localhost:8080
+KOS_NEW_SERVICE_ENABLE=true
+KOS_NEW_SERVICE_IMAGE=service:latest
+KOS_NEW_SERVICE_INTERNAL_PORT=8080
+KOS_NEW_SERVICE_EXTERNAL_PORT=8080
+KOS_NEW_SERVICE_HOST=${KOS_DEFAULT_HOST}
 ```
 
-## 🧪 Testing
+2. **Add Port Configuration** in `env/ports.env`:
+```bash
+KOS_NEW_SERVICE_CONTAINER_NAME=kos-new-service
+KOS_NEW_SERVICE_EXTERNAL_PORT=8080
+KOS_NEW_SERVICE_INTERNAL_PORT=8080
+```
+
+3. **Update Validation** in `scripts/env_loader.py`:
+```python
+'NEW_SERVICE': ['_ENABLE', '_IMAGE', '_INTERNAL_PORT', '_EXTERNAL_PORT', '_HOST'],
+```
+
+4. **Add Health Check** in `scripts/generate_docker_compose.py`:
+```python
+elif service_name == 'new_service':
+    return {
+        'test': ['CMD-SHELL', 'curl -f http://localhost:8080/health || exit 1'],
+        'interval': '30s',
+        'timeout': '10s',
+        'retries': 3
+    }
+```
+
+## 🔑 API Keys and Secrets
+
+### Required API Keys
+For production use, ensure these API keys are configured:
+
+- **OpenAI**: `OPENAI_API_KEY`, `OPENAI_ORGANIZATION`
+- **Anthropic**: `ANTHROPIC_API_KEY`
+- **Google AI**: `GOOGLE_AI_API_KEY`
+- **Azure OpenAI**: `AZURE_OPENAI_API_KEY`, `AZURE_OPENAI_ENDPOINT`
+- **HuggingFace**: `HUGGINGFACE_API_TOKEN`
+- **AWS**: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`
+- **Pinecone**: `PINECONE_API_KEY`, `PINECONE_ENVIRONMENT`
+
+### Security Keys
+Generate these security keys for production:
 
 ```bash
-# Backend tests
-cd backend
-pytest
+# JWT Secret
+openssl rand -base64 32
 
-# Frontend tests
-cd frontend
-npm test
+# OpenWebUI Secret
+openssl rand -base64 32
 
-# Integration tests
-docker-compose -f docker-compose.test.yml up
+# N8N Encryption Key
+openssl rand -base64 32
+
+# Penpot Secret Key
+openssl rand -base64 32
 ```
+
+## 🐛 Troubleshooting
+
+### Service Startup Issues
+
+#### 1. Missing Environment Variables
+**Error**: `Service X is enabled but missing required variables`
+**Solution**: Check the service configuration in `env/local.env` and `env/ports.env`
+
+#### 2. Service Health Check Failures
+**Error**: `Service X health check failed`
+**Solution**: 
+- Check service logs: `docker-compose logs -f <service-name>`
+- Verify port availability: `netstat -tulpn | grep <port>`
+- Check service dependencies are healthy
+
+#### 3. Nextcloud/Postgres Connection Issues
+**Error**: Nextcloud fails to start or loops
+**Solution**:
+- Ensure Postgres is healthy: `docker-compose ps postgres`
+- Check database credentials in `env/local.env`
+- Verify Nextcloud DB configuration
+
+#### 4. API Key Errors
+**Error**: `Missing API key/secret for service`
+**Solution**: Add required API keys to `env/api-keys.env` or `env/cloud.env`
+
+### Common Commands
+
+```bash
+# View all service logs
+docker-compose logs -f
+
+# Check service status
+docker-compose ps
+
+# Restart specific service
+docker-compose restart <service-name>
+
+# Rebuild and restart
+docker-compose down
+docker-compose up -d --build
+
+# Check service health
+curl http://localhost:<port>/health
+
+# Access service logs
+docker-compose logs -f <service-name>
+```
+
+### Service Dependencies
+The system uses health checks and dependencies to ensure proper startup order:
+
+1. **Infrastructure**: PostgreSQL, Redis, MinIO, Elasticsearch, Weaviate
+2. **Core Services**: API, Frontend, Nginx
+3. **AI Services**: Ollama, OpenWebUI, Image Generation
+4. **Workflow**: n8n, Penpot, Nextcloud
+5. **Admin Tools**: Database management UIs
+6. **Monitoring**: Prometheus, Grafana, cAdvisor
+
+## 🌐 Service Access
+
+### Core Services
+- **Web Dashboard**: http://localhost:3000
+- **API Documentation**: http://localhost:8000/docs
+- **API Health**: http://localhost:8000/health
+
+### Database Access
+- **PostgreSQL**: localhost:5432
+- **Redis**: localhost:6379
+- **Weaviate**: http://localhost:8082
+- **MinIO Console**: http://localhost:9001
+
+### Admin Tools
+- **pgAdmin**: http://localhost:8086
+- **Mongo Express**: http://localhost:8087
+- **Redis Commander**: http://localhost:8085
+
+### AI Services
+- **OpenWebUI**: http://localhost:3001
+- **Automatic1111**: http://localhost:7860
+- **ComfyUI**: http://localhost:8188
+- **InvokeAI**: http://localhost:9091
+
+### Workflow Tools
+- **Nextcloud**: http://localhost:8083
+- **n8n**: http://localhost:5678
+- **Penpot**: http://localhost:9002
+
+### Monitoring
+- **Grafana**: http://localhost:3007
+- **Prometheus**: http://localhost:9090
+- **cAdvisor**: http://localhost:8088
+
+## 🔒 Security
+
+### Default Credentials
+- **Admin User**: kos-admin
+- **Admin Password**: kos-30437
+
+**⚠️ Change these credentials in production!**
+
+### SSL/TLS
+For production deployment:
+1. Add SSL certificates to `env/api-keys.env`
+2. Enable HTTPS in `env/settings.env`
+3. Configure nginx SSL settings
 
 ## 📊 Monitoring
 
-- **Prometheus**: http://localhost:9090
-- **Grafana**: http://localhost:3001 (admin/admin)
-- **Health Check**: http://localhost:8000/health
+### Health Monitoring
+- All services include health checks
+- Automatic restart on failure
+- Health status reporting in installer
 
-## 🔒 Security Features
+### Logging
+- Centralized logging in `./logs/`
+- Service-specific log files
+- Docker Compose log aggregation
 
-- **Authentication**: OAuth2 with JWT tokens
-- **Authorization**: Role-based access control (RBAC)
-- **Encryption**: AES-256 encrypted vault
-- **WebAuthN**: Passwordless authentication
-- **CORS**: Configured cross-origin requests
-- **Rate Limiting**: API rate limiting
-- **Input Validation**: Pydantic models
-
-## 🏥 Medical Features
-
-- **DICOM Support**: Medical imaging standards
-- **Health Monitoring**: Real-time vitals tracking
-- **PACS Integration**: Picture Archiving and Communication System
-- **HIPAA Compliance**: Healthcare data protection
-- **Audit Logging**: Complete audit trail
-
-## 🤖 AI Agents
-
-- **Multi-Agent System**: Coordinated AI agents
-- **LLM Integration**: OpenAI, local models, custom endpoints
-- **Context Management**: Persistent conversation context
-- **Plugin Architecture**: Extensible agent capabilities
-- **Real-time Processing**: WebSocket communication
-
-## 🌍 Internationalization
-
-- **Multi-language Support**: 12+ languages
-- **Cultural Adaptation**: Region-specific content
-- **Unicode Support**: Full UTF-8 encoding
-- **Localization**: Date, time, number formatting
-
-## 📈 Performance
-
-- **Async Processing**: Non-blocking operations
-- **Caching**: Redis-based caching
-- **Load Balancing**: Nginx reverse proxy
-- **Database Optimization**: Connection pooling
-- **CDN Ready**: Static asset optimization
-
-## 🔄 CI/CD
-
-- **Automated Testing**: GitHub Actions
-- **Code Quality**: Black, flake8, mypy
-- **Security Scanning**: Dependency vulnerability checks
-- **Deployment**: Automated Docker builds
-- **Monitoring**: Health checks and alerts
-
-## 📚 API Documentation
-
-- **Interactive Docs**: Swagger UI at `/docs`
-- **OpenAPI Spec**: Available at `/openapi.json`
-- **Postman Collection**: Available in `/docs/postman`
+### Metrics
+- Prometheus metrics collection
+- Grafana dashboards
+- cAdvisor container monitoring
 
 ## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Add tests
+4. Test thoroughly
 5. Submit a pull request
 
 ## 📄 License
 
-MIT License - see LICENSE file for details
+[Add your license information here]
 
 ## 🆘 Support
 
-- **Documentation**: See `/docs` directory
-- **Issues**: GitHub Issues
-- **Discussions**: GitHub Discussions
-- **Email**: support@amauta.ai
-
-## 🗺️ Roadmap
-
-- [ ] Advanced ML model training
-- [ ] Edge computing support
-- [ ] Blockchain integration
-- [ ] AR/VR interfaces
-- [ ] Quantum computing integration
-- [ ] Advanced medical AI
-- [ ] Global node network
-- [ ] Advanced security features
-
----
-
-**Amauta Wearable AI Node System** - Honoring global wisdom traditions while providing cutting-edge technological capabilities. 
+For issues and questions:
+1. Check the troubleshooting section
+2. Review service logs
+3. Verify environment configuration
+4. Create an issue with detailed information 

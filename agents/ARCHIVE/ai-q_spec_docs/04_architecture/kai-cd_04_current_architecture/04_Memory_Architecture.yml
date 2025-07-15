@@ -1,0 +1,379 @@
+metadata:
+  original_file: 04_Memory_Architecture.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Memory Architecture
+  description: Current Kai-CD memory system with evolution path to kOS distributed
+    memory
+  category: architecture
+  subcategory: memory
+  context: current_implementation
+  implementation_status: partial
+  decision_scope: high
+  complexity: high
+  last_updated: '2025-01-20'
+  code_references:
+  - src/store/
+  - src/utils/crypto.ts
+  - src/components/VaultManager.tsx
+  related_documents:
+  - ./02_state-management.md
+  - ../../future/services/01_prompt-management.md
+  - ../../future/agents/02_memory-architecture.md
+  dependencies:
+  - Chrome Storage API
+  - Zustand
+  - WebCrypto
+  - IndexedDB
+  breaking_changes: false
+  agent_notes: Memory system architecture - understand current limitations and future
+    multi-tier vision
+sections:
+- level: 1
+  title: Memory Architecture
+  type: section
+  content: ''
+- level: 2
+  title: Agent Context
+  type: section
+  content: '**For AI Agents**: Complete memory architecture covering current Chrome
+    storage implementation and evolution to sophisticated multi-tier distributed memory
+    system. Use this when implementing data persistence, understanding memory patterns,
+    or planning storage systems. Critical foundation for all data storage and retrieval
+    work.
+
+
+    **Implementation Notes**: Contains current Chrome storage patterns and future
+    vector database integration with short-term, long-term, and global memory tiers.
+    Includes working TypeScript interfaces and storage schemas.
+
+    **Quality Requirements**: Keep memory patterns and storage implementations synchronized
+    with actual system. Maintain accuracy of evolution pathway to distributed memory.
+
+    **Integration Points**: Foundation for data persistence, links to state management,
+    security vault, and future distributed memory systems.
+
+
+    ---'
+- level: 2
+  title: Quick Summary
+  type: section
+  content: Current Chrome storage-based memory system with evolution path to sophisticated
+    multi-tier memory architecture including short-term, long-term, and global federated
+    memory for kOS.
+- level: 2
+  title: Current Implementation (Kai-CD)
+  type: section
+  content: ''
+- level: 3
+  title: Memory Tiers Overview
+  type: section
+  content: '**Current State**: Single-tier Chrome storage with basic persistence
+
+    **Future Vision**: Multi-tier distributed memory system'
+- level: 4
+  title: 1. Current Chrome Storage
+  type: section
+  content: '- **Storage**: `chrome.storage.local` with JSON serialization
+
+    - **Scope**: Per-extension instance, browser-bound
+
+    - **Persistence**: Survives browser restarts, lost on extension uninstall
+
+    - **Capacity**: Limited by Chrome''s storage quotas (~10MB typical)
+
+    - **Access**: Synchronous/asynchronous via Zustand persistence'
+- level: 4
+  title: 2. Planned Memory Tiers (Future)
+  type: section
+  content: ''
+- level: 5
+  title: Short-Term Memory (STM)
+  type: section
+  content: '- **Scope**: Session or transient memory
+
+    - **Lifetime**: Reset after session expiration or timeout
+
+    - **Storage**: In-memory (RAM, IndexedDB, Redis ephemeral)
+
+    - **Access Speed**: Ultra-fast
+
+    - **Use Cases**: Contextual backtracking, ongoing dialogue, temporary scratchpad'
+- level: 5
+  title: Long-Term Memory (LTM)
+  type: section
+  content: '- **Scope**: Persistent, agent-specific knowledge
+
+    - **Lifetime**: Durable across sessions
+
+    - **Storage**: Vector database (Qdrant/Chroma/Weaviate)
+
+    - **Access Speed**: Fast, indexed via embedding
+
+    - **Use Cases**: Remembering preferences, user data, task history, assistant training'
+- level: 5
+  title: Global Memory (GMEM)
+  type: section
+  content: '- **Scope**: Shared, federated knowledge base
+
+    - **Lifetime**: Persistent, versioned
+
+    - **Storage**: Federated vector stores + graph stores
+
+    - **Access Speed**: Medium
+
+    - **Use Cases**: Swarm knowledge sharing, global common sense, system-wide coordination'
+- level: 2
+  title: Current Storage Architecture
+  type: section
+  content: ''
+- level: 3
+  title: Zustand Stores with Chrome Persistence
+  type: section
+  content: "```typescript\n// Current implementation pattern\ninterface MemoryStore\
+    \ {\n  // Volatile state (resets on reload)\n  sessionData: SessionData;\n  \n\
+    \  // Persisted state (survives restarts)\n  persistedMemories: Memory[];\n  userPreferences:\
+    \ UserPrefs;\n  serviceConfigurations: ServiceConfig[];\n}\n```"
+- level: 3
+  title: Storage Locations
+  type: section
+  content: "```\nChrome Extension Storage:\n├── serviceStore          # Service definitions\
+    \ and health status\n├── viewStateStore        # UI state and active selections\
+    \  \n├── settingsStore         # User preferences and configuration\n├── logStore\
+    \             # Application logs (limited retention)\n├── vaultStore         \
+    \  # Encrypted credential storage\n└── securityStateStore   # Security tools and\
+    \ vault state\n```"
+- level: 3
+  title: Current Limitations
+  type: section
+  content: '- **No Vector Search**: No semantic similarity search capabilities
+
+    - **Limited Capacity**: Chrome storage quotas restrict data volume
+
+    - **No Federation**: Cannot share memory across instances
+
+    - **Basic Encryption**: Simple AES encryption without advanced key management
+
+    - **No Decay**: No automatic memory aging or cleanup policies'
+- level: 2
+  title: Future Memory System Architecture
+  type: section
+  content: ''
+- level: 3
+  title: Planned Directory Structure
+  type: section
+  content: "```\nmemory/\n├── stm/\n│   ├── cache.ts               # In-memory short-term\
+    \ store\n│   ├── context_tracker.ts     # Active dialogue and state tracking\n\
+    │   └── timeout_manager.ts     # Auto-expiration routines\n├── ltm/\n│   ├── vector_store_qdrant.ts\
+    \ # Qdrant-backed persistent memory\n│   ├── summarizer.ts          # Long-form\
+    \ text chunker + condenser\n│   ├── metadata_indexer.ts    # Tagging and semantic\
+    \ search utilities\n│   └── schema.ts              # User + content data models\n\
+    ├── gmem/\n│   ├── sync_bridge.ts         # Federation protocol connector\n│ \
+    \  ├── knowledge_graph.ts     # Shared RDF-style graph store\n│   ├── peer_registry.ts\
+    \       # Known agent memory contributors\n│   └── sync_policy.yaml       # Access\
+    \ rules, merge policies\n├── embeddings/\n│   ├── generator_openai.ts    # API-based\
+    \ embedding client\n│   ├── generator_local.ts     # On-device encoder (e.g.,\
+    \ InstructorXL)\n│   └── embed_router.ts        # Route queries to appropriate\
+    \ embedder\n└── utils/\n    ├── similarity.ts          # Cosine similarity, ranking\n\
+    \    ├── chunking.ts            # Adaptive token-length chunker\n    └── hash.ts\
+    \                # UUID + content integrity hashing\n```"
+- level: 3
+  title: Future Configuration Schema
+  type: section
+  content: "```yaml\nmemory:\n  short_term:\n    max_items: 512\n    expiration_sec:\
+    \ 1800\n    enable_entity_tracking: true\n  \n  long_term:\n    vector_backend:\
+    \ qdrant\n    embedding_model: instructor-xl\n    summarization: true\n    max_tokens_per_item:\
+    \ 2048\n  \n  embedding:\n    default_provider: local\n    fallback: openai\n\
+    \    use_fp16: true\n  \n  global:\n    federation: true\n    trust_required:\
+    \ true\n    default_access: read-only\n    replication:\n      interval_sec: 900\n\
+    \      sync_peers:\n        - kind://agent.knowledge.alpha\n        - kind://agent.memory.bridge01\n\
+    ```"
+- level: 2
+  title: Memory Object Schemas
+  type: section
+  content: ''
+- level: 3
+  title: Current Memory Record (Chrome Storage)
+  type: section
+  content: "```typescript\ninterface CurrentMemoryRecord {\n  id: string;\n  timestamp:\
+    \ string;\n  type: 'conversation' | 'preference' | 'service_config';\n  content:\
+    \ string;\n  metadata?: Record<string, any>;\n}\n```"
+- level: 3
+  title: Future Memory Record (Vector-Based)
+  type: section
+  content: "```typescript\ninterface FutureMemoryRecord {\n  id: string;\n  type:\
+    \ 'observation' | 'thought' | 'instruction';\n  embedding: number[];\n  metadata:\
+    \ {\n    agentId: string;\n    timestamp: string;\n    tags: string[];\n    importance:\
+    \ number;\n    source: 'user' | 'agent' | 'external';\n  };\n  content: string;\n\
+    }\n```"
+- level: 2
+  title: Memory Access Patterns
+  type: section
+  content: ''
+- level: 3
+  title: Current Access (Zustand)
+  type: section
+  content: "```typescript\n// Current pattern - direct store access\nconst { memories,\
+    \ addMemory } = useMemoryStore();\n\n// Add memory\nawait addMemory({\n  type:\
+    \ 'conversation',\n  content: 'User asked about hydroponics',\n  timestamp: new\
+    \ Date().toISOString()\n});\n\n// Retrieve memories (basic filtering)\nconst relevantMemories\
+    \ = memories.filter(m => \n  m.content.includes('hydroponics')\n);\n```"
+- level: 3
+  title: Future Access (Abstracted API)
+  type: section
+  content: "```typescript\n// Future pattern - semantic search\ninterface MemoryAdapter\
+    \ {\n  store(record: MemoryRecord): Promise<void>;\n  search(query: string, topK:\
+    \ number): Promise<MemoryRecord[]>;\n  delete(id: string): Promise<void>;\n  summarize(tags?:\
+    \ string[]): Promise<string>;\n}\n\n// Usage\nconst memory = new MemoryAdapter('qdrant');\n\
+    await memory.store({\n  type: 'observation',\n  content: 'User interested in hydroponic\
+    \ setups',\n  embedding: await generateEmbedding(content)\n});\n\nconst matches\
+    \ = await memory.search('hydroponics', 5);\n```"
+- level: 2
+  title: Memory Security & Privacy
+  type: section
+  content: ''
+- level: 3
+  title: Current Security
+  type: section
+  content: '- **Encryption**: AES-256-GCM for vault storage
+
+    - **Access Control**: Browser-based isolation
+
+    - **Key Management**: User-derived keys with PBKDF2
+
+    - **Audit Trail**: Basic logging in logStore'
+- level: 3
+  title: Future Security Enhancements
+  type: section
+  content: '- **Access Scopes**: private, team, shared, public
+
+    - **Advanced Encryption**: AES-256 at rest, TLS in transit
+
+    - **Trust Tokens**: KLP (Kind Link Protocol) for secure memory federation
+
+    - **Comprehensive Audit**: All write/edit actions logged with signatures
+
+    - **Memory Permissions**: Role-based access control for different memory tiers'
+- level: 2
+  title: Evolution Strategy
+  type: section
+  content: ''
+- level: 3
+  title: 'Phase 1: Enhanced Local Memory (Current → Near-term)'
+  type: section
+  content: '1. **Implement Vector Search**: Add local embedding generation and similarity
+    search
+
+    2. **Memory Categorization**: Organize memories by type and importance
+
+    3. **Retention Policies**: Implement memory aging and cleanup
+
+    4. **Enhanced Encryption**: Upgrade key management and storage security'
+- level: 3
+  title: 'Phase 2: Distributed Memory (Near-term → Medium-term)'
+  type: section
+  content: '1. **External Vector DB**: Integration with Qdrant/Chroma for persistent
+    memory
+
+    2. **Memory Synchronization**: Cross-device memory sync for same user
+
+    3. **Agent Memory**: Dedicated memory spaces for different agent personas
+
+    4. **Federation Prep**: Protocols for memory sharing across instances'
+- level: 3
+  title: 'Phase 3: Federated Memory (Medium-term → Long-term)'
+  type: section
+  content: '1. **Global Memory**: Shared knowledge base across kOS network
+
+    2. **Trust-Based Access**: Memory sharing based on trust relationships
+
+    3. **Collaborative Learning**: Agents learning from shared experiences
+
+    4. **Decentralized Storage**: IPFS or similar for distributed memory storage'
+- level: 2
+  title: Integration Points
+  type: section
+  content: ''
+- level: 3
+  title: Current System Integration
+  type: section
+  content: '- **Service Store**: Service configurations and health status
+
+    - **Vault Store**: Encrypted credentials and sensitive data
+
+    - **Settings Store**: User preferences and system configuration
+
+    - **Log Store**: Application events and debugging information'
+- level: 3
+  title: Future System Integration
+  type: section
+  content: '- **Agent Hierarchy**: Different memory access for different agent roles
+
+    - **KLP Protocol**: Secure memory federation via Kind Link Protocol
+
+    - **Governance System**: Trust-based memory access control
+
+    - **Prompt Management**: Centralized prompt storage and versioning'
+- level: 2
+  title: Memory Query Patterns
+  type: section
+  content: ''
+- level: 3
+  title: Current Query Patterns
+  type: section
+  content: "```typescript\n// Simple filtering and searching\nconst serviceMemories\
+    \ = memories.filter(m => m.type === 'service_config');\nconst recentMemories =\
+    \ memories.filter(m => \n  Date.now() - new Date(m.timestamp).getTime() < 86400000\n\
+    );\n```"
+- level: 3
+  title: Future Query Patterns
+  type: section
+  content: "```typescript\n// Semantic search with embedding similarity\nconst relatedMemories\
+    \ = await memory.search({\n  query: \"machine learning deployment\",\n  filters:\
+    \ { agent_id: \"planner-001\", importance: { $gte: 0.7 } },\n  limit: 10\n});\n\
+    \n// Multi-modal memory queries\nconst contextualMemories = await memory.searchWithContext({\n\
+    \  query: \"previous conversation about APIs\",\n  context: currentConversation,\n\
+    \  timeRange: { days: 7 }\n});\n```"
+- level: 2
+  title: Performance Considerations
+  type: section
+  content: ''
+- level: 3
+  title: Current Performance
+  type: section
+  content: '- **Latency**: ~1-5ms for Chrome storage access
+
+    - **Throughput**: Limited by JSON serialization overhead
+
+    - **Scalability**: Degrades with large datasets
+
+    - **Memory Usage**: All data loaded into memory'
+- level: 3
+  title: Future Performance Targets
+  type: section
+  content: '- **STM Latency**: <1ms for in-memory access
+
+    - **LTM Latency**: <50ms for vector similarity search
+
+    - **GMEM Latency**: <200ms for federated queries
+
+    - **Throughput**: 1000+ operations/second
+
+    - **Scalability**: Linear scaling with distributed storage'
+- level: 2
+  title: Related Documentation
+  type: section
+  content: '- [State Management](02_state-management.md) - Current Zustand store architecture
+
+    - [Prompt Management](../../future/services/01_prompt-management.md) - Future
+    prompt storage
+
+    - [Security Framework](../security/01_security-framework.md) - Encryption and
+    access control
+
+    - [Service Architecture](../services/01_service-architecture.md) - Service integration
+    patterns
+
+
+    ---'

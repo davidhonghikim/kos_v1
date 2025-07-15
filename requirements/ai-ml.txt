@@ -1,8 +1,8 @@
 # AI and Machine Learning
-transformers==4.36.2
+transformers==4.41.0
 torch==2.1.2
 torchvision==0.16.2
-sentence-transformers==2.2.2
+sentence-transformers==5.0.0
 openai==1.6.1
 langchain==0.1.0
 langchain-community==0.0.10

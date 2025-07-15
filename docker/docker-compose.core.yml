@@ -1,0 +1,94 @@
+name: kos-v1
+services:
+  api:
+    image: nginx:alpine
+    container_name: kos-api
+    ports:
+    - 8000:8000
+    environment:
+    - API_CATEGORY=core
+    - API_COMPOSE_GROUP=core
+    - API_CONTAINER_NAME=kos-api
+    - API_DEPENDS_ON=postgres,redis
+    - API_ENABLE=true
+    - API_EXTERNAL_PORT=8000
+    - API_HEALTH_CHECK_COMMAND=curl -f http://kos-api:8000/health || exit 1
+    - API_HEALTH_CHECK_INTERVAL=30s
+    - API_HEALTH_CHECK_RETRIES=3
+    - API_HEALTH_CHECK_TIMEOUT=10s
+    - API_IMAGE=nginx:alpine
+    - API_INTERNAL_PORT=8000
+    - API_NETWORK=kos-network
+    - API_PROFILE=core
+    - API_RESTART_POLICY=unless-stopped
+    - ADMIN_USER=kos-admin
+    - ADMIN_PASSWORD=kos-30437
+    networks:
+    - kos-network
+    restart: unless-stopped
+  frontend:
+    image: nginx:alpine
+    container_name: kos-frontend
+    ports:
+    - 3000:3000
+    environment:
+    - FRONTEND_CATEGORY=core
+    - FRONTEND_COMPOSE_GROUP=core
+    - FRONTEND_CONTAINER_NAME=kos-frontend
+    - FRONTEND_DEPENDS_ON=api
+    - FRONTEND_ENABLE=true
+    - FRONTEND_EXTERNAL_PORT=3000
+    - FRONTEND_HEALTH_CHECK_COMMAND=curl -f http://kos-frontend:3000 || exit 1
+    - FRONTEND_HEALTH_CHECK_INTERVAL=30s
+    - FRONTEND_HEALTH_CHECK_RETRIES=3
+    - FRONTEND_HEALTH_CHECK_TIMEOUT=10s
+    - FRONTEND_IMAGE=nginx:alpine
+    - FRONTEND_INTERNAL_PORT=3000
+    - FRONTEND_NETWORK=kos-network
+    - FRONTEND_PROFILE=core
+    - FRONTEND_RESTART_POLICY=unless-stopped
+    - ADMIN_USER=kos-admin
+    - ADMIN_PASSWORD=kos-30437
+    networks:
+    - kos-network
+    restart: unless-stopped
+    depends_on:
+    - api
+  nginx:
+    image: nginx:alpine
+    container_name: kos-nginx
+    ports:
+    - 80:80
+    environment:
+    - NGINX_CATEGORY=core
+    - NGINX_COMPOSE_GROUP=core
+    - NGINX_CONTAINER_NAME=kos-nginx
+    - NGINX_DEPENDS_ON=frontend,api
+    - NGINX_ENABLE=true
+    - NGINX_EXTERNAL_PORT=80
+    - NGINX_HEALTH_CHECK_COMMAND=curl -f http://kos-nginx:80 || exit 1
+    - NGINX_HEALTH_CHECK_INTERVAL=30s
+    - NGINX_HEALTH_CHECK_RETRIES=3
+    - NGINX_HEALTH_CHECK_TIMEOUT=10s
+    - NGINX_IMAGE=nginx:alpine
+    - NGINX_INTERNAL_PORT=80
+    - NGINX_NETWORK=kos-network
+    - NGINX_PROFILE=core
+    - NGINX_RESTART_POLICY=unless-stopped
+    - NGINX_SSL_EXTERNAL_PORT=443
+    - NGINX_SSL_INTERNAL_PORT=443
+    - ADMIN_USER=kos-admin
+    - ADMIN_PASSWORD=kos-30437
+    networks:
+    - kos-network
+    restart: unless-stopped
+    depends_on:
+    - frontend
+    - api
+networks:
+  kos-network:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 172.20.0.0/16
+volumes: {}

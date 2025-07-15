@@ -1,0 +1,285 @@
+name: kos
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: kos-postgres
+    ports:
+    - 5432:5432
+    environment:
+    - POSTGRES_CONTAINER_NAME=kos-postgres
+    - POSTGRES_DB=kos
+    - POSTGRES_DEFAULT_VOLUME=kos-postgres-data:/var/lib/postgresql/data
+    - POSTGRES_ENABLE=true
+    - POSTGRES_HEALTH_CHECK_COMMAND=pg_isready -U ${KOS_ADMIN_USER} -d kos
+    - POSTGRES_HEALTH_CHECK_ENABLED=true
+    - POSTGRES_HEALTH_CHECK_INTERVAL=30s
+    - POSTGRES_HEALTH_CHECK_RETRIES=3
+    - POSTGRES_HEALTH_CHECK_TIMEOUT=10s
+    - POSTGRES_HOST=localhost
+    - POSTGRES_IMAGE=postgres:15-alpine
+    - POSTGRES_INTERNAL_PORT=5432
+    - POSTGRES_NETWORK=kos-network
+    - POSTGRES_PASSWORD=kos-30437
+    - POSTGRES_PROFILE=core
+    - POSTGRES_RESTART_POLICY=unless-stopped
+    - POSTGRES_USER=kos-admin
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
+    - POSTGRES_USER=kos-admin
+    - POSTGRES_PASSWORD=kos-30437
+    volumes:
+    - kos-postgres-data:/var/lib/postgresql/data
+    networks:
+    - kos-network
+    restart: unless-stopped
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - pg_isready -U ${KOS_ADMIN_USER} -d kos
+      interval: 30s
+      timeout: 10s
+      retries: 3
+  redis:
+    image: redis:7-alpine
+    container_name: kos-redis
+    ports:
+    - 6379:6379
+    environment:
+    - REDIS_COMMANDER_CONTAINER_NAME=kos-redis-commander
+    - REDIS_COMMANDER_ENABLE=true
+    - REDIS_COMMANDER_EXTERNAL_PORT=8085
+    - REDIS_COMMANDER_HEALTH_CHECK_COMMAND=curl -f http://localhost:8081 || exit 1
+    - REDIS_COMMANDER_HEALTH_CHECK_ENABLED=true
+    - REDIS_COMMANDER_HEALTH_CHECK_INTERVAL=30s
+    - REDIS_COMMANDER_HEALTH_CHECK_RETRIES=3
+    - REDIS_COMMANDER_HEALTH_CHECK_TIMEOUT=10s
+    - REDIS_COMMANDER_HOST=localhost
+    - REDIS_COMMANDER_IMAGE=rediscommander/redis-commander:latest
+    - REDIS_COMMANDER_INTERNAL_PORT=8081
+    - REDIS_COMMANDER_NETWORK=kos-network
+    - REDIS_COMMANDER_PASSWORD=kos-30437
+    - REDIS_COMMANDER_PROFILE=admin
+    - REDIS_COMMANDER_REDIS_HOSTS=local:redis:6379:0:kos-30437
+    - REDIS_COMMANDER_RESTART_POLICY=unless-stopped
+    - REDIS_COMMANDER_USER=kos-admin
+    - REDIS_CONTAINER_NAME=kos-redis
+    - REDIS_DEFAULT_VOLUME=kos-redis-data:/data
+    - REDIS_ENABLE=true
+    - REDIS_EXTERNAL_PORT=6379
+    - REDIS_HEALTH_CHECK_COMMAND=redis-cli ping | grep PONG
+    - REDIS_HEALTH_CHECK_ENABLED=true
+    - REDIS_HEALTH_CHECK_INTERVAL=30s
+    - REDIS_HEALTH_CHECK_RETRIES=3
+    - REDIS_HEALTH_CHECK_TIMEOUT=10s
+    - REDIS_HOST=localhost
+    - REDIS_IMAGE=redis:7-alpine
+    - REDIS_INTERNAL_PORT=6379
+    - REDIS_NETWORK=kos-network
+    - REDIS_PASSWORD=kos-30437
+    - REDIS_PROFILE=core
+    - REDIS_RESTART_POLICY=unless-stopped
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
+    - REDIS_PASSWORD=kos-30437
+    volumes:
+    - kos-redis-data:/data
+    networks:
+    - kos-network
+    restart: unless-stopped
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - redis-cli ping | grep PONG
+      interval: 30s
+      timeout: 10s
+      retries: 3
+  minio:
+    image: minio/minio:latest
+    container_name: kos-minio
+    ports:
+    - 9000:9000
+    - 9001:9001
+    environment:
+    - MINIO_COMMAND=server /data --console-address ":9001"
+    - MINIO_CONSOLE_EXTERNAL_PORT=9001
+    - MINIO_CONSOLE_INTERNAL_PORT=9001
+    - MINIO_CONTAINER_NAME=kos-minio
+    - MINIO_DEFAULT_VOLUME=kos-minio-data:/data
+    - MINIO_ENABLE=true
+    - MINIO_EXTERNAL_PORT=9000
+    - MINIO_HEALTH_CHECK_COMMAND=curl -f http://localhost:9000/minio/health/live ||
+      exit 1
+    - MINIO_HEALTH_CHECK_ENABLED=true
+    - MINIO_HEALTH_CHECK_INTERVAL=30s
+    - MINIO_HEALTH_CHECK_RETRIES=3
+    - MINIO_HEALTH_CHECK_TIMEOUT=10s
+    - MINIO_HOST=localhost
+    - MINIO_IMAGE=minio/minio:latest
+    - MINIO_INTERNAL_PORT=9000
+    - MINIO_NETWORK=kos-network
+    - MINIO_PROFILE=core
+    - MINIO_RESTART_POLICY=unless-stopped
+    - MINIO_ROOT_PASSWORD=kos-30437
+    - MINIO_ROOT_USER=kos-admin
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
+    volumes:
+    - kos-minio-data:/data
+    networks:
+    - kos-network
+    restart: unless-stopped
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:9000/minio/health/live || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    command: server /data --console-address ":9001"
+  neo4j:
+    image: neo4j:5.15
+    container_name: kos-neo4j
+    ports:
+    - 7687:7687
+    - 7474:7474
+    environment:
+    - NEO4J_CONTAINER_NAME=kos-neo4j
+    - NEO4J_DEFAULT_VOLUME=kos-neo4j-data:/data
+    - NEO4J_ENABLE=true
+    - NEO4J_EXTERNAL_PORT=7687
+    - NEO4J_HEALTH_CHECK_COMMAND=curl -f http://localhost:7474/browser/ || exit 1
+    - NEO4J_HEALTH_CHECK_ENABLED=true
+    - NEO4J_HEALTH_CHECK_INTERVAL=30s
+    - NEO4J_HEALTH_CHECK_RETRIES=3
+    - NEO4J_HEALTH_CHECK_TIMEOUT=10s
+    - NEO4J_HOST=localhost
+    - NEO4J_HTTP_EXTERNAL_PORT=7474
+    - NEO4J_HTTP_INTERNAL_PORT=7474
+    - NEO4J_IMAGE=neo4j:5.15
+    - NEO4J_INTERNAL_PORT=7687
+    - NEO4J_NETWORK=kos-network
+    - NEO4J_PASSWORD=kos-30437
+    - NEO4J_PROFILE=core
+    - NEO4J_RESTART_POLICY=unless-stopped
+    - NEO4J_USER=kos-admin
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
+    - NEO4J_USER=kos-admin
+    - NEO4J_PASSWORD=kos-30437
+    volumes:
+    - kos-neo4j-data:/data
+    networks:
+    - kos-network
+    restart: unless-stopped
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:7474/browser/ || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    container_name: kos-elasticsearch
+    ports:
+    - 9200:9200
+    - 9300:9300
+    environment:
+    - ELASTICSEARCH_CLUSTER_EXTERNAL_PORT=9300
+    - ELASTICSEARCH_CLUSTER_INTERNAL_PORT=9300
+    - ELASTICSEARCH_CONTAINER_NAME=kos-elasticsearch
+    - ELASTICSEARCH_DEFAULT_VOLUME=kos-elasticsearch-data:/usr/share/elasticsearch/data
+    - ELASTICSEARCH_ENABLE=true
+    - ELASTICSEARCH_EXTERNAL_PORT=9200
+    - ELASTICSEARCH_HEALTH_CHECK_COMMAND=curl -f http://localhost:9200/_cluster/health
+      || exit 1
+    - ELASTICSEARCH_HEALTH_CHECK_ENABLED=true
+    - ELASTICSEARCH_HEALTH_CHECK_INTERVAL=30s
+    - ELASTICSEARCH_HEALTH_CHECK_RETRIES=3
+    - ELASTICSEARCH_HEALTH_CHECK_TIMEOUT=10s
+    - ELASTICSEARCH_HOST=localhost
+    - ELASTICSEARCH_IMAGE=docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    - ELASTICSEARCH_INTERNAL_PORT=9200
+    - ELASTICSEARCH_NETWORK=kos-network
+    - ELASTICSEARCH_PASSWORD=kos-30437
+    - ELASTICSEARCH_PROFILE=core
+    - ELASTICSEARCH_RESTART_POLICY=unless-stopped
+    - ELASTICSEARCH_USERNAME=kos-admin
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
+    - ELASTICSEARCH_PASSWORD=kos-30437
+    volumes:
+    - kos-elasticsearch-data:/usr/share/elasticsearch/data
+    networks:
+    - kos-network
+    restart: unless-stopped
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:9200/_cluster/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+  weaviate:
+    image: semitechnologies/weaviate:1.22.4
+    container_name: kos-weaviate
+    ports:
+      - 8082:8080
+    environment:
+      PERSISTENCE_DATA_PATH: /var/lib/weaviate
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'false'
+      AUTHENTICATION_APIKEY_ENABLED: 'true'
+      AUTHENTICATION_APIKEY_ALLOWED_KEYS: 'kos-super-secret-key'
+      AUTHENTICATION_APIKEY_USERS: 'admin=kos-super-secret-key'
+      WEAVIATE_CLUSTER_HOSTNAME: node1
+      WEAVIATE_CONTAINER_NAME: kos-weaviate
+      WEAVIATE_DEFAULT_VECTORIZER_MODULE: text2vec-transformers
+      WEAVIATE_ENABLE: true
+      WEAVIATE_ENABLE_MODULES: text2vec-transformers
+      WEAVIATE_EXTERNAL_PORT: 8082
+      WEAVIATE_HEALTH_CHECK_COMMAND: curl -f http://localhost:8080/v1/.well-known/ready || exit 1
+      WEAVIATE_HEALTH_CHECK_ENABLED: true
+      WEAVIATE_HEALTH_CHECK_INTERVAL: 30s
+      WEAVIATE_HEALTH_CHECK_RETRIES: 3
+      WEAVIATE_HEALTH_CHECK_TIMEOUT: 10s
+      WEAVIATE_HOST: localhost
+      WEAVIATE_IMAGE: semitechnologies/weaviate:1.22.4
+      WEAVIATE_INTERNAL_PORT: 8080
+      WEAVIATE_NETWORK: kos-network
+      WEAVIATE_PROFILE: core
+      WEAVIATE_QUERY_DEFAULTS_LIMIT: 25
+      WEAVIATE_RESTART_POLICY: unless-stopped
+      WEAVIATE_TRANSFORMERS_INFERENCE_API: http://huggingface:8083
+      ADMIN_USER: kosadmin
+      ADMIN_PASSWORD: kos30437
+    volumes:
+      - kos-weaviate-data:/var/lib/weaviate
+    networks:
+      - kos-network
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - curl -f http://localhost:8080/v1/.well-known/ready || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+networks:
+  kos-network:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 172.20.0.0/16
+volumes:
+  kos-minio-data:
+    driver: local
+  kos-neo4j-data:
+    driver: local
+  kos-postgres-data:
+    driver: local
+  kos-elasticsearch-data:
+    driver: local
+  kos-weaviate-data:
+    driver: local
+  kos-redis-data:
+    driver: local

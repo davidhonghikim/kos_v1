@@ -1,0 +1,267 @@
+metadata:
+  original_file: 05_Refactoring_Plan.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Refactoring Plan
+  description: Technical specification for refactoring plan
+  type: analysis
+  status: current
+  priority: medium
+  last_updated: '2025-06-22'
+  agent_notes: AI agent guidance for implementing refactoring plan
+sections:
+- level: 1
+  title: Kai-CD Refactoring Plan
+  type: section
+  content: ''
+- level: 2
+  title: Agent Context
+  type: section
+  content: '**For AI Agents**: Complete refactoring plan for systematic codebase improvement
+    and architectural modernization. Use this when planning refactoring efforts, implementing
+    architectural improvements, understanding modernization strategies, or executing
+    systematic code improvements. Essential reference for all refactoring and architectural
+    work.
+
+
+    **Implementation Notes**: Contains systematic refactoring methodology, architectural
+    improvement strategies, modernization approaches, and transformation plans. Includes
+    detailed refactoring workflows and improvement frameworks.
+
+    **Quality Requirements**: Keep refactoring plans and improvement strategies synchronized
+    with actual implementation progress. Maintain accuracy of transformation approaches
+    and architectural evolution.
+
+    **Integration Points**: Foundation for systematic improvements, links to code
+    analysis, architectural patterns, and modernization strategies for comprehensive
+    refactoring guidance.'
+- level: 2
+  title: 🎯 Objectives
+  type: section
+  content: "- Create a modular, maintainable codebase\n- Establish centralized configuration\
+    \ management  \n- Implement feature-based directory organization\n- Build reusable\
+    \ component library\n- Fix import paths and circular dependencies"
+- level: 2
+  title: 📂 Proposed Directory Structure
+  type: section
+  content: "```\nsrc/\n├── core/                          # Core application logic\n\
+    │   ├── config/                    # Centralized configuration\n│   │   ├── index.ts\
+    \              # Main config manager\n│   │   ├── system.ts             # System\
+    \ defaults\n│   │   ├── user.ts               # User overrides\n│   │   └── types.ts\
+    \              # Config types\n│   ├── constants/                 # Application\
+    \ constants\n│   ├── types/                     # Core type definitions\n│   └──\
+    \ utils/                     # Core utilities\n├── features/                 \
+    \     # Feature-based organization\n│   ├── ai-services/              # AI service\
+    \ management\n│   │   ├── components/           # Service-specific UI\n│   │ \
+    \  ├── hooks/                # Service hooks\n│   │   ├── store/             \
+    \   # Service state\n│   │   ├── types/                # Service types\n│   │\
+    \   └── utils/                # Service utilities\n│   ├── security/         \
+    \        # Security & crypto features\n│   │   ├── components/           # Security\
+    \ UI components\n│   │   ├── crypto/               # Cryptographic utilities\n\
+    │   │   ├── vault/                # Vault management\n│   │   └── utils/     \
+    \           # Security utilities\n│   ├── themes/                   # Theme management\
+    \ system\n│   │   ├── components/           # Theme UI components\n│   │   ├──\
+    \ presets/              # Theme collections\n│   │   ├── manager/            \
+    \  # Theme manager\n│   │   └── types/                # Theme types\n│   └── ui-shell/\
+    \                 # Main UI framework\n│       ├── layout/               # Layout\
+    \ components\n│       ├── navigation/           # Navigation components\n│   \
+    \    └── views/                # Main view components\n├── shared/           \
+    \            # Shared/reusable code\n│   ├── components/               # Reusable\
+    \ UI components\n│   │   ├── forms/                # Form components\n│   │  \
+    \ ├── layout/               # Layout components\n│   │   ├── feedback/       \
+    \      # Toast, alerts, etc.\n│   │   └── data-display/         # Tables, cards,\
+    \ etc.\n│   ├── hooks/                    # Reusable hooks\n│   ├── utils/   \
+    \                 # Shared utilities\n│   └── constants/                # Shared\
+    \ constants\n├── platforms/                    # Platform-specific code\n│   ├──\
+    \ chrome-extension/         # Chrome extension specific\n│   │   ├── background/\
+    \           # Background scripts\n│   │   ├── popup/                # Popup interface\n\
+    │   │   ├── sidepanel/            # Side panel\n│   │   └── tab/             \
+    \     # Main tab interface\n│   └── web/                      # Future web version\n\
+    └── assets/                       # Static assets\n    ├── styles/           \
+    \        # Global styles\n    ├── icons/                    # Icon assets\n  \
+    \  └── docs/                     # Documentation assets\n```"
+- level: 2
+  title: '🔧 Phase 1: Core Infrastructure'
+  type: section
+  content: ''
+- level: 3
+  title: 1.1 Configuration Management System
+  type: section
+  content: '- [ ] Create centralized ConfigManager
+
+    - [ ] Implement hierarchical config loading
+
+    - [ ] Add config validation
+
+    - [ ] Create config types
+
+    - [ ] Add environment-specific configs'
+- level: 3
+  title: 1.2 Type System Reorganization
+  type: section
+  content: '- [ ] Move core types to `/core/types/`
+
+    - [ ] Create feature-specific type modules
+
+    - [ ] Add shared type definitions
+
+    - [ ] Implement type validation'
+- level: 3
+  title: 1.3 Utility Organization
+  type: section
+  content: '- [ ] Break down large utility files
+
+    - [ ] Create feature-specific utils
+
+    - [ ] Add shared utility library
+
+    - [ ] Implement utility testing'
+- level: 2
+  title: '🧩 Phase 2: Component Modularization'
+  type: section
+  content: ''
+- level: 3
+  title: 2.1 Shared Component Library
+  type: section
+  content: "- [ ] Create base UI components\n- [ ] Implement form components\n- [\
+    \ ] Add layout components  \n- [ ] Create feedback components\n- [ ] Build data\
+    \ display components"
+- level: 3
+  title: 2.2 Feature Component Organization
+  type: section
+  content: '- [ ] Group security components
+
+    - [ ] Organize AI service components
+
+    - [ ] Restructure theme components
+
+    - [ ] Create navigation components'
+- level: 3
+  title: 2.3 Component Size Reduction
+  type: section
+  content: '- [ ] Break down VaultManager.tsx (448 lines)
+
+    - [ ] Modularize ThemeCustomizer.tsx (412 lines)
+
+    - [ ] Split PasswordGenerator.tsx (432 lines)
+
+    - [ ] Refactor large service components'
+- level: 2
+  title: '🏗️ Phase 3: Feature Architecture'
+  type: section
+  content: ''
+- level: 3
+  title: 3.1 AI Services Feature
+  type: section
+  content: '- [ ] Extract service management logic
+
+    - [ ] Create service-specific components
+
+    - [ ] Implement service hooks
+
+    - [ ] Add service utilities'
+- level: 3
+  title: 3.2 Security Feature
+  type: section
+  content: '- [ ] Organize crypto utilities
+
+    - [ ] Create vault components
+
+    - [ ] Implement security hooks
+
+    - [ ] Add password utilities'
+- level: 3
+  title: 3.3 Theme Feature
+  type: section
+  content: '- [ ] Restructure theme system
+
+    - [ ] Organize theme presets
+
+    - [ ] Create theme components
+
+    - [ ] Implement theme manager'
+- level: 2
+  title: '🔌 Phase 4: Integration & Testing'
+  type: section
+  content: ''
+- level: 3
+  title: 4.1 Import Path Fixes
+  type: section
+  content: '- [ ] Create path aliases
+
+    - [ ] Fix relative imports
+
+    - [ ] Resolve circular dependencies
+
+    - [ ] Update all import statements'
+- level: 3
+  title: 4.2 State Management
+  type: section
+  content: '- [ ] Review store organization
+
+    - [ ] Create feature-specific stores
+
+    - [ ] Implement store composition
+
+    - [ ] Add state persistence'
+- level: 3
+  title: 4.3 Build & Performance
+  type: section
+  content: '- [ ] Update build configuration
+
+    - [ ] Optimize bundle sizes
+
+    - [ ] Add code splitting
+
+    - [ ] Implement lazy loading'
+- level: 2
+  title: '📚 Phase 5: Documentation'
+  type: section
+  content: ''
+- level: 3
+  title: 5.1 Code Documentation
+  type: section
+  content: '- [ ] Add component documentation
+
+    - [ ] Create API documentation
+
+    - [ ] Document configuration system
+
+    - [ ] Add architectural guides'
+- level: 3
+  title: 5.2 User Documentation
+  type: section
+  content: '- [ ] Update user guides
+
+    - [ ] Create feature documentation
+
+    - [ ] Add troubleshooting guides
+
+    - [ ] Update installation docs'
+- level: 2
+  title: ✅ Success Metrics
+  type: section
+  content: '- [ ] All files under 150 lines (target)
+
+    - [ ] No circular dependencies
+
+    - [ ] Consistent import patterns
+
+    - [ ] Centralized configuration
+
+    - [ ] Modular architecture
+
+    - [ ] Reusable components
+
+    - [ ] Clean file organization
+
+    - [ ] Updated documentation'
+- level: 2
+  title: 🚀 Implementation Timeline
+  type: section
+  content: "**Week 1:** Core Infrastructure (Phase 1)\n**Week 2:** Component Modularization\
+    \ (Phase 2)  \n**Week 3:** Feature Architecture (Phase 3)\n**Week 4:** Integration\
+    \ & Testing (Phase 4)\n**Week 5:** Documentation (Phase 5)\n\n---\n\n*This plan\
+    \ ensures a systematic approach to creating a maintainable, scalable, and well-organized\
+    \ codebase.*"

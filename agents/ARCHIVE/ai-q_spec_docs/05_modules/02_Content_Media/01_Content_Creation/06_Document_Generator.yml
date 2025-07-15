@@ -1,0 +1,145 @@
+metadata:
+  original_file: 06_Document_Generator.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Document Generator
+  version: '1.0'
+sections:
+- level: 1
+  title: '**Document Generator**'
+  type: section
+  content: ''
+- level: 2
+  title: '**Purpose**'
+  type: section
+  content: The Document Generator provides professional document creation and formatting
+    capabilities. It supports report generation, formatting, template management,
+    and multi-format output for a wide range of business and technical documents.
+- level: 2
+  title: '**Core Principles**'
+  type: section
+  content: '- **Professional Formatting**: Generate professionally formatted documents
+
+    - **Template Support**: Use and manage custom templates
+
+    - **Multi-Format Output**: Output in PDF, DOCX, HTML, etc.
+
+    - **Content Assembly**: Assemble documents from multiple sources
+
+    - **Version Control**: Support document versioning and change tracking'
+- level: 2
+  title: '**Function Specifications**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Core Functions**'
+  type: section
+  content: ''
+- level: 4
+  title: '**generateDocument(content: string | DocumentParts, options?: DocGenOptions):
+    Promise<DocGenResult>**'
+  type: section
+  content: "Generates a document from content or parts with optional parameters.\n\
+    \n**Parameters:**\n- `content`: Content string or structured document parts\n\
+    - `options`: Optional generation options (template, format, metadata, etc.)\n\n\
+    **Returns:**\n- `DocGenResult`: Generated document and metadata\n\n**Example:**\n\
+    ```typescript\nconst result = await documentGenerator.generateDocument(\n  \"\
+    Quarterly financial report for Q1 2025.\",\n  { template: \"financial\", format:\
+    \ \"pdf\" }\n);\nconsole.log(result.documentUrl);\n```"
+- level: 4
+  title: '**applyTemplate(document: Buffer, template: string): Promise<DocGenResult>**'
+  type: section
+  content: 'Applies a template to a document.
+
+
+    **Parameters:**
+
+    - `document`: Input document buffer
+
+    - `template`: Template to apply
+
+
+    **Returns:**
+
+    - `DocGenResult`: Formatted document and metadata
+
+
+    **Example:**
+
+    ```typescript
+
+    const formatted = await documentGenerator.applyTemplate(documentBuffer, "business");
+
+    console.log(formatted.documentUrl);
+
+    ```'
+- level: 2
+  title: '**Integration Patterns**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Document Generation Flow**'
+  type: section
+  content: "```mermaid\ngraph TD\n    A[Content Input] --> B[Template Selection]\n\
+    \    B --> C[Document Generation]\n    C --> D[Formatting]\n    D --> E[Output\
+    \ Delivery]\n```"
+- level: 2
+  title: '**Capabilities**'
+  type: section
+  content: '- **Professional Formatting**: Output in business and technical formats
+
+    - **Template Management**: Use and manage custom templates
+
+    - **Multi-Format Output**: PDF, DOCX, HTML, etc.
+
+    - **Batch Generation**: Generate multiple documents in parallel
+
+    - **Version Control**: Track document versions and changes'
+- level: 2
+  title: '**Configuration Examples**'
+  type: section
+  content: "```yaml\ndocument_generator:\n  template_support: true\n  multi_format:\
+    \ true\n  professional_formatting: true\n  version_control: true\n```"
+- level: 2
+  title: '**Error Handling**'
+  type: section
+  content: '- **Template Not Found**: Return error with available templates
+
+    - **Format Not Supported**: Return error with supported formats
+
+    - **Generation Failure**: Return error with details
+
+    - **Version Conflict**: Return error with conflict details'
+- level: 2
+  title: '**Performance Considerations**'
+  type: section
+  content: '- **Generation Latency**: Optimized for < 2s
+
+    - **Batch Generation**: Support for batch document generation
+
+    - **Resource Usage**: Efficient CPU and memory usage'
+- level: 2
+  title: '**Security Considerations**'
+  type: section
+  content: '- **Content Validation**: Validate input content for safety
+
+    - **Access Control**: Restrict access to sensitive generation features
+
+    - **Audit Logging**: Log all generation requests'
+- level: 2
+  title: '**Monitoring & Observability**'
+  type: section
+  content: '- **Generation Metrics**: Track request count, latency, and errors
+
+    - **Quality Metrics**: Track formatting quality and feedback
+
+    - **Alerting**: Alerts for generation failures or quality issues
+
+
+    ---
+
+
+    **Version**: 1.0
+
+    **Focus**: Professional, multi-format document generation for kOS ecosystem'

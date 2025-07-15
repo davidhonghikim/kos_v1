@@ -1,0 +1,130 @@
+metadata:
+  original_file: 00_Index.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Current Architecture Index
+  description: Navigation index for current Kai-CD system architecture documentation
+  type: index
+  status: current
+  priority: high
+  last_updated: '2025-01-27'
+  agent_notes: Index for current system architecture - core design and technical specifications
+sections:
+- level: 1
+  title: Current Architecture Index
+  type: section
+  content: '**Kai-CD System Architecture Documentation**
+
+
+    This directory contains comprehensive documentation of the current Kai-CD browser
+    extension architecture and core system design.'
+- level: 2
+  title: Agent Context
+  type: section
+  content: '**For AI Agents**: This directory documents the CURRENT working architecture
+    of Kai-CD. Use these documents when understanding system design, making architectural
+    changes, or ensuring compatibility with existing systems.
+
+
+    **Implementation Notes**: Contains actual system architecture, data flow diagrams,
+    and working design patterns. All documentation reflects the current codebase state.
+
+    **Quality Requirements**: All documentation must accurately reflect current implementation.
+
+    **Integration Points**: Links to component, service, and implementation documentation.'
+- level: 2
+  title: 📁 **Architecture Documents**
+  type: section
+  content: ''
+- level: 3
+  title: '**Core System Design**'
+  type: section
+  content: '- **File**: `01_Core_System_Design.md`
+
+    - **Purpose**: Fundamental system architecture and design principles
+
+    - **Contents**: System overview, core components, design decisions'
+- level: 3
+  title: '**System Architecture**'
+  type: section
+  content: '- **File**: `02_System_Architecture.md`
+
+    - **Purpose**: Complete system architecture specification
+
+    - **Contents**: Component relationships, data flow, system boundaries'
+- level: 3
+  title: '**State Management**'
+  type: section
+  content: '- **File**: `03_State_Management.md`
+
+    - **Purpose**: State management architecture and patterns
+
+    - **Contents**: Zustand stores, state persistence, data flow'
+- level: 3
+  title: '**Memory Architecture**'
+  type: section
+  content: '- **File**: `04_Memory_Architecture.md`
+
+    - **Purpose**: Memory management and data structures
+
+    - **Contents**: Memory allocation, data structures, performance optimization'
+- level: 3
+  title: '**Agent Orchestration**'
+  type: section
+  content: '- **File**: `05_Agent_Orchestration.md`
+
+    - **Purpose**: Agent coordination and workflow management
+
+    - **Contents**: Agent lifecycle, task coordination, workflow patterns'
+- level: 3
+  title: '**Workflow Management**'
+  type: section
+  content: '- **File**: `06_Workflow_Management.md`
+
+    - **Purpose**: Workflow design and execution patterns
+
+    - **Contents**: Workflow definitions, execution engine, task management'
+- level: 3
+  title: '**Network Protocols**'
+  type: section
+  content: '- **File**: `07_Network_Protocols.md`
+
+    - **Purpose**: Network communication and protocol specifications
+
+    - **Contents**: API protocols, communication patterns, network architecture'
+- level: 2
+  title: 🎯 **Quick Navigation**
+  type: section
+  content: ''
+- level: 3
+  title: '**For System Understanding**'
+  type: section
+  content: '1. **Start Here**: `01_Core_System_Design.md` - System overview
+
+    2. **Architecture**: `02_System_Architecture.md` - Complete architecture
+
+    3. **Data Flow**: `03_State_Management.md` - How data flows'
+- level: 3
+  title: '**For Development Work**'
+  type: section
+  content: '1. **Patterns**: `06_Workflow_Management.md` - Development patterns
+
+    2. **Performance**: `04_Memory_Architecture.md` - Performance considerations
+
+    3. **Integration**: `07_Network_Protocols.md` - API integration'
+- level: 3
+  title: '**For Agent Development**'
+  type: section
+  content: '1. **Orchestration**: `05_Agent_Orchestration.md` - Agent coordination
+
+    2. **Workflows**: `06_Workflow_Management.md` - Task management'
+- level: 2
+  title: 🔗 **Related Documentation**
+  type: section
+  content: "- **Components**: `../components/` - UI component architecture\n- **Services**:\
+    \ `../services/` - Service architecture\n- **Implementation**: `../implementation/`\
+    \ - Implementation guides\n- **Security**: `../security/` - Security architecture\n\
+    \n---\n\n**Directory Status**: ✅ **COMPLETE DOCUMENTATION**  \n**Architecture\
+    \ Status**: \U0001F7E2 **CURRENT & WORKING**  \n**Use For**: System design understanding\
+    \ and architectural decisions"

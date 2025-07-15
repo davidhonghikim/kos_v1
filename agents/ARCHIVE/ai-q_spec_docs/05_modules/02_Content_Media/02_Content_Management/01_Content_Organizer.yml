@@ -1,0 +1,144 @@
+metadata:
+  original_file: 01_Content_Organizer.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Content Organizer
+  version: '1.0'
+sections:
+- level: 1
+  title: '**Content Organizer**'
+  type: section
+  content: ''
+- level: 2
+  title: '**Purpose**'
+  type: section
+  content: The Content Organizer provides intelligent content organization and categorization
+    capabilities. It supports auto-categorization, metadata extraction, hierarchical
+    organization, and tagging for efficient content management and discovery.
+- level: 2
+  title: '**Core Principles**'
+  type: section
+  content: '- **Hierarchical Organization**: Organize content in logical structures
+
+    - **Auto-Categorization**: Automatically categorize content based on analysis
+
+    - **Metadata Management**: Extract and manage metadata for discovery
+
+    - **Tagging & Labeling**: Support for comprehensive tagging systems
+
+    - **Continuous Improvement**: Learn from feedback to improve organization'
+- level: 2
+  title: '**Function Specifications**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Core Functions**'
+  type: section
+  content: ''
+- level: 4
+  title: '**organizeContent(content: ContentItem, options?: OrganizerOptions): Promise<OrganizeResult>**'
+  type: section
+  content: "Organizes a content item using intelligent categorization and tagging.\n\
+    \n**Parameters:**\n- `content`: Content item to organize\n- `options`: Optional\
+    \ organization options (category, tags, metadata, etc.)\n\n**Returns:**\n- `OrganizeResult`:\
+    \ Organization result and metadata\n\n**Example:**\n```typescript\nconst result\
+    \ = await contentOrganizer.organizeContent(\n  contentItem,\n  { category: \"\
+    reports\", tags: [\"finance\", \"2025\"] }\n);\nconsole.log(result.structure);\n\
+    ```"
+- level: 4
+  title: '**extractMetadata(content: ContentItem): Promise<Metadata>**'
+  type: section
+  content: 'Extracts metadata from a content item.
+
+
+    **Parameters:**
+
+    - `content`: Content item to extract metadata from
+
+
+    **Returns:**
+
+    - `Metadata`: Extracted metadata
+
+
+    **Example:**
+
+    ```typescript
+
+    const metadata = await contentOrganizer.extractMetadata(contentItem);
+
+    console.log(metadata);
+
+    ```'
+- level: 2
+  title: '**Integration Patterns**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Content Organization Flow**'
+  type: section
+  content: "```mermaid\ngraph TD\n    A[Content Input] --> B[Content Analysis]\n \
+    \   B --> C[Metadata Extraction]\n    C --> D[Auto-Categorization]\n    D -->\
+    \ E[Content Organization]\n    E --> F[Index Update]\n    F --> G[Search Optimization]\n\
+    ```"
+- level: 2
+  title: '**Capabilities**'
+  type: section
+  content: '- **Hierarchical Structure**: Organize content in logical structures
+
+    - **Auto-Categorization**: Intelligent categorization based on content analysis
+
+    - **Tag Management**: Comprehensive tagging and labeling
+
+    - **Metadata Extraction**: Extract and manage metadata
+
+    - **Batch Organization**: Organize multiple content items in parallel'
+- level: 2
+  title: '**Configuration Examples**'
+  type: section
+  content: "```yaml\ncontent_organizer:\n  auto_categorization: true\n  hierarchical_structure:\
+    \ true\n  metadata_extraction: true\n  tagging: true\n  batch_organization: true\n\
+    ```"
+- level: 2
+  title: '**Error Handling**'
+  type: section
+  content: '- **Organization Failure**: Return error with details
+
+    - **Metadata Extraction Failure**: Return error with details
+
+    - **Invalid Content**: Return error with validation info
+
+    - **Tag Conflict**: Return error with conflict details'
+- level: 2
+  title: '**Performance Considerations**'
+  type: section
+  content: '- **Organization Latency**: Optimized for < 1s
+
+    - **Batch Organization**: Support for batch content organization
+
+    - **Resource Usage**: Efficient CPU and memory usage'
+- level: 2
+  title: '**Security Considerations**'
+  type: section
+  content: '- **Access Control**: Restrict access to organization features
+
+    - **Audit Logging**: Log all organization actions
+
+    - **Metadata Privacy**: Protect sensitive metadata'
+- level: 2
+  title: '**Monitoring & Observability**'
+  type: section
+  content: '- **Organization Metrics**: Track request count, latency, and errors
+
+    - **Metadata Metrics**: Track metadata extraction and quality
+
+    - **Alerting**: Alerts for organization failures or quality issues
+
+
+    ---
+
+
+    **Version**: 1.0
+
+    **Focus**: Intelligent, automated content organization for kOS ecosystem'

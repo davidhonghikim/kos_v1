@@ -1,0 +1,433 @@
+metadata:
+  original_file: 01_Market_Research.md
+  conversion_date: '2025-06-30T11:00:00Z'
+  format: yaml
+frontmatter:
+  title: Market Research Scenario
+  version: 1.0
+sections:
+- level: 1
+  title: '**Market Research Scenario**'
+  type: section
+  content: ''
+- level: 2
+  title: '**Purpose**'
+  type: section
+  content: This scenario demonstrates how the kOS ecosystem can dynamically create
+    a comprehensive market research node by combining multiple granular modules. The
+    system automatically identifies required capabilities, discovers relevant modules,
+    and orchestrates them to deliver complete market research functionality.
+- level: 2
+  title: '**Scenario Overview**'
+  type: section
+  content: ''
+- level: 3
+  title: '**User Request**'
+  type: section
+  content: '```
+
+    USER: "I need to conduct comprehensive market research for a new AI-powered productivity
+    app targeting remote workers. I need competitor analysis, market size estimation,
+    customer segmentation, and pricing strategy recommendations."
+
+    ```'
+- level: 3
+  title: '**System Response**'
+  type: section
+  content: '```
+
+    SYSTEM ANALYSIS:
+
+    ├── Identifies market research requirements
+
+    ├── Discovers required modules:
+
+    │   ├── Information Retrieval Module
+
+    │   ├── Data Analysis Module
+
+    │   ├── Competitive Analysis Module
+
+    │   ├── Market Size Estimation Module
+
+    │   ├── Customer Segmentation Module
+
+    │   ├── Pricing Strategy Module
+
+    │   ├── Report Generation Module
+
+    │   └── Visualization Module
+
+    ├── Creates custom "Market Research Node"
+
+    └── Deploys with market research configuration
+
+    ```'
+- level: 2
+  title: '**Dynamic Node Creation Process**'
+  type: section
+  content: ''
+- level: 3
+  title: '**1. Requirement Analysis**'
+  type: section
+  content: '```
+
+    INPUT: "Market research for AI productivity app targeting remote workers"
+
+    ↓
+
+    ANALYSIS:
+
+    ├── Domain: Technology/Productivity Software
+
+    ├── Target Market: Remote Workers
+
+    ├── Product Type: AI-Powered Application
+
+    ├── Research Areas:
+
+    │   ├── Competitor Analysis
+
+    │   ├── Market Size Estimation
+
+    │   ├── Customer Segmentation
+
+    │   └── Pricing Strategy
+
+    └── Output Requirements: Comprehensive Report with Visualizations
+
+    ```'
+- level: 3
+  title: '**2. Module Discovery**'
+  type: section
+  content: '```
+
+    REQUIRED CAPABILITIES:
+
+    ├── Data Collection: Information Retrieval Module
+
+    ├── Data Processing: Data Analysis Module
+
+    ├── Competitive Intelligence: Competitive Analysis Module
+
+    ├── Market Intelligence: Market Size Estimation Module
+
+    ├── Customer Intelligence: Customer Segmentation Module
+
+    ├── Business Intelligence: Pricing Strategy Module
+
+    ├── Content Creation: Report Generation Module
+
+    └── Data Visualization: Visualization Module
+
+    ```'
+- level: 3
+  title: '**3. Node Configuration**'
+  type: section
+  content: '```
+
+    MARKET RESEARCH NODE CONFIGURATION:
+
+    ├── Core Modules:
+
+    │   ├── Information Retrieval Module
+
+    │   ├── Data Analysis Module
+
+    │   └── Report Generation Module
+
+    ├── Specialized Modules:
+
+    │   ├── Competitive Analysis Module
+
+    │   ├── Market Size Estimation Module
+
+    │   ├── Customer Segmentation Module
+
+    │   ├── Pricing Strategy Module
+
+    │   └── Visualization Module
+
+    ├── Integration Workflow:
+
+    │   ├── Data Collection Phase
+
+    │   ├── Analysis Phase
+
+    │   ├── Intelligence Phase
+
+    │   └── Reporting Phase
+
+    └── Output Format: Comprehensive PDF Report with Interactive Dashboard
+
+    ```'
+- level: 3
+  title: '**4. Module Orchestration**'
+  type: section
+  content: "```\nWORKFLOW ORCHESTRATION:\n├── Phase 1: Data Collection\n│   ├── Information\
+    \ Retrieval Module → Gather market data\n│   ├── Information Retrieval Module\
+    \ → Collect competitor information\n│   └── Information Retrieval Module → Gather\
+    \ customer data\n├── Phase 2: Data Processing\n│   ├── Data Analysis Module →\
+    \ Process market data\n│   ├── Data Analysis Module → Analyze competitor data\n\
+    │   └── Data Analysis Module → Process customer data\n├── Phase 3: Intelligence\
+    \ Generation\n│   ├── Competitive Analysis Module → Analyze competitors\n│   ├──\
+    \ Market Size Estimation Module → Estimate market size\n│   ├── Customer Segmentation\
+    \ Module → Segment customers\n│   └── Pricing Strategy Module → Develop pricing\
+    \ recommendations\n└── Phase 4: Report Generation\n    ├── Report Generation Module\
+    \ → Create comprehensive report\n    └── Visualization Module → Create charts\
+    \ and dashboards\n```"
+- level: 2
+  title: '**Module Integration Details**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Information Retrieval Module**'
+  type: section
+  content: "```typescript\n// Configuration for market research data collection\n\
+    const retrievalConfig = {\n  sources: [\n    'market-research-databases',\n  \
+    \  'competitor-websites',\n    'social-media-platforms',\n    'industry-reports',\n\
+    \    'financial-databases',\n    'customer-surveys'\n  ],\n  keywords: [\n   \
+    \ 'AI productivity apps',\n    'remote work software',\n    'productivity tools',\n\
+    \    'workflow automation',\n    'team collaboration'\n  ],\n  timeRange: 'last-2-years',\n\
+    \  dataTypes: ['market-size', 'competitor-info', 'customer-data', 'pricing-data']\n\
+    };\n\n// Execute data collection\nconst marketData = await informationRetrieval.collectData(retrievalConfig);\n\
+    const competitorData = await informationRetrieval.collectCompetitorData(retrievalConfig);\n\
+    const customerData = await informationRetrieval.collectCustomerData(retrievalConfig);\n\
+    ```"
+- level: 3
+  title: '**Data Analysis Module**'
+  type: section
+  content: "```typescript\n// Process collected data\nconst analysisConfig = {\n \
+    \ marketData: {\n    processing: ['clean', 'normalize', 'aggregate'],\n    analysis:\
+    \ ['trend-analysis', 'growth-patterns', 'seasonal-variations']\n  },\n  competitorData:\
+    \ {\n    processing: ['extract-features', 'categorize', 'compare'],\n    analysis:\
+    \ ['strength-weakness', 'market-position', 'differentiation']\n  },\n  customerData:\
+    \ {\n    processing: ['demographics', 'behavior-patterns', 'preferences'],\n \
+    \   analysis: ['segmentation', 'needs-analysis', 'satisfaction-metrics']\n  }\n\
+    };\n\nconst processedMarketData = await dataAnalysis.processData(marketData, analysisConfig.marketData);\n\
+    const processedCompetitorData = await dataAnalysis.processData(competitorData,\
+    \ analysisConfig.competitorData);\nconst processedCustomerData = await dataAnalysis.processData(customerData,\
+    \ analysisConfig.customerData);\n```"
+- level: 3
+  title: '**Competitive Analysis Module**'
+  type: section
+  content: "```typescript\n// Analyze competitors\nconst competitiveAnalysisConfig\
+    \ = {\n  competitors: [\n    'Notion',\n    'Asana',\n    'Monday.com',\n    'ClickUp',\n\
+    \    'Trello',\n    'Slack'\n  ],\n  analysisAreas: [\n    'product-features',\n\
+    \    'pricing-strategy',\n    'market-position',\n    'strengths-weaknesses',\n\
+    \    'differentiation-opportunities'\n  ],\n  comparisonMetrics: [\n    'feature-completeness',\n\
+    \    'ease-of-use',\n    'pricing-competitiveness',\n    'market-share',\n   \
+    \ 'customer-satisfaction'\n  ]\n};\n\nconst competitiveAnalysis = await competitiveAnalysis.analyzeCompetitors(\n\
+    \  processedCompetitorData,\n  competitiveAnalysisConfig\n);\n```"
+- level: 3
+  title: '**Market Size Estimation Module**'
+  type: section
+  content: "```typescript\n// Estimate market size\nconst marketSizeConfig = {\n \
+    \ marketDefinition: 'AI-powered productivity software for remote workers',\n \
+    \ geographicScope: 'global',\n  timeHorizon: '5-years',\n  estimationMethod: 'bottom-up',\n\
+    \  dataSources: [\n    'remote-worker-population',\n    'productivity-software-adoption',\n\
+    \    'AI-software-growth',\n    'market-growth-trends'\n  ],\n  growthFactors:\
+    \ [\n    'remote-work-adoption',\n    'AI-technology-advancement',\n    'productivity-focus',\n\
+    \    'digital-transformation'\n  ]\n};\n\nconst marketSizeEstimate = await marketSizeEstimation.estimateMarketSize(\n\
+    \  processedMarketData,\n  marketSizeConfig\n);\n```"
+- level: 3
+  title: '**Customer Segmentation Module**'
+  type: section
+  content: "```typescript\n// Segment customers\nconst segmentationConfig = {\n  segmentationCriteria:\
+    \ [\n    'demographics',\n    'work-role',\n    'company-size',\n    'industry',\n\
+    \    'technology-adoption',\n    'productivity-needs'\n  ],\n  segmentTypes: [\n\
+    \    'early-adopters',\n    'mainstream-users',\n    'laggards',\n    'power-users',\n\
+    \    'casual-users'\n  ],\n  analysisMetrics: [\n    'segment-size',\n    'growth-potential',\n\
+    \    'pricing-sensitivity',\n    'feature-preferences',\n    'adoption-barriers'\n\
+    \  ]\n};\n\nconst customerSegments = await customerSegmentation.segmentCustomers(\n\
+    \  processedCustomerData,\n  segmentationConfig\n);\n```"
+- level: 3
+  title: '**Pricing Strategy Module**'
+  type: section
+  content: "```typescript\n// Develop pricing strategy\nconst pricingConfig = {\n\
+    \  pricingModels: [\n    'freemium',\n    'subscription',\n    'usage-based',\n\
+    \    'enterprise'\n  ],\n  pricingFactors: [\n    'competitor-pricing',\n    'customer-value',\n\
+    \    'cost-structure',\n    'market-position',\n    'growth-objectives'\n  ],\n\
+    \  analysisAreas: [\n    'price-sensitivity',\n    'value-perception',\n    'competitive-positioning',\n\
+    \    'profitability-analysis',\n    'adoption-impact'\n  ]\n};\n\nconst pricingStrategy\
+    \ = await pricingStrategy.developStrategy(\n  competitiveAnalysis,\n  customerSegments,\n\
+    \  marketSizeEstimate,\n  pricingConfig\n);\n```"
+- level: 3
+  title: '**Report Generation Module**'
+  type: section
+  content: "```typescript\n// Generate comprehensive report\nconst reportConfig =\
+    \ {\n  reportStructure: [\n    'executive-summary',\n    'market-overview',\n\
+    \    'competitive-analysis',\n    'customer-segmentation',\n    'market-size-estimation',\n\
+    \    'pricing-strategy',\n    'recommendations',\n    'appendix'\n  ],\n  contentTypes:\
+    \ [\n    'text-analysis',\n    'data-visualizations',\n    'comparative-tables',\n\
+    \    'strategic-recommendations',\n    'action-plans'\n  ],\n  outputFormats:\
+    \ [\n    'pdf-report',\n    'interactive-dashboard',\n    'executive-presentation',\n\
+    \    'detailed-analysis'\n  ]\n};\n\nconst marketResearchReport = await reportGeneration.generateReport(\n\
+    \  {\n    competitiveAnalysis,\n    marketSizeEstimate,\n    customerSegments,\n\
+    \    pricingStrategy\n  },\n  reportConfig\n);\n```"
+- level: 3
+  title: '**Visualization Module**'
+  type: section
+  content: "```typescript\n// Create visualizations\nconst visualizationConfig = {\n\
+    \  chartTypes: [\n    'market-size-chart',\n    'competitive-positioning-matrix',\n\
+    \    'customer-segment-pie-chart',\n    'pricing-comparison-bar-chart',\n    'growth-trend-line-chart'\n\
+    \  ],\n  interactiveFeatures: [\n    'drill-down-capabilities',\n    'filter-options',\n\
+    \    'export-functionality',\n    'real-time-updates'\n  ],\n  dashboardLayout:\
+    \ [\n    'market-overview-section',\n    'competitive-analysis-section',\n   \
+    \ 'customer-insights-section',\n    'pricing-strategy-section'\n  ]\n};\n\nconst\
+    \ visualizations = await visualization.createVisualizations(\n  marketResearchReport,\n\
+    \  visualizationConfig\n);\n```"
+- level: 2
+  title: '**Output Deliverables**'
+  type: section
+  content: ''
+- level: 3
+  title: '**1. Executive Summary**'
+  type: section
+  content: '- **Market Opportunity**: $2.5B global market for AI productivity apps
+
+    - **Target Market**: 150M+ remote workers globally
+
+    - **Competitive Landscape**: 15+ major competitors identified
+
+    - **Key Recommendations**: Freemium model with enterprise tier'
+- level: 3
+  title: '**2. Market Overview**'
+  type: section
+  content: '- **Market Size**: $2.5B in 2024, growing at 25% CAGR
+
+    - **Growth Drivers**: Remote work adoption, AI advancement, productivity focus
+
+    - **Market Segments**: Enterprise, SMB, Individual users
+
+    - **Geographic Distribution**: North America (45%), Europe (30%), Asia (25%)'
+- level: 3
+  title: '**3. Competitive Analysis**'
+  type: section
+  content: '- **Market Leaders**: Notion, Asana, Monday.com
+
+    - **Emerging Players**: ClickUp, Coda, Airtable
+
+    - **Competitive Advantages**: AI integration, ease of use, pricing
+
+    - **Gap Analysis**: Advanced AI features, seamless integration, mobile-first design'
+- level: 3
+  title: '**4. Customer Segmentation**'
+  type: section
+  content: '- **Segment 1**: Enterprise Teams (30% of market)
+
+    - **Segment 2**: Small Business Teams (40% of market)
+
+    - **Segment 3**: Individual Professionals (20% of market)
+
+    - **Segment 4**: Freelancers (10% of market)'
+- level: 3
+  title: '**5. Pricing Strategy**'
+  type: section
+  content: '- **Freemium Tier**: $0/month (basic features)
+
+    - **Professional Tier**: $12/month (advanced features)
+
+    - **Team Tier**: $8/user/month (collaboration features)
+
+    - **Enterprise Tier**: Custom pricing (full features + support)'
+- level: 3
+  title: '**6. Strategic Recommendations**'
+  type: section
+  content: '- **Product Development**: Focus on AI-powered automation features
+
+    - **Market Entry**: Target small business teams first
+
+    - **Pricing**: Start with competitive freemium model
+
+    - **Partnerships**: Integrate with popular productivity tools'
+- level: 2
+  title: '**Performance Metrics**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Research Quality**'
+  type: section
+  content: '- **Data Accuracy**: 95%+ accuracy through multiple source validation
+
+    - **Analysis Depth**: Comprehensive analysis across all requested areas
+
+    - **Insight Quality**: Actionable insights with clear recommendations
+
+    - **Report Completeness**: 100% coverage of requested research areas'
+- level: 3
+  title: '**Processing Performance**'
+  type: section
+  content: '- **Data Collection**: 2-4 hours for comprehensive data gathering
+
+    - **Analysis Processing**: 1-2 hours for complete analysis
+
+    - **Report Generation**: 30-60 minutes for comprehensive report
+
+    - **Total Time**: 4-8 hours for complete market research'
+- level: 3
+  title: '**Cost Efficiency**'
+  type: section
+  content: '- **Automated Data Collection**: 80% reduction in manual research time
+
+    - **Intelligent Analysis**: 90% reduction in analysis time
+
+    - **Dynamic Module Selection**: Optimal resource usage
+
+    - **Scalable Processing**: Handle multiple research requests simultaneously'
+- level: 2
+  title: '**Success Criteria**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Research Completeness**'
+  type: section
+  content: '- ✅ **Market Size**: Accurate market size estimation with growth projections
+
+    - ✅ **Competitive Analysis**: Comprehensive competitor analysis with positioning
+
+    - ✅ **Customer Segmentation**: Detailed customer segmentation with insights
+
+    - ✅ **Pricing Strategy**: Strategic pricing recommendations with rationale'
+- level: 3
+  title: '**Report Quality**'
+  type: section
+  content: '- ✅ **Executive Summary**: Clear, concise executive summary
+
+    - ✅ **Detailed Analysis**: Comprehensive analysis with supporting data
+
+    - ✅ **Visualizations**: Clear, informative charts and graphs
+
+    - ✅ **Recommendations**: Actionable strategic recommendations'
+- level: 3
+  title: '**User Satisfaction**'
+  type: section
+  content: '- ✅ **Relevance**: Research addresses all user requirements
+
+    - ✅ **Insights**: Provides valuable, actionable insights
+
+    - ✅ **Presentation**: Clear, professional presentation
+
+    - ✅ **Timeliness**: Delivered within expected timeframe'
+- level: 2
+  title: '**Future Enhancements**'
+  type: section
+  content: ''
+- level: 3
+  title: '**Advanced Capabilities**'
+  type: section
+  content: '- **Real-time Monitoring**: Continuous market monitoring and updates
+
+    - **Predictive Analytics**: Market trend predictions and forecasting
+
+    - **Scenario Planning**: Multiple scenario analysis and planning
+
+    - **Automated Alerts**: Automated alerts for market changes'
+- level: 3
+  title: '**Integration Capabilities**'
+  type: section
+  content: "- **CRM Integration**: Direct integration with CRM systems\n- **Business\
+    \ Intelligence**: Integration with BI platforms\n- **Project Management**: Integration\
+    \ with project management tools\n- **Financial Planning**: Integration with financial\
+    \ planning systems\n\n---\n\n**Version**: 1.0  \n**Focus**: Comprehensive market\
+    \ research scenario using modular architecture"
