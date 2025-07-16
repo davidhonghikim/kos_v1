@@ -9,12 +9,16 @@ MONITORING=on
 
 # Priority 1: Core DBs
   docker pull postgres:15-alpine
+  docker pull dpage/pgadmin4:8.6
   docker pull redis:7.2-alpine
+  docker pull rediscommander/redis-commander:latest
   docker pull minio/minio:RELEASE.2024-01-16T16-07-38Z
   docker pull neo4j:5.15
   docker pull docker.elastic.co/elasticsearch/elasticsearch:8.11.0
   docker pull semitechnologies/weaviate:1.22.4
   docker pull mongo:7.0
+  docker pull mongo-express:1.0.0-alpha.4
+  docker pull codercom/code-server:latest
 
 # Priority 2: Core AI/LLM
   docker pull ollama/ollama:latest
@@ -34,10 +38,6 @@ MONITORING=on
 
 # Priority 4: Admin/Dev/Other
   docker pull portainer/portainer-ce:latest
-  docker pull mongo-express:1.0.0-alpha.4
-  docker pull dpage/pgadmin4:8.6
-  docker pull rediscommander/redis-commander:latest
-  docker pull codercom/code-server:latest
 
 # Priority 5: Big AI Images
   docker pull ashleykza/stable-diffusion-webui:latest
