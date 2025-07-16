@@ -25,20 +25,23 @@ REM Priority 2: Core AI/LLM
 REM Priority 3: Workflow/Monitoring
   docker pull n8nio/n8n:latest
   docker pull penpotapp/frontend:latest
-  docker pull nextcloud:25.0.0
-  docker pull browseruse/browseruse:latest
-  docker pull gitea/gitea:latest
-  docker pull grafana/grafana:10.2.0
-  docker pull prom/prometheus:v2.48.0
-  docker pull gcr.io/cadvisor/cadvisor:v0.47.2
+  docker pull nextcloud:latest
+  docker pull browserless/chrome:latest
+  docker pull gitea/gitea:1.21.7
+  docker pull grafana/grafana:latest
+  docker pull prom/prometheus:latest
+  docker pull gcr.io/cadvisor/cadvisor:latest
 
-REM Priority 4: Big AI Images
+REM Priority 4: Admin/Dev/Other
+  docker pull portainer/portainer-ce:latest
+  docker pull mongo-express:1.0.0-alpha.4
+  docker pull dpage/pgadmin4:8.6
+  docker pull rediscommander/redis-commander:latest
+  docker pull codercom/code-server:latest
+
+REM Priority 5: Big AI Images
   docker pull ashleykza/stable-diffusion-webui:latest
   docker pull zhangp365/comfyui:latest
+  docker pull ghcr.io/invoke-ai/invokeai:latest
 
-REM Priority 5: Admin/Dev/Other
-  docker pull portainer/portainer-ce:latest
-  docker pull mongo-express:1.0.0
-  docker pull dpage/pgadmin4:latest
-  docker pull rediscommander/redis-commander:latest
-  docker pull codercom/code-server:latest 
+REM Priority 6: Rest (add any additional images here) 
