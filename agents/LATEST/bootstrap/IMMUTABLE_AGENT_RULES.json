@@ -1,0 +1,551 @@
+{
+  "metadata": {
+    "title": "IMMUTABLE AGENT RULES - Permanent Directions for All Agents",
+    "version": "1.0.0",
+    "created_by": "Claude Sonnet 4",
+    "creation_timestamp": "2025-07-08T01:30:00Z",
+    "status": "IMMUTABLE",
+    "purpose": "Permanent, immutable rules that ALL agents must ALWAYS follow without exception"
+  },
+  "immutable_rules": {
+    "file_size_limits": {
+      "maximum_lines_per_file": 250,
+      "minimum_lines_per_file": 50,
+      "target_lines_per_file": "150-250",
+      "maximum_tokens_per_file": 30000,
+      "target_tokens_per_file": "15000-25000",
+      "rule": "NEVER create monolithic files. Break everything into smaller logical components."
+    },
+    "code_quality_standards": {
+      "single_responsibility": "Each file must have ONE clear purpose or task type",
+      "no_monolithic_files": "NEVER create files with multiple unrelated functions",
+      "logical_organization": "Group related functionality into separate files",
+      "error_free_code": "NEVER leave files with errors. Double-check work before moving to next file",
+      "testing_requirement": "All code must be tested and validated before completion"
+    },
+    "file_organization": {
+      "one_task_per_file": "Each file should handle one specific type of task or operation",
+      "logical_grouping": "Group files by functionality, not by arbitrary categories",
+      "clear_naming": "File names must clearly indicate their purpose and functionality",
+      "separation_of_concerns": "Keep different types of operations in separate files"
+    },
+    "implementation_standards": {
+      "actual_functionality": "NEVER create metadata-only files. All files must have real working code",
+      "no_fake_implementations": "NEVER return hardcoded success responses. Implement real functionality",
+      "proper_error_handling": "All functions must have comprehensive error handling",
+      "logging_required": "All operations must include appropriate logging",
+      "type_hints": "All functions must include proper type hints",
+      "no_compounded_shell_commands": "Do not use compounded shell commands (such as &&, ;, or command chaining) for any critical file or directory operations. Always use single, direct commands for each step, especially for directory creation and file copying. Verification of the result is required immediately after the operation."
+    },
+    "documentation_requirements": {
+      "accurate_documentation": "Documentation must reflect actual system capabilities, not theoretical ones",
+      "no_misleading_info": "NEVER claim functionality exists when it doesn't",
+      "clear_instructions": "All handoff documents must include clear, actionable instructions",
+      "permanent_directions": "Create immutable documentation that agents always follow"
+    },
+    "workflow_requirements": {
+      "double_check_before_next": "ALWAYS verify current work is error-free before moving to next task",
+      "no_technical_debt": "NEVER leave broken or incomplete implementations",
+      "quality_over_speed": "Take time to do things right. Quality is more important than speed",
+      "comprehensive_testing": "Test all functionality thoroughly before considering it complete",
+      "no_compounded_shell_commands": "Do not use compounded shell commands (such as &&, ;, or command chaining) for any critical file or directory operations. Always use single, direct commands for each step, especially for directory creation and file copying. Verification of the result is required immediately after the operation."
+    },
+    "terminal_usage_restrictions": {
+      "live_monitor_terminal": "Always live monitor the terminal for errors and warnings",
+      "powershell_banned": "NEVER use PowerShell commands - BANNED due to failures and timeouts",
+      "approved_terminals": "Use cmd, bash, or standard shell commands only",
+      "reason": "PowerShell causes consistent terminal stalling and command failures",
+      "enforcement": "CRITICAL - Immediate rule violation if PowerShell is used"
+    },
+    "architectural_principles": {
+      "modular_design": "Create modular, reusable components",
+      "simple_over_complex": "Prefer simple, direct implementations over complex abstractions",
+      "working_over_theoretical": "Focus on working functionality over theoretical architecture",
+      "maintainable_code": "Write code that is easy to understand and maintain"
+    },
+    "code_organization_rules": {
+      "modular_code_requirement": {
+        "rule": "STRICT - ONE task per file, NO monolithic code",
+        "description": "Every file must have a single responsibility",
+        "requirements": [
+          "ONE task per file - no exceptions",
+          "Each file must have a single, clear purpose",
+          "Break down any file over 300 lines",
+          "Generic, reusable components only",
+          "No files that handle multiple responsibilities",
+          "Each file should be independently testable"
+        ],
+        "examples": {
+          "good": [
+            "ingredient_loader.py - only loads ingredients",
+            "dependency_resolver.py - only resolves dependencies",
+            "validator.py - only validates data"
+          ],
+          "bad": [
+            "kitchen_manager.py - handles everything",
+            "processor.py - processes multiple things",
+            "handler.py - handles multiple responsibilities"
+          ]
+        },
+        "enforcement": "MANDATORY - No monolithic code allowed"
+      },
+      "file_size_limit": {
+        "rule": "Maximum 300 lines per file - ideally 150-250 lines",
+        "description": "Keep files small and focused",
+        "enforcement": "STRICT - No files over 300 lines allowed"
+      }
+    },
+    "documentation_format_rules": {
+      "json_only_documentation": {
+        "rule": "ALL documentation must be in JSON format",
+        "description": "No .md or .yml files for documentation",
+        "requirements": [
+          "ALL documentation files must be .json format",
+          "NO .md or .yml files for documentation",
+          "Only exception: Docker configs and system configs that require YAML",
+          "JSON format ensures consistency and machine readability"
+        ],
+        "examples": {
+          "allowed": [
+            "README.json",
+            "handoff.json",
+            "analysis.json",
+            "standards.json",
+            "docker-compose.yml (config only)",
+            "dockerfile (config only)"
+          ],
+          "prohibited": [
+            "README.md",
+            "handoff.md",
+            "analysis.md",
+            "standards.yml"
+          ]
+        },
+        "enforcement": "MANDATORY - No non-JSON documentation allowed"
+      }
+    }
+  },
+  "enterprise_scale_requirements": {
+    "centralized_systems_mandatory": {
+      "environment_management": {
+        "rule": "ALL agents MUST use centralized environment management",
+        "requirements": [
+          "Use config/ directory for ALL configurations",
+          "Environment-specific configs (dev, staging, prod)",
+          "Centralized config loader with validation",
+          "Dynamic config updates without restarts",
+          "Secrets management through vault system"
+        ],
+        "enforcement": "CRITICAL - No hardcoded configs allowed",
+        "examples": [
+          "config/env/development.json",
+          "config/env/production.json",
+          "config/feature_flags/features.json",
+          "config/secrets/vault.json"
+        ]
+      },
+      "logging_system": {
+        "rule": "ALL agents MUST use centralized structured logging",
+        "requirements": [
+          "Structured JSON logging format ONLY",
+          "Centralized log aggregation",
+          "Request correlation IDs for tracing",
+          "Log levels (DEBUG, INFO, WARNING, ERROR, CRITICAL)",
+          "Performance metrics collection",
+          "Security audit logging"
+        ],
+        "enforcement": "CRITICAL - No print() statements or console.log() allowed",
+        "examples": [
+          "logs/application.log",
+          "logs/security.log",
+          "logs/performance.log"
+        ]
+      },
+      "feature_flags": {
+        "rule": "ALL new features MUST use feature flag system",
+        "requirements": [
+          "Feature flag service with caching",
+          "Gradual rollouts and A/B testing support",
+          "Environment-specific flags",
+          "User/role-based access control",
+          "Flag analytics and monitoring",
+          "Automated flag cleanup"
+        ],
+        "enforcement": "CRITICAL - No direct feature deployment without flags",
+        "examples": [
+          "config/feature_flags/new_feature.json",
+          "Feature flag evaluation in code",
+          "Flag analytics tracking"
+        ]
+      }
+    },
+    "monitoring_and_observability": {
+      "application_performance_monitoring": {
+        "rule": "ALL services MUST have comprehensive monitoring",
+        "requirements": [
+          "APM integration for performance tracking",
+          "Health checks and readiness probes",
+          "Metrics collection and visualization",
+          "Alerting and notification systems",
+          "Distributed tracing",
+          "Error tracking and reporting"
+        ],
+        "enforcement": "CRITICAL - No service deployment without monitoring",
+        "examples": [
+          "Health check endpoints",
+          "Performance metrics",
+          "Error tracking integration"
+        ]
+      },
+      "infrastructure_monitoring": {
+        "rule": "ALL infrastructure MUST be monitored",
+        "requirements": [
+          "Resource utilization monitoring",
+          "Network performance tracking",
+          "Database performance monitoring",
+          "Container and orchestration monitoring",
+          "Cost optimization tracking"
+        ],
+        "enforcement": "MANDATORY - Infrastructure visibility required",
+        "examples": [
+          "Resource monitoring dashboards",
+          "Database performance metrics",
+          "Cost tracking and alerts"
+        ]
+      }
+    },
+    "security_requirements": {
+      "secure_development": {
+        "rule": "ALL code MUST follow security best practices",
+        "requirements": [
+          "Secure coding practices and guidelines",
+          "Input validation and sanitization",
+          "Authentication and authorization",
+          "Data encryption and protection",
+          "Security audit logging",
+          "Vulnerability management"
+        ],
+        "enforcement": "CRITICAL - Security vulnerabilities are BLOCKING",
+        "examples": [
+          "Input validation functions",
+          "Authentication middleware",
+          "Data encryption utilities",
+          "Security audit logs"
+        ]
+      },
+      "access_control": {
+        "rule": "ALL access MUST be controlled and audited",
+        "requirements": [
+          "Role-based access control (RBAC)",
+          "Multi-factor authentication",
+          "Session management",
+          "API security and rate limiting",
+          "Audit logging for all access"
+        ],
+        "enforcement": "CRITICAL - No unauthorized access allowed",
+        "examples": [
+          "RBAC implementation",
+          "MFA integration",
+          "API rate limiting",
+          "Access audit logs"
+        ]
+      }
+    },
+    "performance_requirements": {
+      "caching_strategies": {
+        "rule": "ALL performance-critical operations MUST use caching",
+        "requirements": [
+          "Application-level caching (Redis, Memcached)",
+          "Database query optimization",
+          "CDN integration for static assets",
+          "Browser caching strategies",
+          "Cache invalidation policies"
+        ],
+        "enforcement": "MANDATORY - Performance optimization required",
+        "examples": [
+          "Redis cache integration",
+          "Database query optimization",
+          "CDN configuration",
+          "Cache invalidation logic"
+        ]
+      },
+      "scaling_strategies": {
+        "rule": "ALL services MUST be designed for horizontal scaling",
+        "requirements": [
+          "Load balancing and distribution",
+          "Auto-scaling policies",
+          "Database scaling strategies",
+          "Microservices architecture",
+          "Container orchestration"
+        ],
+        "enforcement": "MANDATORY - Scalability design required",
+        "examples": [
+          "Load balancer configuration",
+          "Auto-scaling policies",
+          "Database sharding strategies",
+          "Container orchestration"
+        ]
+      }
+    },
+    "data_management": {
+      "data_integrity": {
+        "rule": "ALL data operations MUST ensure integrity",
+        "requirements": [
+          "Database migrations and versioning",
+          "Data validation and integrity checks",
+          "Backup and recovery procedures",
+          "Data archival and retention policies",
+          "Data privacy and compliance"
+        ],
+        "enforcement": "CRITICAL - Data integrity is non-negotiable",
+        "examples": [
+          "Database migration scripts",
+          "Data validation schemas",
+          "Backup automation",
+          "Data retention policies"
+        ]
+      },
+      "data_analytics": {
+        "rule": "ALL systems MUST provide analytics capabilities",
+        "requirements": [
+          "Analytics and reporting systems",
+          "Business intelligence tools",
+          "Data visualization",
+          "Real-time analytics",
+          "Predictive analytics"
+        ],
+        "enforcement": "MANDATORY - Analytics integration required",
+        "examples": [
+          "Analytics dashboards",
+          "Reporting APIs",
+          "Data visualization tools",
+          "Real-time metrics"
+        ]
+      }
+    },
+    "deployment_requirements": {
+      "continuous_integration_deployment": {
+        "rule": "ALL deployments MUST be automated and reliable with redundancy",
+        "requirements": [
+          "Automated testing in CI/CD",
+          "Blue-green deployments",
+          "Rollback capabilities",
+          "Infrastructure as Code (IaC)",
+          "Deployment automation",
+          "Gitea Actions for workflow automation",
+          "Git and Gitea redundancy for version control",
+          "Shared Docker volumes for data persistence"
+        ],
+        "enforcement": "CRITICAL - Manual deployments prohibited",
+        "examples": [
+          "CI/CD pipeline configuration",
+          "Blue-green deployment scripts",
+          "Rollback automation",
+          "Infrastructure as Code",
+          "Gitea Actions workflows",
+          "Git/Gitea sync configuration",
+          "Docker volume management"
+        ]
+      },
+      "containerization": {
+        "rule": "ALL applications MUST be containerized with shared storage",
+        "requirements": [
+          "Docker containerization",
+          "Kubernetes orchestration",
+          "Container security scanning",
+          "Multi-stage builds",
+          "Container optimization",
+          "Shared Docker volumes",
+          "Volume backup and recovery",
+          "Volume monitoring and management"
+        ],
+        "enforcement": "MANDATORY - Containerization required",
+        "examples": [
+          "Dockerfile configuration",
+          "Kubernetes manifests",
+          "Container security scanning",
+          "Multi-stage build optimization",
+          "Docker volume configurations",
+          "Volume backup scripts"
+        ]
+      },
+      "version_control_redundancy": {
+        "rule": "ALL code MUST use redundant version control (Git + Gitea)",
+        "requirements": [
+          "Git as primary version control",
+          "Gitea as secondary/redundant version control",
+          "Automated sync between Git and Gitea",
+          "Gitea Actions for CI/CD workflows",
+          "Backup and recovery procedures",
+          "Conflict resolution strategies",
+          "Monitoring and alerting for sync issues"
+        ],
+        "enforcement": "CRITICAL - Redundant version control required",
+        "examples": [
+          "Git repository configuration",
+          "Gitea repository setup",
+          "Sync automation scripts",
+          "Gitea Actions workflows",
+          "Conflict resolution procedures",
+          "Sync monitoring dashboards"
+        ]
+      },
+      "shared_storage_management": {
+        "rule": "ALL persistent data MUST use shared Docker volumes",
+        "requirements": [
+          "Shared Docker volumes for data persistence",
+          "Volume backup and recovery procedures",
+          "Volume monitoring and management",
+          "Data migration strategies",
+          "Volume security and access control",
+          "Performance optimization for volumes",
+          "Volume scaling and capacity management"
+        ],
+        "enforcement": "MANDATORY - Shared volumes required for persistence",
+        "examples": [
+          "Docker volume configurations",
+          "Volume backup automation",
+          "Volume monitoring scripts",
+          "Data migration tools",
+          "Volume security policies",
+          "Performance optimization scripts"
+        ]
+      }
+    },
+    "code_quality_requirements": {
+      "automated_quality_checks": {
+        "rule": "ALL code MUST pass automated quality checks",
+        "requirements": [
+          "Static analysis and linting",
+          "Code coverage requirements",
+          "Security scanning",
+          "Performance benchmarking",
+          "Code review automation"
+        ],
+        "enforcement": "CRITICAL - Quality gates are blocking",
+        "examples": [
+          "Linting configuration",
+          "Code coverage reports",
+          "Security scan results",
+          "Performance benchmarks"
+        ]
+      },
+      "testing_strategy": {
+        "rule": "ALL code MUST have comprehensive testing",
+        "requirements": [
+          "Unit testing with high coverage",
+          "Integration testing",
+          "End-to-end testing",
+          "Performance testing",
+          "Security testing"
+        ],
+        "enforcement": "CRITICAL - Testing coverage required",
+        "examples": [
+          "Unit test suites",
+          "Integration test scenarios",
+          "E2E test automation",
+          "Performance test scripts"
+        ]
+      }
+    },
+    "documentation_requirements": {
+      "comprehensive_documentation": {
+        "rule": "ALL systems MUST have complete documentation",
+        "requirements": [
+          "API documentation with OpenAPI/Swagger",
+          "Architecture documentation",
+          "Deployment and operations guides",
+          "Troubleshooting documentation",
+          "Contributing guidelines"
+        ],
+        "enforcement": "MANDATORY - Documentation required for all changes",
+        "examples": [
+          "OpenAPI/Swagger specs",
+          "Architecture diagrams",
+          "Deployment runbooks",
+          "Troubleshooting guides"
+        ]
+      },
+      "knowledge_management": {
+        "rule": "ALL decisions and knowledge MUST be documented",
+        "requirements": [
+          "Decision logs and ADRs",
+          "Knowledge base and wikis",
+          "Runbooks and playbooks",
+          "Incident documentation",
+          "Lessons learned tracking"
+        ],
+        "enforcement": "MANDATORY - Knowledge preservation required",
+        "examples": [
+          "Architecture Decision Records",
+          "Knowledge base articles",
+          "Incident runbooks",
+          "Lessons learned documents"
+        ]
+      }
+    }
+  },
+  "constant_info_all_agents_must_know": {
+    "reference": "See agents/LATEST/bootstrap/AGENT_HANDOFF_TEMPLATE.json:constant_info_all_agents_must_know for permanent, non-negotiable information all agents must follow.",
+    "bootstrap_protocol": "All agents must load agents/LATEST/bootstrap/CORE_AGENT_DOCUMENTS.json as the first step on startup."
+  },
+  "mandatory_checklist": {
+    "before_creating_any_file": [
+      "✓ Does this file have a single, clear purpose?",
+      "✓ Is this file under 250 lines?",
+      "✓ Does this file handle one specific type of task?",
+      "✓ Is this file logically separated from other functionality?",
+      "✓ Will this file contain actual working code, not just metadata?"
+    ],
+    "before_completing_any_task": [
+      "✓ Is the code error-free and tested?",
+      "✓ Does the code actually work, not just return fake responses?",
+      "✓ Is the documentation accurate and not misleading?",
+      "✓ Are all functions properly implemented with error handling?",
+      "✓ Is the file size within the 150-250 line target?"
+    ],
+    "before_handoff": [
+      "✓ Are all files working and error-free?",
+      "✓ Is documentation accurate and complete?",
+      "✓ Are clear next steps provided for the next agent?",
+      "✓ Are all timestamps compliant with project standards?",
+      "✓ Is the system actually functional, not just theoretical?"
+    ]
+  },
+  "prohibited_actions": [
+    "Creating files over 250 lines",
+    "Creating metadata-only files without actual functionality",
+    "Returning fake or hardcoded success responses",
+    "Leaving files with errors or incomplete implementations",
+    "Creating misleading documentation",
+    "Creating monolithic files with multiple unrelated functions",
+    "Moving to next task without verifying current work is complete",
+    "Creating complex abstractions before basic functionality works"
+  ],
+  "enforcement": {
+    "mandatory_compliance": "These rules are IMMUTABLE and must be followed by ALL agents",
+    "no_exceptions": "No exceptions are allowed. These rules apply to every agent and every task",
+    "quality_requirement": "Quality and correctness take priority over speed or convenience",
+    "verification_required": "All work must be verified against these rules before completion"
+  },
+  "success_criteria": {
+    "file_quality": [
+      "All files are 150-250 lines",
+      "All files have single, clear purposes",
+      "All files contain actual working code",
+      "All files are error-free and tested"
+    ],
+    "system_quality": [
+      "System is actually functional, not theoretical",
+      "All operations return real results",
+      "Documentation accurately reflects capabilities",
+      "No technical debt or incomplete implementations"
+    ],
+    "workflow_quality": [
+      "All tasks are completed thoroughly before moving to next",
+      "All work is verified and tested",
+      "Clear handoffs with actionable instructions",
+      "No broken or misleading documentation"
+    ]
+  }
+} 

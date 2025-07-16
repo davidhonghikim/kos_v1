@@ -85,5 +85,28 @@ env/
     *   Generate all `docker-compose-*.yml` files from the unified `.env` file (`generate_docker_compose.py`).
 3.  Deploy the stack: `docker-compose -f docker/docker-compose.full.yml up -d`.
 4.  Review logs in the `logs/` directory to troubleshoot.
+5.  **After archiving any handoff or critical file, immediately verify the archive exists at the expected path and (optionally) matches the source before proceeding. Log or document the result. If verification fails, halt and resolve before continuing.**
 
 --- END OF FILE README.md ---
+
+## 4. Script Locations and Troubleshooting
+
+**All installer and build scripts are now located in `scripts/installer/`.**
+- The only entry points are `kos-install.sh` (Linux/macOS) and `kos-install.bat` (Windows) in the project root.
+- If you encounter a 'file not found' or 'script missing' error, verify that all scripts (`gpu_autodetect.py`, `env_loader.py`, `env_audit.py`, `generate_docker_compose.py`) exist in `scripts/installer/`.
+- Never run scripts directly from the old `installer/` directory.
+
+**Troubleshooting Common Install Errors:**
+- If the installer fails at any step, check the logs printed to the terminal and in the `logs/` directory.
+- Ensure your Python environment is set up correctly and all dependencies are installed.
+- If Docker Compose fails to start, verify that the unified `.env` file was generated and all required images are available.
+- Never edit generated Docker Compose files by hand. All changes must be made in the env files and applied via the loader pipeline.
+
+# Hardware Detection and GPU Environment Variables
+
+All hardware-specific variables (e.g., KOS_GPU_ENABLE, KOS_GPU_COUNT, KOS_GPU_NAMES, CUDA_VISIBLE_DEVICES, etc.) are set by the GPU autodetector and written to env/gpu.env. Do not hardcode any hardware values in ports.env. The env_loader.py script merges gpu.env into the unified .env and config, which are then used by all downstream services and compose files.
+
+Workflow:
+1. Run the GPU autodetector (installer/gpu_autodetect.py or .bat) to generate env/gpu.env.
+2. Run env_loader.py to merge ports.env and gpu.env into the unified .env and config.
+3. All downstream services use the unified .env for hardware configuration.

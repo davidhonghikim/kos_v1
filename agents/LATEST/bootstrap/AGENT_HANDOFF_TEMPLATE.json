@@ -1,0 +1,232 @@
+{
+  "metadata": {
+    "title": "Agent Handoff Template - kOS Kitchen System",
+    "version": "1.0.0",
+    "created_by": "Q-Assist (GPT-4.1)",
+    "creation_timestamp": "2025-07-08T09:55:00Z",
+    "purpose": "Standardized template for agent handoffs in the kOS kitchen system",
+    "compliance": "MANDATORY_FOR_ALL_AGENTS"
+  },
+  "handoff_template": {
+    "metadata": {
+      "title": "[Brief Description of Work Completed] - Agent Handoff",
+      "version": "[Version Number]",
+      "created_by": "[Agent Name and Type]",
+      "handoff_timestamp": "[ISO 8601 Timestamp]",
+      "purpose": "[Clear description of what was accomplished and what needs to be done next]"
+    },
+    "current_status": {
+      "work_completed": {
+        "description": "[Detailed description of all work completed]",
+        "files_created": [
+          "[List of all files created with paths]"
+        ],
+        "files_modified": [
+          "[List of all files modified with paths]"
+        ],
+        "files_deleted": [
+          "[List of all files deleted with paths]"
+        ],
+        "directories_created": [
+          "[List of all directories created with paths]"
+        ],
+        "directories_modified": [
+          "[List of all directories modified with paths]"
+        ]
+      },
+      "system_state": {
+        "description": "[Current state of the system]",
+        "working_components": [
+          "[List of components that are working]"
+        ],
+        "incomplete_components": [
+          "[List of components that are incomplete]"
+        ],
+        "broken_components": [
+          "[List of components that are broken]"
+        ],
+        "technical_debt": [
+          "[List of any technical debt created]"
+        ]
+      },
+      "quality_assurance": {
+        "tests_written": "[Number and description of tests written]",
+        "tests_passing": "[Number and description of tests passing]",
+        "test_coverage": "[Test coverage percentage]",
+        "code_review_completed": "[Yes/No with details]",
+        "documentation_updated": "[Yes/No with details]",
+        "performance_tested": "[Yes/No with details]",
+        "security_reviewed": "[Yes/No with details]"
+      }
+    },
+    "constant_info_all_agents_must_know": {
+      "description": "Permanent, non-negotiable information that every agent must know and follow for all work in the kOS system.",
+      "example": {
+        "bootstrap_protocol": "All agents must load agents/LATEST/bootstrap/CORE_AGENT_DOCUMENTS.json as the first step on startup. This file defines the required context, standards, and loading order for all other agent docs.",
+        "canonical_env_system": "All configuration must originate from the env files in env/ (ports.env, settings.env, local.env, cloud.env, api-keys.env, gpu.env). ports.env is the only source of truth for ports and container names. Never hardcode or duplicate values in code or scripts. All changes must be made in env files and applied via the loader pipeline.",
+        "script_locations": "All installer and build scripts are in scripts/installer/. The only entry points are kos-install.sh (Linux/macOS) and kos-install.bat (Windows) in the project root.",
+        "generated_files": "Never edit generated Docker Compose files or unified .env by hand. All changes must go through the env system and loader pipeline.",
+        "archiving": "Before creating a new handoff or status doc, archive the previous one in the correct directory with the correct filename format, using the actual ISO 8601 timestamp.",
+        "documentation_format": "All documentation must be in JSON unless markdown is specifically required (e.g., README.md).",
+        "testing_and_validation": "All code and scripts must be tested and error-free before handoff. No technical debt or incomplete implementations are allowed."
+      }
+    },
+    "next_agent_tasks": {
+      "immediate_priorities": [
+        "[List of immediate tasks that must be done first]"
+      ],
+      "short_term_goals": [
+        "[List of short-term goals (next few tasks)]"
+      ],
+      "long_term_goals": [
+        "[List of long-term goals (next phase objectives)]"
+      ],
+      "blockers": [
+        "[List of any blockers or dependencies]"
+      ],
+      "risks": [
+        "[List of any risks or potential issues]"
+      ]
+    },
+    "dependencies": {
+      "required_files": [
+        "[List of files the next agent needs to understand]"
+      ],
+      "required_directories": [
+        "[List of directories the next agent needs to understand]"
+      ],
+      "required_documentation": [
+        "[List of documentation the next agent needs to read]"
+      ],
+      "required_configuration": [
+        "[List of configuration the next agent needs to understand]"
+      ],
+      "external_dependencies": [
+        "[List of external dependencies the next agent needs to know about]"
+      ]
+    },
+    "success_criteria": {
+      "functional_requirements": [
+        "[List of functional requirements that must be met]"
+      ],
+      "quality_requirements": [
+        "[List of quality requirements that must be met]"
+      ],
+      "performance_requirements": [
+        "[List of performance requirements that must be met]"
+      ],
+      "security_requirements": [
+        "[List of security requirements that must be met]"
+      ],
+      "documentation_requirements": [
+        "[List of documentation requirements that must be met]"
+      ]
+    },
+    "references": {
+      "execution_plan": "[Path to execution plan document]",
+      "architecture_docs": "[Path to architecture documentation]",
+      "development_standards": "[Path to development standards]",
+      "best_practices": "[Path to best practices guide]",
+      "previous_handoffs": "[Path to previous handoff documents]",
+      "changelog": "[Path to changelog entries]",
+      "related_files": [
+        "[List of related files and their purposes]"
+      ]
+    },
+    "notes": {
+      "important_decisions": [
+        "[List of important decisions made and rationale]"
+      ],
+      "lessons_learned": [
+        "[List of lessons learned during implementation]"
+      ],
+      "recommendations": [
+        "[List of recommendations for next agent]"
+      ],
+      "warnings": [
+        "[List of warnings or things to be careful about]"
+      ],
+      "additional_context": [
+        "[Any additional context the next agent should know]"
+      ]
+    }
+  },
+  "handoff_requirements": {
+    "mandatory_sections": [
+      "metadata",
+      "current_status",
+      "next_agent_tasks", 
+      "dependencies",
+      "success_criteria",
+      "references"
+    ],
+    "optional_sections": [
+      "notes"
+    ],
+    "quality_requirements": [
+      "All sections must be completed",
+      "All information must be accurate and current",
+      "All file paths must be correct",
+      "All timestamps must be in ISO 8601 format",
+      "All lists must be comprehensive",
+      "All descriptions must be clear and detailed"
+    ]
+  },
+  "handoff_process": {
+    "before_creating_handoff": [
+      "Review all work completed",
+      "Verify all files and directories",
+      "Run all tests and verify they pass",
+      "Check code quality and documentation",
+      "Verify no stubs or placeholder code",
+      "Ensure all requirements are met"
+    ],
+    "archiving_previous_handoff": [
+      "Copy the current handoff file to the archive directory with the correct ISO 8601 timestamp and filename using a single, direct command (do not use compounded shell commands such as '&&', ';', or command chaining)",
+      "Verify that the archived file exists at the expected path",
+      "Optionally, compare the contents of the archived file and the source for integrity",
+      "Log the result of the verification in the handoff and/or changelog",
+      "If verification fails, halt and alert for manual intervention"
+    ],
+    "creating_handoff": [
+      "Use this template format",
+      "Fill in all mandatory sections",
+      "Provide comprehensive details",
+      "Include all relevant file paths",
+      "Document all decisions and rationale",
+      "Provide clear next steps"
+    ],
+    "after_creating_handoff": [
+      "Save handoff to agents/LATEST/",
+      "Update changelog with work completed",
+      "Verify handoff is complete and accurate",
+      "Notify next agent of handoff availability"
+    ]
+  },
+  "handoff_examples": {
+    "good_handoff": {
+      "description": "Example of a good handoff",
+      "characteristics": [
+        "Archived previous handoff documents",
+        "Complete and comprehensive",
+        "Clear and detailed descriptions",
+        "Accurate file paths and timestamps",
+        "Specific next steps and requirements",
+        "All mandatory sections completed",
+        "No missing or incomplete information"
+      ]
+    },
+    "bad_handoff": {
+      "description": "Example of a bad handoff",
+      "characteristics": [
+        "Did not archive previous handoff documents",
+        "Incomplete or missing sections",
+        "Vague or unclear descriptions",
+        "Incorrect file paths or timestamps",
+        "Unclear next steps",
+        "Missing important information",
+        "Poor organization or formatting"
+      ]
+    }
+  }
+} 
