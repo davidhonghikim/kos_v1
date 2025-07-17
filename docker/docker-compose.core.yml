@@ -23,6 +23,7 @@ services:
     - NGINX_NETWORK=kos-network
     - NGINX_PROFILE=core
     - NGINX_RESTART_POLICY=unless-stopped
+    - NGINX_SSL_ENABLE=false
     - NGINX_SSL_EXTERNAL_PORT=443
     - NGINX_SSL_INTERNAL_PORT=443
     - ADMIN_USER=kosadmin

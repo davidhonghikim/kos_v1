@@ -8,10 +8,9 @@ from datetime import datetime
 # Ensure scripts/ is in sys.path for logger import
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '../..'))
-LOGGER_PATH = os.path.join(PROJECT_ROOT, 'scripts')
-if LOGGER_PATH not in sys.path:
-    sys.path.insert(0, LOGGER_PATH)
-from logger.logger import get_logger
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
+from scripts.utils.logger import get_logger
 
 IMAGES_FILE = os.path.join(PROJECT_ROOT, 'env', 'images.env')
 FAILED_LOG_DIR = os.path.join(PROJECT_ROOT, 'logs', 'pull_all_images')

@@ -1,5 +1,121 @@
 name: kos-v1
 services:
+  amd_gpu:
+    image: rocm/rocm-terminal:latest
+    container_name: kos-amd1-gpu
+    ports:
+    - 49100:49100
+    environment:
+    - AMD_GPU_CONTAINER_NAME=kos-amd1-gpu
+    - AMD_GPU_COUNT=1
+    - AMD_GPU_ENABLE=true
+    - AMD_GPU_EXTERNAL_PORT=49100
+    - AMD_GPU_IMAGE=rocm/rocm-terminal:latest
+    - AMD_GPU_INTERNAL_PORT=49100
+    - AMD_GPU_NETWORK=kos-network
+    - AMD_GPU_RESTART_POLICY=unless-stopped
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
+    networks:
+    - kos-network
+    restart: unless-stopped
+  gpu:
+    image: nvidia/cuda:12.2.0-base-ubuntu22.04
+    container_name: kos-nvidia1-gpu-new
+    ports:
+    - 49500:49500
+    environment:
+    - GPU_COMPUTE_SUPPORTED=false
+    - GPU_CONTAINER_NAME=kos-nvidia1-gpu-new
+    - GPU_ENABLE=true
+    - GPU_EXTERNAL_PORT=49500
+    - GPU_IMAGE=nvidia/cuda:12.2.0-base-ubuntu22.04
+    - GPU_IMAGES_TO_PULL=nvidia/cuda:12.2.0-base-ubuntu22.04,nvidia/cuda:11.8.0-base-ubuntu22.04,rocm/rocm-terminal:latest
+    - GPU_INTERNAL_PORT=49500
+    - GPU_NETWORK=kos-network
+    - GPU_RESTART_POLICY=unless-stopped
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
+    networks:
+    - kos-network
+    restart: unless-stopped
+  nvidia_gpu:
+    image: nvidia/cuda:11.8.0-base-ubuntu22.04
+    container_name: kos-nvidia1-gpu-old
+    ports:
+    - 49000:49000
+    environment:
+    - NVIDIA_GPU_CONTAINER_NAME=kos-nvidia1-gpu-old
+    - NVIDIA_GPU_COUNT=2
+    - NVIDIA_GPU_ENABLE=true
+    - NVIDIA_GPU_EXTERNAL_PORT=49000
+    - NVIDIA_GPU_IMAGE=nvidia/cuda:11.8.0-base-ubuntu22.04
+    - NVIDIA_GPU_INTERNAL_PORT=49000
+    - NVIDIA_GPU_NETWORK=kos-network
+    - NVIDIA_GPU_OLD_IMAGE=nvidia/cuda:11.8.0-base-ubuntu22.04
+    - NVIDIA_GPU_RESTART_POLICY=unless-stopped
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
+    networks:
+    - kos-network
+    restart: unless-stopped
+  penpot_backend:
+    image: penpotapp/backend:latest
+    container_name: kos-penpot-backend
+    ports:
+    - 6060:6060
+    environment:
+    - PENPOT_BACKEND_CONTAINER_NAME=kos-penpot-backend
+    - PENPOT_BACKEND_DATABASE_URI=postgresql://kosadmin:kos30437@kos-postgres:5432/penpot
+    - PENPOT_BACKEND_ENABLE=true
+    - PENPOT_BACKEND_EXTERNAL_PORT=6060
+    - PENPOT_BACKEND_FLAGS=enable-registration
+    - PENPOT_BACKEND_HEALTH_CHECK_COMMAND=curl -f http://kos-penpot-backend:6060/api/health
+      || exit 1
+    - PENPOT_BACKEND_HEALTH_CHECK_INTERVAL=30s
+    - PENPOT_BACKEND_HEALTH_CHECK_RETRIES=3
+    - PENPOT_BACKEND_HEALTH_CHECK_TIMEOUT=10s
+    - PENPOT_BACKEND_IMAGE=penpotapp/backend:latest
+    - PENPOT_BACKEND_INTERNAL_PORT=6060
+    - PENPOT_BACKEND_NETWORK=kos-network
+    - PENPOT_BACKEND_PUBLIC_URI=http://localhost:6060
+    - PENPOT_BACKEND_REDIS_URI=redis://kos-redis:6379/0
+    - PENPOT_BACKEND_RESTART_POLICY=unless-stopped
+    - PENPOT_BACKEND_SECRET_KEY=changeme
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
+    networks:
+    - kos-network
+    restart: unless-stopped
+  supabase_studio:
+    image: supabase/studio:latest
+    container_name: kos-supabase-studio
+    ports:
+    - 3003:3000
+    environment:
+    - SUPABASE_STUDIO_CONTAINER_NAME=kos-supabase-studio
+    - SUPABASE_STUDIO_ENABLE=true
+    - SUPABASE_STUDIO_EXTERNAL_PORT=3003
+    - SUPABASE_STUDIO_HEALTH_CHECK_COMMAND=curl --fail http://{KOS_SUPABASE_CONTAINER_NAME}:3000/
+      || exit 1
+    - SUPABASE_STUDIO_HEALTH_CHECK_INTERVAL=30s
+    - SUPABASE_STUDIO_HEALTH_CHECK_RETRIES=3
+    - SUPABASE_STUDIO_HEALTH_CHECK_TIMEOUT=10s
+    - SUPABASE_STUDIO_IMAGE=supabase/studio:latest
+    - SUPABASE_STUDIO_INTERNAL_PORT=3000
+    - SUPABASE_STUDIO_NETWORK=kos-network
+    - SUPABASE_STUDIO_RESTART_POLICY=unless-stopped
+    - SUPABASE_STUDIO_VOLUME=kos-supabase-studio:/data
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
+    volumes:
+    - type: volume
+      source: kos-supabase-studio
+      target: /data
+      volume: {}
+    networks:
+    - kos-network
+    restart: unless-stopped
   automatic1111:
     image: ashleykza/stable-diffusion-webui:latest
     container_name: kos-automatic1111
@@ -222,9 +338,7 @@ services:
     - kos-network
     restart: unless-stopped
   context7:
-    build:
-      context: ..
-      dockerfile: docker/context7.Dockerfile
+    image: upstash/context7-mcp
     container_name: kos-context7
     ports:
     - 3005:3000
@@ -241,7 +355,7 @@ services:
     - CONTEXT7_HEALTH_CHECK_INTERVAL=30s
     - CONTEXT7_HEALTH_CHECK_RETRIES=3
     - CONTEXT7_HEALTH_CHECK_TIMEOUT=10s
-    - CONTEXT7_IMAGE=context7-mcp:latest
+    - CONTEXT7_IMAGE=upstash/context7-mcp
     - CONTEXT7_INTERNAL_PORT=3000
     - CONTEXT7_NETWORK=kos-network
     - CONTEXT7_PROFILE=dev
@@ -282,6 +396,7 @@ services:
     - GITEA_PROFILE=dev
     - GITEA_REPOS_VOLUME=kos-gitea:/repos
     - GITEA_RESTART_POLICY=unless-stopped
+    - GITEA_SSH_ENABLE=false
     - GITEA_SSH_EXTERNAL_PORT=22
     - GITEA_SSH_INTERNAL_PORT=2222
     - GITEA_SSH_VOLUME=kos-gitea:/ssh
@@ -373,6 +488,7 @@ services:
     - 9300:9300
     environment:
     - ELASTICSEARCH_CATEGORY=infra
+    - ELASTICSEARCH_CLUSTER_ENABLE=false
     - ELASTICSEARCH_CLUSTER_EXTERNAL_PORT=9300
     - ELASTICSEARCH_CLUSTER_INTERNAL_PORT=9300
     - ELASTICSEARCH_COMPOSE_GROUP=infra
@@ -414,6 +530,7 @@ services:
     - MINIO_CATEGORY=infra
     - MINIO_COMMAND=server /data --console-address ":9001"
     - MINIO_COMPOSE_GROUP=infra
+    - MINIO_CONSOLE_ENABLE=false
     - MINIO_CONSOLE_EXTERNAL_PORT=9001
     - MINIO_CONSOLE_INTERNAL_PORT=9001
     - MINIO_CONTAINER_NAME=kos-minio
@@ -519,6 +636,7 @@ services:
     - NEO4J_HEALTH_CHECK_INTERVAL=30s
     - NEO4J_HEALTH_CHECK_RETRIES=3
     - NEO4J_HEALTH_CHECK_TIMEOUT=10s
+    - NEO4J_HTTP_ENABLE=false
     - NEO4J_HTTP_EXTERNAL_PORT=7474
     - NEO4J_HTTP_INTERNAL_PORT=7474
     - NEO4J_IMAGE=neo4j:5.15
@@ -683,35 +801,6 @@ services:
     networks:
     - kos-network
     restart: unless-stopped
-  supabase_studio:
-    image: supabase/studio:latest
-    container_name: kos-supabase-studio
-    ports:
-    - 3003:3000
-    environment:
-    - SUPABASE_STUDIO_CONTAINER_NAME=kos-supabase-studio
-    - SUPABASE_STUDIO_ENABLE=true
-    - SUPABASE_STUDIO_EXTERNAL_PORT=3003
-    - SUPABASE_STUDIO_HEALTH_CHECK_COMMAND=curl --fail http://{KOS_SUPABASE_CONTAINER_NAME}:3000/
-      || exit 1
-    - SUPABASE_STUDIO_HEALTH_CHECK_INTERVAL=30s
-    - SUPABASE_STUDIO_HEALTH_CHECK_RETRIES=3
-    - SUPABASE_STUDIO_HEALTH_CHECK_TIMEOUT=10s
-    - SUPABASE_STUDIO_IMAGE=supabase/studio:latest
-    - SUPABASE_STUDIO_INTERNAL_PORT=3000
-    - SUPABASE_STUDIO_NETWORK=kos-network
-    - SUPABASE_STUDIO_RESTART_POLICY=unless-stopped
-    - SUPABASE_STUDIO_VOLUME=kos-supabase-studio:/data
-    - ADMIN_USER=kosadmin
-    - ADMIN_PASSWORD=kos30437
-    volumes:
-    - type: volume
-      source: kos-supabase-studio
-      target: /data
-      volume: {}
-    networks:
-    - kos-network
-    restart: unless-stopped
   mongo_express:
     image: mongo-express:1.0.0
     container_name: kos-mongo-express
@@ -740,7 +829,7 @@ services:
     environment:
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
-    - PGADMIN_DEFAULT_EMAIL=admin@kos.local
+    - PGADMIN_DEFAULT_EMAIL=admin@kos.dev
     - PGADMIN_DEFAULT_PASSWORD=kos30437
     volumes:
     - type: volume
@@ -868,6 +957,23 @@ services:
     environment:
     - PENPOT_ADMIN_PASSWORD=kos30437
     - PENPOT_ADMIN_USER=kosadmin
+    - PENPOT_BACKEND_CONTAINER_NAME=kos-penpot-backend
+    - PENPOT_BACKEND_DATABASE_URI=postgresql://kosadmin:kos30437@kos-postgres:5432/penpot
+    - PENPOT_BACKEND_ENABLE=true
+    - PENPOT_BACKEND_EXTERNAL_PORT=6060
+    - PENPOT_BACKEND_FLAGS=enable-registration
+    - PENPOT_BACKEND_HEALTH_CHECK_COMMAND=curl -f http://kos-penpot-backend:6060/api/health
+      || exit 1
+    - PENPOT_BACKEND_HEALTH_CHECK_INTERVAL=30s
+    - PENPOT_BACKEND_HEALTH_CHECK_RETRIES=3
+    - PENPOT_BACKEND_HEALTH_CHECK_TIMEOUT=10s
+    - PENPOT_BACKEND_IMAGE=penpotapp/backend:latest
+    - PENPOT_BACKEND_INTERNAL_PORT=6060
+    - PENPOT_BACKEND_NETWORK=kos-network
+    - PENPOT_BACKEND_PUBLIC_URI=http://localhost:6060
+    - PENPOT_BACKEND_REDIS_URI=redis://kos-redis:6379/0
+    - PENPOT_BACKEND_RESTART_POLICY=unless-stopped
+    - PENPOT_BACKEND_SECRET_KEY=changeme
     - PENPOT_CATEGORY=workflow
     - PENPOT_COMPOSE_GROUP=workflow
     - PENPOT_CONTAINER_NAME=kos-penpot
@@ -922,6 +1028,7 @@ services:
     - NGINX_NETWORK=kos-network
     - NGINX_PROFILE=core
     - NGINX_RESTART_POLICY=unless-stopped
+    - NGINX_SSL_ENABLE=false
     - NGINX_SSL_EXTERNAL_PORT=443
     - NGINX_SSL_INTERNAL_PORT=443
     - ADMIN_USER=kosadmin
@@ -945,47 +1052,47 @@ networks:
       config:
       - subnet: 172.20.0.0/16
 volumes:
-  kos-mongo-express:
-    driver: local
-  kos-redis:
-    driver: local
-  kos-weaviate:
-    driver: local
-  kos-gitea:
-    driver: local
-  kos-models-data:
-    driver: local
-  kos-ollama:
-    driver: local
-  kos-postgres:
-    driver: local
-  kos-browseruse:
-    driver: local
-  kos-nginx:
-    driver: local
-  kos-supabase:
-    driver: local
-  kos-supabase-studio:
-    driver: local
-  kos-elasticsearch:
-    driver: local
-  kos-nextcloud:
-    driver: local
-  kos-openwebui:
-    driver: local
   kos-neo4j:
-    driver: local
-  kos-codium:
     driver: local
   kos-pgadmin:
     driver: local
-  kos-minio:
+  kos-nextcloud:
     driver: local
   kos-n8n:
     driver: local
-  kos-context7:
-    driver: local
   kos-mongo:
     driver: local
+  kos-codium:
+    driver: local
+  kos-supabase-studio:
+    driver: local
+  kos-weaviate:
+    driver: local
+  kos-redis:
+    driver: local
+  kos-ollama:
+    driver: local
+  kos-minio:
+    driver: local
+  kos-nginx:
+    driver: local
+  kos-gitea:
+    driver: local
   kos-penpot:
+    driver: local
+  kos-browseruse:
+    driver: local
+  kos-supabase:
+    driver: local
+  kos-mongo-express:
+    driver: local
+  kos-elasticsearch:
+    driver: local
+  kos-openwebui:
+    driver: local
+  kos-postgres:
+    driver: local
+  kos-context7:
+    driver: local
+  kos-models-data:
     driver: local

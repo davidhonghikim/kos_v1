@@ -161,9 +161,9 @@ networks:
       config:
       - subnet: 172.20.0.0/16
 volumes:
-  kos-models-data:
-    driver: local
   kos-ollama:
     driver: local
   kos-openwebui:
+    driver: local
+  kos-models-data:
     driver: local

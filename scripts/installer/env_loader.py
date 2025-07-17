@@ -7,43 +7,14 @@ import re
 from collections import defaultdict
 from datetime import datetime
 
-# Ensure scripts/ is in sys.path for logger import
+# Ensure project root is in sys.path for logger import
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '../..'))
-LOGGER_PATH = os.path.join(PROJECT_ROOT, 'scripts')
-if LOGGER_PATH not in sys.path:
-    sys.path.insert(0, LOGGER_PATH)
-from logger.logger import get_logger
-# Ensure scripts/utils is in sys.path for utils imports
-UTILS_PATH = os.path.join(PROJECT_ROOT, 'scripts', 'utils')
-if UTILS_PATH not in sys.path:
-    sys.path.insert(0, UTILS_PATH)
-
-try:
-    from env_utils import parse_env_file, validate_env_vars  # type: ignore
-    from user_feedback import user_info, user_warning, user_error, user_success  # type: ignore
-except ImportError:
-    import importlib.util
-    import os
-    utils_path = os.path.join(PROJECT_ROOT, 'scripts', 'utils')
-    env_utils_path = os.path.join(utils_path, 'env_utils.py')
-    env_utils_spec = importlib.util.spec_from_file_location('env_utils', env_utils_path)
-    if env_utils_spec is None or env_utils_spec.loader is None:
-        raise ImportError(f'Cannot find env_utils.py at {env_utils_path}')
-    env_utils = importlib.util.module_from_spec(env_utils_spec)
-    env_utils_spec.loader.exec_module(env_utils)
-    parse_env_file = env_utils.parse_env_file
-    validate_env_vars = env_utils.validate_env_vars
-    user_feedback_path = os.path.join(utils_path, 'user_feedback.py')
-    user_feedback_spec = importlib.util.spec_from_file_location('user_feedback', user_feedback_path)
-    if user_feedback_spec is None or user_feedback_spec.loader is None:
-        raise ImportError(f'Cannot find user_feedback.py at {user_feedback_path}')
-    user_feedback = importlib.util.module_from_spec(user_feedback_spec)
-    user_feedback_spec.loader.exec_module(user_feedback)
-    user_info = user_feedback.user_info
-    user_warning = user_feedback.user_warning
-    user_error = user_feedback.user_error
-    user_success = user_feedback.user_success
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
+from scripts.utils.logger import get_logger
+from scripts.utils.env_utils import parse_env_file, validate_env_vars
+from scripts.utils.user_feedback import user_info, user_warning, user_error, user_success
 
 logger = get_logger('env_loader')
 
@@ -143,7 +114,14 @@ class KOSEnvLoader:
                         # Split on comma, strip whitespace
                         for img in val.split(','):
                             img = img.strip()
-                            if img and img not in seen:
+                            # Expand variable references if present
+                            if img.startswith('${') and img.endswith('}'):
+                                ref = img[2:-1]
+                                img_val = env_vars.get(ref, '')
+                                if img_val and img_val not in seen:
+                                    gpu_images.append(img_val)
+                                    seen.add(img_val)
+                            elif img and img not in seen:
                                 gpu_images.append(img)
                                 seen.add(img)
         # 2. Collect enabled service images in file order from settings.env

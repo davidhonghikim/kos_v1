@@ -5,15 +5,18 @@ Generates docker-compose.yml dynamically from environment variables only
 No hardcoded service templates or configurations
 """
 
-import sys
 import os
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+import sys
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '../..'))
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
 import re
 import yaml
 from pathlib import Path
 from typing import Dict, Any, List
 from datetime import datetime
-from scripts.logger.logger import get_logger
+from scripts.utils.logger import get_logger
 logger = get_logger('docker_generator')
 
 # --- Logging ---

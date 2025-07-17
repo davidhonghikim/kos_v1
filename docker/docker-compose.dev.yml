@@ -68,9 +68,7 @@ services:
     - kos-network
     restart: unless-stopped
   context7:
-    build:
-      context: ..
-      dockerfile: docker/context7.Dockerfile
+    image: upstash/context7-mcp
     container_name: kos-context7
     ports:
     - 3005:3000
@@ -87,7 +85,7 @@ services:
     - CONTEXT7_HEALTH_CHECK_INTERVAL=30s
     - CONTEXT7_HEALTH_CHECK_RETRIES=3
     - CONTEXT7_HEALTH_CHECK_TIMEOUT=10s
-    - CONTEXT7_IMAGE=context7-mcp:latest
+    - CONTEXT7_IMAGE=upstash/context7-mcp
     - CONTEXT7_INTERNAL_PORT=3000
     - CONTEXT7_NETWORK=kos-network
     - CONTEXT7_PROFILE=dev
@@ -128,6 +126,7 @@ services:
     - GITEA_PROFILE=dev
     - GITEA_REPOS_VOLUME=kos-gitea:/repos
     - GITEA_RESTART_POLICY=unless-stopped
+    - GITEA_SSH_ENABLE=false
     - GITEA_SSH_EXTERNAL_PORT=22
     - GITEA_SSH_INTERNAL_PORT=2222
     - GITEA_SSH_VOLUME=kos-gitea:/ssh
@@ -214,15 +213,15 @@ networks:
       config:
       - subnet: 172.20.0.0/16
 volumes:
-  kos-context7:
+  kos-supabase-studio:
+    driver: local
+  kos-gitea:
+    driver: local
+  kos-codium:
     driver: local
   kos-browseruse:
     driver: local
   kos-supabase:
     driver: local
-  kos-gitea:
-    driver: local
-  kos-supabase-studio:
-    driver: local
-  kos-codium:
+  kos-context7:
     driver: local

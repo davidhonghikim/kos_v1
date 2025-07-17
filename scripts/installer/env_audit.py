@@ -6,13 +6,17 @@ kOS v1 Environment Audit Script (env_audit.py)
 - Always runs env_loader.py and generate_docker_compose.py after audit
 - OS-agnostic, robust, and uses current timestamp
 """
-import sys
 import os
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+import sys
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '../..'))
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
 import re
 import subprocess
 from datetime import datetime
-from scripts.logger.logger import get_logger
+from scripts.utils.logger import get_logger
+from scripts.utils.env_utils import parse_env_file
 logger = get_logger('env_audit')
 
 # --- Constants ---
@@ -32,21 +36,6 @@ def print_summary(summary):
     print("===========================================\n")
 
 # --- Utility Functions ---
-def parse_env_file(filepath):
-    env = {}
-    if not os.path.exists(filepath):
-        logger.log(f"Env file not found: {filepath}", 'ERROR')
-        return env
-    with open(filepath, 'r', encoding='utf-8') as f:
-        for line in f:
-            line = line.strip()
-            if not line or line.startswith('#'):
-                continue
-            if '=' in line:
-                k, v = line.split('=', 1)
-                env[k.strip()] = v.strip()
-    return env
-
 def get_services_from_ports_env(env):
     services = set()
     for k in env:

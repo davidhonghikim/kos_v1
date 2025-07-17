@@ -4,13 +4,18 @@ compose_file_generator.py
 Generates Docker Compose files from environment variables and service configs.
 """
 import os
+import sys
 import yaml
 from pathlib import Path
-from scripts.logger.logger import get_logger
-from compose_env_loader import load_env_vars
-from compose_service_config import get_enabled_services, get_service_config
-from compose_gpu_assignment import assign_gpus_to_services
-from compose_file_validator import validate_compose_file
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '../..'))
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
+from scripts.utils.logger import get_logger
+from scripts.installer.compose_env_loader import load_env_vars
+from scripts.installer.compose_service_config import get_enabled_services, get_service_config
+from scripts.installer.compose_gpu_assignment import assign_gpus_to_services
+from scripts.installer.compose_file_validator import validate_compose_file
 
 logger = get_logger('compose_file_generator')
 

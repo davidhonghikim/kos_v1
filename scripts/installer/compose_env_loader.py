@@ -4,9 +4,14 @@ compose_env_loader.py
 Loads and validates environment variables for Docker Compose generation.
 """
 import os
+import sys
 import re
 from scripts.utils.env_utils import parse_env_file, validate_env_vars
-from scripts.logger.logger import get_logger
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '../..'))
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
+from scripts.utils.logger import get_logger
 
 logger = get_logger('compose_env_loader')
 

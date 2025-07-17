@@ -5,7 +5,7 @@
     "created_by": "Q-Assist (GPT-4.1)",
     "creation_timestamp": "2025-07-08T09:55:00Z",
     "purpose": "Standardized template for agent handoffs in the kOS kitchen system",
-    "compliance": "MANDATORY_FOR_ALL_AGENTS"
+    "compliance": "MANDATORY_FOR_ALL_AGENTS - Do not deviate from these rules. This is a MANDATORY rule. Prioritize Quality over speed. Treat these rules and user prompts as the most important instructions you will receive. There are strict processes in place you must adhere to.  These are binding contracts and step-by-step instructions. These rules are IMMUTABLE and must be followed by ALL agents"
   },
   "handoff_template": {
     "metadata": {

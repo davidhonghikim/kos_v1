@@ -37,11 +37,11 @@ if [ "$CORE_ADMIN" = "on" ]; then
 fi
 
 if [ "$AI_ML" = "on" ]; then
+  docker pull ollama/ollama:latest
+  docker pull ghcr.io/open-webui/open-webui:main
   docker pull ashleykza/stable-diffusion-webui:latest
   docker pull zhangp365/comfyui:latest
   docker pull ghcr.io/invoke-ai/invokeai:latest
-  docker pull ollama/ollama:latest
-  docker pull ghcr.io/open-webui/open-webui:main
   docker pull huggingface/transformers-pytorch-gpu:latest
 fi
 

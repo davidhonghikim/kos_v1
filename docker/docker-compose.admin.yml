@@ -26,7 +26,7 @@ services:
     environment:
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
-    - PGADMIN_DEFAULT_EMAIL=admin@kos.local
+    - PGADMIN_DEFAULT_EMAIL=admin@kos.dev
     - PGADMIN_DEFAULT_PASSWORD=kos30437
     volumes:
     - type: volume
