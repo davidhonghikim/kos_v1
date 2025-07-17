@@ -7,11 +7,15 @@ services:
     - 7860:7860
     environment:
     - AUTOMATIC1111_CATEGORY=ai
-    - AUTOMATIC1111_COMMANDLINE_ARGS=--listen --port 7860 --enable-insecure-extension-access
+    - AUTOMATIC1111_COMMANDLINE_ARGS=--listen --port 7860 --ckpt-dir "/models/checkpoints"
+      --vae-dir "/models/vae" --embeddings-dir "/models/embeddings" --hypernetwork-dir
+      "/models/hypernetworks" --lora-dir "/models/loras"
     - AUTOMATIC1111_COMPOSE_GROUP=ai
+    - AUTOMATIC1111_CONFIG_VOLUME=kos-automatic1111:/config
     - AUTOMATIC1111_CONTAINER_NAME=kos-automatic1111
     - AUTOMATIC1111_DEPENDS_ON=
     - AUTOMATIC1111_ENABLE=true
+    - AUTOMATIC1111_EXTENSIONS_VOLUME=kos-models-data:/extensions
     - AUTOMATIC1111_EXTERNAL_PORT=7860
     - AUTOMATIC1111_HEALTH_CHECK_COMMAND=curl -f http://kos-automatic1111:7860 ||
       exit 1
@@ -20,11 +24,23 @@ services:
     - AUTOMATIC1111_HEALTH_CHECK_TIMEOUT=10s
     - AUTOMATIC1111_IMAGE=ashleykza/stable-diffusion-webui:latest
     - AUTOMATIC1111_INTERNAL_PORT=7860
+    - AUTOMATIC1111_MODELS_VOLUME=//e/ComfyUI_WPN/ComfyUI/models:/models
     - AUTOMATIC1111_NETWORK=kos-network
+    - AUTOMATIC1111_OUTPUTS_VOLUME=kos-models-data:/outputs
     - AUTOMATIC1111_PROFILE=core
     - AUTOMATIC1111_RESTART_POLICY=unless-stopped
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
+    volumes:
+    - kos-models-data:/models
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            count: all
+            capabilities:
+            - gpu
     networks:
     - kos-network
     restart: unless-stopped
@@ -36,7 +52,9 @@ services:
     environment:
     - COMFYUI_CATEGORY=ai
     - COMFYUI_COMPOSE_GROUP=ai
+    - COMFYUI_CONFIG_VOLUME=kos-comfyui:/config
     - COMFYUI_CONTAINER_NAME=kos-comfyui
+    - COMFYUI_CUSTOM_NODES_VOLUME=kos-comfyui:/custom-nodes
     - COMFYUI_DEPENDS_ON=
     - COMFYUI_ENABLE=true
     - COMFYUI_EXTERNAL_PORT=8188
@@ -46,37 +64,23 @@ services:
     - COMFYUI_HEALTH_CHECK_TIMEOUT=10s
     - COMFYUI_IMAGE=zhangp365/comfyui:latest
     - COMFYUI_INTERNAL_PORT=8188
+    - COMFYUI_MODELS_VOLUME=//e/ComfyUI_WPN/ComfyUI/models:/models
     - COMFYUI_NETWORK=kos-network
+    - COMFYUI_OUTPUTS_VOLUME=kos-models-data:/outputs
     - COMFYUI_PROFILE=core
     - COMFYUI_RESTART_POLICY=unless-stopped
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
-    networks:
-    - kos-network
-    restart: unless-stopped
-  invokeai:
-    image: ghcr.io/invoke-ai/invokeai:latest
-    container_name: kos-invokeai
-    ports:
-    - 8189:8189
-    environment:
-    - INVOKEAI_CATEGORY=ai
-    - INVOKEAI_COMPOSE_GROUP=ai
-    - INVOKEAI_CONTAINER_NAME=kos-invokeai
-    - INVOKEAI_DEPENDS_ON=
-    - INVOKEAI_ENABLE=true
-    - INVOKEAI_EXTERNAL_PORT=8189
-    - INVOKEAI_HEALTH_CHECK_COMMAND=curl -f http://kos-invokeai:8189 || exit 1
-    - INVOKEAI_HEALTH_CHECK_INTERVAL=30s
-    - INVOKEAI_HEALTH_CHECK_RETRIES=3
-    - INVOKEAI_HEALTH_CHECK_TIMEOUT=10s
-    - INVOKEAI_IMAGE=ghcr.io/invoke-ai/invokeai:latest
-    - INVOKEAI_INTERNAL_PORT=8189
-    - INVOKEAI_NETWORK=kos-network
-    - INVOKEAI_PROFILE=core
-    - INVOKEAI_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kosadmin
-    - ADMIN_PASSWORD=kos30437
+    volumes:
+    - kos-models-data:/models
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            count: all
+            capabilities:
+            - gpu
     networks:
     - kos-network
     restart: unless-stopped
@@ -102,8 +106,14 @@ services:
     - OLLAMA_NETWORK=kos-network
     - OLLAMA_PROFILE=core
     - OLLAMA_RESTART_POLICY=unless-stopped
+    - OLLAMA_VOLUME=kos-ollama:/data
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
+    volumes:
+    - type: volume
+      source: kos-ollama
+      target: /data
+      volume: {}
     networks:
     - kos-network
     restart: unless-stopped
@@ -131,8 +141,14 @@ services:
     - OPENWEBUI_OLLAMA_API_BASE_URL=http://kos-ollama:11434
     - OPENWEBUI_PROFILE=core
     - OPENWEBUI_RESTART_POLICY=unless-stopped
+    - OPENWEBUI_VOLUME=kos-openwebui:/data
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
+    volumes:
+    - type: volume
+      source: kos-openwebui
+      target: /data
+      volume: {}
     networks:
     - kos-network
     restart: unless-stopped
@@ -144,4 +160,10 @@ networks:
     ipam:
       config:
       - subnet: 172.20.0.0/16
-volumes: {}
+volumes:
+  kos-models-data:
+    driver: local
+  kos-ollama:
+    driver: local
+  kos-openwebui:
+    driver: local

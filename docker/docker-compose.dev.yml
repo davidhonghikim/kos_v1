@@ -22,8 +22,14 @@ services:
     - BROWSERUSE_NETWORK=kos-network
     - BROWSERUSE_PROFILE=dev
     - BROWSERUSE_RESTART_POLICY=unless-stopped
+    - BROWSERUSE_VOLUME=kos-browseruse:/data
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
+    volumes:
+    - type: volume
+      source: kos-browseruse
+      target: /data
+      volume: {}
     networks:
     - kos-network
     restart: unless-stopped
@@ -50,8 +56,14 @@ services:
     - CODIUM_PASSWORD=kos30437
     - CODIUM_PROFILE=dev
     - CODIUM_RESTART_POLICY=unless-stopped
+    - CODIUM_VOLUME=kos-codium:/data
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
+    volumes:
+    - type: volume
+      source: kos-codium
+      target: /data
+      volume: {}
     networks:
     - kos-network
     restart: unless-stopped
@@ -80,8 +92,14 @@ services:
     - CONTEXT7_NETWORK=kos-network
     - CONTEXT7_PROFILE=dev
     - CONTEXT7_RESTART_POLICY=unless-stopped
+    - CONTEXT7_VOLUME=kos-context7:/data
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
+    volumes:
+    - type: volume
+      source: kos-context7
+      target: /data
+      volume: {}
     networks:
     - kos-network
     restart: unless-stopped
@@ -94,7 +112,9 @@ services:
     environment:
     - GITEA_CATEGORY=dev
     - GITEA_COMPOSE_GROUP=dev
+    - GITEA_CONFIG_VOLUME=kos-gitea:/config
     - GITEA_CONTAINER_NAME=kos-gitea
+    - GITEA_DATA_VOLUME=kos-gitea:/data
     - GITEA_DEPENDS_ON=postgres
     - GITEA_ENABLE=true
     - GITEA_EXTERNAL_PORT=3002
@@ -106,11 +126,30 @@ services:
     - GITEA_INTERNAL_PORT=3000
     - GITEA_NETWORK=kos-network
     - GITEA_PROFILE=dev
+    - GITEA_REPOS_VOLUME=kos-gitea:/repos
     - GITEA_RESTART_POLICY=unless-stopped
     - GITEA_SSH_EXTERNAL_PORT=22
     - GITEA_SSH_INTERNAL_PORT=2222
+    - GITEA_SSH_VOLUME=kos-gitea:/ssh
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
+    volumes:
+    - type: volume
+      source: kos-gitea
+      target: /config
+      volume: {}
+    - type: volume
+      source: kos-gitea
+      target: /data
+      volume: {}
+    - type: volume
+      source: kos-gitea
+      target: /repos
+      volume: {}
+    - type: volume
+      source: kos-gitea
+      target: /ssh
+      volume: {}
     networks:
     - kos-network
     restart: unless-stopped
@@ -143,8 +182,8 @@ services:
     - SUPABASE_STUDIO_CONTAINER_NAME=kos-supabase-studio
     - SUPABASE_STUDIO_ENABLE=true
     - SUPABASE_STUDIO_EXTERNAL_PORT=3003
-    - SUPABASE_STUDIO_HEALTH_CHECK_COMMAND=curl --fail http://localhost:3000/ || exit
-      1
+    - SUPABASE_STUDIO_HEALTH_CHECK_COMMAND=curl --fail http://{KOS_SUPABASE_CONTAINER_NAME}:3000/
+      || exit 1
     - SUPABASE_STUDIO_HEALTH_CHECK_INTERVAL=30s
     - SUPABASE_STUDIO_HEALTH_CHECK_RETRIES=3
     - SUPABASE_STUDIO_HEALTH_CHECK_TIMEOUT=10s
@@ -152,8 +191,19 @@ services:
     - SUPABASE_STUDIO_INTERNAL_PORT=3000
     - SUPABASE_STUDIO_NETWORK=kos-network
     - SUPABASE_STUDIO_RESTART_POLICY=unless-stopped
+    - SUPABASE_STUDIO_VOLUME=kos-supabase-studio:/data
+    - SUPABASE_VOLUME=kos-supabase:/data
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
+    volumes:
+    - type: volume
+      source: kos-supabase-studio
+      target: /data
+      volume: {}
+    - type: volume
+      source: kos-supabase
+      target: /data
+      volume: {}
     networks:
     - kos-network
     restart: unless-stopped
@@ -163,4 +213,16 @@ networks:
     ipam:
       config:
       - subnet: 172.20.0.0/16
-volumes: {}
+volumes:
+  kos-context7:
+    driver: local
+  kos-browseruse:
+    driver: local
+  kos-supabase:
+    driver: local
+  kos-gitea:
+    driver: local
+  kos-supabase-studio:
+    driver: local
+  kos-codium:
+    driver: local

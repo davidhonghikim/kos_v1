@@ -29,9 +29,15 @@ services:
     - N8N_NETWORK=kos-network
     - N8N_PROFILE=workflow
     - N8N_RESTART_POLICY=unless-stopped
+    - N8N_VOLUME=kos-n8n:/data
     - N8N_WEBHOOK_URL=http://kos-n8n:5678/
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
+    volumes:
+    - type: volume
+      source: kos-n8n
+      target: /data
+      volume: {}
     networks:
     - kos-network
     restart: unless-stopped
@@ -45,7 +51,9 @@ services:
     - NEXTCLOUD_ADMIN_USER=kosadmin
     - NEXTCLOUD_CATEGORY=workflow
     - NEXTCLOUD_COMPOSE_GROUP=workflow
+    - NEXTCLOUD_CONFIG_VOLUME=kos-nextcloud:/config
     - NEXTCLOUD_CONTAINER_NAME=kos-nextcloud
+    - NEXTCLOUD_DATA_VOLUME=kos-nextcloud:/data
     - NEXTCLOUD_DB_HOST=kos-postgres
     - NEXTCLOUD_DB_NAME=nextcloud
     - NEXTCLOUD_DB_PASSWORD=kos30437
@@ -66,6 +74,15 @@ services:
     - NEXTCLOUD_RESTART_POLICY=unless-stopped
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
+    volumes:
+    - type: volume
+      source: kos-nextcloud
+      target: /config
+      volume: {}
+    - type: volume
+      source: kos-nextcloud
+      target: /data
+      volume: {}
     networks:
     - kos-network
     restart: unless-stopped
@@ -94,8 +111,14 @@ services:
     - PENPOT_PROFILE=workflow
     - PENPOT_REDIS_URI=redis://kos-redis:6379/0
     - PENPOT_RESTART_POLICY=unless-stopped
+    - PENPOT_VOLUME=kos-penpot:/data
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
+    volumes:
+    - type: volume
+      source: kos-penpot
+      target: /data
+      volume: {}
     networks:
     - kos-network
     restart: unless-stopped
@@ -105,4 +128,10 @@ networks:
     ipam:
       config:
       - subnet: 172.20.0.0/16
-volumes: {}
+volumes:
+  kos-nextcloud:
+    driver: local
+  kos-n8n:
+    driver: local
+  kos-penpot:
+    driver: local

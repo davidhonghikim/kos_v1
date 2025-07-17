@@ -6,11 +6,14 @@ kOS v1 Environment Audit Script (env_audit.py)
 - Always runs env_loader.py and generate_docker_compose.py after audit
 - OS-agnostic, robust, and uses current timestamp
 """
-import os
 import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 import re
 import subprocess
 from datetime import datetime
+from scripts.logger.logger import get_logger
+logger = get_logger('env_audit')
 
 # --- Constants ---
 PORTS_ENV = os.path.join('env', 'ports.env')
@@ -18,19 +21,10 @@ SETTINGS_ENV = os.path.join('env', 'settings.env')
 LOCAL_ENV = os.path.join('env', 'local.env')
 LOG_DIR = 'logs'
 LOG_FILE = os.path.join(LOG_DIR, 'env_audit.log')
-ENV_LOADER = 'env_loader.py'
-DOCKER_GEN = 'generate_docker_compose.py'
+ENV_LOADER = 'scripts/installer/env_loader.py'
+DOCKER_GEN = 'scripts/installer/generate_docker_compose.py'
 
 # --- Logging ---
-def log(msg, level='INFO'):
-    now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    entry = f"{now} - env_audit - {level} - {msg}"
-    print(entry) if level in ('ERROR', 'WARNING') else None
-    if not os.path.exists(LOG_DIR):
-        os.makedirs(LOG_DIR, exist_ok=True)
-    with open(LOG_FILE, 'a', encoding='utf-8') as f:
-        f.write(entry + '\n')
-
 def print_summary(summary):
     print("\n===== kOS v1 Environment Audit Summary =====")
     for line in summary:
@@ -41,7 +35,7 @@ def print_summary(summary):
 def parse_env_file(filepath):
     env = {}
     if not os.path.exists(filepath):
-        log(f"Env file not found: {filepath}", 'ERROR')
+        logger.log(f"Env file not found: {filepath}", 'ERROR')
         return env
     with open(filepath, 'r', encoding='utf-8') as f:
         for line in f:
@@ -82,14 +76,14 @@ def get_enable_flags(settings_env, local_env):
 
 def run_script(script):
     if not os.path.exists(script):
-        log(f"Script not found: {script}", 'WARNING')  # Changed from ERROR to WARNING
+        logger.log(f"Script not found: {script}", 'WARNING')  # Changed from ERROR to WARNING
         return 0  # Do not treat as error
-    log(f"Running {script}...", 'INFO')
+    logger.log(f"Running {script}...", 'INFO')
     result = subprocess.run([sys.executable, script], capture_output=True, text=True)
     if result.returncode != 0:
-        log(f"{script} failed: {result.stderr}", 'ERROR')
+        logger.log(f"{script} failed: {result.stderr}", 'ERROR')
     else:
-        log(f"{script} completed successfully.", 'INFO')
+        logger.log(f"{script} completed successfully.", 'INFO')
     return result.returncode
 
 # --- Main Audit Logic ---
@@ -106,7 +100,7 @@ def main():
     settings_env = parse_env_file(SETTINGS_ENV)
     local_env = parse_env_file(LOCAL_ENV)
     if not ports_env:
-        log("Failed to parse ports.env. Aborting audit.", 'ERROR')
+        logger.log("Failed to parse ports.env. Aborting audit.", 'ERROR')
         sys.exit(1)
     # 1. Port Conflict Audit
     port_map = get_port_map(ports_env)
@@ -114,10 +108,10 @@ def main():
     if conflicts:
         for port, services in conflicts.items():
             msg = f"Port conflict: {port} used by {', '.join(services)}"
-            log(msg, 'ERROR')
+            logger.log(msg, 'ERROR')
             summary.append(f"ERROR: {msg}")
     else:
-        log("No port conflicts detected.", 'INFO')
+        logger.log("No port conflicts detected.", 'INFO')
         summary.append("No port conflicts detected.")
     # 2. Enable Flag Audit (only for REQUIRED_ENABLE_FLAGS)
     all_flags = set(list(settings_env.keys()) + list(local_env.keys()))
@@ -125,10 +119,10 @@ def main():
     if missing_flags:
         for flag in missing_flags:
             msg = f"Required enable flag missing: {flag}"
-            log(msg, 'WARNING')
+            logger.log(msg, 'WARNING')
             summary.append(f"WARNING: {msg}")
     else:
-        log("All required enable flags present.", 'INFO')
+        logger.log("All required enable flags present.", 'INFO')
         summary.append("All required enable flags present.")
     # 3. Summary
     summary.append(f"Total port conflicts: {len(conflicts)}")

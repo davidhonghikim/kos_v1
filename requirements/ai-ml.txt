@@ -1,7 +1,9 @@
-# AI and Machine Learning
-transformers==4.41.0
-torch==2.1.2
-torchvision==0.16.2
+# Universal install: CPU by default, GPU (CUDA) if desired
+# To install for CPU only (default):
+#   pip install -r requirements/ai-ml.txt
+# To install for GPU (CUDA 11.8, e.g. GTX 1070):
+#   pip install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 --index-url https://download.pytorch.org/whl/cu118
+#
 sentence-transformers==5.0.0
 openai==1.6.1
 langchain==0.1.0

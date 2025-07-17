@@ -1,47 +1,112 @@
 #!/bin/bash
-# KOS v1 - Pre-pull all required Docker images (Linux/macOS/WSL)
-# Feature flags: set to "on" or "off"
-CORE_ADMIN=on
-AI_ML=on
-WORKFLOW=on
-DB_STORAGE=on
-MONITORING=on
+# KOS v1 - Dynamic Docker Image Puller (Ordered)
+# This script reads your generated .env file to pull the correct images
+# for all your enabled services, in user-specified order.
 
-# Priority 1: Core DBs
-  docker pull postgres:15-alpine
-  docker pull dpage/pgadmin4:8.6
-  docker pull redis:7.2-alpine
-  docker pull rediscommander/redis-commander:latest
-  docker pull minio/minio:RELEASE.2024-01-16T16-07-38Z
-  docker pull neo4j:5.15
-  docker pull docker.elastic.co/elasticsearch/elasticsearch:8.11.0
-  docker pull semitechnologies/weaviate:1.22.4
-  docker pull mongo:7.0
-  docker pull mongo-express:1.0.0-alpha.4
-  docker pull codercom/code-server:latest
+ENV_FILE=".env"
+FAILED_LOG="logs/failed_images.log"
 
-# Priority 2: Core AI/LLM
-  docker pull ollama/ollama:latest
-  docker pull ghcr.io/open-webui/open-webui:main
-  docker pull nvidia/cuda:12.2.0-base
-  # docker pull rocm/rocm-terminal:latest
+if [ ! -f "$ENV_FILE" ]; then
+  echo "[ERROR] The main .env file was not found at: $ENV_FILE"
+  echo "[INFO] Please run the environment loader script first:"
+  echo "  python3 scripts/installer/env_loader.py"
+  exit 1
+fi
 
-# Priority 3: Workflow/Monitoring
-  docker pull n8nio/n8n:latest
-  docker pull penpotapp/frontend:latest
-  docker pull nextcloud:latest
-  docker pull browserless/chrome:latest
-  docker pull gitea/gitea:1.21.7
-  docker pull grafana/grafana:latest
-  docker pull prom/prometheus:latest
-  docker pull gcr.io/cadvisor/cadvisor:latest
+mkdir -p "$(dirname "$FAILED_LOG")"
 
-# Priority 4: Admin/Dev/Other
-  docker pull portainer/portainer-ce:latest
+ORDERED_IMAGES=()
+ROCM_IMAGE=""
 
-# Priority 5: Big AI Images
-  docker pull ashleykza/stable-diffusion-webui:latest
-  docker pull zhangp365/comfyui:latest
-  docker pull ghcr.io/invoke-ai/invokeai:latest
+# 1. Core DBs
+for key in POSTGRES REDIS NEO4J MINIO ELASTICSEARCH WEAVIATE MONGO; do
+  img=$(grep "KOS_${key}_IMAGE=" "$ENV_FILE" | cut -d'=' -f2-)
+  [ -n "$img" ] && ORDERED_IMAGES+=("$img")
+done
+# 2. Ollama
+img=$(grep "KOS_OLLAMA_IMAGE=" "$ENV_FILE" | cut -d'=' -f2-)
+[ -n "$img" ] && ORDERED_IMAGES+=("$img")
+# 3. OpenWebUI
+img=$(grep "KOS_OPENWEBUI_IMAGE=" "$ENV_FILE" | cut -d'=' -f2-)
+[ -n "$img" ] && ORDERED_IMAGES+=("$img")
+# 4. NVIDIA
+img=$(grep "KOS_NVIDIA_GPU_IMAGE=" "$ENV_FILE" | cut -d'=' -f2-)
+[ -n "$img" ] && ORDERED_IMAGES+=("$img")
+# 5. Workflow
+for key in N8N PENPOT NEXTCLOUD SUPABASE; do
+  img=$(grep "KOS_${key}_IMAGE=" "$ENV_FILE" | cut -d'=' -f2-)
+  [ -n "$img" ] && ORDERED_IMAGES+=("$img")
+done
+# 6. Monitoring
+for key in PROMETHEUS GRAFANA CADVISOR; do
+  img=$(grep "KOS_${key}_IMAGE=" "$ENV_FILE" | cut -d'=' -f2-)
+  [ -n "$img" ] && ORDERED_IMAGES+=("$img")
+done
+# 7. Large images (A1111, ComfyUI, HuggingFace, InvokeAI)
+for key in AUTOMATIC1111 COMFYUI HUGGINGFACE INVOKEAI; do
+  img=$(grep "KOS_${key}_IMAGE=" "$ENV_FILE" | cut -d'=' -f2-)
+  [ -n "$img" ] && ORDERED_IMAGES+=("$img")
+done
+# 8. ROCm (commented out next to NVIDIA)
+ROCM_IMAGE=$(grep "KOS_AMD_GPU_IMAGE=" "$ENV_FILE" | cut -d'=' -f2-)
 
-# Priority 6: Rest (add any additional images here) 
+# Remove duplicates
+ORDERED_IMAGES=($(printf "%s\n" "${ORDERED_IMAGES[@]}" | awk '!seen[$0]++'))
+
+# Logging pull order
+echo "[INFO] Pull order:" 
+for img in "${ORDERED_IMAGES[@]}"; do
+  echo "  $img"
+done
+[ -n "$ROCM_IMAGE" ] && echo "  # ROCm image (commented): $ROCM_IMAGE"
+echo "-------------------------------------------"
+
+rm -f "$FAILED_LOG"
+PULLED_SUCCESS=0
+PULLED_FAIL=0
+
+retry_pull() {
+  local image=$1
+  [ -z "$image" ] && return 0
+  local max_attempts=3
+  local attempt=1
+  while [ $attempt -le $max_attempts ]; do
+    echo "[INFO] Pulling '$image' (attempt $attempt/$max_attempts)..."
+    if docker pull "$image"; then
+      echo "[SUCCESS] Successfully pulled '$image'"
+      return 0
+    else
+      echo "[WARN] Failed to pull '$image' (attempt $attempt)"
+    fi
+    ((attempt++))
+    sleep 2
+  done
+  echo "[ERROR] Failed to pull '$image' after $max_attempts attempts. Logging to $FAILED_LOG"
+  echo "$image" >> "$FAILED_LOG"
+  return 1
+}
+
+for image in "${ORDERED_IMAGES[@]}"; do
+  retry_pull "$image"
+  if [ $? -eq 0 ]; then
+    ((PULLED_SUCCESS++))
+  else
+    ((PULLED_FAIL++))
+  fi
+done
+
+TOTAL_IMAGES=$((PULLED_SUCCESS + PULLED_FAIL))
+echo "-------------------------------------------"
+echo "Image Pull Summary:"
+echo "  - Success: $PULLED_SUCCESS / $TOTAL_IMAGES"
+echo "  - Failed:  $PULLED_FAIL / $TOTAL_IMAGES"
+echo "-------------------------------------------"
+
+if [ $PULLED_FAIL -gt 0 ]; then
+  echo "[ERROR] Some images failed to pull. Check the log for details: $FAILED_LOG"
+  cat "$FAILED_LOG"
+  exit 1
+else
+  echo " 44c [SUCCESS] All configured images were pulled successfully."
+  exit 0
+fi

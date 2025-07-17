@@ -1,47 +1,48 @@
-@echo off
-REM KOS v1 - Pre-pull all required Docker images (Windows)
-REM Feature flags: set to on or off
-set CORE_ADMIN=on
-set AI_ML=on
-set WORKFLOW=on
-set DB_STORAGE=on
-set MONITORING=on
+@ECHO OFF
 
-REM Priority 1: Core DBs
-  docker pull postgres:15-alpine
-  docker pull redis:7.2-alpine
-  docker pull minio/minio:RELEASE.2024-01-16T16-07-38Z
-  docker pull neo4j:5.15
-  docker pull docker.elastic.co/elasticsearch/elasticsearch:8.11.0
-  docker pull semitechnologies/weaviate:1.22.4
-  docker pull mongo:7.0
+REM KOS v1 - Simple Docker Image Puller (from images.env)
+SET "IMAGES_FILE=%~dp0..\..\env\images.env"
+SET "LOG_DIR=%~dp0..\..\logs\docker"
+IF NOT EXIST "%LOG_DIR%" MKDIR "%LOG_DIR%"
 
-REM Priority 2: Core AI/LLM
-  docker pull ollama/ollama:latest
-  docker pull ghcr.io/open-webui/open-webui:main
-  docker pull nvidia/cuda:12.2.0-base
-  REM docker pull rocm/rocm-terminal:latest
+REM Get ISO timestamp for log file prefix
+FOR /F %%a IN ('wmic os get localdatetime ^| findstr /r "^[0-9]"') DO SET ISODT=%%a
+SET "ISODT=%ISODT:~0,4%-%ISODT:~4,2%-%ISODT:~6,2%T%ISODT:~8,2%-%ISODT:~10,2%-%ISODT:~12,2%"
+SET "LOG_FILE=%LOG_DIR%\%ISODT%_pull_images.log"
 
-REM Priority 3: Workflow/Monitoring
-  docker pull n8nio/n8n:latest
-  docker pull penpotapp/frontend:latest
-  docker pull nextcloud:latest
-  docker pull browserless/chrome:latest
-  docker pull gitea/gitea:1.21.7
-  docker pull grafana/grafana:latest
-  docker pull prom/prometheus:latest
-  docker pull gcr.io/cadvisor/cadvisor:latest
+REM Use system logger if available, else fallback to echo
+SET "LOGGER=%~dp0..\..\scripts\logger\logger.bat"
+IF EXIST "%LOGGER%" (
+    SET "USE_LOGGER=1"
+) ELSE (
+    SET "USE_LOGGER=0"
+)
 
-REM Priority 4: Admin/Dev/Other
-  docker pull portainer/portainer-ce:latest
-  docker pull mongo-express:1.0.0-alpha.4
-  docker pull dpage/pgadmin4:8.6
-  docker pull rediscommander/redis-commander:latest
-  docker pull codercom/code-server:latest
+IF NOT EXIST "%IMAGES_FILE%" (
+    ECHO [ERROR] images.env file not found at: %IMAGES_FILE%
+    EXIT /B 1
+)
 
-REM Priority 5: Big AI Images
-  docker pull ashleykza/stable-diffusion-webui:latest
-  docker pull zhangp365/comfyui:latest
-  docker pull ghcr.io/invoke-ai/invokeai:latest
+ECHO [INFO] Pull order: > "%LOG_FILE%"
+FOR /F "usebackq tokens=* delims=" %%I IN ("%IMAGES_FILE%") DO (
+    IF NOT "%%I"=="" (
+        ECHO   %%I >> "%LOG_FILE%"
+    )
+)
+ECHO ------------------------------------------- >> "%LOG_FILE%"
 
-REM Priority 6: Rest (add any additional images here) 
+FOR /F "usebackq tokens=* delims=" %%I IN ("%IMAGES_FILE%") DO (
+    IF NOT "%%I"=="" (
+        FOR /F %%T IN ('wmic os get localdatetime ^| findstr /r "^[0-9]"') DO SET ISODT=%%T
+        SET "ISODT=!ISODT:~0,4!-!ISODT:~4,2!-!ISODT:~6,2!T!ISODT:~8,2!-!ISODT:~10,2!-!ISODT:~12,2!"
+        IF "%USE_LOGGER%"=="1" (
+            CALL "%LOGGER%" "[INFO] !ISODT! Pulling: %%I" >> "%LOG_FILE%"
+        ) ELSE (
+            ECHO [INFO] !ISODT! Pulling: %%I >> "%LOG_FILE%"
+        )
+        docker pull %%I >> "%LOG_FILE%" 2>&1
+    )
+)
+
+ECHO [SUCCESS] All images processed. >> "%LOG_FILE%"
+EXIT /B 0

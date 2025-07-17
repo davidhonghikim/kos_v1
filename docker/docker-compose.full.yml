@@ -1,233 +1,5 @@
 name: kos-v1
 services:
-  admin_panel:
-    image: portainer/portainer-ce:latest
-    container_name: kos-admin-panel
-    ports:
-    - 9003:9000
-    environment:
-    - ADMIN_PANEL_CATEGORY=admin
-    - ADMIN_PANEL_COMPOSE_GROUP=admin
-    - ADMIN_PANEL_CONTAINER_NAME=kos-admin-panel
-    - ADMIN_PANEL_DEPENDS_ON=
-    - ADMIN_PANEL_ENABLE=true
-    - ADMIN_PANEL_EXTERNAL_PORT=9003
-    - ADMIN_PANEL_HEALTH_CHECK_COMMAND=curl -f http://kos-admin-panel:9000/api/status
-      || exit 1
-    - ADMIN_PANEL_HEALTH_CHECK_INTERVAL=30s
-    - ADMIN_PANEL_HEALTH_CHECK_RETRIES=3
-    - ADMIN_PANEL_HEALTH_CHECK_TIMEOUT=10s
-    - ADMIN_PANEL_IMAGE=portainer/portainer-ce:latest
-    - ADMIN_PANEL_INTERNAL_PORT=9000
-    - ADMIN_PANEL_NETWORK=kos-network
-    - ADMIN_PANEL_PROFILE=admin
-    - ADMIN_PANEL_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kosadmin
-    - ADMIN_PASSWORD=kos30437
-    networks:
-    - kos-network
-    restart: unless-stopped
-  artifact_manager:
-    image: nginx:alpine
-    container_name: kos-artifact-manager
-    ports:
-    - 3009:8000
-    environment:
-    - ARTIFACT_MANAGER_CATEGORY=admin
-    - ARTIFACT_MANAGER_COMPOSE_GROUP=admin
-    - ARTIFACT_MANAGER_CONTAINER_NAME=kos-artifact-manager
-    - ARTIFACT_MANAGER_DEPENDS_ON=
-    - ARTIFACT_MANAGER_ENABLE=true
-    - ARTIFACT_MANAGER_EXTERNAL_PORT=3009
-    - ARTIFACT_MANAGER_HEALTH_CHECK_COMMAND=curl -f http://kos-artifact-manager:8000/health
-      || exit 1
-    - ARTIFACT_MANAGER_HEALTH_CHECK_INTERVAL=30s
-    - ARTIFACT_MANAGER_HEALTH_CHECK_RETRIES=3
-    - ARTIFACT_MANAGER_HEALTH_CHECK_TIMEOUT=10s
-    - ARTIFACT_MANAGER_IMAGE=nginx:alpine
-    - ARTIFACT_MANAGER_INTERNAL_PORT=8000
-    - ARTIFACT_MANAGER_NETWORK=kos-network
-    - ARTIFACT_MANAGER_PROFILE=manager
-    - ARTIFACT_MANAGER_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kosadmin
-    - ADMIN_PASSWORD=kos30437
-    networks:
-    - kos-network
-    restart: unless-stopped
-  mongo_express:
-    image: mongo-express:1.0.0
-    container_name: kos-mongo-express
-    ports:
-    - 27018:8081
-    environment:
-    - ADMIN_USER=kosadmin
-    - ADMIN_PASSWORD=kos30437
-    - MONGO_EXPRESS_USER=kosadmin
-    - MONGO_EXPRESS_PASSWORD=kos30437
-    networks:
-    - kos-network
-    restart: unless-stopped
-    depends_on:
-    - mongo
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    container_name: kos-pgadmin
-    ports:
-    - 5433:80
-    environment:
-    - ADMIN_USER=kosadmin
-    - ADMIN_PASSWORD=kos30437
-    - PGADMIN_DEFAULT_EMAIL=admin@kos.local
-    - PGADMIN_DEFAULT_PASSWORD=kos30437
-    networks:
-    - kos-network
-    restart: unless-stopped
-    depends_on:
-    - postgres
-  prompt_manager:
-    image: nginx:alpine
-    container_name: kos-prompt-manager
-    ports:
-    - 3008:8000
-    environment:
-    - PROMPT_MANAGER_CATEGORY=admin
-    - PROMPT_MANAGER_COMPOSE_GROUP=admin
-    - PROMPT_MANAGER_CONTAINER_NAME=kos-prompt-manager
-    - PROMPT_MANAGER_DEPENDS_ON=
-    - PROMPT_MANAGER_ENABLE=true
-    - PROMPT_MANAGER_EXTERNAL_PORT=3008
-    - PROMPT_MANAGER_HEALTH_CHECK_COMMAND=curl -f http://kos-prompt-manager:8000/health
-      || exit 1
-    - PROMPT_MANAGER_HEALTH_CHECK_INTERVAL=30s
-    - PROMPT_MANAGER_HEALTH_CHECK_RETRIES=3
-    - PROMPT_MANAGER_HEALTH_CHECK_TIMEOUT=10s
-    - PROMPT_MANAGER_IMAGE=nginx:alpine
-    - PROMPT_MANAGER_INTERNAL_PORT=8000
-    - PROMPT_MANAGER_NETWORK=kos-network
-    - PROMPT_MANAGER_PROFILE=manager
-    - PROMPT_MANAGER_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kosadmin
-    - ADMIN_PASSWORD=kos30437
-    networks:
-    - kos-network
-    restart: unless-stopped
-  redis_commander:
-    image: rediscommander/redis-commander:latest
-    container_name: kos-redis-commander
-    ports:
-    - 6380:8081
-    environment:
-    - REDIS_COMMANDER_PASSWORD=kos30437
-    - REDIS_COMMANDER_REDIS_HOSTS=local:kos-redis:6379:0:kos30437
-    - REDIS_COMMANDER_USER=kosadmin
-    - ADMIN_USER=kosadmin
-    - ADMIN_PASSWORD=kos30437
-    - REDIS_COMMANDER_USER=kosadmin
-    - REDIS_COMMANDER_PASSWORD=kos30437
-    networks:
-    - kos-network
-    restart: unless-stopped
-    depends_on:
-    - redis
-  registry:
-    image: nginx:alpine
-    container_name: kos-registry
-    ports:
-    - 5000:5000
-    environment:
-    - ADMIN_USER=kosadmin
-    - ADMIN_PASSWORD=kos30437
-    networks:
-    - kos-network
-    restart: unless-stopped
-  api:
-    image: nginx:alpine
-    container_name: kos-api
-    ports:
-    - 8000:8000
-    environment:
-    - API_CATEGORY=core
-    - API_COMPOSE_GROUP=core
-    - API_CONTAINER_NAME=kos-api
-    - API_DEPENDS_ON=postgres,redis
-    - API_ENABLE=true
-    - API_EXTERNAL_PORT=8000
-    - API_HEALTH_CHECK_COMMAND=curl -f http://kos-api:8000/health || exit 1
-    - API_HEALTH_CHECK_INTERVAL=30s
-    - API_HEALTH_CHECK_RETRIES=3
-    - API_HEALTH_CHECK_TIMEOUT=10s
-    - API_IMAGE=nginx:alpine
-    - API_INTERNAL_PORT=8000
-    - API_NETWORK=kos-network
-    - API_PROFILE=core
-    - API_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kosadmin
-    - ADMIN_PASSWORD=kos30437
-    networks:
-    - kos-network
-    restart: unless-stopped
-    depends_on:
-    - postgres
-    - redis
-  frontend:
-    image: nginx:alpine
-    container_name: kos-frontend
-    ports:
-    - 3000:3000
-    environment:
-    - FRONTEND_CATEGORY=core
-    - FRONTEND_COMPOSE_GROUP=core
-    - FRONTEND_CONTAINER_NAME=kos-frontend
-    - FRONTEND_DEPENDS_ON=api
-    - FRONTEND_ENABLE=true
-    - FRONTEND_EXTERNAL_PORT=3000
-    - FRONTEND_HEALTH_CHECK_COMMAND=curl -f http://kos-frontend:3000 || exit 1
-    - FRONTEND_HEALTH_CHECK_INTERVAL=30s
-    - FRONTEND_HEALTH_CHECK_RETRIES=3
-    - FRONTEND_HEALTH_CHECK_TIMEOUT=10s
-    - FRONTEND_IMAGE=nginx:alpine
-    - FRONTEND_INTERNAL_PORT=3000
-    - FRONTEND_NETWORK=kos-network
-    - FRONTEND_PROFILE=core
-    - FRONTEND_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kosadmin
-    - ADMIN_PASSWORD=kos30437
-    networks:
-    - kos-network
-    restart: unless-stopped
-    depends_on:
-    - api
-  nginx:
-    image: nginx:alpine
-    container_name: kos-nginx
-    ports:
-    - 80:80
-    environment:
-    - NGINX_CATEGORY=core
-    - NGINX_COMPOSE_GROUP=core
-    - NGINX_CONTAINER_NAME=kos-nginx
-    - NGINX_DEPENDS_ON=frontend,api
-    - NGINX_ENABLE=true
-    - NGINX_EXTERNAL_PORT=80
-    - NGINX_HEALTH_CHECK_COMMAND=curl -f http://kos-nginx:80 || exit 1
-    - NGINX_HEALTH_CHECK_INTERVAL=30s
-    - NGINX_HEALTH_CHECK_RETRIES=3
-    - NGINX_HEALTH_CHECK_TIMEOUT=10s
-    - NGINX_IMAGE=nginx:alpine
-    - NGINX_INTERNAL_PORT=80
-    - NGINX_NETWORK=kos-network
-    - NGINX_PROFILE=core
-    - NGINX_RESTART_POLICY=unless-stopped
-    - NGINX_SSL_EXTERNAL_PORT=443
-    - NGINX_SSL_INTERNAL_PORT=443
-    - ADMIN_USER=kosadmin
-    - ADMIN_PASSWORD=kos30437
-    networks:
-    - kos-network
-    restart: unless-stopped
-    depends_on:
-    - frontend
-    - api
   automatic1111:
     image: ashleykza/stable-diffusion-webui:latest
     container_name: kos-automatic1111
@@ -235,11 +7,15 @@ services:
     - 7860:7860
     environment:
     - AUTOMATIC1111_CATEGORY=ai
-    - AUTOMATIC1111_COMMANDLINE_ARGS=--listen --port 7860 --enable-insecure-extension-access
+    - AUTOMATIC1111_COMMANDLINE_ARGS=--listen --port 7860 --ckpt-dir "/models/checkpoints"
+      --vae-dir "/models/vae" --embeddings-dir "/models/embeddings" --hypernetwork-dir
+      "/models/hypernetworks" --lora-dir "/models/loras"
     - AUTOMATIC1111_COMPOSE_GROUP=ai
+    - AUTOMATIC1111_CONFIG_VOLUME=kos-automatic1111:/config
     - AUTOMATIC1111_CONTAINER_NAME=kos-automatic1111
     - AUTOMATIC1111_DEPENDS_ON=
     - AUTOMATIC1111_ENABLE=true
+    - AUTOMATIC1111_EXTENSIONS_VOLUME=kos-models-data:/extensions
     - AUTOMATIC1111_EXTERNAL_PORT=7860
     - AUTOMATIC1111_HEALTH_CHECK_COMMAND=curl -f http://kos-automatic1111:7860 ||
       exit 1
@@ -248,11 +24,23 @@ services:
     - AUTOMATIC1111_HEALTH_CHECK_TIMEOUT=10s
     - AUTOMATIC1111_IMAGE=ashleykza/stable-diffusion-webui:latest
     - AUTOMATIC1111_INTERNAL_PORT=7860
+    - AUTOMATIC1111_MODELS_VOLUME=//e/ComfyUI_WPN/ComfyUI/models:/models
     - AUTOMATIC1111_NETWORK=kos-network
+    - AUTOMATIC1111_OUTPUTS_VOLUME=kos-models-data:/outputs
     - AUTOMATIC1111_PROFILE=core
     - AUTOMATIC1111_RESTART_POLICY=unless-stopped
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
+    volumes:
+    - kos-models-data:/models
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            count: all
+            capabilities:
+            - gpu
     networks:
     - kos-network
     restart: unless-stopped
@@ -264,7 +52,9 @@ services:
     environment:
     - COMFYUI_CATEGORY=ai
     - COMFYUI_COMPOSE_GROUP=ai
+    - COMFYUI_CONFIG_VOLUME=kos-comfyui:/config
     - COMFYUI_CONTAINER_NAME=kos-comfyui
+    - COMFYUI_CUSTOM_NODES_VOLUME=kos-comfyui:/custom-nodes
     - COMFYUI_DEPENDS_ON=
     - COMFYUI_ENABLE=true
     - COMFYUI_EXTERNAL_PORT=8188
@@ -274,37 +64,23 @@ services:
     - COMFYUI_HEALTH_CHECK_TIMEOUT=10s
     - COMFYUI_IMAGE=zhangp365/comfyui:latest
     - COMFYUI_INTERNAL_PORT=8188
+    - COMFYUI_MODELS_VOLUME=//e/ComfyUI_WPN/ComfyUI/models:/models
     - COMFYUI_NETWORK=kos-network
+    - COMFYUI_OUTPUTS_VOLUME=kos-models-data:/outputs
     - COMFYUI_PROFILE=core
     - COMFYUI_RESTART_POLICY=unless-stopped
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
-    networks:
-    - kos-network
-    restart: unless-stopped
-  invokeai:
-    image: ghcr.io/invoke-ai/invokeai:latest
-    container_name: kos-invokeai
-    ports:
-    - 8189:8189
-    environment:
-    - INVOKEAI_CATEGORY=ai
-    - INVOKEAI_COMPOSE_GROUP=ai
-    - INVOKEAI_CONTAINER_NAME=kos-invokeai
-    - INVOKEAI_DEPENDS_ON=
-    - INVOKEAI_ENABLE=true
-    - INVOKEAI_EXTERNAL_PORT=8189
-    - INVOKEAI_HEALTH_CHECK_COMMAND=curl -f http://kos-invokeai:8189 || exit 1
-    - INVOKEAI_HEALTH_CHECK_INTERVAL=30s
-    - INVOKEAI_HEALTH_CHECK_RETRIES=3
-    - INVOKEAI_HEALTH_CHECK_TIMEOUT=10s
-    - INVOKEAI_IMAGE=ghcr.io/invoke-ai/invokeai:latest
-    - INVOKEAI_INTERNAL_PORT=8189
-    - INVOKEAI_NETWORK=kos-network
-    - INVOKEAI_PROFILE=core
-    - INVOKEAI_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kosadmin
-    - ADMIN_PASSWORD=kos30437
+    volumes:
+    - kos-models-data:/models
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            count: all
+            capabilities:
+            - gpu
     networks:
     - kos-network
     restart: unless-stopped
@@ -330,8 +106,14 @@ services:
     - OLLAMA_NETWORK=kos-network
     - OLLAMA_PROFILE=core
     - OLLAMA_RESTART_POLICY=unless-stopped
+    - OLLAMA_VOLUME=kos-ollama:/data
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
+    volumes:
+    - type: volume
+      source: kos-ollama
+      target: /data
+      volume: {}
     networks:
     - kos-network
     restart: unless-stopped
@@ -359,8 +141,14 @@ services:
     - OPENWEBUI_OLLAMA_API_BASE_URL=http://kos-ollama:11434
     - OPENWEBUI_PROFILE=core
     - OPENWEBUI_RESTART_POLICY=unless-stopped
+    - OPENWEBUI_VOLUME=kos-openwebui:/data
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
+    volumes:
+    - type: volume
+      source: kos-openwebui
+      target: /data
+      volume: {}
     networks:
     - kos-network
     restart: unless-stopped
@@ -388,8 +176,14 @@ services:
     - BROWSERUSE_NETWORK=kos-network
     - BROWSERUSE_PROFILE=dev
     - BROWSERUSE_RESTART_POLICY=unless-stopped
+    - BROWSERUSE_VOLUME=kos-browseruse:/data
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
+    volumes:
+    - type: volume
+      source: kos-browseruse
+      target: /data
+      volume: {}
     networks:
     - kos-network
     restart: unless-stopped
@@ -416,8 +210,14 @@ services:
     - CODIUM_PASSWORD=kos30437
     - CODIUM_PROFILE=dev
     - CODIUM_RESTART_POLICY=unless-stopped
+    - CODIUM_VOLUME=kos-codium:/data
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
+    volumes:
+    - type: volume
+      source: kos-codium
+      target: /data
+      volume: {}
     networks:
     - kos-network
     restart: unless-stopped
@@ -446,8 +246,14 @@ services:
     - CONTEXT7_NETWORK=kos-network
     - CONTEXT7_PROFILE=dev
     - CONTEXT7_RESTART_POLICY=unless-stopped
+    - CONTEXT7_VOLUME=kos-context7:/data
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
+    volumes:
+    - type: volume
+      source: kos-context7
+      target: /data
+      volume: {}
     networks:
     - kos-network
     restart: unless-stopped
@@ -460,7 +266,9 @@ services:
     environment:
     - GITEA_CATEGORY=dev
     - GITEA_COMPOSE_GROUP=dev
+    - GITEA_CONFIG_VOLUME=kos-gitea:/config
     - GITEA_CONTAINER_NAME=kos-gitea
+    - GITEA_DATA_VOLUME=kos-gitea:/data
     - GITEA_DEPENDS_ON=postgres
     - GITEA_ENABLE=true
     - GITEA_EXTERNAL_PORT=3002
@@ -472,11 +280,30 @@ services:
     - GITEA_INTERNAL_PORT=3000
     - GITEA_NETWORK=kos-network
     - GITEA_PROFILE=dev
+    - GITEA_REPOS_VOLUME=kos-gitea:/repos
     - GITEA_RESTART_POLICY=unless-stopped
     - GITEA_SSH_EXTERNAL_PORT=22
     - GITEA_SSH_INTERNAL_PORT=2222
+    - GITEA_SSH_VOLUME=kos-gitea:/ssh
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
+    volumes:
+    - type: volume
+      source: kos-gitea
+      target: /config
+      volume: {}
+    - type: volume
+      source: kos-gitea
+      target: /data
+      volume: {}
+    - type: volume
+      source: kos-gitea
+      target: /repos
+      volume: {}
+    - type: volume
+      source: kos-gitea
+      target: /ssh
+      volume: {}
     networks:
     - kos-network
     restart: unless-stopped
@@ -511,8 +338,8 @@ services:
     - SUPABASE_STUDIO_CONTAINER_NAME=kos-supabase-studio
     - SUPABASE_STUDIO_ENABLE=true
     - SUPABASE_STUDIO_EXTERNAL_PORT=3003
-    - SUPABASE_STUDIO_HEALTH_CHECK_COMMAND=curl --fail http://localhost:3000/ || exit
-      1
+    - SUPABASE_STUDIO_HEALTH_CHECK_COMMAND=curl --fail http://{KOS_SUPABASE_CONTAINER_NAME}:3000/
+      || exit 1
     - SUPABASE_STUDIO_HEALTH_CHECK_INTERVAL=30s
     - SUPABASE_STUDIO_HEALTH_CHECK_RETRIES=3
     - SUPABASE_STUDIO_HEALTH_CHECK_TIMEOUT=10s
@@ -520,99 +347,24 @@ services:
     - SUPABASE_STUDIO_INTERNAL_PORT=3000
     - SUPABASE_STUDIO_NETWORK=kos-network
     - SUPABASE_STUDIO_RESTART_POLICY=unless-stopped
+    - SUPABASE_STUDIO_VOLUME=kos-supabase-studio:/data
+    - SUPABASE_VOLUME=kos-supabase:/data
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
+    volumes:
+    - type: volume
+      source: kos-supabase-studio
+      target: /data
+      volume: {}
+    - type: volume
+      source: kos-supabase
+      target: /data
+      volume: {}
     networks:
     - kos-network
     restart: unless-stopped
     depends_on:
     - postgres
-  cadvisor:
-    image: gcr.io/cadvisor/cadvisor:v0.47.2
-    container_name: kos-cadvisor
-    ports:
-    - 8081:8081
-    environment:
-    - CADVISOR_CATEGORY=monitoring
-    - CADVISOR_COMPOSE_GROUP=monitoring
-    - CADVISOR_CONTAINER_NAME=kos-cadvisor
-    - CADVISOR_DEPENDS_ON=
-    - CADVISOR_ENABLE=true
-    - CADVISOR_EXTERNAL_PORT=8081
-    - CADVISOR_HEALTH_CHECK_COMMAND=curl -f http://kos-cadvisor:8081/healthz || exit
-      1
-    - CADVISOR_HEALTH_CHECK_INTERVAL=30s
-    - CADVISOR_HEALTH_CHECK_RETRIES=3
-    - CADVISOR_HEALTH_CHECK_TIMEOUT=10s
-    - CADVISOR_IMAGE=gcr.io/cadvisor/cadvisor:v0.47.2
-    - CADVISOR_INTERNAL_PORT=8081
-    - CADVISOR_NETWORK=kos-network
-    - CADVISOR_PROFILE=core
-    - CADVISOR_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kosadmin
-    - ADMIN_PASSWORD=kos30437
-    networks:
-    - kos-network
-    restart: unless-stopped
-  grafana:
-    image: grafana/grafana:10.2.0
-    container_name: kos-grafana
-    ports:
-    - 3007:3000
-    environment:
-    - GRAFANA_ADMIN_PASSWORD=kos30437
-    - GRAFANA_ADMIN_USER=kosadmin
-    - GRAFANA_CATEGORY=monitoring
-    - GRAFANA_COMPOSE_GROUP=monitoring
-    - GRAFANA_CONTAINER_NAME=kos-grafana
-    - GRAFANA_DEPENDS_ON=elasticsearch
-    - GRAFANA_ENABLE=true
-    - GRAFANA_EXTERNAL_PORT=3007
-    - GRAFANA_HEALTH_CHECK_COMMAND=curl -f http://kos-grafana:3000/api/health || exit
-      1
-    - GRAFANA_HEALTH_CHECK_RETRIES=3
-    - GRAFANA_HEALTH_CHECK_TIMEOUT=10s
-    - GRAFANA_IMAGE=grafana/grafana:10.2.0
-    - GRAFANA_INTERNAL_PORT=3000
-    - GRAFANA_NETWORK=kos-network
-    - GRAFANA_PROFILE=core
-    - GRAFANA_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kosadmin
-    - ADMIN_PASSWORD=kos30437
-    networks:
-    - kos-network
-    restart: unless-stopped
-    depends_on:
-    - elasticsearch
-  prometheus:
-    image: prom/prometheus:v2.48.0
-    container_name: kos-prometheus
-    ports:
-    - 9090:9090
-    environment:
-    - PROMETHEUS_CATEGORY=monitoring
-    - PROMETHEUS_COMPOSE_GROUP=monitoring
-    - PROMETHEUS_CONTAINER_NAME=kos-prometheus
-    - PROMETHEUS_DEPENDS_ON=elasticsearch
-    - PROMETHEUS_ENABLE=true
-    - PROMETHEUS_EXTERNAL_PORT=9090
-    - PROMETHEUS_HEALTH_CHECK_COMMAND=curl -f http://kos-prometheus:9090/-/healthy
-      || exit 1
-    - PROMETHEUS_HEALTH_CHECK_INTERVAL=30s
-    - PROMETHEUS_HEALTH_CHECK_RETRIES=3
-    - PROMETHEUS_HEALTH_CHECK_TIMEOUT=10s
-    - PROMETHEUS_IMAGE=prom/prometheus:v2.48.0
-    - PROMETHEUS_INTERNAL_PORT=9090
-    - PROMETHEUS_NETWORK=kos-network
-    - PROMETHEUS_PROFILE=core
-    - PROMETHEUS_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kosadmin
-    - ADMIN_PASSWORD=kos30437
-    networks:
-    - kos-network
-    restart: unless-stopped
-    depends_on:
-    - elasticsearch
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
     container_name: kos-elasticsearch
@@ -640,9 +392,15 @@ services:
     - ELASTICSEARCH_PROFILE=core
     - ELASTICSEARCH_RESTART_POLICY=unless-stopped
     - ELASTICSEARCH_USERNAME=kosadmin
+    - ELASTICSEARCH_VOLUME=kos-elasticsearch:/data
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
     - ELASTICSEARCH_PASSWORD=kos30437
+    volumes:
+    - type: volume
+      source: kos-elasticsearch
+      target: /data
+      volume: {}
     networks:
     - kos-network
     restart: unless-stopped
@@ -674,8 +432,14 @@ services:
     - MINIO_RESTART_POLICY=unless-stopped
     - MINIO_ROOT_PASSWORD=kos30437
     - MINIO_ROOT_USER=kosadmin
+    - MINIO_VOLUME=kos-minio:/data
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
+    volumes:
+    - type: volume
+      source: kos-minio
+      target: /data
+      volume: {}
     networks:
     - kos-network
     restart: unless-stopped
@@ -711,6 +475,7 @@ services:
     - MONGO_EXPRESS_PROFILE=admin
     - MONGO_EXPRESS_RESTART_POLICY=unless-stopped
     - MONGO_EXPRESS_USER=kosadmin
+    - MONGO_EXPRESS_VOLUME=kos-mongo-express:/data
     - MONGO_EXTERNAL_PORT=27017
     - MONGO_HEALTH_CHECK_COMMAND=mongosh --host kos-mongo --eval "db.adminCommand('ping')"
     - MONGO_HEALTH_CHECK_INTERVAL=30s
@@ -721,8 +486,18 @@ services:
     - MONGO_NETWORK=kos-network
     - MONGO_PROFILE=core
     - MONGO_RESTART_POLICY=unless-stopped
+    - MONGO_VOLUME=kos-mongo:/data
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
+    volumes:
+    - type: volume
+      source: kos-mongo-express
+      target: /data
+      volume: {}
+    - type: volume
+      source: kos-mongo
+      target: /data
+      volume: {}
     networks:
     - kos-network
     restart: unless-stopped
@@ -736,6 +511,7 @@ services:
     - NEO4J_CATEGORY=infra
     - NEO4J_COMPOSE_GROUP=infra
     - NEO4J_CONTAINER_NAME=kos-neo4j
+    - NEO4J_DATA_VOLUME=kos-neo4j:/data
     - NEO4J_DEPENDS_ON=
     - NEO4J_ENABLE=true
     - NEO4J_EXTERNAL_PORT=7687
@@ -746,9 +522,12 @@ services:
     - NEO4J_HTTP_EXTERNAL_PORT=7474
     - NEO4J_HTTP_INTERNAL_PORT=7474
     - NEO4J_IMAGE=neo4j:5.15
+    - NEO4J_IMPORT_VOLUME=kos-neo4j:/import
     - NEO4J_INTERNAL_PORT=7687
+    - NEO4J_LOGS_VOLUME=kos-neo4j:/logs
     - NEO4J_NETWORK=kos-network
     - NEO4J_PASSWORD=kos30437
+    - NEO4J_PLUGINS_VOLUME=kos-neo4j:/plugins
     - NEO4J_PROFILE=core
     - NEO4J_RESTART_POLICY=unless-stopped
     - NEO4J_USER=kosadmin
@@ -756,6 +535,23 @@ services:
     - ADMIN_PASSWORD=kos30437
     - NEO4J_USER=kosadmin
     - NEO4J_PASSWORD=kos30437
+    volumes:
+    - type: volume
+      source: kos-neo4j
+      target: /data
+      volume: {}
+    - type: volume
+      source: kos-neo4j
+      target: /import
+      volume: {}
+    - type: volume
+      source: kos-neo4j
+      target: /logs
+      volume: {}
+    - type: volume
+      source: kos-neo4j
+      target: /plugins
+      volume: {}
     networks:
     - kos-network
     restart: unless-stopped
@@ -783,10 +579,16 @@ services:
     - POSTGRES_PROFILE=core
     - POSTGRES_RESTART_POLICY=unless-stopped
     - POSTGRES_USER=kosadmin
+    - POSTGRES_VOLUME=kos-postgres:/data
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
     - POSTGRES_USER=kosadmin
     - POSTGRES_PASSWORD=kos30437
+    volumes:
+    - type: volume
+      source: kos-postgres
+      target: /data
+      volume: {}
     networks:
     - kos-network
     restart: unless-stopped
@@ -831,38 +633,15 @@ services:
     - REDIS_PASSWORD=kos30437
     - REDIS_PROFILE=core
     - REDIS_RESTART_POLICY=unless-stopped
+    - REDIS_VOLUME=kos-redis:/data
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
     - REDIS_PASSWORD=kos30437
-    networks:
-    - kos-network
-    restart: unless-stopped
-  vault:
-    image: hashicorp/vault:1.15.0
-    container_name: kos-vault
-    ports:
-    - 8200:8200
-    environment:
-    - VAULT_CATEGORY=infra
-    - VAULT_COMPOSE_GROUP=infra
-    - VAULT_CONTAINER_NAME=kos-vault
-    - VAULT_DEPENDS_ON=
-    - VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:8200
-    - VAULT_DEV_ROOT_TOKEN_ID=kos30437
-    - VAULT_ENABLE=true
-    - VAULT_EXTERNAL_PORT=8200
-    - VAULT_HEALTH_CHECK_COMMAND=curl -f http://kos-vault:8200/v1/sys/health || exit
-      1
-    - VAULT_HEALTH_CHECK_INTERVAL=30s
-    - VAULT_HEALTH_CHECK_RETRIES=3
-    - VAULT_HEALTH_CHECK_TIMEOUT=10s
-    - VAULT_IMAGE=hashicorp/vault:1.15.0
-    - VAULT_INTERNAL_PORT=8200
-    - VAULT_NETWORK=kos-network
-    - VAULT_PROFILE=core
-    - VAULT_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kosadmin
-    - ADMIN_PASSWORD=kos30437
+    volumes:
+    - type: volume
+      source: kos-redis
+      target: /data
+      volume: {}
     networks:
     - kos-network
     restart: unless-stopped
@@ -893,43 +672,104 @@ services:
     - WEAVIATE_PROFILE=core
     - WEAVIATE_RESTART_POLICY=unless-stopped
     - WEAVIATE_TRANSFORMERS_INFERENCE_API=http://kos-huggingface:8082
+    - WEAVIATE_VOLUME=kos-weaviate:/data
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
+    volumes:
+    - type: volume
+      source: kos-weaviate
+      target: /data
+      volume: {}
+    networks:
+    - kos-network
+    restart: unless-stopped
+  supabase_studio:
+    image: supabase/studio:latest
+    container_name: kos-supabase-studio
+    ports:
+    - 3003:3000
+    environment:
+    - SUPABASE_STUDIO_CONTAINER_NAME=kos-supabase-studio
+    - SUPABASE_STUDIO_ENABLE=true
+    - SUPABASE_STUDIO_EXTERNAL_PORT=3003
+    - SUPABASE_STUDIO_HEALTH_CHECK_COMMAND=curl --fail http://{KOS_SUPABASE_CONTAINER_NAME}:3000/
+      || exit 1
+    - SUPABASE_STUDIO_HEALTH_CHECK_INTERVAL=30s
+    - SUPABASE_STUDIO_HEALTH_CHECK_RETRIES=3
+    - SUPABASE_STUDIO_HEALTH_CHECK_TIMEOUT=10s
+    - SUPABASE_STUDIO_IMAGE=supabase/studio:latest
+    - SUPABASE_STUDIO_INTERNAL_PORT=3000
+    - SUPABASE_STUDIO_NETWORK=kos-network
+    - SUPABASE_STUDIO_RESTART_POLICY=unless-stopped
+    - SUPABASE_STUDIO_VOLUME=kos-supabase-studio:/data
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
+    volumes:
+    - type: volume
+      source: kos-supabase-studio
+      target: /data
+      volume: {}
+    networks:
+    - kos-network
+    restart: unless-stopped
+  mongo_express:
+    image: mongo-express:1.0.0
+    container_name: kos-mongo-express
+    ports:
+    - 27018:8081
+    environment:
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
+    - MONGO_EXPRESS_USER=kosadmin
+    - MONGO_EXPRESS_PASSWORD=kos30437
+    volumes:
+    - type: volume
+      source: kos-mongo-express
+      target: /data
+      volume: {}
     networks:
     - kos-network
     restart: unless-stopped
     depends_on:
-    - huggingface
-  huggingface:
-    image: huggingface/transformers-pytorch-gpu:latest
-    container_name: kos-huggingface
+    - mongo
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: kos-pgadmin
     ports:
-    - 8084:8082
+    - 5433:80
     environment:
-    - HUGGINGFACE_API_TOKEN=
-    - HUGGINGFACE_CATEGORY=heavy_ai
-    - HUGGINGFACE_CLOUD_ENABLE=false
-    - HUGGINGFACE_COMPOSE_GROUP=heavy_ai
-    - HUGGINGFACE_CONTAINER_NAME=kos-huggingface
-    - HUGGINGFACE_DEFAULT_MODEL=microsoft/DialoGPT-medium
-    - HUGGINGFACE_DEPENDS_ON=
-    - HUGGINGFACE_ENABLE=true
-    - HUGGINGFACE_EXTERNAL_PORT=8084
-    - HUGGINGFACE_HEALTH_CHECK_COMMAND=curl -f http://kos-huggingface:8082 || exit
-      1
-    - HUGGINGFACE_HEALTH_CHECK_INTERVAL=30s
-    - HUGGINGFACE_HEALTH_CHECK_RETRIES=3
-    - HUGGINGFACE_HEALTH_CHECK_TIMEOUT=10s
-    - HUGGINGFACE_IMAGE=huggingface/transformers-pytorch-gpu:latest
-    - HUGGINGFACE_INTERNAL_PORT=8082
-    - HUGGINGFACE_NETWORK=kos-network
-    - HUGGINGFACE_PROFILE=ai
-    - HUGGINGFACE_RESTART_POLICY=unless-stopped
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
+    - PGADMIN_DEFAULT_EMAIL=admin@kos.local
+    - PGADMIN_DEFAULT_PASSWORD=kos30437
+    volumes:
+    - type: volume
+      source: kos-pgadmin
+      target: /data
+      volume: {}
     networks:
     - kos-network
     restart: unless-stopped
+    depends_on:
+    - postgres
+  redis_commander:
+    image: rediscommander/redis-commander:latest
+    container_name: kos-redis-commander
+    ports:
+    - 6380:8081
+    environment:
+    - REDIS_COMMANDER_PASSWORD=kos30437
+    - REDIS_COMMANDER_REDIS_HOSTS=local:kos-redis:6379:0:kos30437
+    - REDIS_COMMANDER_USER=kosadmin
+    - ADMIN_USER=kosadmin
+    - ADMIN_PASSWORD=kos30437
+    - REDIS_COMMANDER_USER=kosadmin
+    - REDIS_COMMANDER_PASSWORD=kos30437
+    networks:
+    - kos-network
+    restart: unless-stopped
+    depends_on:
+    - redis
   n8n:
     image: n8nio/n8n:latest
     container_name: kos-n8n
@@ -959,9 +799,15 @@ services:
     - N8N_NETWORK=kos-network
     - N8N_PROFILE=workflow
     - N8N_RESTART_POLICY=unless-stopped
+    - N8N_VOLUME=kos-n8n:/data
     - N8N_WEBHOOK_URL=http://kos-n8n:5678/
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
+    volumes:
+    - type: volume
+      source: kos-n8n
+      target: /data
+      volume: {}
     networks:
     - kos-network
     restart: unless-stopped
@@ -977,7 +823,9 @@ services:
     - NEXTCLOUD_ADMIN_USER=kosadmin
     - NEXTCLOUD_CATEGORY=workflow
     - NEXTCLOUD_COMPOSE_GROUP=workflow
+    - NEXTCLOUD_CONFIG_VOLUME=kos-nextcloud:/config
     - NEXTCLOUD_CONTAINER_NAME=kos-nextcloud
+    - NEXTCLOUD_DATA_VOLUME=kos-nextcloud:/data
     - NEXTCLOUD_DB_HOST=kos-postgres
     - NEXTCLOUD_DB_NAME=nextcloud
     - NEXTCLOUD_DB_PASSWORD=kos30437
@@ -998,6 +846,15 @@ services:
     - NEXTCLOUD_RESTART_POLICY=unless-stopped
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
+    volumes:
+    - type: volume
+      source: kos-nextcloud
+      target: /config
+      volume: {}
+    - type: volume
+      source: kos-nextcloud
+      target: /data
+      volume: {}
     networks:
     - kos-network
     restart: unless-stopped
@@ -1028,34 +885,56 @@ services:
     - PENPOT_PROFILE=workflow
     - PENPOT_REDIS_URI=redis://kos-redis:6379/0
     - PENPOT_RESTART_POLICY=unless-stopped
+    - PENPOT_VOLUME=kos-penpot:/data
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
+    volumes:
+    - type: volume
+      source: kos-penpot
+      target: /data
+      volume: {}
     networks:
     - kos-network
     restart: unless-stopped
     depends_on:
     - postgres
     - redis
-  supabase_studio:
-    image: supabase/studio:latest
-    container_name: kos-supabase-studio
+  nginx:
+    image: nginx:alpine
+    container_name: kos-nginx
     ports:
-    - 3003:3000
+    - 80:80
     environment:
-    - SUPABASE_STUDIO_CONTAINER_NAME=kos-supabase-studio
-    - SUPABASE_STUDIO_ENABLE=true
-    - SUPABASE_STUDIO_EXTERNAL_PORT=3003
-    - SUPABASE_STUDIO_HEALTH_CHECK_COMMAND=curl --fail http://localhost:3000/ || exit
-      1
-    - SUPABASE_STUDIO_HEALTH_CHECK_INTERVAL=30s
-    - SUPABASE_STUDIO_HEALTH_CHECK_RETRIES=3
-    - SUPABASE_STUDIO_HEALTH_CHECK_TIMEOUT=10s
-    - SUPABASE_STUDIO_IMAGE=supabase/studio:latest
-    - SUPABASE_STUDIO_INTERNAL_PORT=3000
-    - SUPABASE_STUDIO_NETWORK=kos-network
-    - SUPABASE_STUDIO_RESTART_POLICY=unless-stopped
+    - NGINX_CATEGORY=core
+    - NGINX_COMPOSE_GROUP=core
+    - NGINX_CONFIG_VOLUME=kos-nginx:/config
+    - NGINX_CONTAINER_NAME=kos-nginx
+    - NGINX_DEPENDS_ON=frontend,api
+    - NGINX_ENABLE=true
+    - NGINX_EXTERNAL_PORT=80
+    - NGINX_HEALTH_CHECK_COMMAND=curl -f http://kos-nginx:80 || exit 1
+    - NGINX_HEALTH_CHECK_INTERVAL=30s
+    - NGINX_HEALTH_CHECK_RETRIES=3
+    - NGINX_HEALTH_CHECK_TIMEOUT=10s
+    - NGINX_IMAGE=nginx:alpine
+    - NGINX_INTERNAL_PORT=80
+    - NGINX_LOGS_VOLUME=kos-nginx:/logs
+    - NGINX_NETWORK=kos-network
+    - NGINX_PROFILE=core
+    - NGINX_RESTART_POLICY=unless-stopped
+    - NGINX_SSL_EXTERNAL_PORT=443
+    - NGINX_SSL_INTERNAL_PORT=443
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
+    volumes:
+    - type: volume
+      source: kos-nginx
+      target: /config
+      volume: {}
+    - type: volume
+      source: kos-nginx
+      target: /logs
+      volume: {}
     networks:
     - kos-network
     restart: unless-stopped
@@ -1065,4 +944,48 @@ networks:
     ipam:
       config:
       - subnet: 172.20.0.0/16
-volumes: {}
+volumes:
+  kos-mongo-express:
+    driver: local
+  kos-redis:
+    driver: local
+  kos-weaviate:
+    driver: local
+  kos-gitea:
+    driver: local
+  kos-models-data:
+    driver: local
+  kos-ollama:
+    driver: local
+  kos-postgres:
+    driver: local
+  kos-browseruse:
+    driver: local
+  kos-nginx:
+    driver: local
+  kos-supabase:
+    driver: local
+  kos-supabase-studio:
+    driver: local
+  kos-elasticsearch:
+    driver: local
+  kos-nextcloud:
+    driver: local
+  kos-openwebui:
+    driver: local
+  kos-neo4j:
+    driver: local
+  kos-codium:
+    driver: local
+  kos-pgadmin:
+    driver: local
+  kos-minio:
+    driver: local
+  kos-n8n:
+    driver: local
+  kos-context7:
+    driver: local
+  kos-mongo:
+    driver: local
+  kos-penpot:
+    driver: local

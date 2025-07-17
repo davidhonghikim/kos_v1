@@ -50,8 +50,11 @@ services:
     - GRAFANA_NETWORK=kos-network
     - GRAFANA_PROFILE=core
     - GRAFANA_RESTART_POLICY=unless-stopped
+    - GRAFANA_VOLUME=kos-grafana-data
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
+    volumes:
+    - kos-grafana-data
     networks:
     - kos-network
     restart: unless-stopped
@@ -77,8 +80,11 @@ services:
     - PROMETHEUS_NETWORK=kos-network
     - PROMETHEUS_PROFILE=core
     - PROMETHEUS_RESTART_POLICY=unless-stopped
+    - PROMETHEUS_VOLUME=kos-prometheus-data
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
+    volumes:
+    - kos-prometheus-data
     networks:
     - kos-network
     restart: unless-stopped

@@ -1,59 +1,5 @@
 name: kos-v1
 services:
-  admin_panel:
-    image: portainer/portainer-ce:latest
-    container_name: kos-admin-panel
-    ports:
-    - 9003:9000
-    environment:
-    - ADMIN_PANEL_CATEGORY=admin
-    - ADMIN_PANEL_COMPOSE_GROUP=admin
-    - ADMIN_PANEL_CONTAINER_NAME=kos-admin-panel
-    - ADMIN_PANEL_DEPENDS_ON=
-    - ADMIN_PANEL_ENABLE=true
-    - ADMIN_PANEL_EXTERNAL_PORT=9003
-    - ADMIN_PANEL_HEALTH_CHECK_COMMAND=curl -f http://kos-admin-panel:9000/api/status
-      || exit 1
-    - ADMIN_PANEL_HEALTH_CHECK_INTERVAL=30s
-    - ADMIN_PANEL_HEALTH_CHECK_RETRIES=3
-    - ADMIN_PANEL_HEALTH_CHECK_TIMEOUT=10s
-    - ADMIN_PANEL_IMAGE=portainer/portainer-ce:latest
-    - ADMIN_PANEL_INTERNAL_PORT=9000
-    - ADMIN_PANEL_NETWORK=kos-network
-    - ADMIN_PANEL_PROFILE=admin
-    - ADMIN_PANEL_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kosadmin
-    - ADMIN_PASSWORD=kos30437
-    networks:
-    - kos-network
-    restart: unless-stopped
-  artifact_manager:
-    image: nginx:alpine
-    container_name: kos-artifact-manager
-    ports:
-    - 3009:8000
-    environment:
-    - ARTIFACT_MANAGER_CATEGORY=admin
-    - ARTIFACT_MANAGER_COMPOSE_GROUP=admin
-    - ARTIFACT_MANAGER_CONTAINER_NAME=kos-artifact-manager
-    - ARTIFACT_MANAGER_DEPENDS_ON=
-    - ARTIFACT_MANAGER_ENABLE=true
-    - ARTIFACT_MANAGER_EXTERNAL_PORT=3009
-    - ARTIFACT_MANAGER_HEALTH_CHECK_COMMAND=curl -f http://kos-artifact-manager:8000/health
-      || exit 1
-    - ARTIFACT_MANAGER_HEALTH_CHECK_INTERVAL=30s
-    - ARTIFACT_MANAGER_HEALTH_CHECK_RETRIES=3
-    - ARTIFACT_MANAGER_HEALTH_CHECK_TIMEOUT=10s
-    - ARTIFACT_MANAGER_IMAGE=nginx:alpine
-    - ARTIFACT_MANAGER_INTERNAL_PORT=8000
-    - ARTIFACT_MANAGER_NETWORK=kos-network
-    - ARTIFACT_MANAGER_PROFILE=manager
-    - ARTIFACT_MANAGER_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kosadmin
-    - ADMIN_PASSWORD=kos30437
-    networks:
-    - kos-network
-    restart: unless-stopped
   mongo_express:
     image: mongo-express:1.0.0
     container_name: kos-mongo-express
@@ -64,6 +10,11 @@ services:
     - ADMIN_PASSWORD=kos30437
     - MONGO_EXPRESS_USER=kosadmin
     - MONGO_EXPRESS_PASSWORD=kos30437
+    volumes:
+    - type: volume
+      source: kos-mongo-express
+      target: /data
+      volume: {}
     networks:
     - kos-network
     restart: unless-stopped
@@ -77,33 +28,11 @@ services:
     - ADMIN_PASSWORD=kos30437
     - PGADMIN_DEFAULT_EMAIL=admin@kos.local
     - PGADMIN_DEFAULT_PASSWORD=kos30437
-    networks:
-    - kos-network
-    restart: unless-stopped
-  prompt_manager:
-    image: nginx:alpine
-    container_name: kos-prompt-manager
-    ports:
-    - 3008:8000
-    environment:
-    - PROMPT_MANAGER_CATEGORY=admin
-    - PROMPT_MANAGER_COMPOSE_GROUP=admin
-    - PROMPT_MANAGER_CONTAINER_NAME=kos-prompt-manager
-    - PROMPT_MANAGER_DEPENDS_ON=
-    - PROMPT_MANAGER_ENABLE=true
-    - PROMPT_MANAGER_EXTERNAL_PORT=3008
-    - PROMPT_MANAGER_HEALTH_CHECK_COMMAND=curl -f http://kos-prompt-manager:8000/health
-      || exit 1
-    - PROMPT_MANAGER_HEALTH_CHECK_INTERVAL=30s
-    - PROMPT_MANAGER_HEALTH_CHECK_RETRIES=3
-    - PROMPT_MANAGER_HEALTH_CHECK_TIMEOUT=10s
-    - PROMPT_MANAGER_IMAGE=nginx:alpine
-    - PROMPT_MANAGER_INTERNAL_PORT=8000
-    - PROMPT_MANAGER_NETWORK=kos-network
-    - PROMPT_MANAGER_PROFILE=manager
-    - PROMPT_MANAGER_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kosadmin
-    - ADMIN_PASSWORD=kos30437
+    volumes:
+    - type: volume
+      source: kos-pgadmin
+      target: /data
+      volume: {}
     networks:
     - kos-network
     restart: unless-stopped
@@ -123,21 +52,14 @@ services:
     networks:
     - kos-network
     restart: unless-stopped
-  registry:
-    image: nginx:alpine
-    container_name: kos-registry
-    ports:
-    - 5000:5000
-    environment:
-    - ADMIN_USER=kosadmin
-    - ADMIN_PASSWORD=kos30437
-    networks:
-    - kos-network
-    restart: unless-stopped
 networks:
   kos-network:
     driver: bridge
     ipam:
       config:
       - subnet: 172.20.0.0/16
-volumes: {}
+volumes:
+  kos-mongo-express:
+    driver: local
+  kos-pgadmin:
+    driver: local

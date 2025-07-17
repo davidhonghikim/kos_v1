@@ -5,26 +5,22 @@ Generates docker-compose.yml dynamically from environment variables only
 No hardcoded service templates or configurations
 """
 
+import sys
 import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 import re
 import yaml
 from pathlib import Path
 from typing import Dict, Any, List
 from datetime import datetime
+from scripts.logger.logger import get_logger
+logger = get_logger('docker_generator')
 
 # --- Logging ---
 LOG_DIR = 'logs'
 LOG_FILE = os.path.join(LOG_DIR, 'docker_generator.log')
 
-def dlog(msg, level='INFO'):
-    now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    entry = f"{now} - docker_generator - {level} - {msg}"
-    if not os.path.exists(LOG_DIR):
-        os.makedirs(LOG_DIR, exist_ok=True)
-    with open(LOG_FILE, 'a', encoding='utf-8') as f:
-        f.write(entry + '\n')
-    if level in ('ERROR', 'WARNING'):
-        print(entry)
+# Remove dlog and replace all dlog(msg, level) with logger.log(msg, level)
 
 # NOTE: For AI/ML services (A1111, InvokeAI, ComfyUI, etc.), the generator should set CPU/GPU mode based on system autodetection.
 # On Intel Macs and non-GPU systems, CPU-only mode is required and should be set automatically.
@@ -41,7 +37,7 @@ class KOSDockerComposeGenerator:
         
         # Load from the generated .env file (single source of truth)
         if os.path.exists(self.env_file):
-            dlog(f"Loading environment from: {self.env_file}", 'INFO')
+            logger.log(f"Loading environment from: {self.env_file}", 'INFO')
             with open(self.env_file, 'r') as f:
                 for line in f:
                     line = line.strip()
@@ -49,8 +45,8 @@ class KOSDockerComposeGenerator:
                         key, value = line.split('=', 1)
                         env_vars[key.strip()] = value.strip()
         else:
-            dlog(f"Environment file {self.env_file} not found!", 'ERROR')
-            dlog("Please run installer/env_loader.py first to generate the .env file.", 'ERROR')
+            logger.log(f"Environment file {self.env_file} not found!", 'ERROR')
+            logger.log("Please run installer/env_loader.py first to generate the .env file.", 'ERROR')
             return {}
         
         # Resolve variable substitutions
@@ -183,7 +179,7 @@ class KOSDockerComposeGenerator:
         image_key = f"KOS_{service_name.upper()}_IMAGE"
         image = self.env_vars.get(image_key)
         if not image:
-            dlog(f"Missing image configuration for {service_name} ({image_key})", 'ERROR')
+            logger.log(f"Missing image configuration for {service_name} ({image_key})", 'ERROR')
             return {}
             
         if image.startswith('kos-v1-'):
@@ -204,7 +200,7 @@ class KOSDockerComposeGenerator:
         container_name_key = f"KOS_{service_name.upper()}_CONTAINER_NAME"
         container_name = self.env_vars.get(container_name_key)
         if not container_name:
-            dlog(f"Missing container name for {service_name} ({container_name_key})", 'ERROR')
+            logger.log(f"Missing container name for {service_name} ({container_name_key})", 'ERROR')
             return {}
             
         # Resolve any variable substitutions in container name
@@ -222,7 +218,7 @@ class KOSDockerComposeGenerator:
         if external_port and internal_port:
             ports.append(f"{self.resolve_variable(external_port, self.env_vars)}:{self.resolve_variable(internal_port, self.env_vars)}")
         else:
-            dlog(f"Missing port configuration for {service_name} ({external_port_key}, {internal_port_key})", 'ERROR')
+            logger.log(f"Missing port configuration for {service_name} ({external_port_key}, {internal_port_key})", 'ERROR')
             return {}
         
         # Handle special cases for services with multiple ports - ALL FROM ENV
@@ -345,25 +341,65 @@ class KOSDockerComposeGenerator:
         if env_vars:
             service_def['environment'] = env_vars
         
-        # Volumes - look for KOS_*_VOLUME variables - NO FALLBACKS
-        volumes = []
-        for key, value in self.env_vars.items():
-            if key.startswith(f"KOS_{service_name.upper()}_") and key.endswith('_VOLUME'):
-                volumes.append(value)
+        # --- Centralized Model Volume Logic for Media Gen Services ---
+        media_gen_services = ['automatic1111', 'comfyui', 'invokeai']
+        if service_name in media_gen_services:
+            model_root = self.env_vars.get('KOS_MODEL_ROOT')
+            model_volume = self.env_vars.get('KOS_MODEL_VOLUME', 'kos-models-data')
+            if model_root:
+                # User override: bind mount
+                service_def['volumes'] = [f'{model_root}:/models']
+            else:
+                # Default: shared Docker volume
+                service_def['volumes'] = [f'{model_volume}:/models']
+        else:
+            # Volumes - look for KOS_*_VOLUME variables - NO FALLBACKS
+            volumes = []
+            for key, value in self.env_vars.items():
+                if key.startswith(f"KOS_{service_name.upper()}_") and key.endswith('_VOLUME'):
+                    # Split value at the first colon for Docker named volume syntax
+                    if ':' in value:
+                        vol_name, cont_path = value.split(':', 1)
+                        volumes.append({'type': 'volume', 'source': vol_name, 'target': cont_path, 'volume': {}})
+                    else:
+                        volumes.append(value)
+            default_volume = self.env_vars.get(f'KOS_{service_name.upper()}_DEFAULT_VOLUME')
+            if not volumes and default_volume:
+                if ':' in default_volume:
+                    vol_name, cont_path = default_volume.split(':', 1)
+                    volumes.append({'type': 'volume', 'source': vol_name, 'target': cont_path, 'volume': {}})
+                else:
+                    volumes.append(default_volume)
+            if volumes:
+                service_def['volumes'] = volumes
         
-        # Get default volume from environment - NO HARDCODED FALLBACKS
-        default_volume = self.env_vars.get(f'KOS_{service_name.upper()}_DEFAULT_VOLUME')
-        if not volumes and default_volume:
-            volumes.append(default_volume)
-        
-        if volumes:
-            service_def['volumes'] = volumes
-        
+        # --- GPU Runtime Logic for AI/ML Services ---
+        ai_ml_services = ['automatic1111', 'comfyui', 'invokeai', 'huggingface']
+        if service_name in ai_ml_services:
+            # Check for GPU support (env or detection)
+            gpu_enable = self.env_vars.get('KOS_GPU_ENABLE', '').lower() == 'true'
+            # Compose v3.8+ (preferred)
+            if gpu_enable:
+                service_def['deploy'] = {
+                    'resources': {
+                        'reservations': {
+                            'devices': [
+                                {
+                                    'driver': 'nvidia',
+                                    'count': 'all',
+                                    'capabilities': ['gpu']
+                                }
+                            ]
+                        }
+                    }
+                }
+            # For legacy Compose, add runtime: nvidia (if needed)
+            # else: fallback to CPU (no runtime stanza)
         # Networks - get from environment - NO FALLBACKS
         network_key = f'KOS_{service_name.upper()}_NETWORK'
         network = self.env_vars.get(network_key)
         if not network:
-            print(f"ERROR: Missing network configuration for {service_name} ({network_key})")
+            logger.log(f"ERROR: Missing network configuration for {service_name} ({network_key})", 'ERROR')
             return {}
         service_def['networks'] = [network]
         
@@ -371,7 +407,7 @@ class KOSDockerComposeGenerator:
         restart_key = f'KOS_{service_name.upper()}_RESTART_POLICY'
         restart_policy = self.env_vars.get(restart_key)
         if not restart_policy:
-            print(f"ERROR: Missing restart policy for {service_name} ({restart_key})")
+            logger.log(f"ERROR: Missing restart policy for {service_name} ({restart_key})", 'ERROR')
             return {}
         service_def['restart'] = restart_policy
         
@@ -400,7 +436,7 @@ class KOSDockerComposeGenerator:
         
         # Check endpoint exposure and warn if headless
         if not self.check_service_endpoint_exposure(service_name, service_def):
-            print(f"  ⚠️  WARNING: {service_name} appears to be headless (no UI, healthcheck, or addon endpoint)")
+            logger.log(f"  ⚠️  WARNING: {service_name} appears to be headless (no UI, healthcheck, or addon endpoint)", 'WARNING')
         
         return service_def
     
@@ -421,13 +457,13 @@ class KOSDockerComposeGenerator:
         
         # Validate required values exist
         if not interval or not timeout or not retries or not internal_port:
-            print(f"ERROR: Missing required health check configuration for {service_name}")
+            logger.log(f"ERROR: Missing required health check configuration for {service_name}", 'ERROR')
             return {}
         
         # Get health check command from environment - NO FALLBACKS
         health_command = self.env_vars.get(f'KOS_{service_name.upper()}_HEALTH_CHECK_COMMAND')
         if not health_command:
-            print(f"ERROR: Missing health check command for {service_name}")
+            logger.log(f"ERROR: Missing health check command for {service_name}", 'ERROR')
             return {}
         
         # Resolve any variable substitutions in the health command
@@ -455,7 +491,7 @@ class KOSDockerComposeGenerator:
         network_subnet = self.env_vars.get('KOS_NETWORK_SUBNET')
         
         if not network_name or not network_driver or not network_subnet:
-            print(f"ERROR: Missing network configuration (KOS_CONTAINER_NETWORK, KOS_NETWORK_DRIVER, KOS_NETWORK_SUBNET)")
+            logger.log(f"ERROR: Missing network configuration (KOS_CONTAINER_NETWORK, KOS_NETWORK_DRIVER, KOS_NETWORK_SUBNET)", 'ERROR')
             return
         
         compose_data = {
@@ -472,8 +508,8 @@ class KOSDockerComposeGenerator:
             'volumes': {}
         }
         
-        print(f"\nGenerating {file_path} ({description})")
-        print(f"Services: {', '.join(services)}")
+        logger.log(f"\nGenerating {file_path} ({description})", 'INFO')
+        logger.log(f"Services: {', '.join(services)}", 'INFO')
         
         # Collect all volumes used by services
         all_volumes = set()
@@ -483,7 +519,7 @@ class KOSDockerComposeGenerator:
             if config:
                 service_def = self.generate_service_definition(service_name, config)
                 if not service_def:  # Service definition failed due to missing env vars
-                    print(f"  {service_name}: ❌ CONFIGURATION ERROR")
+                    logger.log(f"  {service_name}: ❌ CONFIGURATION ERROR", 'ERROR')
                     continue
                     
                 # Filter depends_on to only include services in this compose file
@@ -494,16 +530,19 @@ class KOSDockerComposeGenerator:
                     else:
                         service_def.pop('depends_on')
                 compose_data['services'][service_name] = service_def
-                print(f"  {service_name}: ✅ ENABLED")
+                logger.log(f"  {service_name}: ✅ ENABLED", 'INFO')
                 
                 # Add service volumes to the volumes section
                 if 'volumes' in service_def:
                     for volume in service_def['volumes']:
-                        if ':' in volume:  # Format: volume_name:container_path
+                        if isinstance(volume, dict): # Check if it's a dict for named volume
+                            vol_name = volume['source']
+                            all_volumes.add(vol_name)
+                        elif ':' in volume:  # Format: volume_name:container_path
                             volume_name = volume.split(':')[0]
                             all_volumes.add(volume_name)
             else:
-                print(f"  {service_name}: ❌ NO CONFIG")
+                logger.log(f"  {service_name}: ❌ NO CONFIG", 'ERROR')
         
         # Add all collected volumes to the volumes section
         for volume_name in all_volumes:
@@ -515,7 +554,7 @@ class KOSDockerComposeGenerator:
         with open(file_path, 'w') as f:
             yaml.dump(compose_data, f, default_flow_style=False, sort_keys=False)
         
-        print(f"Generated: {file_path}")
+        logger.log(f"Generated: {file_path}", 'INFO')
     
     def generate_all_files(self):
         """Generate all Docker Compose files with logical organization"""
@@ -573,36 +612,36 @@ class KOSDockerComposeGenerator:
         docker_dir = Path("docker")
         compose_files = list(docker_dir.glob("docker-compose*.yml"))
         
-        print(f"\n🎉 Generated {len(compose_files)} Docker Compose files in docker/ directory!")
-        print("\n📋 Usage:")
-        print("  docker-compose -f docker/docker-compose.infrastructure.yml up -d      # Start infrastructure (databases)")
-        print("  docker-compose -f docker/docker-compose.core.yml up -d               # Start core application")
-        print("  docker-compose -f docker/docker-compose.ai.yml up -d                 # Start AI services")
-        print("  docker-compose -f docker/docker-compose.workflow.yml up -d           # Start workflow tools")
-        print("  docker-compose -f docker/docker-compose.monitoring.yml up -d         # Start monitoring")
-        print("  docker-compose -f docker/docker-compose.admin.yml up -d              # Start admin tools")
-        print("  docker-compose -f docker/docker-compose.dev.yml up -d                # Start development tools")
-        print("  docker-compose -f docker/docker-compose.heavy-ai.yml up -d           # Start heavy AI services")
-        print("  docker-compose -f docker/docker-compose.full.yml up -d               # Start all services")
-        print("\n🔧 Logical Organization:")
-        print("  Infrastructure: PostgreSQL, Redis, MinIO, Neo4j, Elasticsearch, Weaviate")
-        print("  Core: API, Frontend, Nginx")
-        print("  AI: Ollama, OpenWebUI, Automatic1111, ComfyUI, InvokeAI")
-        print("  Workflow: n8n, Penpot, Nextcloud")
-        print("  Admin: Database management UIs (pgAdmin, mongo_express, redis_commander)")
-        print("  Monitoring: Prometheus, Grafana, cAdvisor")
-        print("  Development: Browser tools, code editors")
-        print("  Heavy AI: Resource-intensive AI services (HuggingFace)")
+        logger.log(f"\n🎉 Generated {len(compose_files)} Docker Compose files in docker/ directory!", 'INFO')
+        logger.log("\n📋 Usage:", 'INFO')
+        logger.log("  docker-compose -f docker/docker-compose.infrastructure.yml up -d      # Start infrastructure (databases)", 'INFO')
+        logger.log("  docker-compose -f docker/docker-compose.core.yml up -d               # Start core application", 'INFO')
+        logger.log("  docker-compose -f docker/docker-compose.ai.yml up -d                 # Start AI services", 'INFO')
+        logger.log("  docker-compose -f docker/docker-compose.workflow.yml up -d           # Start workflow tools", 'INFO')
+        logger.log("  docker-compose -f docker/docker-compose.monitoring.yml up -d         # Start monitoring", 'INFO')
+        logger.log("  docker-compose -f docker/docker-compose.admin.yml up -d              # Start admin tools", 'INFO')
+        logger.log("  docker-compose -f docker/docker-compose.dev.yml up -d                # Start development tools", 'INFO')
+        logger.log("  docker-compose -f docker/docker-compose.heavy-ai.yml up -d           # Start heavy AI services", 'INFO')
+        logger.log("  docker-compose -f docker/docker-compose.full.yml up -d               # Start all services", 'INFO')
+        logger.log("\n🔧 Logical Organization:", 'INFO')
+        logger.log("  Infrastructure: PostgreSQL, Redis, MinIO, Neo4j, Elasticsearch, Weaviate", 'INFO')
+        logger.log("  Core: API, Frontend, Nginx", 'INFO')
+        logger.log("  AI: Ollama, OpenWebUI, Automatic1111, ComfyUI, InvokeAI", 'INFO')
+        logger.log("  Workflow: n8n, Penpot, Nextcloud", 'INFO')
+        logger.log("  Admin: Database management UIs (pgAdmin, mongo_express, redis_commander)", 'INFO')
+        logger.log("  Monitoring: Prometheus, Grafana, cAdvisor", 'INFO')
+        logger.log("  Development: Browser tools, code editors", 'INFO')
+        logger.log("  Heavy AI: Resource-intensive AI services (HuggingFace)", 'INFO')
 
 def main():
     generator = KOSDockerComposeGenerator()
     generator.generate_all_files()
 
 if __name__ == "__main__":
-    dlog('Starting Docker Compose generation', 'INFO')
+    logger.log('Starting Docker Compose generation', 'INFO')
     try:
         main()
-        dlog('Docker Compose generation completed successfully', 'INFO')
+        logger.log('Docker Compose generation completed successfully', 'INFO')
     except Exception as e:
-        dlog(f'Fatal error: {e}', 'ERROR')
+        logger.log(f'Fatal error: {e}', 'ERROR')
         raise 

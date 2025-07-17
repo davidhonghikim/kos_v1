@@ -7,10 +7,12 @@ services:
     - 8084:8082
     environment:
     - HUGGINGFACE_API_TOKEN=
+    - HUGGINGFACE_CACHE_VOLUME=kos-huggingface-cache
     - HUGGINGFACE_CATEGORY=heavy_ai
     - HUGGINGFACE_CLOUD_ENABLE=false
     - HUGGINGFACE_COMPOSE_GROUP=heavy_ai
     - HUGGINGFACE_CONTAINER_NAME=kos-huggingface
+    - HUGGINGFACE_DATA_VOLUME=kos-huggingface-data
     - HUGGINGFACE_DEFAULT_MODEL=microsoft/DialoGPT-medium
     - HUGGINGFACE_DEPENDS_ON=
     - HUGGINGFACE_ENABLE=true
@@ -22,11 +24,24 @@ services:
     - HUGGINGFACE_HEALTH_CHECK_TIMEOUT=10s
     - HUGGINGFACE_IMAGE=huggingface/transformers-pytorch-gpu:latest
     - HUGGINGFACE_INTERNAL_PORT=8082
+    - HUGGINGFACE_MODELS_VOLUME=kos-huggingface-models
     - HUGGINGFACE_NETWORK=kos-network
     - HUGGINGFACE_PROFILE=ai
     - HUGGINGFACE_RESTART_POLICY=unless-stopped
     - ADMIN_USER=kosadmin
     - ADMIN_PASSWORD=kos30437
+    volumes:
+    - kos-huggingface-cache
+    - kos-huggingface-data
+    - kos-huggingface-models
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            count: all
+            capabilities:
+            - gpu
     networks:
     - kos-network
     restart: unless-stopped

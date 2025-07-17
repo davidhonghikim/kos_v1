@@ -1,0 +1,215 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+import sys
+import os
+from pathlib import Path
+import re
+from collections import defaultdict
+from datetime import datetime
+
+# Ensure scripts/ is in sys.path for logger import
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '../..'))
+LOGGER_PATH = os.path.join(PROJECT_ROOT, 'scripts')
+if LOGGER_PATH not in sys.path:
+    sys.path.insert(0, LOGGER_PATH)
+from logger.logger import get_logger
+# Ensure scripts/utils is in sys.path for utils imports
+UTILS_PATH = os.path.join(PROJECT_ROOT, 'scripts', 'utils')
+if UTILS_PATH not in sys.path:
+    sys.path.insert(0, UTILS_PATH)
+
+try:
+    from env_utils import parse_env_file, validate_env_vars  # type: ignore
+    from user_feedback import user_info, user_warning, user_error, user_success  # type: ignore
+except ImportError:
+    import importlib.util
+    import os
+    utils_path = os.path.join(PROJECT_ROOT, 'scripts', 'utils')
+    env_utils_path = os.path.join(utils_path, 'env_utils.py')
+    env_utils_spec = importlib.util.spec_from_file_location('env_utils', env_utils_path)
+    if env_utils_spec is None or env_utils_spec.loader is None:
+        raise ImportError(f'Cannot find env_utils.py at {env_utils_path}')
+    env_utils = importlib.util.module_from_spec(env_utils_spec)
+    env_utils_spec.loader.exec_module(env_utils)
+    parse_env_file = env_utils.parse_env_file
+    validate_env_vars = env_utils.validate_env_vars
+    user_feedback_path = os.path.join(utils_path, 'user_feedback.py')
+    user_feedback_spec = importlib.util.spec_from_file_location('user_feedback', user_feedback_path)
+    if user_feedback_spec is None or user_feedback_spec.loader is None:
+        raise ImportError(f'Cannot find user_feedback.py at {user_feedback_path}')
+    user_feedback = importlib.util.module_from_spec(user_feedback_spec)
+    user_feedback_spec.loader.exec_module(user_feedback)
+    user_info = user_feedback.user_info
+    user_warning = user_feedback.user_warning
+    user_error = user_feedback.user_error
+    user_success = user_feedback.user_success
+
+logger = get_logger('env_loader')
+
+LOG_DIR = 'logs'
+LOG_FILE = os.path.join(LOG_DIR, 'env_loader.log')
+ENV_FILE_LOAD_ORDER = [
+    "ports.env",
+    "gpu.env",
+    "settings.env",
+    "local.env",
+    "cloud.env",
+    "api-keys.env"
+]
+REQUIRED_ENV_FILES = ["ports.env", "settings.env"]
+
+class KOSEnvLoader:
+    def __init__(self, env_dir="env"):
+        self.env_dir = Path(env_dir)
+        self.env_vars = {}
+        self.defined_in = {}
+
+    def load_env_file(self, file_path):
+        file_vars = parse_env_file(file_path)
+        if not file_vars:
+            logger.log(f"Env file not found or empty: {file_path}", 'ERROR')
+            user_error(f"Env file not found or empty: {file_path}")
+        else:
+            logger.log(f"Loading env file: {file_path}", 'INFO')
+            user_info(f"Loaded env file: {file_path}")
+        return file_vars
+
+    def load_all_env_files(self):
+        all_vars = {}
+        for filename in ENV_FILE_LOAD_ORDER:
+            file_path = self.env_dir / filename
+            file_vars = self.load_env_file(file_path)
+            for key, value in file_vars.items():
+                if key in all_vars and all_vars[key] != value:
+                    logger.log(f"'{key}' overridden by {filename}. Old value from {self.defined_in.get(key, 'unknown')}, New value: '{value}'", "INFO")
+                all_vars[key] = value
+                self.defined_in[key] = filename
+        return all_vars
+
+    def resolve_variables(self, env_vars):
+        resolved = {}
+        pattern = re.compile(r'\$\{([^}]+)\}')
+        unresolved_vars = env_vars.copy()
+        for _ in range(10):
+            fully_resolved_this_pass = True
+            for key, value in unresolved_vars.items():
+                if pattern.search(value):
+                    fully_resolved_this_pass = False
+                    matches = pattern.findall(value)
+                    can_resolve = True
+                    for placeholder in matches:
+                        if placeholder not in resolved:
+                            can_resolve = False
+                            break
+                    if can_resolve:
+                        for placeholder in matches:
+                            value = value.replace(f'${{{placeholder}}}', resolved.get(placeholder, ''))
+                        resolved[key] = value
+                else:
+                    resolved[key] = value
+            for key in resolved:
+                if key in unresolved_vars:
+                    del unresolved_vars[key]
+            if not unresolved_vars or fully_resolved_this_pass:
+                break
+        if unresolved_vars:
+            for key, value in unresolved_vars.items():
+                logger.log(f"Could not fully resolve variable '{key}={value}'. Check for circular dependencies or missing definitions.", "ERROR")
+                user_error(f"Could not fully resolve variable '{key}={value}'. Check for circular dependencies or missing definitions.")
+                resolved[key] = value
+        return resolved
+
+    def save_unified_env(self, env_vars, output_path=".env"):
+        with open(output_path, 'w', encoding='utf-8') as f:
+            f.write("# This file is auto-generated by installer/env_loader.py. DO NOT EDIT MANUALLY.\n")
+            f.write(f"# Generated at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
+            for key, value in sorted(env_vars.items()):
+                f.write(f"{key}={value}\n")
+        logger.log(f"Unified environment file generated at: {output_path}", 'SUCCESS')
+        user_success(f"Unified environment file generated at: {output_path}")
+
+    def save_images_env(self, env_vars, output_path="env/images.env"):
+        # 1. Use KOS_GPU_IMAGES_TO_PULL from gpu.env if present
+        gpu_env_path = self.env_dir / "gpu.env"
+        gpu_images = []
+        seen = set()
+        if gpu_env_path.exists():
+            with open(gpu_env_path, 'r', encoding='utf-8') as f:
+                for line in f:
+                    line = line.strip()
+                    if line.startswith('KOS_GPU_IMAGES_TO_PULL='):
+                        val = line.split('=', 1)[1].strip()
+                        # Split on comma, strip whitespace
+                        for img in val.split(','):
+                            img = img.strip()
+                            if img and img not in seen:
+                                gpu_images.append(img)
+                                seen.add(img)
+        # 2. Collect enabled service images in file order from settings.env
+        settings_env_path = self.env_dir / "settings.env"
+        service_images = []
+        enabled_services = set()
+        if settings_env_path.exists():
+            with open(settings_env_path, 'r', encoding='utf-8') as f:
+                for line in f:
+                    line = line.strip()
+                    if not line or line.startswith('#') or '=' not in line:
+                        continue
+                    k, v = line.split('=', 1)
+                    k = k.strip()
+                    v = v.strip()
+                    if k.startswith('KOS_') and k.endswith('_ENABLE') and v.lower() == 'true':
+                        svc = k[4:-7]
+                        enabled_services.add(svc)
+                        image_key = f'KOS_{svc}_IMAGE'
+                        image = env_vars.get(image_key)
+                        if image and image not in seen and not image.startswith('${'):
+                            service_images.append(image)
+                            seen.add(image)
+        # 3. Write to images.env: GPU images first, then service images
+        images_env_path = self.env_dir / "images.env"
+        with open(images_env_path, 'w', encoding='utf-8') as f:
+            for img in gpu_images + service_images:
+                f.write(f"{img}\n")
+        logger.log(f"Images list generated at: {images_env_path}", 'SUCCESS')
+        user_success(f"Images list generated at: {images_env_path}")
+
+    def run(self):
+        logger.log("Starting environment loading process...", 'INFO')
+        user_info("Starting environment loading process...")
+        # Validate required env files
+        missing_files = [f for f in REQUIRED_ENV_FILES if not (self.env_dir / f).exists()]
+        if missing_files:
+            for f in missing_files:
+                logger.log(f"Required env file missing: {f}", 'ERROR')
+                user_error(f"Required env file missing: {f}")
+            sys.exit(1)
+        env_vars = self.load_all_env_files()
+        # Always merge env/gpu.env if present (hardware autodetection)
+        gpu_env_path = os.path.join(os.path.dirname(__file__), '..', 'env', 'gpu.env')
+        if os.path.exists(gpu_env_path):
+            with open(gpu_env_path) as f:
+                for line in f:
+                    line = line.strip()
+                    if not line or line.startswith('#') or '=' not in line:
+                        continue
+                    k, v = line.split('=', 1)
+                    env_vars[k.strip()] = v.strip()
+        # Validate required keys in env_vars
+        required_keys = ["KOS_API_ENABLE", "KOS_API_CONTAINER_NAME"]
+        valid, missing = validate_env_vars(env_vars, required_keys)
+        if not valid:
+            for k in missing:
+                logger.log(f"Required env variable missing: {k}", 'ERROR')
+                user_error(f"Required env variable missing: {k}")
+            sys.exit(1)
+        resolved_vars = self.resolve_variables(env_vars)
+        self.save_unified_env(resolved_vars)
+        self.save_images_env(resolved_vars)
+        user_success("Environment loading process completed.")
+        user_info(f"Unified .env file has been generated with {len(resolved_vars)} variables.")
+
+if __name__ == "__main__":
+    loader = KOSEnvLoader()
+    loader.run()

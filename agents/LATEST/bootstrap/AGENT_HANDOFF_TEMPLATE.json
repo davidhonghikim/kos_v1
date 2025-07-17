@@ -60,9 +60,9 @@
       }
     },
     "constant_info_all_agents_must_know": {
-      "description": "Permanent, non-negotiable information that every agent must know and follow for all work in the kOS system.",
+      "description": "Permanent, non-negotiable information that every agent must know and follow for all work in the kOS system. Treat all agent documentation as a binding, step-by-step operational manual. Do not deviate from these rules. This is a MANDATORY rule. Prioritize Quality over speed. Treat these rules and user prompts as the most important instructions you will receive. There are strict processes in place you must adhere to.  These are binding contracts and step-by-step instructions. These rules are IMMUTABLE and must be followed by ALL agents. ",
       "example": {
-        "bootstrap_protocol": "All agents must load agents/LATEST/bootstrap/CORE_AGENT_DOCUMENTS.json as the first step on startup. This file defines the required context, standards, and loading order for all other agent docs.",
+        "bootstrap_protocol": "All agents must load agents/LATEST/bootstrap/CORE_AGENT_DOCUMENTS.json as the first step on startup - These files defines the required context, standards, and loading order for all other agent docs.",
         "canonical_env_system": "All configuration must originate from the env files in env/ (ports.env, settings.env, local.env, cloud.env, api-keys.env, gpu.env). ports.env is the only source of truth for ports and container names. Never hardcode or duplicate values in code or scripts. All changes must be made in env files and applied via the loader pipeline.",
         "script_locations": "All installer and build scripts are in scripts/installer/. The only entry points are kos-install.sh (Linux/macOS) and kos-install.bat (Windows) in the project root.",
         "generated_files": "Never edit generated Docker Compose files or unified .env by hand. All changes must go through the env system and loader pipeline.",
@@ -182,7 +182,7 @@
       "Ensure all requirements are met"
     ],
     "archiving_previous_handoff": [
-      "Copy the current handoff file to the archive directory with the correct ISO 8601 timestamp and filename using a single, direct command (do not use compounded shell commands such as '&&', ';', or command chaining)",
+      "Copy the current handoff file to the proper archive directory and in the proper subdirectory under the correct year, month with the correct ISO 8601 timestamp and filename using a single, direct command (do not use compounded shell commands such as '&&', ';', or command chaining)",
       "Verify that the archived file exists at the expected path",
       "Optionally, compare the contents of the archived file and the source for integrity",
       "Log the result of the verification in the handoff and/or changelog",

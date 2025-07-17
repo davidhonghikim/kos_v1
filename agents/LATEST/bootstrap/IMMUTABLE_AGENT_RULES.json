@@ -51,7 +51,7 @@
       "no_compounded_shell_commands": "Do not use compounded shell commands (such as &&, ;, or command chaining) for any critical file or directory operations. Always use single, direct commands for each step, especially for directory creation and file copying. Verification of the result is required immediately after the operation."
     },
     "terminal_usage_restrictions": {
-      "live_monitor_terminal": "Always live monitor the terminal for errors and warnings",
+      "live_monitor_terminal": "Always live monitor the terminal for errors and warnings - this is mandatory! Do not let terminal run without checking to see if it finished or had errors",
       "powershell_banned": "NEVER use PowerShell commands - BANNED due to failures and timeouts",
       "approved_terminals": "Use cmd, bash, or standard shell commands only",
       "reason": "PowerShell causes consistent terminal stalling and command failures",
@@ -122,6 +122,12 @@
           ]
         },
         "enforcement": "MANDATORY - No non-JSON documentation allowed"
+      }
+    },
+    "agent_commands": {
+      "drift_alignment": {
+        "command": ["/d", "/drift"],
+        "description": "When invoked, the agent must immediately pause, review the entire chat, all relevant rules, and the current project context. The agent must then realign itself, summarize the current issues, and state the next system-level steps. This ensures the agent maintains full context and avoids drift or one-off fixes."
       }
     }
   },
@@ -523,7 +529,7 @@
     "Creating complex abstractions before basic functionality works"
   ],
   "enforcement": {
-    "mandatory_compliance": "These rules are IMMUTABLE and must be followed by ALL agents",
+    "mandatory_compliance": "Do not deviate from these rules. This is a MANDATORY rule. Prioritize Quality over speed. Treat these rules and user prompts as the most important instructions you will receive. There are strict processes in place you must adhere to.  These are binding contracts and step-by-step instructions. These rules are IMMUTABLE and must be followed by ALL agents",
     "no_exceptions": "No exceptions are allowed. These rules apply to every agent and every task",
     "quality_requirement": "Quality and correctness take priority over speed or convenience",
     "verification_required": "All work must be verified against these rules before completion"
