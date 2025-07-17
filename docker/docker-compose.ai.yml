@@ -163,7 +163,7 @@ networks:
 volumes:
   kos-ollama:
     driver: local
-  kos-openwebui:
-    driver: local
   kos-models-data:
+    driver: local
+  kos-openwebui:
     driver: local

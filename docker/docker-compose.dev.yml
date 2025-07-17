@@ -213,15 +213,15 @@ networks:
       config:
       - subnet: 172.20.0.0/16
 volumes:
-  kos-supabase-studio:
-    driver: local
-  kos-gitea:
-    driver: local
-  kos-codium:
-    driver: local
   kos-browseruse:
     driver: local
   kos-supabase:
     driver: local
+  kos-gitea:
+    driver: local
+  kos-supabase-studio:
+    driver: local
   kos-context7:
+    driver: local
+  kos-codium:
     driver: local
