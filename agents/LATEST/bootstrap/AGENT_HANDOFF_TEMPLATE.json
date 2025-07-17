@@ -198,9 +198,35 @@
     ],
     "after_creating_handoff": [
       "Save handoff to agents/LATEST/",
-      "Update changelog with work completed",
-      "Verify handoff is complete and accurate",
-      "Notify next agent of handoff availability"
+      "Update any related documentation",
+      "Commit and push changes with detailed notes"
+    ]
+  },
+  "current_container_fixes": {
+    "description": "CRITICAL: Container remediation plan for A1111, ComfyUI, and other services",
+    "plan_location": "agents/LATEST/LATEST_JOBS_CONTAINER_FIXES.json",
+    "critical_issues": [
+      "ComfyUI: NumPy 2.x compatibility error - needs NumPy 1.x",
+      "ComfyUI: NVIDIA driver not detected - GPU functionality unavailable",
+      "A1111: Wrong container image - using RunPod multi-service instead of dedicated A1111",
+      "A1111: NVIDIA driver not detected - GPU functionality unavailable",
+      "Both: UI not accessible on expected ports",
+      "Both: Models directory empty - no models mounted"
+    ],
+    "immediate_actions_required": [
+      "Stop and remove current problem containers",
+      "Update env/gpu.env with correct images and GPU configs",
+      "Update Docker Compose files with GPU runtime",
+      "Deploy corrected containers with GPU support",
+      "Test all services and update healthchecks"
+    ],
+    "success_criteria": [
+      "A1111 UI accessible at http://localhost:7860",
+      "ComfyUI UI accessible at http://localhost:8188",
+      "Both containers using GPU successfully",
+      "Models loading correctly from shared directory",
+      "No NumPy compatibility errors",
+      "All healthchecks passing"
     ]
   },
   "handoff_examples": {

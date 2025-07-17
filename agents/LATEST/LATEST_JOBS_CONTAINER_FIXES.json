@@ -1,0 +1,214 @@
+{
+  "job_id": "CONTAINER_FIXES_2025-07-17",
+  "job_type": "container_remediation",
+  "priority": "critical",
+  "status": "planned",
+  "created_at": "2025-07-17T20:15:00Z",
+  "description": "Comprehensive fix for all container issues - A1111, ComfyUI, NumPy compatibility, GPU access, and UI/API health checks",
+  
+  "critical_issues": {
+    "comfyui": {
+      "problems": [
+        "NumPy 2.x compatibility error - needs NumPy 1.x",
+        "NVIDIA driver not detected - GPU functionality unavailable",
+        "Container failing to start due to NumPy/Torch compatibility",
+        "UI not accessible on port 8188"
+      ],
+      "root_cause": "Wrong Docker image with NumPy 2.x and missing GPU runtime"
+    },
+    "automatic1111": {
+      "problems": [
+        "Wrong container image - using RunPod multi-service instead of dedicated A1111",
+        "NVIDIA driver not detected - GPU functionality unavailable",
+        "Container syncing multiple services instead of being dedicated",
+        "Models directory empty - no models mounted",
+        "UI not accessible on port 7860"
+      ],
+      "root_cause": "Incorrect Docker image and missing GPU runtime"
+    }
+  },
+
+  "fix_plan": {
+    "phase_1_immediate_fixes": {
+      "step_1_stop_problem_containers": {
+        "action": "Stop and remove current A1111 and ComfyUI containers",
+        "commands": [
+          "docker stop kos-automatic1111 kos-comfyui",
+          "docker rm kos-automatic1111 kos-comfyui"
+        ],
+        "reason": "Clean slate for proper container deployment"
+      },
+      
+      "step_2_fix_comfyui": {
+        "action": "Replace ComfyUI with correct GPU-enabled image and NumPy 1.x",
+        "image": "nvidia/cuda:11.8-devel-ubuntu22.04",
+        "requirements": [
+          "Use NumPy 1.x compatible image",
+          "Enable GPU runtime with --gpus all",
+          "Mount shared models directory correctly",
+          "Fix healthcheck endpoint",
+          "Ensure UI accessible on port 8188"
+        ],
+        "docker_run": "docker run -d --name kos-comfyui --gpus all -p 8188:8188 -v /path/to/models:/models nvidia/cuda:11.8-devel-ubuntu22.04"
+      },
+      
+      "step_3_fix_automatic1111": {
+        "action": "Replace A1111 with correct dedicated GPU-enabled image",
+        "image": "ashleykza/stable-diffusion-webui:latest",
+        "requirements": [
+          "Use dedicated A1111 image, not multi-service RunPod",
+          "Enable GPU runtime with --gpus all",
+          "Mount shared models directory correctly",
+          "Fix healthcheck endpoint",
+          "Ensure UI accessible on port 7860"
+        ],
+        "docker_run": "docker run -d --name kos-automatic1111 --gpus all -p 7860:7860 -v /path/to/models:/models ashleykza/stable-diffusion-webui:latest"
+      }
+    },
+
+    "phase_2_environment_updates": {
+      "step_1_update_gpu_env": {
+        "action": "Update gpu.env with correct image specifications",
+        "changes": [
+          "KOS_AUTOMATIC1111_IMAGE=ashleykza/stable-diffusion-webui:latest",
+          "KOS_COMFYUI_IMAGE=nvidia/cuda:11.8-devel-ubuntu22.04",
+          "Add GPU runtime configurations",
+          "Add NumPy version specifications"
+        ]
+      },
+      
+      "step_2_update_docker_compose": {
+        "action": "Update Docker Compose files with GPU runtime and correct images",
+        "changes": [
+          "Add deploy.resources.reservations.devices for GPU",
+          "Update image references",
+          "Fix volume mounts for shared models",
+          "Update healthcheck endpoints"
+        ]
+      }
+    },
+
+    "phase_3_volume_and_models": {
+      "step_1_verify_models_directory": {
+        "action": "Ensure shared models directory exists and is populated",
+        "requirements": [
+          "Create /models directory structure",
+          "Mount checkpoints, vae, loras, etc.",
+          "Verify permissions and ownership"
+        ]
+      },
+      
+      "step_2_update_volume_configs": {
+        "action": "Update volume configurations in env files",
+        "changes": [
+          "KOS_AUTOMATIC1111_MODELS_VOLUME=/path/to/models:/models",
+          "KOS_COMFYUI_MODELS_VOLUME=/path/to/models:/models",
+          "Ensure consistent volume naming"
+        ]
+      }
+    },
+
+    "phase_4_health_checks_and_ui": {
+      "step_1_update_healthchecks": {
+        "action": "Update healthcheck endpoints for all services",
+        "services": {
+          "automatic1111": {
+            "healthcheck": "curl -f http://localhost:7860 || exit 1",
+            "ui_path": "/"
+          },
+          "comfyui": {
+            "healthcheck": "curl -f http://localhost:8188 || exit 1",
+            "ui_path": "/"
+          }
+        }
+      },
+      
+      "step_2_test_ui_access": {
+        "action": "Verify UI accessibility for all services",
+        "tests": [
+          "curl -I http://localhost:7860",
+          "curl -I http://localhost:8188",
+          "Check for proper HTTP responses"
+        ]
+      }
+    },
+
+    "phase_5_other_containers": {
+      "step_1_audit_all_containers": {
+        "action": "Check all other containers for similar issues",
+        "checks": [
+          "GPU runtime configuration",
+          "Correct image usage",
+          "Volume mounts",
+          "Healthcheck endpoints",
+          "UI accessibility"
+        ]
+      },
+      
+      "step_2_fix_identified_issues": {
+        "action": "Apply fixes to any other containers with problems",
+        "approach": "Same pattern as A1111 and ComfyUI fixes"
+      }
+    }
+  },
+
+  "implementation_steps": [
+    {
+      "step": 1,
+      "action": "Stop and remove current problem containers",
+      "commands": [
+        "docker stop kos-automatic1111 kos-comfyui",
+        "docker rm kos-automatic1111 kos-comfyui"
+      ]
+    },
+    {
+      "step": 2,
+      "action": "Update env/gpu.env with correct images and GPU configs",
+      "files": ["env/gpu.env"]
+    },
+    {
+      "step": 3,
+      "action": "Update Docker Compose files with GPU runtime",
+      "files": [
+        "docker/docker-compose.ai.yml",
+        "docker/docker-compose.full.yml"
+      ]
+    },
+    {
+      "step": 4,
+      "action": "Deploy corrected containers with GPU support",
+      "commands": [
+        "kos install --profile ai",
+        "Verify GPU access and UI functionality"
+      ]
+    },
+    {
+      "step": 5,
+      "action": "Test all services and update healthchecks",
+      "commands": [
+        "Test UI accessibility",
+        "Verify model loading",
+        "Check GPU utilization"
+      ]
+    }
+  ],
+
+  "success_criteria": [
+    "A1111 UI accessible at http://localhost:7860",
+    "ComfyUI UI accessible at http://localhost:8188",
+    "Both containers using GPU successfully",
+    "Models loading correctly from shared directory",
+    "No NumPy compatibility errors",
+    "All healthchecks passing",
+    "All other containers working properly"
+  ],
+
+  "notes": [
+    "Critical: Use NumPy 1.x compatible images for ComfyUI",
+    "Critical: Use dedicated A1111 image, not multi-service RunPod",
+    "Critical: Enable GPU runtime with --gpus all",
+    "Ensure shared models directory is properly mounted",
+    "Update all healthcheck endpoints to use correct paths",
+    "Test UI accessibility after each fix"
+  ]
+} 
