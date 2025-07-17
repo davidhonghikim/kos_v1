@@ -19,26 +19,6 @@ services:
     networks:
     - kos-network
     restart: unless-stopped
-  gpu:
-    image: nvidia/cuda:12.2.0-base-ubuntu22.04
-    container_name: kos-nvidia1-gpu-new
-    ports:
-    - 49500:49500
-    environment:
-    - GPU_COMPUTE_SUPPORTED=false
-    - GPU_CONTAINER_NAME=kos-nvidia1-gpu-new
-    - GPU_ENABLE=true
-    - GPU_EXTERNAL_PORT=49500
-    - GPU_IMAGE=nvidia/cuda:12.2.0-base-ubuntu22.04
-    - GPU_IMAGES_TO_PULL=nvidia/cuda:12.2.0-base-ubuntu22.04,nvidia/cuda:11.8.0-base-ubuntu22.04,rocm/rocm-terminal:latest
-    - GPU_INTERNAL_PORT=49500
-    - GPU_NETWORK=kos-network
-    - GPU_RESTART_POLICY=unless-stopped
-    - ADMIN_USER=kosadmin
-    - ADMIN_PASSWORD=kos30437
-    networks:
-    - kos-network
-    restart: unless-stopped
   nvidia_gpu:
     image: nvidia/cuda:11.8.0-base-ubuntu22.04
     container_name: kos-nvidia1-gpu-old
@@ -149,14 +129,6 @@ services:
     - ADMIN_PASSWORD=kos30437
     volumes:
     - kos-models-data:/models
-    deploy:
-      resources:
-        reservations:
-          devices:
-          - driver: nvidia
-            count: all
-            capabilities:
-            - gpu
     networks:
     - kos-network
     restart: unless-stopped
@@ -189,14 +161,6 @@ services:
     - ADMIN_PASSWORD=kos30437
     volumes:
     - kos-models-data:/models
-    deploy:
-      resources:
-        reservations:
-          devices:
-          - driver: nvidia
-            count: all
-            capabilities:
-            - gpu
     networks:
     - kos-network
     restart: unless-stopped
@@ -1052,47 +1016,47 @@ networks:
       config:
       - subnet: 172.20.0.0/16
 volumes:
-  kos-elasticsearch:
+  kos-weaviate:
     driver: local
   kos-minio:
     driver: local
-  kos-penpot:
-    driver: local
-  kos-pgadmin:
+  kos-codium:
     driver: local
   kos-n8n:
+    driver: local
+  kos-mongo:
+    driver: local
+  kos-nextcloud:
     driver: local
   kos-postgres:
     driver: local
   kos-ollama:
     driver: local
-  kos-gitea:
-    driver: local
-  kos-supabase-studio:
-    driver: local
-  kos-context7:
-    driver: local
-  kos-nginx:
-    driver: local
-  kos-browseruse:
-    driver: local
-  kos-supabase:
-    driver: local
-  kos-neo4j:
-    driver: local
-  kos-nextcloud:
-    driver: local
-  kos-redis:
-    driver: local
-  kos-openwebui:
-    driver: local
-  kos-mongo-express:
+  kos-pgadmin:
     driver: local
   kos-models-data:
     driver: local
-  kos-weaviate:
+  kos-nginx:
     driver: local
-  kos-mongo:
+  kos-elasticsearch:
     driver: local
-  kos-codium:
+  kos-browseruse:
+    driver: local
+  kos-supabase-studio:
+    driver: local
+  kos-supabase:
+    driver: local
+  kos-openwebui:
+    driver: local
+  kos-penpot:
+    driver: local
+  kos-redis:
+    driver: local
+  kos-context7:
+    driver: local
+  kos-gitea:
+    driver: local
+  kos-mongo-express:
+    driver: local
+  kos-neo4j:
     driver: local

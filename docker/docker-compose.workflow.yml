@@ -146,9 +146,9 @@ networks:
       config:
       - subnet: 172.20.0.0/16
 volumes:
-  kos-nextcloud:
-    driver: local
   kos-n8n:
     driver: local
   kos-penpot:
+    driver: local
+  kos-nextcloud:
     driver: local

@@ -7,6 +7,11 @@ import time
 import socket
 import requests
 import yaml
+import configparser
+import webbrowser
+import threading
+import re
+import http.client
 
 # Ensure scripts/ is in sys.path for logger import
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -71,176 +76,291 @@ if img_proc is not None:
     logger.log("Waiting for image pull to finish...", 'INFO')
     img_proc.wait()
 
-# 7. Deploy: Recursively check for image availability and deploy containers
-logger.log("Starting deployment (docker-compose up)...", 'INFO')
-print("[STEP] Deploying containers...")
-max_retries = 3
-last_result = None
-REQUIRED_CONTAINERS = [
-    'kos-api', 'kos-frontend', 'kos-registry', 'kos-vault', 'kos-prompt-manager', 'kos-artifact-manager',
-    'kos-postgres', 'kos-pgadmin', 'kos-mongo', 'kos-mongo-express', 'kos-neo4j', 'kos-weaviate', 'kos-minio',
-    'kos-redis', 'kos-redis-commander', 'kos-elasticsearch', 'kos-n8n', 'kos-penpot', 'kos-penpot-backend',
-    'kos-browseruse', 'kos-codium', 'kos-gitea', 'kos-supabase', 'kos-supabase-studio', 'kos-nextcloud',
-    'kos-ollama', 'kos-openwebui', 'kos-automatic1111', 'kos-comfyui', 'kos-invokeai', 'kos-huggingface',
-    'kos-prometheus', 'kos-grafana', 'kos-cadvisor', 'kos-admin-panel'
-]
-OPTIONAL_CONTAINERS = ['kos-context7']
+# Helper to run a step and log/validate
+def canonicalize_service_name(name):
+    return name.lower().replace('-', '_').replace(' ', '').replace('kos_', '').replace('_service', '')
 
-def get_services_from_compose(compose_path):
+def run_heartbeat():
+    while True:
+        print('[HEARTBEAT] Pipeline is running...')
+        time.sleep(10)
+
+hb_thread = threading.Thread(target=run_heartbeat, daemon=True)
+hb_thread.start()
+
+def check_url_status(url):
+    try:
+        resp = requests.get(url, timeout=5, allow_redirects=False)
+        return resp.status_code, resp.headers.get('location', ''), resp.text[:200]
+    except Exception as e:
+        return None, None, str(e)
+
+def print_container_log(container, lines=20):
+    try:
+        result = subprocess.run(["docker", "logs", "--tail", str(lines), container], capture_output=True, text=True)
+        print(f"[LOGS] Last {lines} lines for {container}:")
+        print(result.stdout)
+    except Exception as e:
+        print(f"[ERROR] Could not get logs for {container}: {e}")
+
+try:
+    compose_path = os.path.join(PROJECT_ROOT, 'docker', 'docker-compose.full.yml')
     with open(compose_path, 'r') as f:
         compose = yaml.safe_load(f)
-    return list(compose.get('services', {}).keys())
 
-compose_path = os.path.join(PROJECT_ROOT, 'docker', 'docker-compose.full.yml')
-services = get_services_from_compose(compose_path)
+    def parse_env_file(path):
+        env = {}
+        with open(path, 'r') as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith('#'):
+                    continue
+                if '=' in line:
+                    k, v = line.split('=', 1)
+                    env[k.strip()] = v.strip()
+        return env
 
-# Map service names to container names (from Compose)
-service_to_container = {}
-with open(compose_path, 'r') as f:
-    compose = yaml.safe_load(f)
-    for svc, cfg in compose.get('services', {}).items():
-        service_to_container[svc] = cfg.get('container_name', svc)
+    settings_env = parse_env_file(os.path.join(PROJECT_ROOT, 'env', 'settings.env'))
+    ports_env = parse_env_file(os.path.join(PROJECT_ROOT, 'env', 'ports.env'))
 
-# Attempt to pull and start each service individually
-failed_required = []
-failed_optional = []
-running_required = []
-running_optional = []
-for svc in services:
-    cname = service_to_container.get(svc, svc)
-    is_required = cname in REQUIRED_CONTAINERS
-    is_optional = cname in OPTIONAL_CONTAINERS
-    # Pull image
-    img = compose['services'][svc].get('image')
-    if img:
-        print(f"[INFO] Pulling image for {cname}: {img}")
-        result = subprocess.run(["docker", "pull", img], capture_output=True, text=True)
-        if result.returncode != 0:
-            print(f"[ERROR] Failed to pull image for {cname}: {img}")
-            logger.log(f"Failed to pull image for {cname}: {img} - {result.stderr}", 'ERROR')
-            if is_required:
-                failed_required.append((cname, 'image pull failed'))
-            else:
-                failed_optional.append((cname, 'image pull failed'))
+    # Canonicalize all service names from Compose
+    compose_services = {canonicalize_service_name(svc): svc for svc in compose.get('services', {})}
+    # Canonicalize all ENABLE flags
+    enabled_services = [canonicalize_service_name(k.replace('_ENABLE', '')) for k, v in settings_env.items() if k.endswith('_ENABLE') and v.lower() == 'true']
+    # Canonicalize OPTIONAL flags
+    optional_services = [canonicalize_service_name(k.replace('_OPTIONAL', '')) for k, v in settings_env.items() if k.endswith('_OPTIONAL') and v.lower() == 'true']
+    required_services = [s for s in enabled_services if s not in optional_services]
+
+    # Map env/config service names to Compose service keys
+    service_name_map = {s: compose_services[s] for s in enabled_services if s in compose_services}
+
+    failed_required = []
+    failed_optional = []
+    running_required = []
+    running_optional = []
+    skipped_services = []
+    for svc in enabled_services:
+        svc_key = service_name_map.get(svc)
+        if not svc_key:
+            print(f'[WARNING] Enabled service "{svc}" not found in Compose file. Skipping.')
+            logger.log(f'Enabled service "{svc}" not found in Compose file. Skipping.', 'WARNING')
+            skipped_services.append(svc)
             continue
-    # Start container
-    print(f"[INFO] Starting container: {cname}")
-    result = subprocess.run(["docker-compose", "-f", compose_path, "up", "-d", svc], cwd=PROJECT_ROOT, capture_output=True, text=True)
-    if result.returncode != 0:
-        print(f"[ERROR] Failed to start container: {cname}")
-        logger.log(f"Failed to start container: {cname} - {result.stderr}", 'ERROR')
-        if is_required:
-            failed_required.append((cname, 'start failed'))
+        cfg = compose['services'][svc_key]
+        cname = cfg.get('container_name', svc_key)
+        is_required = svc in required_services
+        is_optional = svc in optional_services
+        try:
+            img = cfg.get('image')
+            if img:
+                print(f"[INFO] Pulling image for {cname}: {img}")
+                result = subprocess.run(["docker", "pull", img], capture_output=True, text=True, timeout=300)
+                if result.returncode != 0:
+                    print(f"[ERROR] Failed to pull image for {cname}: {img}")
+                    logger.log(f"Failed to pull image for {cname}: {img} - {result.stderr}", 'ERROR')
+                    if is_required:
+                        failed_required.append((cname, 'image pull failed'))
+                    else:
+                        failed_optional.append((cname, 'image pull failed'))
+                    continue
+            print(f"[INFO] Starting container: {cname}")
+            result = subprocess.run(["docker-compose", "-f", compose_path, "up", "-d", svc_key], cwd=PROJECT_ROOT, capture_output=True, text=True, timeout=300)
+            if result.returncode != 0:
+                print(f"[ERROR] Failed to start container: {cname}")
+                logger.log(f"Failed to start container: {cname} - {result.stderr}", 'ERROR')
+                if is_required:
+                    failed_required.append((cname, 'start failed'))
+                else:
+                    failed_optional.append((cname, 'start failed'))
+                continue
+            # Check if running
+            ps = subprocess.run(["docker", "ps", "-a", "--filter", f"name={cname}", "--format", "{{.Names}}\t{{.Status}}"], capture_output=True, text=True)
+            status = ps.stdout.strip().split('\t')[-1] if '\t' in ps.stdout else ps.stdout.strip()
+            if status.startswith('Up'):
+                if is_required:
+                    running_required.append(cname)
+                else:
+                    running_optional.append(cname)
+            else:
+                if is_required:
+                    failed_required.append((cname, status))
+                else:
+                    failed_optional.append((cname, status))
+        except Exception as e:
+            print(f'[ERROR] Exception while deploying {cname}: {e}')
+            logger.log(f'Exception while deploying {cname}: {e}', 'ERROR')
+            if is_required:
+                failed_required.append((cname, f'exception: {e}'))
+            else:
+                failed_optional.append((cname, f'exception: {e}'))
+        print(f'[HEARTBEAT] Finished deployment step for {cname}')
+
+    # Print summary and open UIs
+    print("\n[SUMMARY] Deployment Results:")
+    print(f"  Required containers running: {len(running_required)} / {len(required_services)}")
+    if failed_required:
+        print("  [ERROR] Required containers failed:")
+        for cname, reason in failed_required:
+            print(f"    - {cname}: {reason}")
+    if failed_optional:
+        print("  [WARNING] Optional containers failed:")
+        for cname, reason in failed_optional:
+            print(f"    - {cname}: {reason}")
+    if skipped_services:
+        print("  [INFO] Skipped services (enabled in env, missing in Compose):")
+        for svc in skipped_services:
+            print(f"    - {svc}")
+    print("\n[INFO] Service UI/Health Links:")
+    for svc in enabled_services:
+        svc_key = service_name_map.get(svc)
+        if not svc_key:
+            continue
+        cfg = compose['services'][svc_key]
+        cname = cfg.get('container_name', svc_key)
+        envs = cfg.get('environment', [])
+        env_dict = {}
+        for e in envs:
+            if '=' in e:
+                k, v = e.split('=', 1)
+                env_dict[k.strip()] = v.strip()
+        public_uri = next((v for k, v in env_dict.items() if k.endswith('PUBLIC_URI')), None)
+        ext_port = next((v for k, v in env_dict.items() if k.endswith('EXTERNAL_PORT')), None)
+        health_cmd = next((v for k, v in env_dict.items() if k.endswith('HEALTH_CHECK_COMMAND')), None)
+        # Service-specific URL overrides and health checks
+        service_url_overrides = {
+            'openwebui': 'http://localhost:3001',  # Direct to main UI, not auth
+            'penpot': 'http://localhost:9002',     # Frontend URL
+            'penpot-backend': 'http://localhost:6060',  # Backend health check
+            'supabase': 'http://localhost:54321',  # API URL
+            'supabase-studio': 'http://localhost:3003',  # Studio URL
+            'weaviate': 'http://localhost:8082',   # Direct API
+            'comfyui': 'http://localhost:8188',    # Direct UI
+            'automatic1111': 'http://localhost:7860',  # Direct UI
+        }
+        
+        # Service-specific health check URLs
+        service_health_overrides = {
+            'openwebui': 'http://localhost:3001/api/v1/health',
+            'penpot': 'http://localhost:9002',
+            'penpot-backend': 'http://localhost:6060/api/health',
+            'supabase': 'http://localhost:54321/rest/v1/',
+            'supabase-studio': 'http://localhost:3003',
+            'weaviate': 'http://localhost:8082/v1/.well-known/ready',
+            'comfyui': 'http://localhost:8188',
+            'automatic1111': 'http://localhost:7860',
+        }
+        
+        # Use service-specific overrides if available
+        if svc_key in service_url_overrides:
+            ui = service_url_overrides[svc_key]
+        elif public_uri:
+            ui = public_uri
+        elif ext_port:
+            ui = f"http://localhost:{ext_port}"
         else:
-            failed_optional.append((cname, 'start failed'))
-        continue
-    # Check if running
-    ps = subprocess.run(["docker", "ps", "-a", "--filter", f"name={cname}", "--format", "{{.Names}}\t{{.Status}}"], capture_output=True, text=True)
-    status = ps.stdout.strip().split('\t')[-1] if '\t' in ps.stdout else ps.stdout.strip()
-    if status.startswith('Up'):
-        if is_required:
-            running_required.append(cname)
+            ui = None
+            
+        # Use service-specific health check if available
+        if svc_key in service_health_overrides:
+            health = service_health_overrides[svc_key]
+        elif health_cmd:
+            m = re.search(r'curl\s+-f\s+(http[^\s]+)', health_cmd)
+            if m:
+                health = m.group(1)
         else:
-            running_optional.append(cname)
+            health = None
+        if ui:
+            print(f"  {cname}: UI -> {ui}")
+            try:
+                webbrowser.open(ui)
+            except Exception as e:
+                print(f"    [WARN] Could not open UI: {e}")
+        elif health:
+            print(f"  {cname}: Health Check -> {health}")
+        else:
+            print(f"  {cname}: No UI or health check link found.")
+    print("\n[DIAGNOSTICS] Service Endpoint Checks:")
+    for svc in enabled_services:
+        svc_key = service_name_map.get(svc)
+        if not svc_key:
+            continue
+        cfg = compose['services'][svc_key]
+        cname = cfg.get('container_name', svc_key)
+        envs = cfg.get('environment', [])
+        env_dict = {}
+        for e in envs:
+            if '=' in e:
+                k, v = e.split('=', 1)
+                env_dict[k.strip()] = v.strip()
+        public_uri = next((v for k, v in env_dict.items() if k.endswith('PUBLIC_URI')), None)
+        ext_port = next((v for k, v in env_dict.items() if k.endswith('EXTERNAL_PORT')), None)
+        health_cmd = next((v for k, v in env_dict.items() if k.endswith('HEALTH_CHECK_COMMAND')), None)
+        service_url_overrides = {
+            'openwebui': 'http://localhost:3001',
+            'penpot': 'http://localhost:9002',
+            'penpot-backend': 'http://localhost:6060',
+            'supabase': 'http://localhost:54321',
+            'supabase-studio': 'http://localhost:3003',
+            'weaviate': 'http://localhost:8082',
+            'comfyui': 'http://localhost:8188',
+            'automatic1111': 'http://localhost:7860',
+        }
+        service_health_overrides = {
+            'openwebui': 'http://localhost:3001/api/v1/health',
+            'penpot': 'http://localhost:9002',
+            'penpot-backend': 'http://localhost:6060/api/health',
+            'supabase': 'http://localhost:54321/rest/v1/',
+            'supabase-studio': 'http://localhost:3003',
+            'weaviate': 'http://localhost:8082/v1/.well-known/ready',
+            'comfyui': 'http://localhost:8188',
+            'automatic1111': 'http://localhost:7860',
+        }
+        if svc_key in service_url_overrides:
+            ui = service_url_overrides[svc_key]
+        elif public_uri:
+            ui = public_uri
+        elif ext_port:
+            ui = f"http://localhost:{ext_port}"
+        else:
+            ui = None
+        if svc_key in service_health_overrides:
+            health = service_health_overrides[svc_key]
+        elif health_cmd:
+            m = re.search(r'curl\s+-f\s+(http[^\s]+)', health_cmd)
+            if m:
+                health = m.group(1)
+        else:
+            health = None
+        for label, url in [("UI", ui), ("Health", health)]:
+            if url:
+                code, location, snippet = check_url_status(url)
+                if code is None:
+                    print(f"  {cname} {label}: [ERROR] Could not connect: {snippet}")
+                    print_container_log(cname)
+                elif code in (301, 302, 307, 308):
+                    print(f"  {cname} {label}: [REDIRECT] {url} -> {location}")
+                elif code == 401 or code == 403:
+                    print(f"  {cname} {label}: [AUTH REQUIRED] {url}")
+                elif code == 200:
+                    print(f"  {cname} {label}: [OK] {url}")
+                else:
+                    print(f"  {cname} {label}: [HTTP {code}] {url}")
+                    print(f"    [SNIPPET] {snippet}")
+                    print_container_log(cname)
+            else:
+                print(f"  {cname} {label}: [NO ENDPOINT]")
+    if len(running_required) == len(required_services):
+        print("[SUCCESS] All required containers are running.")
+        logger.log("All required containers are running.", 'SUCCESS')
+        sys.exit(0)
     else:
-        if is_required:
-            failed_required.append((cname, status))
-        else:
-            failed_optional.append((cname, status))
+        print("[FATAL] Not all required containers are running.")
+        logger.log("Not all required containers are running.", 'ERROR')
+        sys.exit(1)
 
-# Print summary
-print("\n[SUMMARY] Deployment Results:")
-print(f"  Required containers running: {len(running_required)} / {len(REQUIRED_CONTAINERS)}")
-if failed_required:
-    print("  [ERROR] Required containers failed:")
-    for cname, reason in failed_required:
-        print(f"    - {cname}: {reason}")
-if failed_optional:
-    print("  [WARNING] Optional containers failed:")
-    for cname, reason in failed_optional:
-        print(f"    - {cname}: {reason}")
-if len(running_required) == len(REQUIRED_CONTAINERS):
-    print("[SUCCESS] All required containers are running.")
-    sys.exit(0)
-else:
-    print("[FATAL] Not all required containers are running.")
-    sys.exit(1)
-
-# 8. Print summary
-logger.log("Installer pipeline completed.", 'INFO')
-print("[INFO] Installer pipeline completed.")
-
-def check_http_health(url, timeout=5):
-    try:
-        resp = requests.get(url, timeout=timeout)
-        return resp.status_code == 200
-    except Exception:
-        return False
-
-def check_tcp_health(host, port, timeout=5):
-    try:
-        with socket.create_connection((host, int(port)), timeout=timeout):
-            return True
-    except Exception:
-        return False
-
-# Map service to health check (add more as needed)
-SERVICE_HEALTH_CHECKS = {
-    'kos-api': lambda: check_http_health('http://localhost:8000/health'),
-    'kos-frontend': lambda: check_http_health('http://localhost:3000'),
-    'kos-postgres': lambda: check_tcp_health('localhost', 5432),
-    'kos-mongo': lambda: check_tcp_health('localhost', 27017),
-    'kos-redis': lambda: check_tcp_health('localhost', 6379),
-    'kos-neo4j': lambda: check_tcp_health('localhost', 7687),
-    # Add more mappings as needed
-}
-
-# E2E health checks
-print("[INFO] Running E2E health checks for required services...")
-health_results = {}
-for name in REQUIRED_CONTAINERS:
-    # Only check if container is Up
-    is_up = any(n == name for n, _ in running)
-    if not is_up:
-        health_results[name] = 'NOT UP'
-        continue
-    check = SERVICE_HEALTH_CHECKS.get(name)
-    if check:
-        healthy = check()
-        health_results[name] = 'HEALTHY' if healthy else 'UNHEALTHY'
-    else:
-        health_results[name] = 'UNKNOWN (no check)'
-# Print summary
-print("\n[INFO] Service Health Summary:")
-print("SERVICE           STATUS")
-for name, status in health_results.items():
-    print(f"{name:16} {status}")
-# Attempt to restart unhealthy services and re-check
-for name, status in health_results.items():
-    if status == 'UNHEALTHY':
-        print(f"[WARNING] Attempting to restart unhealthy service: {name}")
-        logger.log(f"Attempting to restart unhealthy service: {name}", 'WARNING')
-        subprocess.run(["docker", "restart", name])
-        check = SERVICE_HEALTH_CHECKS.get(name)
-        if check and check():
-            print(f"[SUCCESS] {name} is now HEALTHY after restart.")
-            logger.log(f"{name} is now HEALTHY after restart.", 'SUCCESS')
-            health_results[name] = 'HEALTHY'
-        else:
-            print(f"[ERROR] {name} is still UNHEALTHY after restart.")
-            logger.log(f"{name} is still UNHEALTHY after restart.", 'ERROR')
-# Final health summary and exit code
-total = len(REQUIRED_CONTAINERS)
-healthy = sum(1 for s in health_results.values() if s == 'HEALTHY')
-if healthy == total:
-    print("[SUCCESS] All required services are healthy.")
-    logger.log("All required services are healthy.", 'SUCCESS')
-    sys.exit(0)
-elif healthy > 0:
-    print(f"[WARNING] Some required services are unhealthy. Healthy: {healthy}/{total}")
-    logger.log(f"Some required services are unhealthy. Healthy: {healthy}/{total}", 'WARNING')
-    sys.exit(2)
-else:
-    print("[FATAL] No required services are healthy after all attempts.")
-    logger.log("No required services are healthy after all attempts.", 'ERROR')
+except Exception as e:
+    print(f'[FATAL ERROR] {type(e).__name__}: {e}')
+    import traceback
+    traceback.print_exc()
+    logger.log(f'FATAL ERROR: {type(e).__name__}: {e}', 'ERROR')
     sys.exit(1) 

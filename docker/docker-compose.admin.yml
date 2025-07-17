@@ -59,7 +59,7 @@ networks:
       config:
       - subnet: 172.20.0.0/16
 volumes:
-  kos-mongo-express:
-    driver: local
   kos-pgadmin:
+    driver: local
+  kos-mongo-express:
     driver: local

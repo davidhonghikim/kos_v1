@@ -33,14 +33,6 @@ services:
     - ADMIN_PASSWORD=kos30437
     volumes:
     - kos-models-data:/models
-    deploy:
-      resources:
-        reservations:
-          devices:
-          - driver: nvidia
-            count: all
-            capabilities:
-            - gpu
     networks:
     - kos-network
     restart: unless-stopped
@@ -73,14 +65,6 @@ services:
     - ADMIN_PASSWORD=kos30437
     volumes:
     - kos-models-data:/models
-    deploy:
-      resources:
-        reservations:
-          devices:
-          - driver: nvidia
-            count: all
-            capabilities:
-            - gpu
     networks:
     - kos-network
     restart: unless-stopped
@@ -161,9 +145,9 @@ networks:
       config:
       - subnet: 172.20.0.0/16
 volumes:
-  kos-ollama:
-    driver: local
   kos-models-data:
+    driver: local
+  kos-ollama:
     driver: local
   kos-openwebui:
     driver: local
